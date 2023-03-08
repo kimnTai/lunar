@@ -1,13 +1,19 @@
 import React from "react";
-import AdminHome from "../pages/admin/AdminHome";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { Header } from "@/components/Header";
+import Footer from "@/components/Footer";
+import { Home } from "@/pages/Home";
 
-const routes = [
-    {
-        name: "AdminHome",
-        layout: "/admin",
-        path: "/admin",
-        component: <AdminHome />,
-    },
-];
-
-export default routes;
+export const AppRouter: React.FC = () => {
+  return (
+    <>
+      <BrowserRouter>
+        <Header />
+        <Routes>
+          <Route path="/" element={<Home />} />
+        </Routes>
+        <Footer />
+      </BrowserRouter>
+    </>
+  );
+};
