@@ -1,17 +1,10 @@
 import React from "react";
-import { useState } from "react";
-import { AppRouter } from "@/router";
-import { connect } from "react-redux";
+import Router from "@/router";
 
-function App() {
-  const [count, setCount] = useState(0);
-
+export default function App() {
   return (
     <>
-      <AppRouter />
+      <Router />
     </>
   );
 }
-
-const mapStateToProps = (state: any) => ({});
-export default connect(mapStateToProps, {})(App);

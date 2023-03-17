@@ -13,7 +13,7 @@ import { Input, Button, Dropdown, Space, Col, Row, Tooltip } from "antd";
 import { Link } from "react-router-dom";
 
 const HeaderCss = styled.div`
-  padding: 6px 4px;
+  padding: 4px 6px;
   background-color: var(--dark);
   .headerFunc {
     padding-right: 10px;
@@ -30,7 +30,7 @@ const items: MenuProps["items"] = [
   },
 ];
 const { Search } = Input;
-export const Header: React.FC = () => {
+export const Header: React.FC<{ openNav: Function }> = ({ openNav }) => {
   const [serch, setSerch] = useState("");
   return (
     <HeaderCss>
@@ -39,6 +39,7 @@ export const Header: React.FC = () => {
           <Row align="middle">
             <Col>
               <Button
+                onClick={() => openNav()}
                 type="link"
                 style={{
                   height: "42px",
