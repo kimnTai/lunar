@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
 import { PlusOutlined, CloseOutlined } from "@ant-design/icons";
 import { Button, Input, Form, Row, Col } from "antd";
+import type { InputRef } from "antd";
 
 const AddCardCss = styled(Form)`
   width: 276px;
@@ -19,6 +20,7 @@ const AddCard: React.FC = () => {
   const [add, setAdd] = useState(false);
   const handleClick = () => {
     setAdd(!add);
+    inputRef.current!.focus({ cursor: "start" });
   };
   const handleBlur = (e: any) => {
     console.log(e);
@@ -26,17 +28,23 @@ const AddCard: React.FC = () => {
   const handleFocus = (e: any) => {
     console.log(e);
   };
+  const inputRef = useRef<InputRef>(null);
+  useEffect(() => {
+    console.log(inputRef);
+    // inputRef.current!.focus({ cursor: "start" });
+  }, [inputRef]);
   return (
-    <AddCardCss
-      style={{ backgroundColor: add ? "white" : "#ffffff3d" }}
-      onBlur={handleBlur}
-      onFocus={handleFocus}
-    >
-      <Row>
+    <AddCardCss style={{ backgroundColor: add ? "white" : "#ffffff3d" }}>
+      <Row
+        tabIndex={add ? -1 : undefined}
+        onBlur={handleBlur}
+        onFocus={handleFocus}
+      >
         <a
           onClick={handleClick}
           className="addCard"
           style={{ display: add ? "none" : "block", width: "100%" }}
+          tabIndex={add ? -1 : undefined}
         >
           <Col flex="auto">
             <PlusOutlined style={{ fontSize: "16px", marginRight: "2px" }} />
@@ -45,7 +53,7 @@ const AddCard: React.FC = () => {
         </a>
         <Col
           style={{
-            display: add ? "block" : "none",
+            display: add ? "block" : "visiable",
             padding: "5px",
             width: "100%",
           }}
@@ -55,7 +63,7 @@ const AddCard: React.FC = () => {
             name="name"
             placeholder="為列表輸入標題..."
             autoComplete="off"
-            autoFocus
+            ref={inputRef}
           />
           <div
             style={{
