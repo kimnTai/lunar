@@ -1,1 +1,3 @@
 export const OPEN_CLOSE_NAVBAR = "OPEN_CLOSE_NAVBAR";
+
+export const CREATE_CARD_LIST = "CREATE_CARD_LIST";

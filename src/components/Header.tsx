@@ -47,7 +47,6 @@ export const Header: React.FC<{ openNav: Function }> = ({ openNav }) => {
                   fontSize: 20,
                   fontWeight: "bold",
                 }}
-                ghost
               >
                 <HolderOutlined />
               </Button>
@@ -57,7 +56,7 @@ export const Header: React.FC<{ openNav: Function }> = ({ openNav }) => {
             </Col>
             <Col>
               <Dropdown menu={{ items }} trigger={["click"]}>
-                <Button ghost>
+                <Button>
                   <Space>
                     工作區
                     <DownOutlined />
@@ -67,7 +66,7 @@ export const Header: React.FC<{ openNav: Function }> = ({ openNav }) => {
             </Col>
             <Col>
               <Dropdown menu={{ items }} trigger={["click"]}>
-                <Button ghost>
+                <Button>
                   <Space>
                     更多
                     <DownOutlined />
@@ -76,7 +75,7 @@ export const Header: React.FC<{ openNav: Function }> = ({ openNav }) => {
               </Dropdown>
             </Col>
             <Col>
-              <Button ghost>
+              <Button>
                 <PlusOutlined />
               </Button>
             </Col>
@@ -93,16 +92,12 @@ export const Header: React.FC<{ openNav: Function }> = ({ openNav }) => {
             </Col>
             <Col>
               <Tooltip title="search">
-                <Button shape="circle" icon={<BellOutlined />} ghost />
+                <Button shape="circle" icon={<BellOutlined />} />
               </Tooltip>
             </Col>
             <Col>
               <Tooltip title="search">
-                <Button
-                  shape="circle"
-                  icon={<QuestionCircleOutlined />}
-                  ghost
-                />
+                <Button shape="circle" icon={<QuestionCircleOutlined />} />
               </Tooltip>
             </Col>
             <Col>

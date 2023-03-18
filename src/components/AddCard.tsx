@@ -1,10 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { PlusOutlined, CloseOutlined } from "@ant-design/icons";
 import { Button, Input, Form, Row, Col } from "antd";
 
-const AddCardCss = styled(Form)<{ add: boolean }>`
-  background-color: ${(props) => (props.add ? "white" : "#ffffff3d")};
+const AddCardCss = styled(Form)`
   width: 276px;
   transition: all 0.3s ease;
 
@@ -21,10 +20,18 @@ const AddCard: React.FC = () => {
   const handleClick = () => {
     setAdd(!add);
   };
-  const formRef = useRef(null);
-  console.log(formRef);
+  const handleBlur = (e: any) => {
+    console.log(e);
+  };
+  const handleFocus = (e: any) => {
+    console.log(e);
+  };
   return (
-    <AddCardCss add={add}>
+    <AddCardCss
+      style={{ backgroundColor: add ? "white" : "#ffffff3d" }}
+      onBlur={handleBlur}
+      onFocus={handleFocus}
+    >
       <Row>
         <a
           onClick={handleClick}
@@ -48,6 +55,7 @@ const AddCard: React.FC = () => {
             name="name"
             placeholder="為列表輸入標題..."
             autoComplete="off"
+            autoFocus
           />
           <div
             style={{
@@ -73,6 +81,3 @@ const AddCard: React.FC = () => {
 };
 
 export default AddCard;
-function useRef(arg0: null) {
-  throw new Error("Function not implemented.");
-}

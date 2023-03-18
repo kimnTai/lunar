@@ -15,7 +15,7 @@ const AppRouter: React.FC<any> = (props) => {
       <BrowserRouter>
         <Header openNav={openNav} />
         <Navbar showNavbar={showNavbar} />
-        <MainLayoutCss showNavbar={showNavbar}>
+        <MainLayoutCss style={{ marginLeft: showNavbar ? "0px" : "200px" }}>
           <Routes>
             <Route path="/" element={<Home />} />
           </Routes>

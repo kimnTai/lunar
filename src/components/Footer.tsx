@@ -2,8 +2,7 @@ import React from "react";
 import { Layout } from "antd";
 import styled from "styled-components";
 
-const FooterCss = styled(Layout.Footer)<{ showNavbar: boolean }>`
-  margin-left: ${(props) => (props.showNavbar ? "0px" : "200px")};
+const FooterCss = styled(Layout.Footer)`
   transition: all 0.2s ease;
   position: fixed;
   bottom: 0;
@@ -12,7 +11,11 @@ const FooterCss = styled(Layout.Footer)<{ showNavbar: boolean }>`
 `;
 
 const Footer: React.FC<{ showNavbar: boolean }> = ({ showNavbar }) => {
-  return <FooterCss showNavbar={showNavbar}>Footer</FooterCss>;
+  return (
+    <FooterCss style={{ marginLeft: showNavbar ? "0px" : "200px" }}>
+      Footer
+    </FooterCss>
+  );
 };
 
 export default Footer;

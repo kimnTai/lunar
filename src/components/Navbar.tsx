@@ -12,15 +12,15 @@ const Sider = styled(Layout.Sider)`
   min-height: 100vh;
   max-height: 100vh;
   background-color: var(--dark);
-  @media only screen and ${media.md} {
+  /* @media only screen and ${media.md} {
     right: unset;
     left: 0;
   }
   @media only screen and ${media.xl} {
-  }
+  } */
 `;
 
-const NavBar: React.FC<{ showNavbar: boolean }> = ({ showNavbar }) => {
+const Navbar: React.FC<{ showNavbar: boolean }> = ({ showNavbar }) => {
   return (
     <Sider collapsible collapsed={showNavbar} collapsedWidth={0} trigger={null}>
       <div
@@ -33,4 +33,4 @@ const NavBar: React.FC<{ showNavbar: boolean }> = ({ showNavbar }) => {
   );
 };
 
-export default NavBar;
+export default Navbar;

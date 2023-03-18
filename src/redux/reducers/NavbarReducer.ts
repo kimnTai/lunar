@@ -4,9 +4,9 @@ const initialState: { showNavbar: boolean } = {
   showNavbar: false,
 };
 
-const PBarReducer = function (
+const NavbarReducer = function (
   state = initialState,
-  action: { type: string; payload: number }
+  action: { type: string; payload: any }
 ) {
   switch (action.type) {
     case OPEN_CLOSE_NAVBAR: {
@@ -23,4 +23,4 @@ const PBarReducer = function (
   }
 };
 
-export default PBarReducer;
+export default NavbarReducer;
