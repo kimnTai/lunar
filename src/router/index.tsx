@@ -4,7 +4,8 @@ import { Header } from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Home } from "@/pages/Home";
 import { connect } from "react-redux";
-import { clickNextAction } from "@/redux/actions/NavbarAction";
+import { openNavbarAction } from "@/redux/actions/NavbarAction";
+import { addCardListAction } from "@/redux/actions/CardAction";
 import Navbar from "@/components/Navbar";
 import MainLayoutCss from "@/components/MainLayoutCss";
 
@@ -29,5 +30,6 @@ const mapStateToProps = (state: any) => ({
   showNavbar: state.navbar.showNavbar,
 });
 export default connect(mapStateToProps, {
-  openNav: clickNextAction,
+  openNav: openNavbarAction,
+  addCardList: addCardListAction,
 })(AppRouter);

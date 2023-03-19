@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { PlusOutlined, CloseOutlined } from "@ant-design/icons";
 import { Button, Input, Form, Row, Col } from "antd";
 import type { InputRef } from "antd";
+import { useDispatch } from "react-redux";
 
 const AddCardCss = styled(Form)`
   width: 276px;
@@ -18,28 +19,20 @@ const AddCardCss = styled(Form)`
 
 const AddCard: React.FC = () => {
   const [add, setAdd] = useState(false);
+  const dispatch = useDispatch();
   const handleClick = () => {
     setAdd(!add);
-    inputRef.current!.focus({ cursor: "start" });
   };
   const handleBlur = (e: any) => {
-    console.log(e);
-  };
-  const handleFocus = (e: any) => {
-    console.log(e);
+    handleClick();
   };
   const inputRef = useRef<InputRef>(null);
   useEffect(() => {
-    console.log(inputRef);
-    // inputRef.current!.focus({ cursor: "start" });
-  }, [inputRef]);
+    if (add) inputRef.current!.focus({ cursor: "start" });
+  }, [add]);
   return (
     <AddCardCss style={{ backgroundColor: add ? "white" : "#ffffff3d" }}>
-      <Row
-        tabIndex={add ? -1 : undefined}
-        onBlur={handleBlur}
-        onFocus={handleFocus}
-      >
+      <Row tabIndex={add ? -1 : undefined} onBlur={handleBlur}>
         <a
           onClick={handleClick}
           className="addCard"
@@ -53,7 +46,7 @@ const AddCard: React.FC = () => {
         </a>
         <Col
           style={{
-            display: add ? "block" : "visiable",
+            display: add ? "block" : "none",
             padding: "5px",
             width: "100%",
           }}

@@ -4,7 +4,7 @@ interface NavbarActionProps {
   type: string;
 }
 
-export const clickNextAction =
+export const openNavbarAction =
   () => async (dispatch: (arg: NavbarActionProps) => NavbarActionProps) => {
     dispatch({ type: OPEN_CLOSE_NAVBAR });
   };
