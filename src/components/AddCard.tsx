@@ -4,11 +4,10 @@ import { PlusOutlined, CloseOutlined } from "@ant-design/icons";
 import { Button, Input, Form, Row, Col } from "antd";
 import type { InputRef } from "antd";
 import { useDispatch } from "react-redux";
+import { CREATE_CARD_LIST } from "@/redux/constants";
 
 const AddCardCss = styled(Form)`
   width: 276px;
-  transition: all 0.3s ease;
-
   cursor: pointer;
   border-radius: 3px;
   .addCard {
@@ -19,25 +18,41 @@ const AddCardCss = styled(Form)`
 
 const AddCard: React.FC = () => {
   const [add, setAdd] = useState(false);
+  const [text, setText] = useState("");
   const dispatch = useDispatch();
+
+  const handleMouseDown = (e: any) => {
+    e.preventDefault();
+  };
   const handleClick = () => {
     setAdd(!add);
+    setText("");
   };
-  const handleBlur = (e: any) => {
-    handleClick();
-  };
+
   const inputRef = useRef<InputRef>(null);
+  const onFinish = () => {
+    dispatch({
+      type: CREATE_CARD_LIST,
+      payload: text,
+    });
+
+    setAdd(false);
+  };
   useEffect(() => {
     if (add) inputRef.current!.focus({ cursor: "start" });
   }, [add]);
   return (
-    <AddCardCss style={{ backgroundColor: add ? "white" : "#ffffff3d" }}>
-      <Row tabIndex={add ? -1 : undefined} onBlur={handleBlur}>
+    <AddCardCss
+      style={{ backgroundColor: add ? "white" : "#ffffff3d" }}
+      onBlur={() => setAdd(false)}
+      onMouseDown={handleMouseDown}
+      onFinish={onFinish}
+    >
+      <Row>
         <a
           onClick={handleClick}
           className="addCard"
           style={{ display: add ? "none" : "block", width: "100%" }}
-          tabIndex={add ? -1 : undefined}
         >
           <Col flex="auto">
             <PlusOutlined style={{ fontSize: "16px", marginRight: "2px" }} />
@@ -49,20 +64,26 @@ const AddCard: React.FC = () => {
             display: add ? "block" : "none",
             padding: "5px",
             width: "100%",
+            transition: "all 10s ease",
           }}
         >
-          <Input
-            type="text"
-            name="name"
-            placeholder="為列表輸入標題..."
-            autoComplete="off"
-            ref={inputRef}
-          />
-          <div
+          <Form.Item style={{ marginBottom: 0 }}>
+            <Input
+              type="text"
+              name="title"
+              placeholder="為列表輸入標題..."
+              value={text}
+              onChange={(e) => setText(e.target.value)}
+              autoComplete="off"
+              ref={inputRef}
+            />
+          </Form.Item>
+          <Form.Item
             style={{
               marginTop: "5px",
               display: "flex",
               justifyContent: "center",
+              marginBottom: 0,
             }}
           >
             <Button htmlType="submit" type="primary">
@@ -71,10 +92,12 @@ const AddCard: React.FC = () => {
             <Button
               type="primary"
               icon={<CloseOutlined />}
-              onClick={handleClick}
+              onClick={() => {
+                setAdd(false);
+              }}
               style={{ marginLeft: "5px" }}
             />
-          </div>
+          </Form.Item>
         </Col>
       </Row>
     </AddCardCss>
