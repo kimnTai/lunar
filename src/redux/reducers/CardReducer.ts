@@ -1,9 +1,16 @@
 import { CREATE_CARD_LIST } from "../constants";
-import { CardReducerProps } from "@/interfaces/card";
+import { CardReducerProps } from "@/interfaces/trelloCard";
 const initialState: CardReducerProps = {
   cardList: [
-    { id: "a", title: "test1" },
-    { id: "b", title: "test2" },
+    {
+      id: "a",
+      title: "test1",
+      children: [
+        { id: "c", title: "useArdA" },
+        { id: "d", title: "useArdB" },
+      ],
+    },
+    { id: "b", title: "test2", children: [] },
   ],
 };
 

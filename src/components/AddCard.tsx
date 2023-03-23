@@ -7,6 +7,7 @@ import { useDispatch } from "react-redux";
 import { CREATE_CARD_LIST } from "@/redux/constants";
 
 const AddCardCss = styled(Form)`
+  height: 32px;
   width: 276px;
   cursor: pointer;
   border-radius: 3px;
