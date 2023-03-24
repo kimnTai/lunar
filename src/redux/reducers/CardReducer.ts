@@ -20,8 +20,12 @@ const CardReducer = function (
 ) {
   switch (action.type) {
     case CREATE_CARD_LIST: {
+      const id = (Math.random() + new Date().getTime())
+        .toString(32)
+        .slice(0, 8);
+      const useObj = { id, title: action.payload, children: [] };
       return {
-        cardList: [...state.cardList, ...action.payload],
+        cardList: [...state.cardList, useObj],
       };
     }
 

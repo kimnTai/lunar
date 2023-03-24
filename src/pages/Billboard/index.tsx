@@ -1,9 +1,10 @@
-import React, { Children, useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import AddCard from "@/components/AddCard";
 import { TrelloCard } from "@/components/TrelloCard";
 import { CardProps } from "@/interfaces/trelloCard";
-import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
+import { DragDropContext, DropResult, Droppable } from "react-beautiful-dnd";
+import { reorder, reorderQuoteMap } from "@/utils/func";
 
 const BillboardStyled = styled.div`
   display: flex;
@@ -12,17 +13,32 @@ const BillboardStyled = styled.div`
 `;
 
 const Billboard: React.FC<{ data: CardProps[] }> = ({ data }) => {
-  const [cardList, setCardList] = useState(data);
-  const onDragEndTest = (result: any) => {
+  const [cardList, setCardList] = useState<CardProps[]>([]);
+  const [ordered, setOrdered] = useState<string[]>([]);
+  useEffect(() => {
+    console.log(data);
+    if (data) {
+      setCardList(data);
+      setOrdered(data.map((ele) => ele.title));
+    }
+  }, [data]);
+  const onDragEnd = (result: DropResult) => {
     console.log(result);
-    const items = [...cardList];
-    const deleteItem = items.splice(result.source.index, 1);
-    items.splice(result.source.index, 0, deleteItem[0]);
-    setCardList(items);
+    if (!result.destination) return;
+    const source = result.source;
+    const destination = result.destination;
+    if (result.type === "COLUMN") {
+      console.log("in COLUMN");
+      const reorderedorder = reorder(ordered, source.index, destination.index);
+      setOrdered(reorderedorder);
+      return;
+    }
+    const data = reorderQuoteMap(cardList, source, destination);
+    setCardList(data);
   };
-
+  // console.log(data);
   return (
-    <DragDropContext onDragEnd={onDragEndTest}>
+    <DragDropContext onDragEnd={onDragEnd}>
       <Droppable
         droppableId="board"
         type="COLUMN"
@@ -32,18 +48,18 @@ const Billboard: React.FC<{ data: CardProps[] }> = ({ data }) => {
       >
         {(provided) => (
           <BillboardStyled {...provided.droppableProps} ref={provided.innerRef}>
-            {cardList.map((ele, index) => (
+            {ordered.map((key, index) => (
               <TrelloCard
-                {...ele}
-                key={index}
+                key={key}
                 index={index}
-                quotes={ele.children}
+                quotes={cardList.filter((ele) => ele.title === key)[0]}
                 isScrollable={true}
                 isCombineEnabled={false}
                 useClone={undefined}
               />
             ))}
             {provided.placeholder}
+            <AddCard />
           </BillboardStyled>
         )}
       </Droppable>
