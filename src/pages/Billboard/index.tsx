@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { Children, useState } from "react";
 import styled from "styled-components";
 import AddCard from "@/components/AddCard";
 import { TrelloCard } from "@/components/TrelloCard";
@@ -23,30 +23,26 @@ const Billboard: React.FC<{ data: CardProps[] }> = ({ data }) => {
 
   return (
     <DragDropContext onDragEnd={onDragEndTest}>
-      <Droppable droppableId="droppableId" direction="horizontal">
+      <Droppable
+        droppableId="board"
+        type="COLUMN"
+        direction="horizontal"
+        ignoreContainerClipping={false}
+        isCombineEnabled={false}
+      >
         {(provided) => (
           <BillboardStyled {...provided.droppableProps} ref={provided.innerRef}>
-            {cardList.map((ele, index) => {
-              return (
-                <Draggable key={ele.id} draggableId={ele.id} index={index}>
-                  {(provided, snapshot) => {
-                    return (
-                      <div
-                        ref={provided.innerRef}
-                        {...provided.draggableProps}
-                        {...provided.dragHandleProps}
-                      >
-                        <TrelloCard
-                          {...ele}
-                          key={index}
-                          isDragging={snapshot.isDragging}
-                        />
-                      </div>
-                    );
-                  }}
-                </Draggable>
-              );
-            })}
+            {cardList.map((ele, index) => (
+              <TrelloCard
+                {...ele}
+                key={index}
+                index={index}
+                quotes={ele.children}
+                isScrollable={true}
+                isCombineEnabled={false}
+                useClone={undefined}
+              />
+            ))}
             {provided.placeholder}
           </BillboardStyled>
         )}

@@ -10,5 +10,15 @@ export interface CardProps {
 }
 
 export interface TrelloCardProps extends CardProps {
-  isDragging: boolean;
+  index: number;
+  quotes: CardProps[];
+  isScrollable: boolean;
+  isCombineEnabled: boolean;
+  useClone: any;
+}
+
+export interface TrelloInsideCardProps extends TrelloCardProps {
+  listId: string;
+  listType: string;
+  internalScroll: boolean;
 }
