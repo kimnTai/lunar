@@ -6,7 +6,7 @@ import type { InputRef } from "antd";
 import { useDispatch } from "react-redux";
 import { CREATE_CARD_LIST } from "@/redux/constants";
 
-const AddCardCss = styled(Form)<{ useadd: string }>`
+const AddListCss = styled(Form)<{ useadd: string }>`
   height: ${(props) => (props.useadd === "true" ? "80px" : "32px")};
   width: 276px;
   cursor: pointer;
@@ -17,7 +17,7 @@ const AddCardCss = styled(Form)<{ useadd: string }>`
   }
 `;
 
-const AddCard: React.FC = () => {
+const AddList: React.FC = () => {
   const [add, setAdd] = useState(false);
   const [text, setText] = useState("");
   const dispatch = useDispatch();
@@ -43,7 +43,7 @@ const AddCard: React.FC = () => {
     if (add) inputRef.current!.focus({ cursor: "start" });
   }, [add]);
   return (
-    <AddCardCss
+    <AddListCss
       useadd={add.toString()}
       style={{ backgroundColor: add ? "white" : "#ffffff3d" }}
       onBlur={() => setAdd(false)}
@@ -102,8 +102,8 @@ const AddCard: React.FC = () => {
           </Form.Item>
         </Col>
       </Row>
-    </AddCardCss>
+    </AddListCss>
   );
 };
 
-export default AddCard;
+export default AddList;

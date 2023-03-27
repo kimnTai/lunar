@@ -14,13 +14,17 @@ const getNewData = (
   title: string,
   newArr: CardProps[]
 ) => {
-  let useCollumn = JSON.parse(JSON.stringify(columns));
-
+  let useCollumn = [...columns];
   const useIndex = columns.findIndex((ele) => ele.title === title);
-  let useArr = columns.filter((ele) => ele.title === title)[0];
-  useArr.children = newArr;
-  useCollumn.splice(useIndex, 1, useArr);
+  if (useIndex !== -1) {
+    const useArr = { ...useCollumn[useIndex], children: newArr };
+    useCollumn.splice(useIndex, 1, useArr);
+  }
   return useCollumn;
+};
+
+const getColumn = (columns: CardProps[], title: string) => {
+  return columns.find((column) => column.title === title) || { children: [] };
 };
 
 export const reorderQuoteMap = (
@@ -28,13 +32,8 @@ export const reorderQuoteMap = (
   source: DraggableLocation,
   destination: DraggableLocation
 ) => {
-  const current = [
-    ...columns.filter((ele) => ele.title === source.droppableId)[0].children,
-  ];
-  const next = [
-    ...columns.filter((ele) => ele.title === destination.droppableId)[0]
-      .children,
-  ];
+  const current = [...getColumn(columns, source.droppableId).children];
+  const next = [...getColumn(columns, destination.droppableId).children];
 
   // 同List
   if (source.droppableId === destination.droppableId) {
@@ -46,7 +45,10 @@ export const reorderQuoteMap = (
   const target = current[source.index];
   current.splice(source.index, 1);
   next.splice(destination.index, 0, target);
-  let ans = getNewData(columns, source.droppableId, current);
-  ans = getNewData(ans, destination.droppableId, next);
-  return ans;
+
+  return getNewData(
+    getNewData(columns, source.droppableId, current),
+    destination.droppableId,
+    next
+  );
 };

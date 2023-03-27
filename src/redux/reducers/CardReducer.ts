@@ -1,4 +1,4 @@
-import { CREATE_CARD_LIST } from "../constants";
+import { CREATE_CARD_LIST, ADD_CARD } from "../constants";
 import { CardReducerProps } from "@/interfaces/trelloCard";
 const initialState: CardReducerProps = {
   cardList: [
@@ -28,7 +28,9 @@ const CardReducer = function (
         cardList: [...state.cardList, useObj],
       };
     }
-
+    case ADD_CARD: {
+      return;
+    }
     default: {
       return {
         ...state,

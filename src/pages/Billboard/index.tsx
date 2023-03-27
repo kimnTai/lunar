@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import AddCard from "@/components/AddCard";
+import AddList from "@/components/AddList";
 import { TrelloCard } from "@/components/TrelloCard";
 import { CardProps } from "@/interfaces/trelloCard";
 import { DragDropContext, DropResult, Droppable } from "react-beautiful-dnd";
@@ -59,7 +59,7 @@ const Billboard: React.FC<{ data: CardProps[] }> = ({ data }) => {
               />
             ))}
             {provided.placeholder}
-            <AddCard />
+            <AddList />
           </BillboardStyled>
         )}
       </Droppable>
