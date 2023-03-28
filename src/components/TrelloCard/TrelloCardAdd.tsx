@@ -7,7 +7,14 @@ import { useDispatch } from "react-redux";
 import { ADD_CARD } from "@/redux/constants";
 
 const TrelloCardAddCss = styled(Card)<{ useadd: string }>`
-  /* height: ${(props) => (props.useadd === "true" ? "80px" : "32px")}; */
+  // height: ${(props) => props.useadd === "true" && "1px"};
+  min-height: 1px;
+  display: ${(props) => (props.useadd === "true" ? "block" : "none")};
+  .bottom-func {
+    margin-top: 5px;
+    display: flex;
+    justify-content: space-between;
+  }
   width: 100%;
   cursor: pointer;
   border-radius: 3px;
@@ -18,11 +25,10 @@ const TrelloCardAddCss = styled(Card)<{ useadd: string }>`
 `;
 
 const TrelloCardAdd: React.FC<{
+  listIndex: number;
   showAddCard: boolean;
-  newTitle: string;
-  setNewTitle: React.Dispatch<React.SetStateAction<string>>;
-}> = ({ showAddCard, newTitle, setNewTitle }) => {
-  const [add, setAdd] = useState(false);
+  setShowAddCard: React.Dispatch<React.SetStateAction<boolean>>;
+}> = ({ listIndex, showAddCard, setShowAddCard }) => {
   const [text, setText] = useState("");
   const dispatch = useDispatch();
 
@@ -30,17 +36,49 @@ const TrelloCardAdd: React.FC<{
     e.preventDefault();
   };
   const handleClick = () => {
-    setAdd(!add);
+    setShowAddCard(false);
     setText("");
   };
 
-  const inputRef = useRef<InputRef>(null);
-  useEffect(() => {
-    if (add) inputRef.current!.focus({ cursor: "start" });
-  }, [add]);
+  // const inputRef = useRef<InputRef>(null);
+  // useEffect(() => {
+  //   if (showAddCard) inputRef.current!.focus({ cursor: "start" });
+  // }, [showAddCard]);
   return (
-    <TrelloCardAddCss useadd={showAddCard.toString()}>
-      <input type="text" />
+    <TrelloCardAddCss
+      useadd={showAddCard.toString()}
+      bordered={false}
+      bodyStyle={{ padding: 0 }}
+    >
+      <Input.TextArea
+        value={text}
+        onChange={(e: any) => setText(e.target.value)}
+        placeholder="Controlled autosize"
+        autoSize={{ minRows: 3 }}
+        style={{ width: "100%" }}
+      />
+      <div className="bottom-func">
+        <div style={{ display: "flex" }}>
+          <Button
+            type="primary"
+            onClick={() => {
+              dispatch({ type: ADD_CARD, payload: { title: text, listIndex } });
+              setShowAddCard(false);
+            }}
+          >
+            新增卡片
+          </Button>
+          <Button
+            type="primary"
+            icon={<CloseOutlined />}
+            onClick={() => {
+              setShowAddCard(false);
+            }}
+            style={{ marginLeft: "5px" }}
+          />
+        </div>
+        <Button icon={<EllipsisOutlined />}></Button>
+      </div>
     </TrelloCardAddCss>
   );
 };

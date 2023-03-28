@@ -20,7 +20,6 @@ export const TrelloCardInnerStyled = styled(Card)`
   row-gap: 5px;
 `;
 
-
 export const TrelloCardBottomFuncStyled = styled.div<{ show: string }>`
   display: ${(props) => (props.show === "true" ? "none" : "block")};
   margin-top: 10px;

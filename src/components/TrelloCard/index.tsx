@@ -19,7 +19,6 @@ export const TrelloCard: React.FC<TrelloCardProps> = (props) => {
   const { index, quotes } = props;
   const { id, title } = quotes;
   const [showAddCard, setShowAddCard] = useState(false);
-  const [newTitle, setNewTitle] = useState("");
   return (
     <Draggable draggableId={id} index={index}>
       {(provided, snapshot) => (
@@ -44,14 +43,10 @@ export const TrelloCard: React.FC<TrelloCardProps> = (props) => {
               isCombineEnabled={Boolean(props.isCombineEnabled)}
               useClone={Boolean(props.useClone)}
               showAddCard={showAddCard}
-              newTitle={newTitle}
-              setNewTitle={setNewTitle}
               setShowAddCard={setShowAddCard}
             />
             <TrelloCardBottomFunc
               showAddCard={showAddCard}
-              newTitle={newTitle}
-              setNewTitle={setNewTitle}
               setShowAddCard={setShowAddCard}
             />
           </TrelloCardStyled>
@@ -71,10 +66,9 @@ export const TrelloCardList: React.FC<TrelloCardListProps> = (props) => {
     internalScroll,
     quotes,
     showAddCard,
-    newTitle,
-    setNewTitle,
     setShowAddCard,
   } = props;
+
   return (
     <Droppable
       droppableId={listId}
@@ -88,16 +82,16 @@ export const TrelloCardList: React.FC<TrelloCardListProps> = (props) => {
       {(dropProvided, dropSnapshot) => (
         <div>
           <ScrollContainer internalScroll={internalScroll}>
-            <div ref={dropProvided.innerRef}>
+            <div ref={dropProvided.innerRef} style={{ minHeight: "1px" }}>
               <TrelloCardInner
                 quotes={quotes}
                 dropProvided={dropProvided}
                 isDrag={dropSnapshot.isDraggingOver}
               />
               <TrelloCardAdd
+                listIndex={index}
                 showAddCard={showAddCard}
-                newTitle={newTitle}
-                setNewTitle={setNewTitle}
+                setShowAddCard={setShowAddCard}
               />
               {dropProvided.placeholder}
             </div>

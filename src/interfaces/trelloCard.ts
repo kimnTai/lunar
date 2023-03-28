@@ -34,8 +34,6 @@ export interface TrelloCardInnerProps {
 }
 
 export interface TrelloCardBottomFuncProps {
-  newTitle: string;
   showAddCard: boolean;
-  setNewTitle: React.Dispatch<React.SetStateAction<string>>;
   setShowAddCard: React.Dispatch<React.SetStateAction<boolean>>;
 }

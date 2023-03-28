@@ -29,7 +29,13 @@ const CardReducer = function (
       };
     }
     case ADD_CARD: {
-      return;
+      const id = (Math.random() + new Date().getTime())
+        .toString(32)
+        .slice(0, 8);
+      const useCard = { id, title: action.payload.title };
+      const newList  = [...state.cardList]
+      
+      return 
     }
     default: {
       return {
