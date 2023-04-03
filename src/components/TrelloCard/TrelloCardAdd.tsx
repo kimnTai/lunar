@@ -39,45 +39,60 @@ const TrelloCardAdd: React.FC<{
     setShowAddCard(false);
     setText("");
   };
-
-  // const inputRef = useRef<InputRef>(null);
-  // useEffect(() => {
-  //   if (showAddCard) inputRef.current!.focus({ cursor: "start" });
-  // }, [showAddCard]);
+  const handleBlur = (e: any) => {
+    console.log(e);
+  };
+  const inputRef = useRef<InputRef>(null);
+  useEffect(() => {
+    if (showAddCard) inputRef.current!.focus({ cursor: "start" });
+  }, [showAddCard]);
   return (
     <TrelloCardAddCss
       useadd={showAddCard.toString()}
       bordered={false}
       bodyStyle={{ padding: 0 }}
     >
-      <Input.TextArea
-        value={text}
-        onChange={(e: any) => setText(e.target.value)}
-        placeholder="Controlled autosize"
-        autoSize={{ minRows: 3 }}
-        style={{ width: "100%" }}
-      />
-      <div className="bottom-func">
-        <div style={{ display: "flex" }}>
-          <Button
-            type="primary"
-            onClick={() => {
-              dispatch({ type: ADD_CARD, payload: { title: text, listIndex } });
-              setShowAddCard(false);
-            }}
-          >
-            新增卡片
-          </Button>
-          <Button
-            type="primary"
-            icon={<CloseOutlined />}
-            onClick={() => {
-              setShowAddCard(false);
-            }}
-            style={{ marginLeft: "5px" }}
-          />
+      <div
+        tabIndex={showAddCard ? 0 : undefined}
+        onBlur={(e) => {
+          setText("");
+          setShowAddCard(false);
+        }}
+        onMouseDown={handleMouseDown}
+      >
+        <Input.TextArea
+          value={text}
+          onChange={(e: any) => setText(e.target.value)}
+          ref={inputRef}
+          placeholder="Controlled autosize"
+          autoSize={{ minRows: 3 }}
+          style={{ width: "100%" }}
+        />
+        <div className="bottom-func">
+          <div style={{ display: "flex" }}>
+            <Button
+              type="primary"
+              onClick={() => {
+                dispatch({
+                  type: ADD_CARD,
+                  payload: { title: text, listIndex },
+                });
+                setShowAddCard(false);
+              }}
+            >
+              新增卡片
+            </Button>
+            <Button
+              type="primary"
+              icon={<CloseOutlined />}
+              onClick={() => {
+                setShowAddCard(false);
+              }}
+              style={{ marginLeft: "5px" }}
+            />
+          </div>
+          <Button icon={<EllipsisOutlined />}></Button>
         </div>
-        <Button icon={<EllipsisOutlined />}></Button>
       </div>
     </TrelloCardAddCss>
   );

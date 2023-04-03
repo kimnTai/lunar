@@ -33,9 +33,10 @@ const CardReducer = function (
         .toString(32)
         .slice(0, 8);
       const useCard = { id, title: action.payload.title };
-      const newList  = [...state.cardList]
-      
-      return 
+      state.cardList[action.payload.listIndex].children.push(useCard);
+      return {
+        cardList: [...state.cardList],
+      };
     }
     default: {
       return {

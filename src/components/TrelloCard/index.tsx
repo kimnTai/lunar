@@ -8,51 +8,61 @@ import {
 import { Card } from "antd";
 import { Droppable, Draggable } from "react-beautiful-dnd";
 import TrelloCardBottomFunc from "./TrelloCardBottomFunc";
+import TrelloCardHeader from "./TrelloCardHeader";
 import {
   TrelloCardStyled,
   ScrollContainer,
   TrelloCardInnerStyled,
 } from "./style";
 import TrelloCardAdd from "./TrelloCardAdd";
+import TrelloCardModal from "./Modal";
 
 export const TrelloCard: React.FC<TrelloCardProps> = (props) => {
   const { index, quotes } = props;
   const { id, title } = quotes;
   const [showAddCard, setShowAddCard] = useState(false);
+  const [openModal, setOpenModal] = useState({
+    id: "",
+    open: false,
+  });
   return (
-    <Draggable draggableId={id} index={index}>
-      {(provided, snapshot) => (
-        <div ref={provided.innerRef} {...provided.draggableProps}>
-          <TrelloCardStyled
-            size="small"
-            isdargging={snapshot.isDragging.toString()}
-          >
-            <Card.Meta
-              title={title}
-              className="cardTitle"
-              {...provided.dragHandleProps}
-              aria-label={`${title} quote list`}
-            />
+    <>
+      <Draggable draggableId={id} index={index}>
+        {(provided, snapshot) => (
+          <div ref={provided.innerRef} {...provided.draggableProps}>
+            <TrelloCardStyled
+              size="small"
+              isdargging={snapshot.isDragging.toString()}
+            >
+              <Card.Meta
+                title={<TrelloCardHeader title={title} />}
+                className="cardTitle"
+                {...provided.dragHandleProps}
+                aria-label={`${title} quote list`}
+              />
 
-            <TrelloCardList
-              {...props}
-              isScrollable={false}
-              listId={title}
-              listType="QUOTE"
-              internalScroll={props.isScrollable}
-              isCombineEnabled={Boolean(props.isCombineEnabled)}
-              useClone={Boolean(props.useClone)}
-              showAddCard={showAddCard}
-              setShowAddCard={setShowAddCard}
-            />
-            <TrelloCardBottomFunc
-              showAddCard={showAddCard}
-              setShowAddCard={setShowAddCard}
-            />
-          </TrelloCardStyled>
-        </div>
-      )}
-    </Draggable>
+              <TrelloCardList
+                {...props}
+                isScrollable={false}
+                listId={title}
+                listType="QUOTE"
+                internalScroll={props.isScrollable}
+                isCombineEnabled={Boolean(props.isCombineEnabled)}
+                useClone={Boolean(props.useClone)}
+                showAddCard={showAddCard}
+                setShowAddCard={setShowAddCard}
+                setOpenModal={setOpenModal}
+              />
+              <TrelloCardBottomFunc
+                showAddCard={showAddCard}
+                setShowAddCard={setShowAddCard}
+              />
+            </TrelloCardStyled>
+          </div>
+        )}
+      </Draggable>
+      <TrelloCardModal openModal={openModal} setOpenModal={setOpenModal} />
+    </>
   );
 };
 
@@ -67,6 +77,7 @@ export const TrelloCardList: React.FC<TrelloCardListProps> = (props) => {
     quotes,
     showAddCard,
     setShowAddCard,
+    setOpenModal,
   } = props;
 
   return (
@@ -87,6 +98,7 @@ export const TrelloCardList: React.FC<TrelloCardListProps> = (props) => {
                 quotes={quotes}
                 dropProvided={dropProvided}
                 isDrag={dropSnapshot.isDraggingOver}
+                setOpenModal={setOpenModal}
               />
               <TrelloCardAdd
                 listIndex={index}
@@ -103,23 +115,32 @@ export const TrelloCardList: React.FC<TrelloCardListProps> = (props) => {
 };
 
 const TrelloCardInner: React.FC<TrelloCardInnerProps> = React.memo((props) => {
-  const { quotes } = props;
+  const { quotes, setOpenModal } = props;
   return quotes.children.map((quote: CardProps, index: number) => (
     <Draggable key={quote.id} draggableId={quote.id} index={index}>
       {(dragProvided, dragSnapshot) => (
-        <TrelloCardInnerStyled
-          // isdargging={dragSnapshot.isDragging.toString()}
-          title={quote.title}
-          size="small"
-          ref={dragProvided.innerRef}
-          {...dragProvided.draggableProps}
-          {...dragProvided.dragHandleProps}
-          data-is-dragging={dragSnapshot.isDragging}
-          data-testid={quote.id}
-          data-index={index}
-          aria-label={`${quote.title} quote`}
-          className="trello-card-inner"
-        />
+        <a
+          onClick={() =>
+            setOpenModal({
+              id: quote.id,
+              open: true,
+            })
+          }
+        >
+          <TrelloCardInnerStyled
+            // isdargging={dragSnapshot.isDragging.toString()}
+            title={quote.title}
+            size="small"
+            ref={dragProvided.innerRef}
+            {...dragProvided.draggableProps}
+            {...dragProvided.dragHandleProps}
+            data-is-dragging={dragSnapshot.isDragging}
+            data-testid={quote.id}
+            data-index={index}
+            aria-label={`${quote.title} quote`}
+            className="trello-card-inner"
+          />
+        </a>
       )}
     </Draggable>
   ));
