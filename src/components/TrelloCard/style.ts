@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { Card, Modal } from "antd";
+import { Card } from "antd";
 
 export const TrelloCardStyled = styled(Card)<{ isdargging: string }>`
   width: 276px;
@@ -56,4 +56,3 @@ export const PopoverHeaderStyled = styled.div`
 
 export const PopoverContentStyled = styled.div``;
 
-export const TrelloCardModalStyled = styled(Modal)``;

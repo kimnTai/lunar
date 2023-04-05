@@ -1,11 +1,12 @@
 import React from "react";
 import { Button } from "antd";
-import { TrelloCardModalStyled } from "../style";
+import { TrelloCardModalStyled } from "./style";
 import { TrelloCardModalProps } from "@/interfaces/trelloCard";
+import ModalHeader from "./ModalHeader";
+import ModalLayout from "./ModalLayout";
 
 const TrelloCardModal: React.FC<TrelloCardModalProps> = (props) => {
   const { openModal, setOpenModal } = props;
-
   const handleOk = () => {
     setOpenModal({ id: "", open: false });
   };
@@ -18,8 +19,10 @@ const TrelloCardModal: React.FC<TrelloCardModalProps> = (props) => {
       onOk={handleOk}
       onCancel={handleCancel}
       width={768}
+      title={<ModalHeader />}
+      footer={null}
     >
-      index
+      <ModalLayout />
     </TrelloCardModalStyled>
   );
 };
