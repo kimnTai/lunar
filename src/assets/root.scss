@@ -1,3 +1,18 @@
 :root {
-    --dark: #026aa7;
+  --dark: #026aa7;
+  --divider-gray: rgba(5, 5, 5, 0.06);
+  --modal-background-color: #f4f5f7;
+  --modal-color: #172b4d;
+  --modal-button-neutral: #091e420a;
+  --modal-button-neutral-hover: #a6a6a6;
+
+  --grey9F: #9f9f9f;
+  --grey66: #666666;
+  --black: #333333;
+}
+
+.d-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
