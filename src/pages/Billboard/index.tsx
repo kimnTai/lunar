@@ -5,6 +5,10 @@ import { TrelloCard } from "@/components/TrelloCard";
 import { CardProps } from "@/interfaces/trelloCard";
 import { DragDropContext, DropResult, Droppable } from "react-beautiful-dnd";
 import { reorder, reorderQuoteMap } from "@/utils/func";
+import { Header } from "./Header";
+import Navbar from "./Navbar";
+import MainLayoutCss from "./MainLayoutCss";
+import Footer from "./Footer";
 
 const BillboardStyled = styled.div`
   display: flex;
@@ -67,4 +71,22 @@ const Billboard: React.FC<{ data: CardProps[] }> = ({ data }) => {
   );
 };
 
-export default Billboard;
+const Main: React.FC<{
+  data: any;
+  openNav: Function;
+  showNavbar: boolean;
+}> = (props) => {
+  const { data, openNav, showNavbar } = props;
+  return (
+    <>
+      <Header openNav={openNav} />
+      <Navbar showNavbar={showNavbar} />
+      <MainLayoutCss style={{ marginLeft: showNavbar ? "0px" : "200px" }}>
+        <Billboard data={data} />
+      </MainLayoutCss>
+      <Footer showNavbar={showNavbar} />
+    </>
+  );
+};
+
+export default Main;

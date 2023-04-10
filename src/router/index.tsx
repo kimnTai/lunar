@@ -1,27 +1,33 @@
 import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { Header } from "@/components/Header";
-import Footer from "@/components/Footer";
 import Billboard from "@/pages/Billboard";
 import { connect } from "react-redux";
 import { openNavbarAction } from "@/redux/actions/NavbarAction";
 import { addCardListAction } from "@/redux/actions/CardAction";
-import Navbar from "@/components/Navbar";
-import MainLayoutCss from "@/components/MainLayoutCss";
+import Login from "@/pages/Login";
+import { LoginAction } from "@/redux/actions/AuthAction";
 
 const AppRouter: React.FC<any> = (props) => {
-  const { openNav, showNavbar, card } = props;
+  const { openNav, showNavbar, card, login, loginAction } = props;
+  console.log(login);
   return (
     <>
       <BrowserRouter>
-        <Header openNav={openNav} />
-        <Navbar showNavbar={showNavbar} />
-        <MainLayoutCss style={{ marginLeft: showNavbar ? "0px" : "200px" }}>
-          <Routes>
-            <Route path="/" element={<Billboard data={card} />} />
-          </Routes>
-        </MainLayoutCss>
-        <Footer showNavbar={showNavbar} />
+        <Routes>
+          <Route path="/login" element={<Login loginAction={loginAction} />} />
+          {login && (
+            <Route
+              path="/main"
+              element={
+                <Billboard
+                  data={card}
+                  openNav={openNav}
+                  showNavbar={showNavbar}
+                />
+              }
+            />
+          )}
+        </Routes>
       </BrowserRouter>
     </>
   );
@@ -29,8 +35,10 @@ const AppRouter: React.FC<any> = (props) => {
 const mapStateToProps = (state: any) => ({
   showNavbar: state.navbar.showNavbar,
   card: state.card.cardList,
+  login: state.auth.login,
 });
 export default connect(mapStateToProps, {
   openNav: openNavbarAction,
   addCardList: addCardListAction,
+  loginAction: LoginAction,
 })(AppRouter);
