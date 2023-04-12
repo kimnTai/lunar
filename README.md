@@ -17,11 +17,12 @@
 
 ## 使用技術
 
-- react
-- typscript
-- react-router-dom
-- react-redux
-- thunk
-- react-beautiful-dnd
-- antd
-- styled-component
+- [react_v18](https://zh-hant.reactjs.org/)
+- [typscript](https://www.typescriptlang.org/)
+- [react-router-dom_v6](https://reactrouter.com/en/main)
+- [react-redux](https://react-redux.js.org/)
+- [redux-thunk](https://github.com/reduxjs/redux-thunk)
+- [react-beautiful-dnd](https://github.com/atlassian/react-beautiful-dnd)
+- [antd](https://ant.design/docs/react/introduce)
+- [styled-component](https://styled-components.com/)
+- [vitest](https://cn.vitest.dev/api/)
