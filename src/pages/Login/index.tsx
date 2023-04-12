@@ -1,65 +1,15 @@
 import React from "react";
-import styled from "styled-components";
-import LoginBg from "@/assets/images/bg_createAccoun.png";
-import Logo from "@/assets/images/logo.png";
+import Logo from "@/assets/images/img_logo.png";
 import { Card, Button, Divider, Form, Input } from "antd";
 import GoogleIcon from "@/assets/images/google.png";
 import AppleIcon from "@/assets/images/apple.png";
 import { LOGIN } from "@/redux/constants";
 import { useNavigate } from "react-router-dom";
-
-const LoginCss = styled.div`
-  background: url(${LoginBg}) round;
-  background-repeat: repeat;
-  height: 100%;
-  width: 100%;
-  .ant-card-body {
-    padding: 0;
-  }
-  .login-width {
-    width: 354px;
-  }
-  .header {
-    margin-bottom: 24px;
-    text-align: center;
-    img {
-      display: block;
-      margin: 0 auto;
-    }
-    span {
-      margin-top: 12px;
-      font-size: 16px;
-    }
-  }
-  .ant-form-item {
-    margin-bottom: 12px;
-    input {
-      height: 48px;
-    }
-  }
-  .terms {
-    color: var(--grey9F);
-    text-align: center;
-  }
-  .have-account {
-    margin-top: 32px;
-    text-align: center;
-    color: var(--grey66);
-  }
-`;
-
-const ThirdPartyButtonCss = styled(Button)`
-  width: 100%;
-  font-size: 14px;
-  margin-top: 8px;
-  height: 44px;
-  img {
-    margin-right: 8px;
-  }
-  span {
-    width: 144px;
-  }
-`;
+import { LoginCss, ThirdPartyButtonCss } from "./style";
+import Bg_blue from "@/assets/images/login_bg_blue.png";
+import Bg_gray from "@/assets/images/login_bg_gray.png";
+import Red_ball from "@/assets/images/red_ball.png";
+import Blue_ball from "@/assets/images/blue_ball.png";
 
 const ThirdPartyButton: React.FC<{
   icon: any;
@@ -73,8 +23,8 @@ const ThirdPartyButton: React.FC<{
 };
 
 const Login: React.FC<{ loginAction: Function }> = ({ loginAction }) => {
-  const navigate = useNavigate();
   const onFinish = (values: any) => {
+    const navigate = useNavigate();
     loginAction({
       type: LOGIN,
       payload: values,
@@ -86,20 +36,10 @@ const Login: React.FC<{ loginAction: Function }> = ({ loginAction }) => {
     console.log("Failed:", errorInfo);
   };
   return (
-    <LoginCss className="d-center">
-      <Card style={{ width: "542px", padding: "48px 94px" }}>
-        <div className="header login-width">
-          <img src={Logo} alt="" />
-          <span>讓工作，更有序</span>
-        </div>
-        <ThirdPartyButton icon={GoogleIcon} text={"使用 Google 註冊"} />
-        <ThirdPartyButton icon={AppleIcon} text={"使用 Apple 註冊"} />
-        <Divider
-          plain
-          style={{ borderColor: "#D4D4D4", margin: "16px 0", height: "20px" }}
-        >
-          或
-        </Divider>
+    <LoginCss>
+      <img className="header" src={Logo} alt="" />
+      <Card>
+        <h1 className="cardHeader">免費註冊</h1>
         <Form
           name="login-form"
           wrapperCol={{ span: 24 }}
@@ -131,7 +71,11 @@ const Login: React.FC<{ loginAction: Function }> = ({ loginAction }) => {
             <Button
               type="primary"
               htmlType="submit"
-              style={{ width: "100%", height: "48px" }}
+              style={{
+                width: "100%",
+                height: "48px",
+                fontWeight: 700,
+              }}
             >
               註冊
             </Button>
@@ -146,13 +90,39 @@ const Login: React.FC<{ loginAction: Function }> = ({ loginAction }) => {
           </div>
         </div>
 
+        <Divider
+          plain
+          style={{
+            borderColor: "#D4D4D4",
+            margin: "12px 0px",
+            height: "20px",
+          }}
+        >
+          或
+        </Divider>
+
+        <ThirdPartyButton icon={GoogleIcon} text={"使用 Google 註冊"} />
+        <ThirdPartyButton icon={AppleIcon} text={"使用 Apple 註冊"} />
+
         <div className="have-account">
           <div>已經有帳戶了嗎？</div>
           <div>
-            <a href="">登入</a>
+            <a href="" style={{ fontSize: "16px" }}>
+              登入
+            </a>
           </div>
         </div>
       </Card>
+      <div className="contentText">
+        <h3>讓工作，更有序</h3>
+        <span>Simplify work and boost results.</span>
+      </div>
+      <div className="background">
+        <img className="bg_blue" src={Bg_blue} alt="" />
+        <img className="bg_gray" src={Bg_gray} alt="" />
+        <img className="red_ball" src={Red_ball} alt="" />
+        <img className="blue_ball" src={Blue_ball} alt="" />
+      </div>
     </LoginCss>
   );
 };
