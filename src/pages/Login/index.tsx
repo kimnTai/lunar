@@ -6,10 +6,6 @@ import AppleIcon from "@/assets/images/apple.png";
 import { LOGIN } from "@/redux/constants";
 import { useNavigate } from "react-router-dom";
 import { LoginCss, ThirdPartyButtonCss } from "./style";
-import Bg_blue from "@/assets/images/login_bg_blue.png";
-import Bg_gray from "@/assets/images/login_bg_gray.png";
-import Red_ball from "@/assets/images/red_ball.png";
-import Blue_ball from "@/assets/images/blue_ball.png";
 
 const ThirdPartyButton: React.FC<{
   icon: any;
@@ -116,12 +112,6 @@ const Login: React.FC<{ loginAction: Function }> = ({ loginAction }) => {
       <div className="contentText">
         <h3>讓工作，更有序</h3>
         <span>Simplify work and boost results.</span>
-      </div>
-      <div className="background">
-        <img className="bg_blue" src={Bg_blue} alt="" />
-        <img className="bg_gray" src={Bg_gray} alt="" />
-        <img className="red_ball" src={Red_ball} alt="" />
-        <img className="blue_ball" src={Blue_ball} alt="" />
       </div>
     </LoginCss>
   );
