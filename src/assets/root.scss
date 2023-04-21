@@ -16,3 +16,17 @@
   align-items: center;
   justify-content: center;
 }
+
+.d-space {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.d-flex {
+  display: flex;
+}
+
+a {
+  text-decoration: none;
+}

@@ -1,34 +1,60 @@
 import React from "react";
-import { Layout } from "antd";
-import styled from "styled-components";
-import { media } from "@/assets/constants";
+import { Sider } from "./style";
+import { Button } from "antd";
+import { LeftOutlined, RightOutlined } from "@ant-design/icons";
+import { Link } from "react-router-dom";
 
-const Sider = styled(Layout.Sider)`
-  position: fixed;
-  overflow: visible;
-  /* right: 0; */
-  transition: all 0.2s ease;
-  z-index: 5;
-  min-height: 100vh;
-  max-height: 100vh;
-  background-color: var(--dark);
-  /* @media only screen and ${media.md} {
-    right: unset;
-    left: 0;
-  }
-  @media only screen and ${media.xl} {
-  } */
-`;
-
-const Navbar: React.FC<{ showNavbar: boolean }> = ({ showNavbar }) => {
+const Navbar: React.FC<{ showNavbar: boolean; openNav: Function }> = ({
+  showNavbar,
+  openNav,
+}) => {
+  const handleClosed = () => {
+    openNav(true);
+  };
+  const handleOpen = () => {
+    openNav(false);
+  };
   return (
-    <Sider collapsible collapsed={showNavbar} collapsedWidth={0} trigger={null}>
-      <div
-        style={{
-          height: 32,
-          background: "rgba(255, 255, 255, 0.2)",
-        }}
-      />
+    <Sider
+      collapsible
+      collapsed={showNavbar}
+      collapsedWidth={16}
+      trigger={null}
+    >
+      {!showNavbar ? (
+        <div className="title d-space">
+          <div className="d-flex">
+            <div className="colorBox"></div>
+            <div>
+              <span style={{ display: "block", lineHeight: "20px" }}>
+                <Link to="" style={{ color: "white" }}>
+                  <p>中5組</p>
+                </Link>
+              </span>
+              <p style={{ display: "block", lineHeight: "20px" }}>
+                Premium 方案
+              </p>
+            </div>
+          </div>
+          <Button
+            icon={<LeftOutlined />}
+            onClick={handleClosed}
+            type="text"
+            style={{ width: "28px", height: "28px", color: "white" }}
+          />
+        </div>
+      ) : (
+        <Button
+          icon={<RightOutlined />}
+          onClick={handleOpen}
+          style={{
+            width: "28px",
+            height: "28px",
+            color: "white",
+            backgroundColor: "darkblue",
+          }}
+        />
+      )}
     </Sider>
   );
 };

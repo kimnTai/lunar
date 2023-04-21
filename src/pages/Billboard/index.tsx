@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import styled from "styled-components";
 import AddList from "@/components/AddList";
 import { TrelloCard } from "@/components/TrelloCard";
 import { CardProps } from "@/interfaces/trelloCard";
@@ -7,14 +6,7 @@ import { DragDropContext, DropResult, Droppable } from "react-beautiful-dnd";
 import { reorder, reorderQuoteMap } from "@/utils/func";
 import { Header } from "./Header";
 import Navbar from "./Navbar";
-import MainLayoutCss from "./MainLayoutCss";
-import Footer from "./Footer";
-
-const BillboardStyled = styled.div`
-  display: flex;
-  flex-direction: row;
-  column-gap: 10px;
-`;
+import { MainLayoutCss, BillboardStyled } from "./style";
 
 const Billboard: React.FC<{ data: CardProps[] }> = ({ data }) => {
   const [cardList, setCardList] = useState<CardProps[]>([]);
@@ -79,12 +71,11 @@ const Main: React.FC<{
   const { data, openNav, showNavbar } = props;
   return (
     <>
-      <Header openNav={openNav} />
-      <Navbar showNavbar={showNavbar} />
-      <MainLayoutCss style={{ marginLeft: showNavbar ? "0px" : "200px" }}>
+      <Header />
+      <Navbar showNavbar={showNavbar} openNav={openNav} />
+      <MainLayoutCss style={{ marginLeft: showNavbar ? "16px" : "200px" }}>
         <Billboard data={data} />
       </MainLayoutCss>
-      <Footer showNavbar={showNavbar} />
     </>
   );
 };
