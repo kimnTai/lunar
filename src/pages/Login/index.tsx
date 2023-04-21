@@ -6,6 +6,7 @@ import AppleIcon from "@/assets/images/apple.png";
 import { LOGIN } from "@/redux/constants";
 import { useNavigate } from "react-router-dom";
 import { LoginCss, ThirdPartyButtonCss } from "./style";
+import { openNotification } from "@/utils/openNotification";
 
 const ThirdPartyButton: React.FC<{
   icon: any;
@@ -26,6 +27,7 @@ const Login: React.FC<{ loginAction: Function }> = ({ loginAction }) => {
       type: LOGIN,
       payload: values,
     });
+    openNotification("成功", "登入成功", true);
     navigate("/");
   };
 

@@ -11,6 +11,7 @@ import {
 import type { MenuProps } from "antd";
 import { Input, Button, Dropdown, Space, Col, Row, Tooltip } from "antd";
 import { Link } from "react-router-dom";
+import Logo from "@/assets/images/logo.png";
 
 const HeaderCss = styled.div`
   padding: 4px 6px;
@@ -52,7 +53,7 @@ export const Header: React.FC<{ openNav: Function }> = ({ openNav }) => {
               </Button>
             </Col>
             <Col>
-              <div>IAmLOGO</div>
+              <img src={Logo} alt="" />
             </Col>
             <Col>
               <Dropdown menu={{ items }} trigger={["click"]}>
