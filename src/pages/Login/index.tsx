@@ -19,8 +19,9 @@ const ThirdPartyButton: React.FC<{
 };
 
 const Login: React.FC<{ loginAction: Function }> = ({ loginAction }) => {
+  const navigate = useNavigate();
+
   const onFinish = (values: any) => {
-    const navigate = useNavigate();
     loginAction({
       type: LOGIN,
       payload: values,
@@ -45,7 +46,13 @@ const Login: React.FC<{ loginAction: Function }> = ({ loginAction }) => {
         >
           <Form.Item
             name="email"
-            rules={[{ required: true, message: "Please input your Email!" }]}
+            rules={[
+              {
+                required: true,
+                message: "Please input your Email!",
+                type: "email",
+              },
+            ]}
           >
             <Input placeholder="Email" />
           </Form.Item>

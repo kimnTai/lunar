@@ -6,6 +6,7 @@ import { openNavbarAction } from "@/redux/actions/NavbarAction";
 import { addCardListAction } from "@/redux/actions/CardAction";
 import Login from "@/pages/Login";
 import { LoginAction } from "@/redux/actions/AuthAction";
+import Home from "@/pages/Home";
 
 const AppRouter: React.FC<any> = (props) => {
   const { openNav, showNavbar, card, login, loginAction } = props;
@@ -14,10 +15,11 @@ const AppRouter: React.FC<any> = (props) => {
     <>
       <BrowserRouter>
         <Routes>
+          {!login && <Route path="/" element={<Home />}></Route>}
           <Route path="/login" element={<Login loginAction={loginAction} />} />
           {login && (
             <Route
-              path="/main"
+              path="/"
               element={
                 <Billboard
                   data={card}
