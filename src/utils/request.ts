@@ -18,7 +18,7 @@ interface Error<T> {
 let responseErrorData: Error<object>;
 const instance: AxiosInstance = axios.create({
   // 基本設定
-  baseURL: "localhost:5173",
+  baseURL: "https://prometheus-pmcy.onrender.com/",
   timeout: 10000,
   headers: {
     "Content-type": "application/json",
@@ -34,11 +34,11 @@ instance.interceptors.request.use(
     // };
     return config;
   },
-  (error) => Promise.reject(error)
+  (error: any) => Promise.reject(error)
 );
 
 instance.interceptors.response.use(
-  (response) => {
+  (response: any) => {
     const hasDisposition = response.request.getResponseHeader(
       "Content-Disposition"
     );
@@ -52,14 +52,14 @@ instance.interceptors.response.use(
 
     return response.data;
   },
-  (error) => {
+  (error: any) => {
     let { status, data } = error.response;
     responseErrorData = {
       message: error.message,
       status,
       data,
     };
-    openNotification("與伺服器溝通失敗", error.message, false);
+    openNotification("與伺服器溝通失敗", data.message, false);
     return Promise.reject(responseErrorData.data);
   }
 );

@@ -23,12 +23,9 @@ const Login: React.FC<{ loginAction: Function }> = ({ loginAction }) => {
   const navigate = useNavigate();
 
   const onFinish = (values: any) => {
-    loginAction({
-      type: LOGIN,
-      payload: values,
-    });
-    openNotification("成功", "登入成功", true);
-    navigate("/");
+    loginAction(values);
+    // openNotification("成功", "登入成功", true);
+    // navigate("/");
   };
 
   const onFinishFailed = (errorInfo: any) => {
@@ -59,8 +56,8 @@ const Login: React.FC<{ loginAction: Function }> = ({ loginAction }) => {
             <Input placeholder="Email" />
           </Form.Item>
           <Form.Item
-            name="username"
-            rules={[{ required: true, message: "Please input your username!" }]}
+            name="name"
+            rules={[{ required: true, message: "Please input your name!" }]}
           >
             <Input placeholder="帳號" />
           </Form.Item>

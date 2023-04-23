@@ -1,5 +1,6 @@
 import { LOGIN } from "../constants";
 import { LoginProps } from "@/interfaces/user";
+import { loginApi } from "@/api/auth";
 
 interface LoginActionProps {
   type: string;
@@ -9,5 +10,7 @@ interface LoginActionProps {
 export const LoginAction =
   (data: LoginProps) =>
   async (dispatch: (arg: LoginActionProps) => LoginActionProps) => {
-    dispatch({ type: LOGIN, payload: data });
+    await loginApi(data).then((res: any) => {
+      if (res.status === "success") dispatch({ type: LOGIN, payload: res });
+    });
   };
