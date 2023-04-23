@@ -10,7 +10,9 @@ const AuthReducer = function (
 ) {
   switch (action.type) {
     case LOGIN: {
-      localStorage.setItem("userData", JSON.stringify(action.payload));
+      localStorage.setItem("token", JSON.stringify(action.payload.token));
+      localStorage.setItem("useData", JSON.stringify(action.payload.result));
+
       return {
         login: true,
       };
