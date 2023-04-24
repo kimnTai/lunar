@@ -1,26 +1,44 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Logo from "@/assets/images/img_logo.png";
 import { Card, Button, Divider, Form, Input } from "antd";
 import GoogleIcon from "@/assets/images/google.png";
 import AppleIcon from "@/assets/images/apple.png";
-import { LOGIN } from "@/redux/constants";
-import { useNavigate } from "react-router-dom";
 import { LoginCss, ThirdPartyButtonCss } from "./style";
-import { openNotification } from "@/utils/openNotification";
+import { GoogleLogin } from "react-google-login";
+import { gapi } from "gapi-script";
 
 const ThirdPartyButton: React.FC<{
   icon: any;
   text: string;
-}> = ({ icon, text }) => {
+  handleClick: Function;
+}> = ({ icon, text, handleClick }) => {
   return (
-    <ThirdPartyButtonCss icon={<img src={icon} alt="" />} className="d-center">
+    <ThirdPartyButtonCss
+      icon={<img src={icon} alt="" />}
+      className="d-center"
+      onClick={() => handleClick()}
+    >
       {text}
     </ThirdPartyButtonCss>
   );
 };
 
-const Login: React.FC<{ loginAction: Function }> = ({ loginAction }) => {
-  const navigate = useNavigate();
+const Login: React.FC<{ loginAction: Function; loginGoogle: Function }> = ({
+  loginAction,
+  loginGoogle,
+}) => {
+  const clientId =
+    "790979302219-2c99idl95p3tqbk6r78pg3p888qa69h2.apps.googleusercontent.com";
+
+  useEffect(() => {
+    const initClient = () => {
+      gapi.client.init({
+        clientId: clientId,
+        scope: "",
+      });
+    };
+    gapi.load("client:auth2", initClient);
+  });
 
   const onFinish = (values: any) => {
     loginAction(values);
@@ -30,6 +48,9 @@ const Login: React.FC<{ loginAction: Function }> = ({ loginAction }) => {
 
   const onFinishFailed = (errorInfo: any) => {
     console.log("Failed:", errorInfo);
+  };
+  const responseGoogle = (response: any) => {
+    console.log("===responseGoogle===", response);
   };
   return (
     <LoginCss>
@@ -91,7 +112,6 @@ const Login: React.FC<{ loginAction: Function }> = ({ loginAction }) => {
             <a href="">服務條款</a>
           </div>
         </div>
-
         <Divider
           plain
           style={{
@@ -102,10 +122,32 @@ const Login: React.FC<{ loginAction: Function }> = ({ loginAction }) => {
         >
           或
         </Divider>
-
-        <ThirdPartyButton icon={GoogleIcon} text={"使用 Google 註冊"} />
-        <ThirdPartyButton icon={AppleIcon} text={"使用 Apple 註冊"} />
-
+        <GoogleLogin
+          clientId={clientId}
+          render={(renderProps) => (
+            <ThirdPartyButton
+              icon={GoogleIcon}
+              text={"使用 Google 註冊"}
+              handleClick={renderProps.onClick}
+              // disabled={renderProps.disabled}
+            />
+          )}
+          buttonText="Login"
+          onSuccess={responseGoogle}
+          onFailure={responseGoogle}
+          cookiePolicy={"single_host_origin"}
+        />
+        ,
+        {/* <ThirdPartyButton
+          icon={GoogleIcon}
+          text={"使用 Google 註冊"}
+          handleClick={loginGoogle}
+        /> */}
+        <ThirdPartyButton
+          icon={AppleIcon}
+          text={"使用 Apple 註冊"}
+          handleClick={() => {}}
+        />
         <div className="have-account">
           <div>已經有帳戶了嗎？</div>
           <div>

@@ -5,18 +5,23 @@ import { connect } from "react-redux";
 import { openNavbarAction } from "@/redux/actions/NavbarAction";
 import { addCardListAction } from "@/redux/actions/CardAction";
 import Login from "@/pages/Login";
-import { LoginAction } from "@/redux/actions/AuthAction";
+import { loginAction, loginGoogle } from "@/redux/actions/AuthAction";
 import Home from "@/pages/Home";
 
 const AppRouter: React.FC<any> = (props) => {
-  const { openNav, showNavbar, card, login, loginAction } = props;
+  const { openNav, showNavbar, card, login, loginAction, loginGoogle } = props;
   console.log(login);
   return (
     <>
       <BrowserRouter>
         <Routes>
           {!login && <Route path="/" element={<Home />}></Route>}
-          <Route path="/login" element={<Login loginAction={loginAction} />} />
+          <Route
+            path="/login"
+            element={
+              <Login loginAction={loginAction} loginGoogle={loginGoogle} />
+            }
+          />
           {login && (
             <Route
               path="/"
@@ -42,5 +47,6 @@ const mapStateToProps = (state: any) => ({
 export default connect(mapStateToProps, {
   openNav: openNavbarAction,
   addCardList: addCardListAction,
-  loginAction: LoginAction,
+  loginAction,
+  loginGoogle,
 })(AppRouter);

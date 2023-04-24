@@ -8,3 +8,6 @@ export const loginApi = (data: {
 }) => {
   return Request.post("api/user/login", data);
 };
+
+// google 登入
+export const loginGoogleApi = () => Request.get("api/user/google");
