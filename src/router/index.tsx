@@ -19,7 +19,11 @@ const AppRouter: React.FC<any> = (props) => {
           <Route
             path="/login"
             element={
-              <Login loginAction={loginAction} loginGoogle={loginGoogle} />
+              <Login
+                loginAction={loginAction}
+                loginGoogle={loginGoogle}
+                login={login}
+              />
             }
           />
           {login && (

@@ -6,6 +6,7 @@ import AppleIcon from "@/assets/images/apple.png";
 import { LoginCss, ThirdPartyButtonCss } from "./style";
 import { GoogleLogin } from "react-google-login";
 import { gapi } from "gapi-script";
+import { useNavigate } from "react-router-dom";
 
 const ThirdPartyButton: React.FC<{
   icon: any;
@@ -23,13 +24,14 @@ const ThirdPartyButton: React.FC<{
   );
 };
 
-const Login: React.FC<{ loginAction: Function; loginGoogle: Function }> = ({
-  loginAction,
-  loginGoogle,
-}) => {
+const Login: React.FC<{
+  loginAction: Function;
+  loginGoogle: Function;
+  login: boolean;
+}> = ({ loginAction, loginGoogle, login }) => {
   const clientId =
     "790979302219-2c99idl95p3tqbk6r78pg3p888qa69h2.apps.googleusercontent.com";
-
+  const navigate = useNavigate();
   useEffect(() => {
     const initClient = () => {
       gapi.client.init({
@@ -40,10 +42,12 @@ const Login: React.FC<{ loginAction: Function; loginGoogle: Function }> = ({
     gapi.load("client:auth2", initClient);
   });
 
-  const onFinish = (values: any) => {
-    loginAction(values);
-    // openNotification("成功", "登入成功", true);
-    // navigate("/");
+  useEffect(() => {
+    if (login) navigate("/");
+  }, [login]);
+
+  const onFinish = async (values: any) => {
+    await loginAction(values);
   };
 
   const onFinishFailed = (errorInfo: any) => {
@@ -122,7 +126,7 @@ const Login: React.FC<{ loginAction: Function; loginGoogle: Function }> = ({
         >
           或
         </Divider>
-        <GoogleLogin
+        {/* <GoogleLogin
           clientId={clientId}
           render={(renderProps) => (
             <ThirdPartyButton
@@ -136,13 +140,16 @@ const Login: React.FC<{ loginAction: Function; loginGoogle: Function }> = ({
           onSuccess={responseGoogle}
           onFailure={responseGoogle}
           cookiePolicy={"single_host_origin"}
-        />
-        ,
-        {/* <ThirdPartyButton
+        /> */}
+
+        <ThirdPartyButton
           icon={GoogleIcon}
           text={"使用 Google 註冊"}
-          handleClick={loginGoogle}
-        /> */}
+          handleClick={() => {
+            // loginGoogle()
+            navigate("/api/user/google");
+          }}
+        />
         <ThirdPartyButton
           icon={AppleIcon}
           text={"使用 Apple 註冊"}
