@@ -19,7 +19,7 @@ export const LoginCss = styled.div`
   .ant-card {
     position: absolute;
     width: 448px;
-    height: 614px;
+    // height: 614px;
     font-size: 14px;
     top: calc(50% - 614px / 2);
     left: calc(67.18% - 448px / 2);

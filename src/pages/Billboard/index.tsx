@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Layout } from "antd";
 import AddList from "@/components/AddList";
 import { TrelloCard } from "@/components/TrelloCard";
 import { CardProps } from "@/interfaces/trelloCard";
@@ -7,12 +8,15 @@ import { reorder, reorderQuoteMap } from "@/utils/func";
 import { Header } from "./Header";
 import Navbar from "./Navbar";
 import { MainLayoutCss, BillboardStyled } from "./style";
+import WorkSpace from "./WorkSpace";
 
-const Billboard: React.FC<{ data: CardProps[] }> = ({ data }) => {
+const Billboard: React.FC<{ data: CardProps[]; setWrokSpace: Function }> = ({
+  data,
+  setWrokSpace,
+}) => {
   const [cardList, setCardList] = useState<CardProps[]>([]);
   const [ordered, setOrdered] = useState<string[]>([]);
   useEffect(() => {
-    console.log(data);
     if (data) {
       setCardList(data);
       setOrdered(data.map((ele) => ele.title));
@@ -68,15 +72,22 @@ const Main: React.FC<{
   openNav: Function;
   showNavbar: boolean;
 }> = (props) => {
+  const [workSpace, setWrokSpace] = useState("workSpace");
   const { data, openNav, showNavbar } = props;
   return (
-    <>
-      <Header />
+    <Layout>
       <Navbar showNavbar={showNavbar} openNav={openNav} />
-      <MainLayoutCss style={{ marginLeft: showNavbar ? "16px" : "200px" }}>
-        <Billboard data={data} />
-      </MainLayoutCss>
-    </>
+      <Layout>
+        <Header workSpace={workSpace} />
+        <MainLayoutCss workspace={workSpace}>
+          {workSpace === "workSpace" ? (
+            <WorkSpace setWrokSpace={setWrokSpace} />
+          ) : (
+            <Billboard data={data} setWrokSpace={setWrokSpace} />
+          )}
+        </MainLayoutCss>
+      </Layout>
+    </Layout>
   );
 };
 

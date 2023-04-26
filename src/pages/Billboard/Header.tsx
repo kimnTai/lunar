@@ -1,15 +1,13 @@
 import React, { useState } from "react";
 import { HeaderCss } from "./style";
 import {
-  PlusOutlined,
+  SearchOutlined,
   DownOutlined,
-  HolderOutlined,
   BellOutlined,
   QuestionCircleOutlined,
-  UserOutlined,
 } from "@ant-design/icons";
 import type { MenuProps } from "antd";
-import { Input, Button, Dropdown, Space, Col, Row, Tooltip } from "antd";
+import { Input, Button, Dropdown, Space, Tooltip, Badge } from "antd";
 import { Link } from "react-router-dom";
 import Logo from "@/assets/images/logo.png";
 
@@ -19,17 +17,15 @@ const items: MenuProps["items"] = [
     key: "1",
   },
 ];
-const { Search } = Input;
-export const Header: React.FC = () => {
+
+export const Header: React.FC<{ workSpace: string }> = (props) => {
+  const { workSpace } = props;
   const [serch, setSerch] = useState("");
   return (
-    <HeaderCss align="middle" justify="space-between">
-      <Col>
-        <Row align="middle" justify="center">
-          <Col>
-            <img src={Logo} alt="" className="logo" />
-          </Col>
-          <Col>
+    <HeaderCss className="d-space" workspace={workSpace}>
+      <div className="d-center">
+        {workSpace !== "workSpace" && (
+          <>
             <Dropdown menu={{ items }} trigger={["click"]}>
               <Button>
                 <Space>
@@ -38,46 +34,43 @@ export const Header: React.FC = () => {
                 </Space>
               </Button>
             </Dropdown>
-          </Col>
-          <Col>
             <Dropdown menu={{ items }} trigger={["click"]}>
               <Button>
                 <Space>
-                  更多
+                  最近的
                   <DownOutlined />
                 </Space>
               </Button>
             </Dropdown>
-          </Col>
-          <Col>
-            <Button>
-              <PlusOutlined />
-            </Button>
-          </Col>
-        </Row>
-      </Col>
-      <Col className="headerFunc">
-        <Row align="middle">
-          <Col>
-            <Search placeholder="搜尋" onSearch={setSerch} className="serch" />
-          </Col>
-          <Col>
-            <Tooltip title="search">
-              <Button shape="circle" icon={<BellOutlined />} />
-            </Tooltip>
-          </Col>
-          <Col>
-            <Tooltip title="search">
-              <Button shape="circle" icon={<QuestionCircleOutlined />} />
-            </Tooltip>
-          </Col>
-          <Col>
-            <Tooltip title="search">
-              <Button type="primary" shape="circle" icon={<UserOutlined />} />
-            </Tooltip>
-          </Col>
-        </Row>
-      </Col>
+          </>
+        )}
+        {/* <Search placeholder="搜尋" onSearch={setSerch} style={{width:'500px',}} /> */}
+        <Input
+          className="serch"
+          placeholder="搜尋所有卡片"
+          prefix={<SearchOutlined />}
+        />
+      </div>
+      <div className="d-center">
+        <Badge size="default" count={5}>
+          <Button
+            icon={<BellOutlined />}
+            style={{
+              width: "36px",
+              height: "36px",
+              borderRadius: 50,
+              border: 0,
+              background: "#F7F7F7",
+            }}
+            shape="circle"
+          />
+        </Badge>
+        <Button
+          shape="circle"
+          icon={<QuestionCircleOutlined />}
+          style={{ marginLeft: "16px" }}
+        />
+      </div>
     </HeaderCss>
   );
 };

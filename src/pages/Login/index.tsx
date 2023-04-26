@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Logo from "@/assets/images/img_logo.png";
 import { Card, Button, Divider, Form, Input } from "antd";
 import GoogleIcon from "@/assets/images/google.png";
@@ -25,13 +25,14 @@ const ThirdPartyButton: React.FC<{
 };
 
 const Login: React.FC<{
+  signInAction: Function;
   loginAction: Function;
   loginGoogle: Function;
   login: boolean;
-}> = ({ loginAction, loginGoogle, login }) => {
-  const clientId =
-    "790979302219-2c99idl95p3tqbk6r78pg3p888qa69h2.apps.googleusercontent.com";
+}> = ({ signInAction, loginAction, loginGoogle, login }) => {
   const navigate = useNavigate();
+  const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
+  const [signIn, setSignIn] = useState(true);
   useEffect(() => {
     const initClient = () => {
       gapi.client.init({
@@ -47,22 +48,21 @@ const Login: React.FC<{
   }, [login]);
 
   const onFinish = async (values: any) => {
-    await loginAction(values);
+    signIn ? await signInAction(values) : await loginAction(values);
   };
 
   const onFinishFailed = (errorInfo: any) => {
     console.log("Failed:", errorInfo);
   };
-  const responseGoogle = (response: any) => {
-    console.log("===responseGoogle===", response);
-    loginGoogleJWT(response.xc.id_token);
+  const responseGoogle = async (response: any) => {
+    await loginGoogle(response.xc.id_token);
   };
 
   return (
     <LoginCss>
       <img className="header" src={Logo} alt="" />
       <Card>
-        <h1 className="cardHeader">免費註冊</h1>
+        <h1 className="cardHeader">{signIn ? "免費註冊" : "登入"}</h1>
         <Form
           name="login-form"
           wrapperCol={{ span: 24 }}
@@ -106,11 +106,11 @@ const Login: React.FC<{
                 fontWeight: 700,
               }}
             >
-              註冊
+              {signIn ? "註冊" : "登入"}
             </Button>
           </Form.Item>
         </Form>
-        <div className="terms">
+        <div className="terms" style={{ display: signIn ? "block" : "none" }}>
           <div>點擊註冊表示您同意我們的</div>
           <div>
             <a href="">隱私政策</a>
@@ -128,12 +128,12 @@ const Login: React.FC<{
         >
           或
         </Divider>
-        {/* <GoogleLogin
+        <GoogleLogin
           clientId={clientId}
           render={(renderProps) => (
             <ThirdPartyButton
               icon={GoogleIcon}
-              text={"使用 Google 註冊"}
+              text={signIn ? "使用 Google 註冊" : "使用 Google 登入"}
               handleClick={renderProps.onClick}
               // disabled={renderProps.disabled}
             />
@@ -142,27 +142,31 @@ const Login: React.FC<{
           onSuccess={responseGoogle}
           onFailure={responseGoogle}
           cookiePolicy={"single_host_origin"}
-        /> */}
+        />
 
-        <ThirdPartyButton
+        {/* <ThirdPartyButton
           icon={GoogleIcon}
           text={"使用 Google 註冊"}
           handleClick={() => {
             // loginGoogle()
             navigate("/api/user/google");
           }}
-        />
+        /> */}
         <ThirdPartyButton
           icon={AppleIcon}
-          text={"使用 Apple 註冊"}
+          text={signIn ? "使用 Apple 註冊" : "使用 Apple 登入"}
           handleClick={() => {}}
         />
         <div className="have-account">
           <div>已經有帳戶了嗎？</div>
           <div>
-            <a href="" style={{ fontSize: "16px" }}>
-              登入
-            </a>
+            <Button
+              type="link"
+              style={{ fontSize: "16px", padding: "0" }}
+              onClick={() => setSignIn(!signIn)}
+            >
+              {signIn ? "登入" : "註冊"}
+            </Button>
           </div>
         </div>
       </Card>
