@@ -26,3 +26,10 @@
 - [antd](https://ant.design/docs/react/introduce)
 - [styled-component](https://styled-components.com/)
 - [vitest](https://cn.vitest.dev/api/)
+
+## 環境變數說明
+
+```env
+VITE_REACT_API = API網域
+VITE_GOOGLE_CLIENT_ID = google client id 
+```

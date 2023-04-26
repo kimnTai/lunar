@@ -18,7 +18,7 @@ interface Error<T> {
 let responseErrorData: Error<object>;
 const instance: AxiosInstance = axios.create({
   // 基本設定
-  baseURL: "https://prometheus-pmcy.onrender.com/",
+  baseURL: import.meta.env.VITE_REACT_API,
   timeout: 10000,
   headers: {
     "Content-type": "application/json",
@@ -39,16 +39,16 @@ instance.interceptors.request.use(
 
 instance.interceptors.response.use(
   (response: any) => {
-    const hasDisposition = response.request.getResponseHeader(
-      "Content-Disposition"
-    );
-    if (hasDisposition && hasDisposition.indexOf("utf-8''") > -1) {
-      const data = response.data;
-      data.fileName = decodeURIComponent(
-        hasDisposition.split("utf-8''")[1].split(".")[0]
-      );
-      return data;
-    }
+    // const hasDisposition = response.request.getResponseHeader(
+    //   "Content-Disposition"
+    // );
+    // if (hasDisposition && hasDisposition.indexOf("utf-8''") > -1) {
+    //   const data = response.data;
+    //   data.fileName = decodeURIComponent(
+    //     hasDisposition.split("utf-8''")[1].split(".")[0]
+    //   );
+    //   return data;
+    // }
 
     return response.data;
   },

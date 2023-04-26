@@ -55,7 +55,9 @@ const Login: React.FC<{
   };
   const responseGoogle = (response: any) => {
     console.log("===responseGoogle===", response);
+    loginGoogleJWT(response.xc.id_token);
   };
+
   return (
     <LoginCss>
       <img className="header" src={Logo} alt="" />

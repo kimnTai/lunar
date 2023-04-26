@@ -6,8 +6,11 @@ export const loginApi = (data: {
   email: string;
   password: string;
 }) => {
-  return Request.post("api/user/login", data);
+  return Request.post("/user/login", data);
 };
 
 // google 登入
-export const loginGoogleApi = () => Request.get("api/user/google");
+export const loginGoogleApi = () => Request.get("/user/google");
+
+export const loginGoogleJWT = (token: any) =>
+  Request.post("/user/google/verifyToken", { token });
