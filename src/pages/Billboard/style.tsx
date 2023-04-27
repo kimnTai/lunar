@@ -16,8 +16,7 @@ export const MainLayoutCss = styled(Layout.Content)<{ workspace: string }>`
   padding: 24px 48px;
 `;
 
-export const Sider = styled(Layout.Sider)`
-  width: 260px;
+export const Sider = styled(Layout.Sider)<{ workspace: string }>`
   position: fixed;
   overflow: visible;
   /* right: 0; */
@@ -25,10 +24,13 @@ export const Sider = styled(Layout.Sider)`
   z-index: 5;
   min-height: 100vh;
   max-height: 100vh;
-  background-color: var(--dark);
+  border-right: 1px solid var(--grayd5);
+  .logo {
+    width: 140px;
+    height: 32px;
+  }
   .title {
-    border: 1px solid #dfe1e6;
-    padding: 8px 12px 8px;
+    padding: 20px 12px;
     font-size: 14px;
     color: white;
     .colorBox {
@@ -36,6 +38,33 @@ export const Sider = styled(Layout.Sider)`
       height: 40px;
       background-color: gray;
       border-radius: 5px;
+    }
+  }
+  .ant-menu {
+    padding: 8px 12px;
+    .ant-menu-submenu-title {
+      padding: 0;
+      margin: 0;
+      height: 48px;
+      font-weight: bold;
+    }
+    .ant-menu-title-content {
+      margin-left: 12px;
+    }
+    .ant-menu-submenu-selected > div {
+      background-color: var(--graye9);
+      color: black;
+    }
+    .ant-menu-inline {
+      margin: 8px 0;
+      background-color: white;
+    }
+    .ant-menu-item-selected {
+      background-color: var(--blue);
+      color: white;
+    }
+    .ant-menu-item-only-child {
+      margin-bottom: 4px;
     }
   }
   /* @media only screen and ${media.md} {

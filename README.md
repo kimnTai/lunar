@@ -26,6 +26,7 @@
 - [antd](https://ant.design/docs/react/introduce)
 - [styled-component](https://styled-components.com/)
 - [vitest](https://cn.vitest.dev/api/)
+- [swiper](https://swiperjs.com/react)
 
 ## 環境變數說明
 

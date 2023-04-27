@@ -7,9 +7,8 @@ import {
   QuestionCircleOutlined,
 } from "@ant-design/icons";
 import type { MenuProps } from "antd";
-import { Input, Button, Dropdown, Space, Tooltip, Badge } from "antd";
+import { Input, Button, Dropdown, Space, Tooltip, Badge, Avatar } from "antd";
 import { Link } from "react-router-dom";
-import Logo from "@/assets/images/logo.png";
 
 const items: MenuProps["items"] = [
   {
@@ -18,8 +17,13 @@ const items: MenuProps["items"] = [
   },
 ];
 
-export const Header: React.FC<{ workSpace: string }> = (props) => {
+export const Header: React.FC<{
+  workSpace: string;
+}> = (props) => {
   const { workSpace } = props;
+  const { avatar, name } = JSON.parse(
+    localStorage.getItem("userData") || "{avatar:'',name:''}"
+  );
   const [serch, setSerch] = useState("");
   return (
     <HeaderCss className="d-space" workspace={workSpace}>
@@ -44,7 +48,6 @@ export const Header: React.FC<{ workSpace: string }> = (props) => {
             </Dropdown>
           </>
         )}
-        {/* <Search placeholder="搜尋" onSearch={setSerch} style={{width:'500px',}} /> */}
         <Input
           className="serch"
           placeholder="搜尋所有卡片"
@@ -65,11 +68,8 @@ export const Header: React.FC<{ workSpace: string }> = (props) => {
             shape="circle"
           />
         </Badge>
-        <Button
-          shape="circle"
-          icon={<QuestionCircleOutlined />}
-          style={{ marginLeft: "16px" }}
-        />
+        <Avatar src={avatar} style={{ marginLeft: "16px" }} />
+        <p style={{ marginLeft: "8px" }}>{name}</p>
       </div>
     </HeaderCss>
   );

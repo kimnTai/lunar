@@ -29,10 +29,11 @@ const Login: React.FC<{
   loginAction: Function;
   loginGoogle: Function;
   login: boolean;
-}> = ({ signInAction, loginAction, loginGoogle, login }) => {
+  signIn: boolean;
+}> = ({ signInAction, loginAction, loginGoogle, login, signIn }) => {
   const navigate = useNavigate();
   const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
-  const [signIn, setSignIn] = useState(true);
+  // const [signIn, setSignIn] = useState(true);
   useEffect(() => {
     const initClient = () => {
       gapi.client.init({
@@ -163,7 +164,10 @@ const Login: React.FC<{
             <Button
               type="link"
               style={{ fontSize: "16px", padding: "0" }}
-              onClick={() => setSignIn(!signIn)}
+              // onClick={() => setSignIn(!signIn)}
+              onClick={() =>
+                signIn ? navigate("/signup") : navigate("/login")
+              }
             >
               {signIn ? "登入" : "註冊"}
             </Button>

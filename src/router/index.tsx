@@ -11,6 +11,7 @@ import {
   loginJwtAction,
 } from "@/redux/actions/AuthAction";
 import Home from "@/pages/Home";
+import ErrorPage from "@/pages/ErrorPage";
 
 const AppRouter: React.FC<any> = (props) => {
   const {
@@ -29,6 +30,18 @@ const AppRouter: React.FC<any> = (props) => {
         <Routes>
           {!login && <Route path="/" element={<Home />}></Route>}
           <Route
+            path="/signup"
+            element={
+              <Login
+                signInAction={signInAction}
+                loginAction={loginAction}
+                loginGoogle={loginGoogle}
+                login={login}
+                signIn={false}
+              />
+            }
+          />
+          <Route
             path="/login"
             element={
               <Login
@@ -36,6 +49,7 @@ const AppRouter: React.FC<any> = (props) => {
                 loginAction={loginAction}
                 loginGoogle={loginGoogle}
                 login={login}
+                signIn={true}
               />
             }
           />
@@ -51,6 +65,7 @@ const AppRouter: React.FC<any> = (props) => {
               }
             />
           )}
+          <Route path="*" element={<ErrorPage />} />
         </Routes>
       </BrowserRouter>
     </>

@@ -76,7 +76,7 @@ const Main: React.FC<{
   const { data, openNav, showNavbar } = props;
   return (
     <Layout>
-      <Navbar showNavbar={showNavbar} openNav={openNav} />
+      <Navbar showNavbar={showNavbar} openNav={openNav} workSpace={workSpace} />
       <Layout>
         <Header workSpace={workSpace} />
         <MainLayoutCss workspace={workSpace}>
