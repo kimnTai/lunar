@@ -9,11 +9,17 @@
 
 ## 系統說明
 
-開始
+- `使用 node v18.14.2`
 
-### `npm run dev`
+### `安裝套件`
 
-使用 node v18.14.2
+- `yarn`
+
+### `開始`
+
+- `yarn dev  or  npm run dev`
+
+
 
 ## 使用技術
 
