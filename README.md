@@ -11,13 +11,13 @@
 
 - `使用 node v18.14.2`
 
-### `安裝套件`
+### 安裝套件
 
 - `yarn`
 
-### `開始`
+### 開始
 
-- `yarn dev  or  npm run dev`
+- `yarn dev`  or  `npm run dev`
 
 
 
