@@ -4,11 +4,12 @@ import {
   SearchOutlined,
   DownOutlined,
   BellOutlined,
-  QuestionCircleOutlined,
+  PoweroffOutlined,
 } from "@ant-design/icons";
 import type { MenuProps } from "antd";
 import { Input, Button, Dropdown, Space, Tooltip, Badge, Avatar } from "antd";
 import { Link } from "react-router-dom";
+import { useDispatch } from "react-redux";
 
 const items: MenuProps["items"] = [
   {
@@ -21,10 +22,9 @@ export const Header: React.FC<{
   workSpace: string;
 }> = (props) => {
   const { workSpace } = props;
-  const { avatar, name } = JSON.parse(
-    localStorage.getItem("userData") || "{avatar:'',name:''}"
-  );
+  const { avatar, name } = JSON.parse(localStorage.getItem("userData")!);
   const [serch, setSerch] = useState("");
+  const dispatch = useDispatch();
   return (
     <HeaderCss className="d-space" workspace={workSpace}>
       <div className="d-center">
@@ -68,6 +68,21 @@ export const Header: React.FC<{
             shape="circle"
           />
         </Badge>
+        <Button
+          icon={<PoweroffOutlined />}
+          style={{
+            width: "36px",
+            height: "36px",
+            borderRadius: 50,
+            border: 0,
+            background: "#F7F7F7",
+            marginLeft: "16px",
+          }}
+          shape="circle"
+          onClick={() => {
+            dispatch({ type: "LOGOUT" });
+          }}
+        />
         <Avatar src={avatar} style={{ marginLeft: "16px" }} />
         <p style={{ marginLeft: "8px" }}>{name}</p>
       </div>

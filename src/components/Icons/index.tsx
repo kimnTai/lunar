@@ -1,3 +1,4 @@
-import IconBlock from "./IconBlock";
+import BlockIcon from "./BlockIcon";
+import ColorIcon from "./ColorIcon";
 
-export { IconBlock };
+export { BlockIcon, ColorIcon };

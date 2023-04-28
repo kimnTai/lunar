@@ -1,10 +1,12 @@
-import { LOGIN } from "../constants";
+import { LOGIN, GOOGLE_LOGIN, LOGOUT } from "../constants";
 import { LoginProps } from "@/interfaces/user";
 import {
   loginApi,
   loginGoogleApi,
   loginGoogleJWT,
   signInApi,
+  loginJwtApi,
+  logoutApi,
 } from "@/api/auth";
 
 interface LoginActionProps {
@@ -25,17 +27,23 @@ export const loginAction =
     await loginApi(data).then((res: any) => {
       if (res.status === "success") dispatch({ type: LOGIN, payload: res });
     });
-    // // 暫時直接登入
-    // await dispatch({
-    //   type: LOGIN,
-    //   payload: { email: "string", password: "string", name: "string" },
-    // });
   };
 
-export const loginJwtAction =
+export const loginGoogleJwtAction =
   (token: string) => async (dispatch: (arg: any) => any) => {
     await loginGoogleJWT(token).then((res: any) => {
       if (res.status === "success")
-        dispatch({ type: LOGIN, payload: res.data });
+        dispatch({ type: GOOGLE_LOGIN, payload: res });
     });
   };
+
+export const loginJwtAction =
+  () =>
+  async (
+    dispatch: ({ type, payload }: { type: string; payload: any }) => void
+  ) => {
+    await loginJwtApi().then((res: any) => {
+      if (res.status === "success") dispatch({ type: LOGIN, payload: res });
+    });
+  };
+

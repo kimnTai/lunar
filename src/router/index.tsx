@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Billboard from "@/pages/Billboard";
 import { connect } from "react-redux";
@@ -8,6 +8,7 @@ import Login from "@/pages/Login";
 import {
   signInAction,
   loginAction,
+  loginGoogleJwtAction,
   loginJwtAction,
 } from "@/redux/actions/AuthAction";
 import Home from "@/pages/Home";
@@ -21,9 +22,13 @@ const AppRouter: React.FC<any> = (props) => {
     login,
     loginAction,
     loginGoogle,
+    loginJwt,
     signInAction,
   } = props;
   console.log(login);
+  useEffect(() => {
+    if (localStorage.getItem("token")) loginJwt();
+  }, [localStorage.getItem("token")]);
   return (
     <>
       <BrowserRouter>
@@ -81,5 +86,6 @@ export default connect(mapStateToProps, {
   addCardList: addCardListAction,
   signInAction,
   loginAction,
-  loginGoogle: loginJwtAction,
+  loginGoogle: loginGoogleJwtAction,
+  loginJwt: loginJwtAction,
 })(AppRouter);

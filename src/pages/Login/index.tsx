@@ -145,18 +145,14 @@ const Login: React.FC<{
           cookiePolicy={"single_host_origin"}
         />
 
-        {/* <ThirdPartyButton
-          icon={GoogleIcon}
-          text={"使用 Google 註冊"}
-          handleClick={() => {
-            // loginGoogle()
-            navigate("/api/user/google");
-          }}
-        /> */}
         <ThirdPartyButton
           icon={AppleIcon}
           text={signIn ? "使用 Apple 註冊" : "使用 Apple 登入"}
-          handleClick={() => {}}
+          handleClick={() => {
+            window.location.href = `${
+              import.meta.env.VITE_REACT_API
+            }/user/google`;
+          }}
         />
         <div className="have-account">
           <div>已經有帳戶了嗎？</div>

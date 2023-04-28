@@ -28,10 +28,10 @@ const instance: AxiosInstance = axios.create({
 instance.interceptors.request.use(
   (config: any) => {
     // cookie 設定
-    // let auth = `Bearer ${localStorage.getItem("publicToken")}`;
-    // config.headers = {
-    //   Authorization: auth,
-    // };
+    const auth = `Bearer ${localStorage.getItem("token")}`;
+    config.headers = {
+      Authorization: auth,
+    };
     return config;
   },
   (error: any) => Promise.reject(error)

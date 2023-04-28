@@ -11,8 +11,7 @@ import {
 import { Link } from "react-router-dom";
 import Logo from "@/assets/images/logo.png";
 import type { MenuProps } from "antd";
-import { ColorIcon } from "@/components/ColorIcon";
-import { IconBlock } from "@/components/Icons";
+import { ColorIcon, BlockIcon } from "@/components/Icons";
 
 const Navbar: React.FC<{
   showNavbar: boolean;
@@ -53,10 +52,11 @@ const Navbar: React.FC<{
         color={"white"}
         text={"我"}
         size={"24px"}
+        fontSize={"14px"}
         background={"var(--blue)"}
       />,
       [
-        getItem("看板", "1", <IconBlock style={{ fontSize: "20px" }} />),
+        getItem("看板", "1", <BlockIcon style={{ fontSize: "20px" }} />),
         getItem(
           "成員",
           "2",
@@ -73,10 +73,11 @@ const Navbar: React.FC<{
         color={"white"}
         text={"公"}
         size={"24px"}
+        fontSize={"14px"}
         background={"var(--blue)"}
       />,
       [
-        getItem("看板", "4", <IconBlock style={{ fontSize: "20px" }} />),
+        getItem("看板", "4", <BlockIcon style={{ fontSize: "20px" }} />),
         getItem(
           "成員",
           "5",

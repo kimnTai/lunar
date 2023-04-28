@@ -8,7 +8,7 @@ import {
   EllipsisOutlined,
 } from "@ant-design/icons";
 import { WoarkSpaceCardProps } from "@/interfaces/workspace";
-import { ColorIcon } from "@/components/ColorIcon";
+import { ColorIcon } from "@/components/Icons";
 
 const WoarkSpaceCard: React.FC<WoarkSpaceCardProps> = ({
   title,
@@ -61,7 +61,8 @@ const WorkSpace: React.FC<{ setWrokSpace: Function }> = (props) => {
           <ColorIcon
             color={"white"}
             text={"我"}
-            size={"72"}
+            fontSize={"32px"}
+            size={"72px"}
             background={"var(--blue)"}
           />
           <Col className="workSpace" style={{ marginLeft: "16px" }}>
