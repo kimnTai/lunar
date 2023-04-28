@@ -35,7 +35,7 @@ const AppRouter: React.FC<any> = (props) => {
         <Routes>
           {!login && <Route path="/" element={<Home />}></Route>}
           <Route
-            path="/signup"
+            path="/login"
             element={
               <Login
                 signInAction={signInAction}
@@ -47,7 +47,7 @@ const AppRouter: React.FC<any> = (props) => {
             }
           />
           <Route
-            path="/login"
+            path="/signup"
             element={
               <Login
                 signInAction={signInAction}
