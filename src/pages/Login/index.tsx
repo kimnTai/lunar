@@ -33,7 +33,6 @@ const Login: React.FC<{
 }> = ({ signInAction, loginAction, loginGoogle, login, signIn }) => {
   const navigate = useNavigate();
   const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
-  // const [signIn, setSignIn] = useState(true);
   useEffect(() => {
     const initClient = () => {
       gapi.client.init({
@@ -162,7 +161,7 @@ const Login: React.FC<{
               style={{ fontSize: "16px", padding: "0" }}
               // onClick={() => setSignIn(!signIn)}
               onClick={() =>
-                signIn ? navigate("/signup") : navigate("/login")
+                signIn ? navigate("/login") : navigate("/signup")
               }
             >
               {signIn ? "登入" : "註冊"}
