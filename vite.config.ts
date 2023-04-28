@@ -21,5 +21,5 @@ export default ({ mode }: { mode: string }) =>
         "@": join(__dirname, "src"),
       },
     },
-
+    base: "./",
   } as VitestConfigExport);

@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { HashRouter, Routes, Route } from "react-router-dom";
 import Billboard from "@/pages/Billboard";
 import { connect } from "react-redux";
 import { openNavbarAction } from "@/redux/actions/NavbarAction";
@@ -31,7 +31,7 @@ const AppRouter: React.FC<any> = (props) => {
   }, [localStorage.getItem("token")]);
   return (
     <>
-      <BrowserRouter>
+      <HashRouter>
         <Routes>
           {!login && <Route path="/" element={<Home />}></Route>}
           <Route
@@ -72,7 +72,7 @@ const AppRouter: React.FC<any> = (props) => {
           )}
           <Route path="*" element={<ErrorPage />} />
         </Routes>
-      </BrowserRouter>
+      </HashRouter>
     </>
   );
 };
