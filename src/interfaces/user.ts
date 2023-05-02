@@ -3,3 +3,14 @@ export interface LoginProps {
   password: string;
   name: string;
 }
+
+export interface UserProps {
+  avatar: string;
+  createdAt: string;
+  email: string;
+  googleId: string;
+  isEmailVerification: boolean;
+  name: string;
+  updatedAt: string;
+  _id: string;
+}

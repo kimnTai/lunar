@@ -1,22 +1,27 @@
 import React from "react";
 import styled from "styled-components";
 
-const ColorIcon: React.FC<{
+interface ColorIconProps {
   color: string;
   text: string;
   size: string;
   fontSize: string;
   background: string;
-}> = ({ color, text, size, background, fontSize }) => {
-  const ColorIconCss = styled.div`
-    background-color: ${background};
-    width: ${size};
-    height: ${size};
-    color: ${color};
-    font-size: ${fontSize};
-    border-radius: 8px;
-  `;
-  return <ColorIconCss className="d-center">{text}</ColorIconCss>;
-};
+}
 
+const ColorIconCss = styled.div<ColorIconProps>`
+  background-color: ${(props) => props.background};
+  width: ${(props) => props.size};
+  height: ${(props) => props.size};
+  color: ${(props) => props.color}!important;
+  font-size: ${(props) => props.fontSize};
+  border-radius: 8px;
+  justify-content: center;
+`;
+
+const ColorIcon: React.FC<ColorIconProps> = (props) => (
+  <ColorIconCss className="d-center" {...props}>
+    {props.text}
+  </ColorIconCss>
+);
 export default ColorIcon;

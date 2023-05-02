@@ -8,7 +8,7 @@ import {
 } from "@ant-design/icons";
 import type { MenuProps } from "antd";
 import { Input, Button, Dropdown, Space, Tooltip, Badge, Avatar } from "antd";
-import { Link } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 
 const items: MenuProps["items"] = [
@@ -19,35 +19,38 @@ const items: MenuProps["items"] = [
 ];
 
 export const Header: React.FC<{
-  workSpace: string;
+  workSpace: boolean;
 }> = (props) => {
   const { workSpace } = props;
   const { avatar, name } = JSON.parse(localStorage.getItem("userData")!);
   const [serch, setSerch] = useState("");
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   return (
-    <HeaderCss className="d-space" workspace={workSpace}>
+    <HeaderCss
+      className="d-space"
+      style={{ backgroundColor: workSpace ? "white" : "var(--gray66)" }}
+    >
       <div className="d-center">
-        {workSpace !== "workSpace" && (
-          <>
-            <Dropdown menu={{ items }} trigger={["click"]}>
-              <Button>
-                <Space>
-                  工作區
-                  <DownOutlined />
-                </Space>
-              </Button>
-            </Dropdown>
-            <Dropdown menu={{ items }} trigger={["click"]}>
-              <Button>
-                <Space>
-                  最近的
-                  <DownOutlined />
-                </Space>
-              </Button>
-            </Dropdown>
-          </>
-        )}
+        <div style={{ display: workSpace ? "none" : "block" }}>
+          <Dropdown menu={{ items }} trigger={["click"]}>
+            <Button>
+              <Space>
+                工作區
+                <DownOutlined />
+              </Space>
+            </Button>
+          </Dropdown>
+          <Dropdown menu={{ items }} trigger={["click"]}>
+            <Button>
+              <Space>
+                最近的
+                <DownOutlined />
+              </Space>
+            </Button>
+          </Dropdown>
+        </div>
+
         <Input
           className="serch"
           placeholder="搜尋所有卡片"
@@ -81,6 +84,7 @@ export const Header: React.FC<{
           shape="circle"
           onClick={() => {
             dispatch({ type: "LOGOUT" });
+            navigate("/");
           }}
         />
         <Avatar src={avatar} style={{ marginLeft: "16px" }} />

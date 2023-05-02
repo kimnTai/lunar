@@ -1,6 +1,6 @@
-import React from "react";
+import React, { useCallback, useEffect } from "react";
 import { WorkSpaceCss, WoarkSpaceCardCss } from "./style";
-import { Row, Col, Button, Select, Card } from "antd";
+import { Row, Col, Button, Select } from "antd";
 import {
   PlusOutlined,
   EditOutlined,
@@ -9,6 +9,7 @@ import {
 } from "@ant-design/icons";
 import { WoarkSpaceCardProps } from "@/interfaces/workspace";
 import { ColorIcon } from "@/components/Icons";
+import { useParams } from "react-router-dom";
 
 const WoarkSpaceCard: React.FC<WoarkSpaceCardProps> = ({
   title,
@@ -49,11 +50,20 @@ const WoarkSpaceCard: React.FC<WoarkSpaceCardProps> = ({
   );
 };
 
-const WorkSpace: React.FC<{ setWrokSpace: Function }> = (props) => {
-  const { setWrokSpace } = props;
+const WorkSpace: React.FC<{
+  setWrokSpace: Function;
+  getOrganization: Function;
+}> = (props) => {
+  const { setWrokSpace, getOrganization } = props;
+  const { userId } = useParams();
+  console.log(userId);
   const handleChange = (value: string) => {
     console.log(`selected ${value}`);
   };
+
+  useEffect(() => {
+    getOrganization(userId);
+  }, []);
   return (
     <WorkSpaceCss>
       <Row align={"middle"} justify={"space-between"}>

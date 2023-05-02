@@ -5,10 +5,8 @@ import { TrelloCard } from "@/components/TrelloCard";
 import { CardProps } from "@/interfaces/trelloCard";
 import { DragDropContext, DropResult, Droppable } from "react-beautiful-dnd";
 import { reorder, reorderQuoteMap } from "@/utils/func";
-import { Header } from "./Header";
-import Navbar from "./Navbar";
 import { MainLayoutCss, BillboardStyled } from "./style";
-import WorkSpace from "./WorkSpace";
+
 
 const Billboard: React.FC<{ data: CardProps[]; setWrokSpace: Function }> = ({
   data,
@@ -67,28 +65,4 @@ const Billboard: React.FC<{ data: CardProps[]; setWrokSpace: Function }> = ({
   );
 };
 
-const Main: React.FC<{
-  data: any;
-  openNav: Function;
-  showNavbar: boolean;
-}> = (props) => {
-  const [workSpace, setWrokSpace] = useState("workSpace");
-  const { data, openNav, showNavbar } = props;
-  return (
-    <Layout>
-      <Navbar showNavbar={showNavbar} openNav={openNav} workSpace={workSpace} />
-      <Layout>
-        <Header workSpace={workSpace} />
-        <MainLayoutCss workspace={workSpace}>
-          {workSpace === "workSpace" ? (
-            <WorkSpace setWrokSpace={setWrokSpace} />
-          ) : (
-            <Billboard data={data} setWrokSpace={setWrokSpace} />
-          )}
-        </MainLayoutCss>
-      </Layout>
-    </Layout>
-  );
-};
-
-export default Main;
+export default Billboard;

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Sider } from "./style";
 import { Button, Menu } from "antd";
 import {
@@ -12,11 +12,12 @@ import { Link } from "react-router-dom";
 import Logo from "@/assets/images/logo.png";
 import type { MenuProps } from "antd";
 import { ColorIcon, BlockIcon } from "@/components/Icons";
+import AddWorkSpace from "@/components/Modal/AddWorkSpace";
 
-const Navbar: React.FC<{
+export const Navbar: React.FC<{
   showNavbar: boolean;
   openNav: Function;
-  workSpace: string;
+  workSpace: boolean;
 }> = ({ showNavbar, openNav, workSpace }) => {
   const handleClosed = () => {
     openNav(true);
@@ -24,8 +25,9 @@ const Navbar: React.FC<{
   const handleOpen = () => {
     openNav(false);
   };
-
+  const [open, setOpen] = useState(false);
   type MenuItem = Required<MenuProps>["items"][number];
+
   const getItem = (
     label: React.ReactNode,
     key: React.Key,
@@ -90,19 +92,19 @@ const Navbar: React.FC<{
 
     getItem(
       <a
-        href=""
         target="_blank"
         rel="noopener noreferrer"
         className="ant-menu-submenu-title"
       >
         新增工作區
       </a>,
-      "link",
+      "addWorkSpace",
       <PlusOutlined />
     ),
   ];
-  const handleClick = (e: any) => {
-    console.log(e);
+  const handleClick = (element: any) => {
+    console.log(element);
+    if (element.key === "addWorkSpace") setOpen(true);
   };
   return (
     <Sider
@@ -111,9 +113,8 @@ const Navbar: React.FC<{
       collapsed={showNavbar}
       collapsedWidth={16}
       trigger={null}
-      workspace={workSpace}
       style={{
-        backgroundColor: workSpace === "workSpace" ? "white" : "var(--dark)",
+        backgroundColor: workSpace ? "white" : "var(--dark)",
       }}
     >
       {!showNavbar ? (
@@ -148,8 +149,7 @@ const Navbar: React.FC<{
           }}
         />
       )}
+      <AddWorkSpace open={open} setOpen={setOpen} />
     </Sider>
   );
 };
-
-export default Navbar;

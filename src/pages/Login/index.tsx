@@ -44,7 +44,10 @@ const Login: React.FC<{
   });
 
   useEffect(() => {
-    if (login) navigate("/");
+    if (login) {
+      const id = JSON.parse(localStorage.getItem("userData")!)._id;
+      navigate(`/w/${id}/home`);
+    }
   }, [login]);
 
   const onFinish = async (values: any) => {
