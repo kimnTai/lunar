@@ -40,3 +40,9 @@
 VITE_REACT_API = API網域
 VITE_GOOGLE_CLIENT_ID = google client id 
 ```
+
+## 頁面對應資料夾 (src/pages)
+- Home 使用者未登入首頁
+- Login 登入頁面
+- WorkSpace 工作區頁面
+- Billboard 卡片頁面

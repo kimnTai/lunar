@@ -13,3 +13,9 @@ interface OrganizationMemberProps {
   userId: string;
   role: string;
 }
+
+export interface NewOrganizationFormProps {
+  name: string;
+  type: string;
+  descript: string;
+}
