@@ -1,6 +1,6 @@
 import { CardProps } from "@/interfaces/trelloCard";
 import { DraggableLocation } from "react-beautiful-dnd";
-
+import type { MenuProps } from "antd";
 export const reorder = (list: any[], startIndex: number, endIndex: number) => {
   const result = Array.from(list);
   const [removed] = result.splice(startIndex, 1);
@@ -51,4 +51,22 @@ export const reorderQuoteMap = (
     destination.droppableId,
     next
   );
+};
+
+type MenuItem = Required<MenuProps>["items"][number];
+
+export const getMenuItem = (
+  label: React.ReactNode,
+  key: React.Key,
+  icon?: React.ReactNode,
+  children?: MenuItem[],
+  type?: "group"
+): MenuItem => {
+  return {
+    key,
+    icon,
+    children,
+    label,
+    type,
+  } as MenuItem;
 };

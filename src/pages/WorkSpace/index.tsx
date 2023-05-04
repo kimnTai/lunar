@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect } from "react";
-import { WorkSpaceCss, WoarkSpaceCardCss } from "./style";
+import { WorkSpaceCss } from "./style";
 import { Row, Col, Button, Select } from "antd";
 import {
   PlusOutlined,
@@ -7,63 +7,24 @@ import {
   LockOutlined,
   EllipsisOutlined,
 } from "@ant-design/icons";
-import { WoarkSpaceCardProps } from "@/interfaces/workspace";
 import { ColorIcon } from "@/components/Icons";
 import { useParams } from "react-router-dom";
-
-const WoarkSpaceCard: React.FC<WoarkSpaceCardProps> = ({
-  title,
-  privacy,
-  backgroundUrl,
-  setWrokSpace,
-}) => {
-  return (
-    <WoarkSpaceCardCss
-      hoverable
-      backgroundurl={backgroundUrl}
-      onClick={() => setWrokSpace("billboard")}
-    >
-      <Row style={{ marginBottom: "auto" }}>
-        <Col style={{ fontWeight: 700, fontSize: "18px", lineHeight: "150%" }}>
-          {title}
-        </Col>
-      </Row>
-      <Row justify={"space-between"} align={"middle"}>
-        <Col>
-          <Button
-            icon={<LockOutlined />}
-            style={{ height: "29px", padding: "4px 8px" }}
-            ghost
-          >
-            {privacy}
-          </Button>
-        </Col>
-        <Col>
-          <Button
-            icon={<EllipsisOutlined />}
-            type={"text"}
-            style={{ color: "white" }}
-          />
-        </Col>
-      </Row>
-    </WoarkSpaceCardCss>
-  );
-};
+import WorkSpaceCard from "./WorkSpaceCard";
 
 const WorkSpace: React.FC<{
   setWrokSpace: Function;
-  getOrganization: Function;
+  // getOrganization: Function;
 }> = (props) => {
-  const { setWrokSpace, getOrganization } = props;
+  const { setWrokSpace } = props;
   const { userId } = useParams();
   console.log(userId);
   const handleChange = (value: string) => {
     console.log(`selected ${value}`);
   };
 
-  useEffect(() => {
-    getOrganization(userId);
-  }, []);
+  // useEffect(() => {
+  //     getOrganization();
+  // }, []);
   return (
     <WorkSpaceCss>
       <Row align={"middle"} justify={"space-between"}>
@@ -139,7 +100,7 @@ const WorkSpace: React.FC<{
       </Row>
       <Row>
         <Col>
-          <WoarkSpaceCard
+          <WorkSpaceCard
             title={"UI / UX 前端網頁設計課程的筆記"}
             privacy={"私人"}
             backgroundUrl={""}

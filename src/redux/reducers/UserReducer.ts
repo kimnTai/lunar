@@ -1,7 +1,12 @@
-import { GET_USER } from "../constants";
+import { GET_USER, GET_ORGANIZATION } from "../constants";
 import { UserProps } from "@/interfaces/user";
+import { OrganizationProps } from "@/interfaces/organization";
 
-const initialState: { user: UserProps; token: string } = {
+const initialState: {
+  user: UserProps;
+  token: string;
+  organization: OrganizationProps[];
+} = {
   user: {
     avatar: "",
     createdAt: "",
@@ -13,6 +18,7 @@ const initialState: { user: UserProps; token: string } = {
     _id: "",
   },
   token: "",
+  organization: [],
 };
 
 const UserReducer = function (
@@ -26,7 +32,12 @@ const UserReducer = function (
         token: action.payload.token,
       };
     }
-
+    case GET_ORGANIZATION: {
+      return {
+        ...state,
+        organization : [...action.payload]
+      };
+    }
     default: {
       return {
         ...state,

@@ -5,13 +5,16 @@ import { TrelloCard } from "@/components/TrelloCard";
 import { CardProps } from "@/interfaces/trelloCard";
 import { DragDropContext, DropResult, Droppable } from "react-beautiful-dnd";
 import { reorder, reorderQuoteMap } from "@/utils/func";
-import { MainLayoutCss, BillboardStyled } from "./style";
+import { BillboardStyled } from "./style";
 
-
-const Billboard: React.FC<{ data: CardProps[]; setWrokSpace: Function }> = ({
-  data,
-  setWrokSpace,
-}) => {
+const Billboard: React.FC<{
+  data: CardProps[];
+  workSpace: boolean;
+  setWrokSpace: Function;
+}> = ({ data, workSpace, setWrokSpace }) => {
+  useEffect(() => {
+    if (workSpace) setWrokSpace(false);
+  }, [workSpace]);
   const [cardList, setCardList] = useState<CardProps[]>([]);
   const [ordered, setOrdered] = useState<string[]>([]);
   useEffect(() => {

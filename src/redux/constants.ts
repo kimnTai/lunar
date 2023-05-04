@@ -10,3 +10,5 @@ export const GOOGLE_LOGIN = "GOOGLE_LOGIN";
 export const LOGOUT = "LOGOUT";
 // 會員
 export const GET_USER = "GET_USER";
+// 組織
+export const GET_ORGANIZATION = "GET_ORGANIZATION";

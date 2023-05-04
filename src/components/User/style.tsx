@@ -15,6 +15,15 @@ export const Sider = styled(Layout.Sider)`
     width: 140px;
     height: 32px;
   }
+  .logo2 {
+    width: 84px;
+    height: 20px;
+    margin-left: 4px;
+  }
+  .logo-div {
+    display: flex;
+    align-items: center;
+  }
   .title {
     padding: 20px 12px;
     font-size: 14px;

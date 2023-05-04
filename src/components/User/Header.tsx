@@ -10,6 +10,7 @@ import type { MenuProps } from "antd";
 import { Input, Button, Dropdown, Space, Tooltip, Badge, Avatar } from "antd";
 import { Link, Navigate, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
+import { DropdownBtn } from "@/components/DropdownBtn";
 
 const items: MenuProps["items"] = [
   {
@@ -29,32 +30,19 @@ export const Header: React.FC<{
   return (
     <HeaderCss
       className="d-space"
-      style={{ backgroundColor: workSpace ? "white" : "var(--gray66)" }}
+      style={{ backgroundColor: workSpace ? "white" : "var(--black23)" }}
     >
       <div className="d-center">
         <div style={{ display: workSpace ? "none" : "block" }}>
-          <Dropdown menu={{ items }} trigger={["click"]}>
-            <Button>
-              <Space>
-                工作區
-                <DownOutlined />
-              </Space>
-            </Button>
-          </Dropdown>
-          <Dropdown menu={{ items }} trigger={["click"]}>
-            <Button>
-              <Space>
-                最近的
-                <DownOutlined />
-              </Space>
-            </Button>
-          </Dropdown>
+          <DropdownBtn items={items} title={"工作區"} />
+          <DropdownBtn items={items} title={"最近的"} />
         </div>
 
         <Input
           className="serch"
           placeholder="搜尋所有卡片"
           prefix={<SearchOutlined />}
+          style={{}}
         />
       </div>
       <div className="d-center">
@@ -88,7 +76,9 @@ export const Header: React.FC<{
           }}
         />
         <Avatar src={avatar} style={{ marginLeft: "16px" }} />
-        <p style={{ marginLeft: "8px" }}>{name}</p>
+        <p style={{ marginLeft: "8px", color: workSpace ? "black" : "white" }}>
+          {name}
+        </p>
       </div>
     </HeaderCss>
   );

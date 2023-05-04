@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Sider } from "./style";
 import { Button, Menu } from "antd";
 import {
@@ -7,89 +7,35 @@ import {
   PlusOutlined,
   UsergroupAddOutlined,
   SettingOutlined,
+  ArrowLeftOutlined,
 } from "@ant-design/icons";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Logo from "@/assets/images/logo.png";
+import Logo2 from "@/assets/images/img_logo2.png";
 import type { MenuProps } from "antd";
 import { ColorIcon, BlockIcon } from "@/components/Icons";
 import AddWorkSpace from "@/components/Modal/AddWorkSpace";
+import { getMenuItem as getItem } from "@/utils/func";
+import { useSelector } from "react-redux";
+import { OrganizationProps } from "@/interfaces/organization";
 
 export const Navbar: React.FC<{
   showNavbar: boolean;
   openNav: Function;
   workSpace: boolean;
-}> = ({ showNavbar, openNav, workSpace }) => {
+  setWrokSpace: Function;
+  getOrganization: Function;
+}> = ({ showNavbar, openNav, workSpace, setWrokSpace, getOrganization }) => {
+  const navigate = useNavigate();
   const handleClosed = () => {
     openNav(true);
   };
   const handleOpen = () => {
     openNav(false);
   };
-  const [open, setOpen] = useState(false);
-  type MenuItem = Required<MenuProps>["items"][number];
 
-  const getItem = (
-    label: React.ReactNode,
-    key: React.Key,
-    icon?: React.ReactNode,
-    children?: MenuItem[],
-    type?: "group"
-  ): MenuItem => {
-    return {
-      key,
-      icon,
-      children,
-      label,
-      type,
-    } as MenuItem;
-  };
-  // const getMenuOptions = (title: string, iconText: string,index:number) => {
-  // };
-
-  const items: MenuProps["items"] = [
-    getItem(
-      "我的工作區",
-      "sub1",
-      <ColorIcon
-        color={"white"}
-        text={"我"}
-        size={"24px"}
-        fontSize={"14px"}
-        background={"var(--blue)"}
-      />,
-      [
-        getItem("看板", "1", <BlockIcon style={{ fontSize: "20px" }} />),
-        getItem(
-          "成員",
-          "2",
-          <UsergroupAddOutlined style={{ fontSize: "20px" }} />
-        ),
-        getItem("設定", "3", <SettingOutlined style={{ fontSize: "20px" }} />),
-      ]
-    ),
-
-    getItem(
-      "公司專用工作區",
-      "sub2",
-      <ColorIcon
-        color={"white"}
-        text={"公"}
-        size={"24px"}
-        fontSize={"14px"}
-        background={"var(--blue)"}
-      />,
-      [
-        getItem("看板", "4", <BlockIcon style={{ fontSize: "20px" }} />),
-        getItem(
-          "成員",
-          "5",
-          <UsergroupAddOutlined style={{ fontSize: "20px" }} />
-        ),
-        getItem("設定", "6", <SettingOutlined style={{ fontSize: "20px" }} />),
-      ]
-    ),
+  const defaultItems = [
     { type: "divider" },
-
     getItem(
       <a
         target="_blank"
@@ -102,10 +48,51 @@ export const Navbar: React.FC<{
       <PlusOutlined />
     ),
   ];
+  const getSubMenu = (id: string) => [
+    getItem(
+      "看板",
+      `${id}/home`,
+      <BlockIcon style={{ fontSize: "20px" }} />
+    ),
+    getItem(
+      "成員",
+      `${id}/members`,
+      <UsergroupAddOutlined style={{ fontSize: "20px" }} />
+    ),
+    getItem(
+      "設定",
+      `${id}/account`,
+      <SettingOutlined style={{ fontSize: "20px" }} />
+    ),
+  ];
+
+  const [open, setOpen] = useState(false);
+  const [items, setItems] = useState<MenuProps["items"]>();
+  const userOrganization = useSelector((state: any) => state.user.organization);
+  console.log("===userOrganization===", userOrganization);
+
   const handleClick = (element: any) => {
     console.log(element);
     if (element.key === "addWorkSpace") setOpen(true);
   };
+
+  useEffect(() => {
+    const useItem = userOrganization.map((ele: OrganizationProps) => {
+      return getItem(
+        ele.name,
+        ele._id,
+        <ColorIcon
+          color={"white"}
+          text={`${ele.name[0]}`}
+          size={"24px"}
+          fontSize={"14px"}
+          background={"var(--blue)"}
+        />,
+        getSubMenu(ele._id)
+      );
+    });
+    setItems([...useItem, ...defaultItems]);
+  }, [userOrganization]);
   return (
     <Sider
       width={257}
@@ -114,17 +101,38 @@ export const Navbar: React.FC<{
       collapsedWidth={16}
       trigger={null}
       style={{
-        backgroundColor: workSpace ? "white" : "var(--dark)",
+        backgroundColor: workSpace ? "white" : "var(--black23)",
       }}
     >
       {!showNavbar ? (
         <>
           <div className="title d-space">
-            <img src={Logo} alt="logo" className="logo" />
+            {workSpace ? (
+              <img src={Logo} className="logo" />
+            ) : (
+              <div className="logo-div">
+                <Button
+                  icon={<ArrowLeftOutlined style={{ fontSize: "16px" }} />}
+                  type="link"
+                  style={{
+                    width: "16px",
+                    height: "16px",
+
+                    color: "white",
+                  }}
+                  className="d-center"
+                  onClick={() => {
+                    setWrokSpace(true);
+                    navigate("/");
+                  }}
+                />
+                <img src={Logo2} className="logo2" />
+              </div>
+            )}
             <Button
               icon={<VerticalRightOutlined />}
               onClick={handleClosed}
-              type="text"
+              type="link"
               style={{ width: "28px", height: "28px", color: "var(--grey9F)" }}
             />
           </div>
@@ -135,6 +143,10 @@ export const Navbar: React.FC<{
             mode="inline"
             items={items}
             inlineIndent={16}
+            style={{
+              backgroundColor: workSpace ? "white" : "var(--black23)",
+              color: workSpace ? "black" : "white",
+            }}
           />
         </>
       ) : (

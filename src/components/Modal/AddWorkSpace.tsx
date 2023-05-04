@@ -2,26 +2,29 @@ import React, { useState } from "react";
 import { AddWorkSpaceCss } from "./style";
 import { Button, Form, Input, Select } from "antd";
 import { NewOrganizationFormProps as FormValues } from "@/interfaces/organization";
+import { useApi } from "@/hooks/useApiHook";
+import { newOrganizationApi } from "@/api/organization";
 
 const AddWorkSpace: React.FC<{ open: boolean; setOpen: Function }> = ({
   open,
   setOpen,
 }) => {
   const [form] = Form.useForm<FormValues>();
-  const [loading, setLoading] = useState(false);
   const onCancel: () => void = () => {
     setOpen(false);
   };
-  const onFinish = (values: FormValues) => {
-    setLoading(true);
+  const [result, loading, callApi] = useApi(newOrganizationApi);
+
+  const onFinish = async (values: FormValues) => {
+    // setLoading(true);
     console.log(values);
-    setTimeout(() => {
-      setLoading(false);
-      onCancel();
-      form.resetFields();
-    }, 2000);
+    await callApi(values);
+    // setTimeout(() => {
+    //   setLoading(false);
+    //   onCancel();
+    //   form.resetFields();
+    // }, 2000);
   };
-  const options = [, "", "", "人力資源", ""];
   return (
     <AddWorkSpaceCss open={open} onCancel={onCancel} footer={null}>
       <Form form={form} onFinish={onFinish} layout="vertical">
@@ -34,11 +37,11 @@ const AddWorkSpace: React.FC<{ open: boolean; setOpen: Function }> = ({
         </Form.Item>
         <Form.Item label="工作區類型" name="type">
           <Select placeholder="select your gender">
-            <Select.Option value="A">行銷</Select.Option>
-            <Select.Option value="B">工程</Select.Option>
-            <Select.Option value="C">預算</Select.Option>
-            <Select.Option value="D">人力資源</Select.Option>
-            <Select.Option value="E">教育</Select.Option>
+            <Select.Option value="Marketing">行銷</Select.Option>
+            <Select.Option value="Engineering">工程</Select.Option>
+            <Select.Option value="Budget">預算</Select.Option>
+            <Select.Option value="HumanResources">人力資源</Select.Option>
+            <Select.Option value="Educate">教育</Select.Option>
           </Select>
         </Form.Item>
         <Form.Item

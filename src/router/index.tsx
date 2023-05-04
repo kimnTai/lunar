@@ -11,10 +11,8 @@ import {
   changeWorkSpaceAction,
   openNavbarAction,
 } from "@/redux/actions/ScreenAction";
-import {
-  addCardListAction,
-  getOrganizationsAction,
-} from "@/redux/actions/CardAction";
+import { addCardListAction } from "@/redux/actions/CardAction";
+import { getOrganizationsAction } from "@/redux/actions/OrganizationAction";
 import Login from "@/pages/Login";
 import {
   signInAction,
@@ -32,9 +30,7 @@ import Billboard from "@/pages/Billboard";
 import { MainLayoutCss } from "@/pages/Billboard/style";
 
 const AppRouter: React.FC<any> = (props) => {
-  const [userId, setUserId] = useState("");
   const {
-    user,
     openNav,
     showNavbar,
     card,
@@ -48,99 +44,98 @@ const AppRouter: React.FC<any> = (props) => {
     getOrganization,
   } = props;
   useEffect(() => {
-    if (localStorage.getItem("token")) loginJwt();
-    if (login) setUserId(JSON.parse(localStorage.getItem("userData")!)._id);
+    if (localStorage.getItem("token")) {
+      loginJwt();
+      getOrganization();
+    }
   }, [localStorage.getItem("token"), login]);
 
-  const LoginLayout = ({ children }: any) => (
+  const LoginLayout = React.memo(({ children }: any) => (
     <Layout>
       <Navbar
         showNavbar={showNavbar}
         openNav={openNav}
         workSpace={showWorkSpace}
+        setWrokSpace={changeWorkSpace}
+        getOrganization={getOrganization}
       />
       <Layout>
         <Header workSpace={showWorkSpace} />
         <MainLayoutCss workspace={showWorkSpace}>{children}</MainLayoutCss>
       </Layout>
     </Layout>
-  );
+  ));
 
   return (
-    <>
-      <BrowserRouter>
-        <Routes>
-          {!login && <Route path="/" element={<Home />}></Route>}
-          <Route
-            path="/login"
-            element={
-              <Login
-                signInAction={signInAction}
-                loginAction={loginAction}
-                loginGoogle={loginGoogle}
-                login={login}
-                signIn={false}
-              />
-            }
-          />
-          <Route
-            path="/signup"
-            element={
-              <Login
-                signInAction={signInAction}
-                loginAction={loginAction}
-                loginGoogle={loginGoogle}
-                login={login}
-                signIn={true}
-              />
-            }
-          />
-          {login && (
-            <>
-              <Route
-                path={"/"}
-                element={
-                  <Navigate
-                    to={`/w/${
-                      JSON.parse(localStorage.getItem("userData")!)._id
-                    }/home`}
-                  />
-                }
-              />
-              <Route
-                index
-                path={`/w/:userId/home`}
-                element={
-                  <LoginLayout
-                    children={
-                      <WorkSpace
-                        setWrokSpace={changeWorkSpace}
-                        getOrganization={getOrganization}
-                      />
-                    }
-                  />
-                }
-              />
-              <Route
-                path="/b/:boardId"
-                element={
-                  <LoginLayout
-                    children={
-                      <Billboard
-                        data={card}
-                        // showNavbar={showNavbar}
-                        setWrokSpace={changeWorkSpace}
-                      />
-                    }
-                  />
-                }
-              />
-            </>
-          )}
-          <Route path="*" element={<ErrorPage />} />
-        </Routes>
-      </BrowserRouter>
-    </>
+    <BrowserRouter>
+      <Routes>
+        {!login && <Route path="/" element={<Home />}></Route>}
+        <Route
+          path="/login"
+          element={
+            <Login
+              signInAction={signInAction}
+              loginAction={loginAction}
+              loginGoogle={loginGoogle}
+              login={login}
+              signIn={false}
+            />
+          }
+        />
+        <Route
+          path="/signup"
+          element={
+            <Login
+              signInAction={signInAction}
+              loginAction={loginAction}
+              loginGoogle={loginGoogle}
+              login={login}
+              signIn={true}
+            />
+          }
+        />
+        {login && (
+          <>
+            <Route
+              path={"/"}
+              element={
+                <Navigate
+                  to={`/user/${
+                    JSON.parse(localStorage.getItem("userData")!)._id
+                  }/boards`}
+                />
+              }
+            />
+            <Route
+              index
+              path={`/user/:userId/boards`}
+              element={
+                <LoginLayout
+                  children={<WorkSpace setWrokSpace={changeWorkSpace} />}
+                />
+              }
+            />
+            <Route index path={`/workspace/:workSpaceId/home`} />
+            <Route
+              path="/board/:boardId"
+              element={
+                <LoginLayout
+                  children={
+                    <Billboard
+                      data={card}
+                      // showNavbar={showNavbar}
+                      workSpace={showWorkSpace}
+                      setWrokSpace={changeWorkSpace}
+                    />
+                  }
+                />
+              }
+            />
+          </>
+        )}
+        <Route path="*" element={<ErrorPage />} />
+      </Routes>
+    </BrowserRouter>
   );
 };
 const mapStateToProps = (state: any) => ({
@@ -148,7 +143,6 @@ const mapStateToProps = (state: any) => ({
   showWorkSpace: state.screen.showWorkSpace,
   card: state.card.cardList,
   login: state.auth.login,
-  user: state.user.user,
 });
 export default connect(mapStateToProps, {
   openNav: openNavbarAction,
@@ -159,4 +153,4 @@ export default connect(mapStateToProps, {
   loginGoogle: loginGoogleJwtAction,
   loginJwt: loginJwtAction,
   getOrganization: getOrganizationsAction,
-})(AppRouter);
+})(React.memo(AppRouter));
