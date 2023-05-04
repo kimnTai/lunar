@@ -75,21 +75,23 @@ export const Navbar: React.FC<{
   };
 
   useEffect(() => {
-    const useItem = userOrganization.map((ele: OrganizationProps) => {
-      return getItem(
-        ele.name,
-        ele._id,
-        <ColorIcon
-          color={"white"}
-          text={`${ele.name[0]}`}
-          size={"24px"}
-          fontSize={"14px"}
-          background={"var(--blue)"}
-        />,
-        getSubMenu(ele._id)
-      );
-    });
-    setItems([...useItem, ...defaultItems]);
+    if (userOrganization) {
+      const useItem = userOrganization.map((ele: OrganizationProps) => {
+        return getItem(
+          ele.name,
+          ele._id,
+          <ColorIcon
+            color={"white"}
+            text={`${ele.name[0]}`}
+            size={"24px"}
+            fontSize={"14px"}
+            background={"var(--blue)"}
+          />,
+          getSubMenu(ele._id)
+        );
+      });
+      setItems([...useItem, ...defaultItems]);
+    }
   }, [userOrganization]);
   return (
     <Sider

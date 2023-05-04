@@ -3,7 +3,7 @@ import { NewOrganizationFormProps } from "@/interfaces/organization";
 
 // 取得所有組織
 export const getOrganizationsApi = () => {
-  return Request.get("/organizations");
+  return Request.get("/organizations/user");
 };
 
 // 新增組織
