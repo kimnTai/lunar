@@ -49,11 +49,7 @@ export const Navbar: React.FC<{
     ),
   ];
   const getSubMenu = (id: string) => [
-    getItem(
-      "看板",
-      `${id}/home`,
-      <BlockIcon style={{ fontSize: "20px" }} />
-    ),
+    getItem("看板", `${id}/home`, <BlockIcon style={{ fontSize: "20px" }} />),
     getItem(
       "成員",
       `${id}/members`,
@@ -74,6 +70,8 @@ export const Navbar: React.FC<{
   const handleClick = (element: any) => {
     console.log(element);
     if (element.key === "addWorkSpace") setOpen(true);
+    if (element.key.indexOf("/home") !== -1)
+      navigate(`/workspace/${element.key}`);
   };
 
   useEffect(() => {

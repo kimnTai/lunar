@@ -17,6 +17,4 @@ interface OrganizationMemberProps {
 
 export interface NewOrganizationFormProps {
   name: string;
-  type: string;
-  descript: string;
 }

@@ -16,14 +16,8 @@ const AddWorkSpace: React.FC<{ open: boolean; setOpen: Function }> = ({
   const [result, loading, callApi] = useApi(newOrganizationApi);
 
   const onFinish = async (values: FormValues) => {
-    // setLoading(true);
     console.log(values);
-    await callApi(values);
-    // setTimeout(() => {
-    //   setLoading(false);
-    //   onCancel();
-    //   form.resetFields();
-    // }, 2000);
+    await callApi({ name: values.name });
   };
   return (
     <AddWorkSpaceCss open={open} onCancel={onCancel} footer={null}>
@@ -35,23 +29,18 @@ const AddWorkSpace: React.FC<{ open: boolean; setOpen: Function }> = ({
         <Form.Item label="工作區名稱" name="name">
           <Input />
         </Form.Item>
-        <Form.Item label="工作區類型" name="type">
-          <Select placeholder="select your gender">
-            <Select.Option value="Marketing">行銷</Select.Option>
-            <Select.Option value="Engineering">工程</Select.Option>
-            <Select.Option value="Budget">預算</Select.Option>
-            <Select.Option value="HumanResources">人力資源</Select.Option>
-            <Select.Option value="Educate">教育</Select.Option>
-          </Select>
-        </Form.Item>
         <Form.Item
-          label="工作區描述"
-          name="descript"
-          extra="簡短介紹您的工作區，為您的成員做好上任準備。"
+          label={
+            <div className="d-space">
+              <h3>邀請你的團隊</h3>
+              <a>以鏈結邀請</a>
+            </div>
+          }
+          name="invite"
+          className="invite"
         >
-          <Input.TextArea autoSize={{ minRows: 3, maxRows: 5 }} />
+          <Input />
         </Form.Item>
-
         <Form.Item>
           <Button type="primary" htmlType="submit" loading={loading}>
             繼續

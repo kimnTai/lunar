@@ -46,7 +46,8 @@ const Login: React.FC<{
   useEffect(() => {
     if (login) {
       const id = JSON.parse(localStorage.getItem("userData")!)._id;
-      navigate(`/workspace/${id}/home`);
+      // navigate(`/user/${id}/boards`);
+      navigate(`/`);
     }
   }, [login]);
 

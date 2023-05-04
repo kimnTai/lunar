@@ -12,4 +12,9 @@ export const AddWorkSpaceCss = styled(Modal)`
   .ant-form-item {
     margin-bottom: 10px;
   }
+  .invite {
+    label {
+      display: block;
+    }
+  }
 `;

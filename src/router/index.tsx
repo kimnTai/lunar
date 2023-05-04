@@ -115,7 +115,15 @@ const AppRouter: React.FC<any> = (props) => {
                 />
               }
             />
-            <Route index path={`/workspace/:workSpaceId/home`} />
+            <Route
+              index
+              path={`/workspace/:workSpaceId/home`}
+              element={
+                <LoginLayout
+                  children={<WorkSpace setWrokSpace={changeWorkSpace} />}
+                />
+              }
+            />
             <Route
               path="/board/:boardId"
               element={

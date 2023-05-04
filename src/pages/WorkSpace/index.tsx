@@ -13,7 +13,6 @@ import WorkSpaceCard from "./WorkSpaceCard";
 
 const WorkSpace: React.FC<{
   setWrokSpace: Function;
-  // getOrganization: Function;
 }> = (props) => {
   const { setWrokSpace } = props;
   const { userId } = useParams();
@@ -22,9 +21,6 @@ const WorkSpace: React.FC<{
     console.log(`selected ${value}`);
   };
 
-  // useEffect(() => {
-  //     getOrganization();
-  // }, []);
   return (
     <WorkSpaceCss>
       <Row align={"middle"} justify={"space-between"}>
