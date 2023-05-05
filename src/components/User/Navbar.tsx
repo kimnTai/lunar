@@ -9,7 +9,7 @@ import {
   SettingOutlined,
   ArrowLeftOutlined,
 } from "@ant-design/icons";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Logo from "@/assets/images/logo.png";
 import Logo2 from "@/assets/images/img_logo2.png";
 import type { MenuProps } from "antd";
@@ -25,7 +25,7 @@ export const Navbar: React.FC<{
   workSpace: boolean;
   setWorkSpace: Function;
   getOrganization: Function;
-}> = ({ showNavbar, openNav, workSpace, setWorkSpace, getOrganization }) => {
+}> = ({ showNavbar, openNav, workSpace, setWorkSpace }) => {
   const navigate = useNavigate();
   const handleClosed = () => {
     openNav(true);

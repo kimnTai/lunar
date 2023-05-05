@@ -9,7 +9,7 @@ interface BaseResponse {
 }
 
 // 目前後端資料格式尚未修正為BaseResponse格式, 所以先開後門允許string
-interface Error<T> {
+interface Error<_T> {
   message: string;
   status: number;
   data: BaseResponse | string;

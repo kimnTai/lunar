@@ -1,11 +1,10 @@
-import React, { useCallback, useEffect } from "react";
+import React, { useEffect } from "react";
 import { WorkSpaceCss } from "./style";
 import { Row, Col, Button, Select } from "antd";
 import {
   PlusOutlined,
   EditOutlined,
   LockOutlined,
-  EllipsisOutlined,
 } from "@ant-design/icons";
 import { ColorIcon } from "@/components/Icons";
 import { useParams } from "react-router-dom";

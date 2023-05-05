@@ -1,5 +1,4 @@
 import React from "react";
-import { Button } from "antd";
 import { TrelloCardModalStyled } from "./style";
 import { TrelloCardModalProps } from "@/interfaces/trelloCard";
 import ModalHeader from "./ModalHeader";

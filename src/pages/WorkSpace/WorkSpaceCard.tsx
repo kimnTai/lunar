@@ -1,5 +1,5 @@
 import React from "react";
-import { Row, Col, Button, Select, Skeleton } from "antd";
+import { Row, Col, Button, Skeleton } from "antd";
 import { WorkSpaceCardCss } from "./style";
 import { WorkSpaceCardProps } from "@/interfaces/workspace";
 import { LockOutlined, EllipsisOutlined } from "@ant-design/icons";

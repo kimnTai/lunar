@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { Layout } from "antd";
 import AddList from "@/components/AddList";
 import { TrelloCard } from "@/components/TrelloCard";
 import { CardProps } from "@/interfaces/trelloCard";

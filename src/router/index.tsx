@@ -1,12 +1,11 @@
-import React, { Children, useCallback, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
-  HashRouter,
   Routes,
   Route,
   BrowserRouter,
   Navigate,
 } from "react-router-dom";
-import { connect, useSelector } from "react-redux";
+import { connect } from "react-redux";
 import {
   changeWorkSpaceAction,
   openNavbarAction,

@@ -15,6 +15,7 @@ describe("登入頁面測試", () => {
         loginAction={vi.fn()}
         signInAction={() => {}}
         loginGoogle={() => {}}
+        getOrganization={() => {}}
         login={false}
         signIn={false}
       />

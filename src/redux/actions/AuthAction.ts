@@ -1,8 +1,7 @@
-import { LOGIN, GOOGLE_LOGIN, LOGOUT, GET_USER } from "../constants";
+import { LOGIN, GOOGLE_LOGIN, GET_USER } from "../constants";
 import { LoginProps } from "@/interfaces/user";
 import {
   loginApi,
-  loginGoogleApi,
   loginGoogleJWT,
   signInApi,
   loginJwtApi,

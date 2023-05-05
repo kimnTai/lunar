@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React from "react";
 import { AddWorkSpaceCss } from "./style";
-import { Button, Form, Input, Select } from "antd";
+import { Button, Form, Input } from "antd";
 import { NewOrganizationFormProps as FormValues } from "@/interfaces/organization";
 import { useApi } from "@/hooks/useApiHook";
 import { newOrganizationApi } from "@/api/organization";
@@ -13,7 +13,7 @@ const AddWorkSpace: React.FC<{ open: boolean; setOpen: Function }> = ({
   const onCancel: () => void = () => {
     setOpen(false);
   };
-  const [result, loading, callApi] = useApi(newOrganizationApi);
+  const [_result, loading, callApi] = useApi(newOrganizationApi);
 
   const onFinish = async (values: FormValues) => {
     await callApi({ name: values.name });

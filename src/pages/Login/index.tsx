@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import Logo from "@/assets/images/img_logo.png";
 import { Card, Button, Divider, Form, Input } from "antd";
 import GoogleIcon from "@/assets/images/google.png";
@@ -53,7 +53,7 @@ const Login: React.FC<{
 
   useEffect(() => {
     if (login) {
-      const id = JSON.parse(localStorage.getItem("userData")!)._id;
+      //const id = JSON.parse(localStorage.getItem("userData")!)._id;
       // navigate(`/user/${id}/boards`);
       (async () => {
         await getOrganization();

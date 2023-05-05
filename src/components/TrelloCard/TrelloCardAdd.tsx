@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
 import { EllipsisOutlined, CloseOutlined } from "@ant-design/icons";
-import { Button, Input, Form, Row, Col, Card } from "antd";
+import { Button, Input, Card } from "antd";
 import type { InputRef } from "antd";
 import { useDispatch } from "react-redux";
 import { ADD_CARD } from "@/redux/constants";
@@ -35,13 +35,13 @@ const TrelloCardAdd: React.FC<{
   const handleMouseDown = (e: any) => {
     e.preventDefault();
   };
-  const handleClick = () => {
-    setShowAddCard(false);
-    setText("");
-  };
-  const handleBlur = (e: any) => {
-    console.log(e);
-  };
+  // const handleClick = () => {
+  //   setShowAddCard(false);
+  //   setText("");
+  // };
+  // const handleBlur = (e: any) => {
+  //   console.log(e);
+  // };
   const inputRef = useRef<InputRef>(null);
   useEffect(() => {
     if (showAddCard) inputRef.current!.focus({ cursor: "start" });
@@ -54,7 +54,7 @@ const TrelloCardAdd: React.FC<{
     >
       <div
         tabIndex={showAddCard ? 0 : undefined}
-        onBlur={(e) => {
+        onBlur={(_e) => {
           setText("");
           setShowAddCard(false);
         }}
