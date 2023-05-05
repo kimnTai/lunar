@@ -1,7 +1,7 @@
 import React from "react";
 import { AddBoardsCss } from "./style";
 
-const AddBorards: React.FC = () => {
-  return <AddBoardsCss>AddBorards</AddBoardsCss>;
+const AddBoards: React.FC = () => {
+  return <AddBoardsCss>AddBoards</AddBoardsCss>;
 };
-export default AddBorards;
+export default AddBoards;

@@ -65,7 +65,7 @@ const AppRouter: React.FC<any> = (props) => {
         showNavbar={showNavbar}
         openNav={openNav}
         workSpace={showWorkSpace}
-        setWrokSpace={changeWorkSpace}
+        setWorkSpace={changeWorkSpace}
         getOrganization={getOrganization}
       />
       <Layout>
@@ -137,7 +137,7 @@ const AppRouter: React.FC<any> = (props) => {
                   path={`/workspace/:workSpaceId/home`}
                   element={
                     <LoginLayout
-                      children={<WorkSpace setWrokSpace={changeWorkSpace} />}
+                      children={<WorkSpace setWorkSpace={changeWorkSpace} />}
                     />
                   }
                 />
@@ -150,7 +150,7 @@ const AppRouter: React.FC<any> = (props) => {
                           data={card}
                           // showNavbar={showNavbar}
                           workSpace={showWorkSpace}
-                          setWrokSpace={changeWorkSpace}
+                          setWorkSpace={changeWorkSpace}
                         />
                       }
                     />

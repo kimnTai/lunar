@@ -11,15 +11,15 @@ import { ColorIcon } from "@/components/Icons";
 import { useParams } from "react-router-dom";
 import { WorkSpaceCard, SkeletonCard } from "./WorkSpaceCard";
 import { useApi } from "@/hooks/useApiHook";
-import { getBordsApi } from "@/api/boards";
+import { getBoardsApi } from "@/api/boards";
 import { useSelector } from "react-redux";
 import { OrganizationProps } from "@/interfaces/organization";
 import { BoardsProps } from "@/interfaces/boards";
 
 const WorkSpace: React.FC<{
-  setWrokSpace: Function;
+  setWorkSpace: Function;
 }> = (props) => {
-  const { setWrokSpace } = props;
+  const { setWorkSpace } = props;
   const { workSpaceId } = useParams();
   console.log(workSpaceId);
   const userOrganization: OrganizationProps = useSelector(
@@ -115,7 +115,7 @@ const WorkSpace: React.FC<{
               title={ele.name}
               privacy={ele.permission}
               backgroundUrl={""}
-              setWrokSpace={setWrokSpace}
+              setWorkSpace={setWorkSpace}
               key={idx}
             />
           ))

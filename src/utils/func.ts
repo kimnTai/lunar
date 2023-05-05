@@ -14,13 +14,13 @@ const getNewData = (
   title: string,
   newArr: CardProps[]
 ) => {
-  let useCollumn = [...columns];
+  let useColumn = [...columns];
   const useIndex = columns.findIndex((ele) => ele.title === title);
   if (useIndex !== -1) {
-    const useArr = { ...useCollumn[useIndex], children: newArr };
-    useCollumn.splice(useIndex, 1, useArr);
+    const useArr = { ...useColumn[useIndex], children: newArr };
+    useColumn.splice(useIndex, 1, useArr);
   }
-  return useCollumn;
+  return useColumn;
 };
 
 const getColumn = (columns: CardProps[], title: string) => {

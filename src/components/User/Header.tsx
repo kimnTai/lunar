@@ -24,7 +24,7 @@ export const Header: React.FC<{
 }> = (props) => {
   const { workSpace } = props;
   const { avatar, name } = JSON.parse(localStorage.getItem("userData")!);
-  const [serch, setSerch] = useState("");
+  const [search, setSearch] = useState("");
   const dispatch = useDispatch();
   const navigate = useNavigate();
   return (
@@ -39,7 +39,7 @@ export const Header: React.FC<{
         </div>
 
         <Input
-          className="serch"
+          className="search"
           placeholder="搜尋所有卡片"
           prefix={<SearchOutlined />}
           style={{}}

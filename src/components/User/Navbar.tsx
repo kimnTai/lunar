@@ -23,9 +23,9 @@ export const Navbar: React.FC<{
   showNavbar: boolean;
   openNav: Function;
   workSpace: boolean;
-  setWrokSpace: Function;
+  setWorkSpace: Function;
   getOrganization: Function;
-}> = ({ showNavbar, openNav, workSpace, setWrokSpace, getOrganization }) => {
+}> = ({ showNavbar, openNav, workSpace, setWorkSpace, getOrganization }) => {
   const navigate = useNavigate();
   const handleClosed = () => {
     openNav(true);
@@ -130,7 +130,7 @@ export const Navbar: React.FC<{
                   }}
                   className="d-center"
                   onClick={() => {
-                    setWrokSpace(true);
+                    setWorkSpace(true);
                     navigate("/");
                   }}
                 />
