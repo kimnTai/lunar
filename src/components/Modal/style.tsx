@@ -18,4 +18,31 @@ export const AddWorkSpaceCss = styled(Modal)`
     }
   }
 `;
-export const AddBoardsCss = styled(Modal)``;
+
+export const AddBoardsCss = styled(Modal)`
+  .ant-modal-content {
+    padding: 0px;
+  }
+  .ant-modal-header {
+    padding: 16px;
+    border-bottom: 1px solid var(--grayd4);
+    margin-bottom: 0;
+  }
+  .ant-modal-body {
+    padding: 8px 16px 16px;
+    margin: 0;
+  }
+  .head-img {
+    width: 319px;
+    height: 150px;
+  }
+  .ant-select-selector {
+    height: 48px !important;
+    overflow: auto;
+    .ant-select-selection-item {
+      display: flex;
+      align-items: center;
+    }
+  }
+`;
+
