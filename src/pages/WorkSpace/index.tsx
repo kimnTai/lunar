@@ -22,7 +22,6 @@ const WorkSpace: React.FC<{
   const { setWrokSpace } = props;
   const { workSpaceId } = useParams();
   console.log(workSpaceId);
-  const [result, loading, callApi] = useApi(getBordsApi);
   const userOrganization: OrganizationProps = useSelector(
     (state: any) => state.user.organization
   ).length
@@ -30,18 +29,10 @@ const WorkSpace: React.FC<{
         (ele: OrganizationProps) => ele._id === workSpaceId
       )[0]
     : [];
-  console.log("===userOrganization===", userOrganization);
   const handleChange = (value: string) => {
     console.log(`selected ${value}`);
   };
-  useEffect(() => {
-    if (workSpaceId) {
-      (async () => {
-        await callApi(workSpaceId);
-      })();
-    }
-  }, [workSpaceId]);
-  console.log("===result===", result);
+
   return (
     <WorkSpaceCss>
       <Row align={"middle"} justify={"space-between"}>
@@ -118,10 +109,8 @@ const WorkSpace: React.FC<{
         </Col>
       </Row>
       <Row style={{ marginTop: "16px", columnGap: "8px" }}>
-        {loading ? (
-          <SkeletonCard />
-        ) : result && result.result.length ? (
-          result.result.map((ele: BoardsProps, idx: number) => (
+        {userOrganization.board.length ? (
+          userOrganization.board.map((ele: BoardsProps, idx: number) => (
             <WorkSpaceCard
               title={ele.name}
               privacy={ele.permission}

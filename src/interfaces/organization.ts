@@ -1,3 +1,5 @@
+import { BoardsProps } from "./boards";
+
 export interface OrganizationProps {
   _id: string;
   name: string;
@@ -5,7 +7,7 @@ export interface OrganizationProps {
   member: OrganizationMemberProps[];
   createdAt: string;
   updatedAt: string;
-  board: any[];
+  board: BoardsProps[];
   id: string;
 }
 
@@ -13,7 +15,6 @@ export interface OrganizationMemberProps {
   userId: string;
   role: string;
 }
-
 
 export interface NewOrganizationFormProps {
   name: string;
