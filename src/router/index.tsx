@@ -1,10 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {
-  Routes,
-  Route,
-  BrowserRouter,
-  Navigate,
-} from "react-router-dom";
+import { Routes, Route, BrowserRouter, Navigate } from "react-router-dom";
 import { connect } from "react-redux";
 import {
   changeWorkSpaceAction,
@@ -138,7 +133,7 @@ const AppRouter: React.FC<any> = (props) => {
                     <LoginLayout
                       children={
                         <WorkSpace
-                          setWrokSpace={changeWorkSpace}
+                          setWorkSpace={changeWorkSpace}
                           getOrganization={getOrganization}
                         />
                       }

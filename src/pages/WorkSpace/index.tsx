@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { WorkSpaceCss } from "./style";
 import { Row, Col, Button, Select } from "antd";
@@ -12,10 +11,10 @@ import { BoardsProps } from "@/interfaces/boards";
 import AddBorards from "@/components/Modal/AddBorards";
 
 const WorkSpace: React.FC<{
-  setWrokSpace: Function;
+  setWorkSpace: Function;
   getOrganization: Function;
 }> = (props) => {
-  const { setWrokSpace, getOrganization } = props;
+  const { setWorkSpace, getOrganization } = props;
   const { workSpaceId } = useParams();
   const [openModal, setOpenModal] = useState(false);
   const userOrganization: OrganizationProps = useSelector(

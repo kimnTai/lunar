@@ -5,10 +5,11 @@ import { NewOrganizationFormProps as FormValues } from "@/interfaces/organizatio
 import { useApi } from "@/hooks/useApiHook";
 import { newOrganizationApi } from "@/api/organization";
 
-const AddWorkSpace: React.FC<{ open: boolean; setOpen: Function }> = ({
-  open,
-  setOpen,
-}) => {
+const AddWorkSpace: React.FC<{
+  open: boolean;
+  setOpen: Function;
+  getOrganization: Function;
+}> = ({ open, setOpen, getOrganization }) => {
   const [form] = Form.useForm<FormValues>();
   const onCancel: () => void = () => {
     setOpen(false);
@@ -17,6 +18,7 @@ const AddWorkSpace: React.FC<{ open: boolean; setOpen: Function }> = ({
 
   const onFinish = async (values: FormValues) => {
     await callApi({ name: values.name });
+    await getOrganization();
     onCancel();
   };
   return (

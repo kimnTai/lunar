@@ -25,7 +25,7 @@ export const Navbar: React.FC<{
   workSpace: boolean;
   setWorkSpace: Function;
   getOrganization: Function;
-}> = ({ showNavbar, openNav, workSpace, setWorkSpace }) => {
+}> = ({ showNavbar, openNav, workSpace, setWorkSpace, getOrganization }) => {
   const navigate = useNavigate();
   const handleClosed = () => {
     openNav(true);
@@ -171,7 +171,11 @@ export const Navbar: React.FC<{
           }}
         />
       )}
-      <AddWorkSpace open={open} setOpen={setOpen} />
+      <AddWorkSpace
+        open={open}
+        setOpen={setOpen}
+        getOrganization={getOrganization}
+      />
     </Sider>
   );
 };

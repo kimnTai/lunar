@@ -6,7 +6,7 @@ import { NewBoardsProps } from "@/interfaces/boards";
 import { Button, Form, Input, Select } from "antd";
 import Cover from "@/assets/images/img_cover.png";
 
-const AddBorards: React.FC<{
+const AddBoards: React.FC<{
   open: boolean;
   setOpen: Function;
   organizationId: string;
