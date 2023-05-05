@@ -1,24 +1,24 @@
 import React from "react";
-import { Row, Col, Button, Select, Skeleton } from "antd";
-import { WoarkSpaceCardCss } from "./style";
-import { WoarkSpaceCardProps } from "@/interfaces/workspace";
+import { Row, Col, Button, Skeleton } from "antd";
+import { WorkSpaceCardCss } from "./style";
+import { WorkSpaceCardProps } from "@/interfaces/workspace";
 import { LockOutlined, EllipsisOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 
-export const WorkSpaceCard: React.FC<WoarkSpaceCardProps> = ({
+export const WorkSpaceCard: React.FC<WorkSpaceCardProps> = ({
   title,
   privacy,
   backgroundUrl,
-  setWrokSpace,
+  setWorkSpace,
 }) => {
   const navigate = useNavigate();
 
   return (
-    <WoarkSpaceCardCss
+    <WorkSpaceCardCss
       hoverable
       backgroundurl={backgroundUrl}
       onClick={() => {
-        setWrokSpace("billboard");
+        setWorkSpace("billboard");
         navigate("/board/6451de40d14c79f29ef99b74");
       }}
     >
@@ -45,17 +45,17 @@ export const WorkSpaceCard: React.FC<WoarkSpaceCardProps> = ({
           />
         </Col>
       </Row>
-    </WoarkSpaceCardCss>
+    </WorkSpaceCardCss>
   );
 };
 
 export const SkeletonCard: React.FC = () => {
   return (
-    <WoarkSpaceCardCss
+    <WorkSpaceCardCss
       backgroundurl={"none"}
       style={{ backgroundColor: "var(--grey9F)" }}
     >
       <Skeleton active />
-    </WoarkSpaceCardCss>
+    </WorkSpaceCardCss>
   );
 };

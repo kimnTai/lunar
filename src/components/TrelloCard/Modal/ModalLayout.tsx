@@ -92,7 +92,7 @@ const ModalContent: React.FC = () => {
   const [openTextEditor, setOpenTextEditor] = useState(false);
   const [text, setText] = useState("<p>還沒有資料暫時使用</p>");
   const [form] = Form.useForm();
-  const onSubmit = (values: string) => {
+  const onSubmit = (_values: string) => {
     form.resetFields();
     setOpenTextEditor(false);
   };

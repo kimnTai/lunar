@@ -13,7 +13,7 @@ const NewWorkSpace: React.FC<{ getOrganization: Function }> = ({
   getOrganization,
 }) => {
   const [form] = Form.useForm<FormValues>();
-  const [result, loading, callApi] = useApi(newOrganizationApi);
+  const [_result, loading, callApi] = useApi(newOrganizationApi);
   const navigate = useNavigate();
   const onFinish = async (values: FormValues) => {
     await callApi({ name: values.name });

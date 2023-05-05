@@ -5,6 +5,7 @@ import { NewBoardsProps } from "@/interfaces/boards";
 //   return Request.get(`/boards?organizationId=${organizationId}`);
 // };
 
+
 // 新增boards
 export const newBoardApi = (data: NewBoardsProps) => {
   return Request.post(`/boards`, { ...data });

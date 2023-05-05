@@ -1,5 +1,5 @@
 import React from "react";
-import { HomeCss, Section1Css, Section2Css } from "./style";
+import { HomeCss, Section1Css } from "./style";
 import { Button, Input, Form } from "antd";
 
 const Section1: React.FC = () => {
@@ -54,14 +54,14 @@ const Section1: React.FC = () => {
   );
 };
 
-const Section2: React.FC = () => {
-  return (
-    <Section2Css>
-      <span className="text">實際運用</span>
-      <h2>適用於任何大型或小型專案的工作流程</h2>
-    </Section2Css>
-  );
-};
+// const Section2: React.FC = () => {
+//   return (
+//     <Section2Css>
+//       <span className="text">實際運用</span>
+//       <h2>適用於任何大型或小型專案的工作流程</h2>
+//     </Section2Css>
+//   );
+// };
 
 const HomeContent: React.FC = () => {
   return (

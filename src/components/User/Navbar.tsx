@@ -9,7 +9,7 @@ import {
   SettingOutlined,
   ArrowLeftOutlined,
 } from "@ant-design/icons";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Logo from "@/assets/images/logo.png";
 import Logo2 from "@/assets/images/img_logo2.png";
 import type { MenuProps } from "antd";
@@ -23,9 +23,9 @@ export const Navbar: React.FC<{
   showNavbar: boolean;
   openNav: Function;
   workSpace: boolean;
-  setWrokSpace: Function;
+  setWorkSpace: Function;
   getOrganization: Function;
-}> = ({ showNavbar, openNav, workSpace, setWrokSpace, getOrganization }) => {
+}> = ({ showNavbar, openNav, workSpace, setWorkSpace }) => {
   const navigate = useNavigate();
   const handleClosed = () => {
     openNav(true);
@@ -130,7 +130,7 @@ export const Navbar: React.FC<{
                   }}
                   className="d-center"
                   onClick={() => {
-                    setWrokSpace(true);
+                    setWorkSpace(true);
                     navigate("/");
                   }}
                 />

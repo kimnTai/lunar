@@ -1,14 +1,13 @@
-import React, { useState } from "react";
+import React from "react";
 import { HeaderCss } from "./style";
 import {
   SearchOutlined,
-  DownOutlined,
   BellOutlined,
   PoweroffOutlined,
 } from "@ant-design/icons";
 import type { MenuProps } from "antd";
-import { Input, Button, Dropdown, Space, Tooltip, Badge, Avatar } from "antd";
-import { Link, Navigate, useNavigate } from "react-router-dom";
+import { Input, Button, Badge, Avatar } from "antd";
+import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { DropdownBtn } from "@/components/DropdownBtn";
 
@@ -24,7 +23,7 @@ export const Header: React.FC<{
 }> = (props) => {
   const { workSpace } = props;
   const { avatar, name } = JSON.parse(localStorage.getItem("userData")!);
-  const [serch, setSerch] = useState("");
+  //const [search, setSearch] = useState("");
   const dispatch = useDispatch();
   const navigate = useNavigate();
   return (
@@ -39,7 +38,7 @@ export const Header: React.FC<{
         </div>
 
         <Input
-          className="serch"
+          className="search"
           placeholder="搜尋所有卡片"
           prefix={<SearchOutlined />}
           style={{}}

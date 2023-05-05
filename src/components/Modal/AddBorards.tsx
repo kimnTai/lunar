@@ -71,4 +71,4 @@ const AddBorards: React.FC<{
     </AddBoardsCss>
   );
 };
-export default AddBorards;
+export default AddBoards;

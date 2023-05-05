@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { WorkSpaceCss } from "./style";
 import { Row, Col, Button, Select } from "antd";
@@ -117,7 +118,7 @@ const WorkSpace: React.FC<{
               title={ele.name}
               privacy={ele.permission}
               backgroundUrl={""}
-              setWrokSpace={setWrokSpace}
+              setWorkSpace={setWorkSpace}
               key={idx}
             />
           ))

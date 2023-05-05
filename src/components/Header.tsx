@@ -1,4 +1,3 @@
-import React from "react";
 import styled from "styled-components";
 import HeaderLogo from "@/assets/images/img_logo.png";
 

@@ -1,4 +1,4 @@
-import { Layout, Row, Card } from "antd";
+import { Layout } from "antd";
 import styled from "styled-components";
 import { media } from "@/assets/constants";
 

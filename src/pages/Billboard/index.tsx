@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { Layout } from "antd";
 import AddList from "@/components/AddList";
 import { TrelloCard } from "@/components/TrelloCard";
 import { CardProps } from "@/interfaces/trelloCard";
@@ -10,10 +9,10 @@ import { BillboardStyled } from "./style";
 const Billboard: React.FC<{
   data: CardProps[];
   workSpace: boolean;
-  setWrokSpace: Function;
-}> = ({ data, workSpace, setWrokSpace }) => {
+  setWorkSpace: Function;
+}> = ({ data, workSpace, setWorkSpace }) => {
   useEffect(() => {
-    if (workSpace) setWrokSpace(false);
+    if (workSpace) setWorkSpace(false);
   }, [workSpace]);
   const [cardList, setCardList] = useState<CardProps[]>([]);
   const [ordered, setOrdered] = useState<string[]>([]);

@@ -72,7 +72,7 @@ export const TrelloCardList: React.FC<TrelloCardListProps> = (props) => {
     listId = "LIST",
     listType,
     isCombineEnabled,
-    useClone,
+    //useClone,
     internalScroll,
     quotes,
     showAddCard,

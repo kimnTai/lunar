@@ -1,6 +1,6 @@
-export interface WoarkSpaceCardProps {
+export interface WorkSpaceCardProps {
   title: string;
   backgroundUrl: string;
   privacy: string;
-  setWrokSpace: Function;
+  setWorkSpace: Function;
 }

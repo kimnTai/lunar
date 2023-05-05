@@ -23,7 +23,7 @@ export const WorkSpaceCss = styled.div`
   }
 `;
 
-export const WoarkSpaceCardCss = styled(Card)<{ backgroundurl: string }>`
+export const WorkSpaceCardCss = styled(Card)<{ backgroundurl: string }>`
   background-color: var(--dark); // 暫時使用
 
   color: white;
