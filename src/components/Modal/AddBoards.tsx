@@ -12,11 +12,11 @@ const AddBoards: React.FC<{
   organizationId: string;
   getOrganization: Function;
 }> = ({ open, setOpen, organizationId, getOrganization }) => {
-  const [form] = Form.useForm<NewBoardsProps>();
+  const [_form] = Form.useForm<NewBoardsProps>();
   const onCancel: () => void = () => {
     setOpen(false);
   };
-  const [result, loading, callApi] = useApi(newBoardApi);
+  const [_result, loading, callApi] = useApi(newBoardApi);
 
   const onFinish = async (values: NewBoardsProps) => {
     console.log("===values===", values);

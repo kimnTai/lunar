@@ -2,7 +2,6 @@ import "./matchMedia.ts";
 import "@testing-library/jest-dom";
 import { render, screen, cleanup } from "@testing-library/react";
 import Login from "@/pages/Login/index";
-import { useDispatch } from "react-redux";
 
 afterEach(() => {
   cleanup();
