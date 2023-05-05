@@ -18,3 +18,4 @@ export const AddWorkSpaceCss = styled(Modal)`
     }
   }
 `;
+export const AddBoardsCss = styled(Modal)``;
