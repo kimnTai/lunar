@@ -24,7 +24,7 @@
 ## 使用技術
 
 - [react_v18](https://zh-hant.reactjs.org/)
-- [typscript](https://www.typescriptlang.org/)
+- [typescript](https://www.typescriptlang.org/)
 - [react-router-dom_v6](https://reactrouter.com/en/main)
 - [react-redux](https://react-redux.js.org/)
 - [redux-thunk](https://github.com/reduxjs/redux-thunk)

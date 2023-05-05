@@ -33,7 +33,7 @@ const Footer: React.FC = () => {
             alignItems: "center",
           }}
         >
-          <div>@ 2023, Lunar All rights reserveed</div>
+          <div>@ 2023, Lunar All rights reserved</div>
           <div>隱私權</div>
           <div>條款政策</div>
         </Col>

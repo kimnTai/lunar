@@ -8,7 +8,7 @@ import { WorkSpaceCard } from "./WorkSpaceCard";
 import { useSelector } from "react-redux";
 import { OrganizationProps } from "@/interfaces/organization";
 import { BoardsProps } from "@/interfaces/boards";
-import AddBorards from "@/components/Modal/AddBorards";
+import AddBoards from "@/components/Modal/AddBoards";
 
 const WorkSpace: React.FC<{
   setWorkSpace: Function;
@@ -78,7 +78,7 @@ const WorkSpace: React.FC<{
           >
             新增看板
           </Button>
-          <AddBorards
+          <AddBoards
             open={openModal}
             setOpen={setOpenModal}
             organizationId={workSpaceId!}
