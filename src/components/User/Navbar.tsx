@@ -64,16 +64,22 @@ export const Navbar: React.FC<{
 
   const [open, setOpen] = useState(false);
   const [items, setItems] = useState<MenuProps["items"]>();
+  const [select, setSelect] = useState<string>("");
+  const [openKey, setOpenKey] = useState<string[]>();
   const userOrganization = useSelector((state: any) => state.user.organization);
-  console.log("===userOrganization===", userOrganization);
 
-  const handleClick = (element: any) => {
+  const handleClick: MenuProps["onClick"] = (element) => {
     console.log(element);
     if (element.key === "addWorkSpace") setOpen(true);
     if (element.key.indexOf("/home") !== -1)
       navigate(`/workspace/${element.key}`);
   };
-
+  const handleSelectChange = (element: any) => {
+    setSelect(element.key);
+  };
+  const handleOpenChange = (element: any) => {
+    setOpenKey(element);
+  };
   useEffect(() => {
     if (userOrganization) {
       const useItem = userOrganization.map((ele: OrganizationProps) => {
@@ -90,6 +96,8 @@ export const Navbar: React.FC<{
           getSubMenu(ele._id)
         );
       });
+      setSelect(`${userOrganization[0]._id}/home`);
+      setOpenKey([userOrganization[0]._id]);
       setItems([...useItem, ...defaultItems]);
     }
   }, [userOrganization]);
@@ -138,11 +146,13 @@ export const Navbar: React.FC<{
           </div>
           <Menu
             onClick={handleClick}
-            defaultSelectedKeys={["1"]}
-            defaultOpenKeys={["sub1"]}
+            selectedKeys={[select]}
+            openKeys={openKey}
             mode="inline"
             items={items}
             inlineIndent={16}
+            onSelect={handleSelectChange}
+            onOpenChange={handleOpenChange}
             style={{
               backgroundColor: workSpace ? "white" : "var(--black23)",
               color: workSpace ? "black" : "white",

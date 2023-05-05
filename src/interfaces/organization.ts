@@ -9,7 +9,7 @@ export interface OrganizationProps {
   id: string;
 }
 
-interface OrganizationMemberProps {
+export interface OrganizationMemberProps {
   userId: string;
   role: string;
 }

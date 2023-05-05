@@ -1,4 +1,4 @@
-import { Card } from "antd";
+import { Card, Layout } from "antd";
 import styled from "styled-components";
 
 export const WorkSpaceCss = styled.div`
@@ -37,5 +37,26 @@ export const WoarkSpaceCardCss = styled(Card)<{ backgroundurl: string }>`
     justify-content: space-between;
     flex-direction: column;
     height: 100%;
+  }
+`;
+
+export const NewWorkSpaceCss = styled(Layout)`
+  position: relative;
+  height: calc(100% - 80px);
+  .bg-left {
+    max-height: 100%;
+    max-width: 100%;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+  }
+  h1 {
+    line-height: 120%;
+    font-size: 32px;
+    font-weight: 700;
+    color: var(--black23);
+  }
+  .ant-form-item-label {
+    font-weight: bold;
   }
 `;

@@ -16,8 +16,8 @@ const AddWorkSpace: React.FC<{ open: boolean; setOpen: Function }> = ({
   const [result, loading, callApi] = useApi(newOrganizationApi);
 
   const onFinish = async (values: FormValues) => {
-    console.log(values);
     await callApi({ name: values.name });
+    onCancel();
   };
   return (
     <AddWorkSpaceCss open={open} onCancel={onCancel} footer={null}>

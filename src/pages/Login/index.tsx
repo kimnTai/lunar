@@ -28,9 +28,17 @@ const Login: React.FC<{
   signInAction: Function;
   loginAction: Function;
   loginGoogle: Function;
+  getOrganization: Function;
   login: boolean;
   signIn: boolean;
-}> = ({ signInAction, loginAction, loginGoogle, login, signIn }) => {
+}> = ({
+  signInAction,
+  loginAction,
+  getOrganization,
+  loginGoogle,
+  login,
+  signIn,
+}) => {
   const navigate = useNavigate();
   const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
   useEffect(() => {
@@ -47,7 +55,10 @@ const Login: React.FC<{
     if (login) {
       const id = JSON.parse(localStorage.getItem("userData")!)._id;
       // navigate(`/user/${id}/boards`);
-      navigate(`/`);
+      (async () => {
+        await getOrganization();
+        navigate(`/`);
+      })();
     }
   }, [login]);
 

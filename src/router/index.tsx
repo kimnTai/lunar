@@ -27,7 +27,9 @@ import { Header } from "@/components/User/Header";
 import { Navbar } from "@/components/User/Navbar";
 import WorkSpace from "@/pages/WorkSpace";
 import Billboard from "@/pages/Billboard";
+import NewWorkSpace from "@/pages/WorkSpace/NewWorkSpace";
 import { MainLayoutCss } from "@/pages/Billboard/style";
+import SpinPage from "@/pages/SpinPage";
 
 const AppRouter: React.FC<any> = (props) => {
   const {
@@ -41,12 +43,19 @@ const AppRouter: React.FC<any> = (props) => {
     signInAction,
     showWorkSpace,
     changeWorkSpace,
+    organization,
     getOrganization,
   } = props;
+  const [load, setLoad] = useState(true);
   useEffect(() => {
     if (localStorage.getItem("token")) {
-      loginJwt();
-      getOrganization();
+      (async () => {
+        await loginJwt();
+        await getOrganization();
+        setLoad(false);
+      })();
+    } else {
+      setLoad(false);
     }
   }, [localStorage.getItem("token"), login]);
 
@@ -61,7 +70,9 @@ const AppRouter: React.FC<any> = (props) => {
       />
       <Layout>
         <Header workSpace={showWorkSpace} />
-        <MainLayoutCss workspace={showWorkSpace}>{children}</MainLayoutCss>
+        <MainLayoutCss workspace={showWorkSpace.toString()}>
+          {children}
+        </MainLayoutCss>
       </Layout>
     </Layout>
   ));
@@ -69,79 +80,86 @@ const AppRouter: React.FC<any> = (props) => {
   return (
     <BrowserRouter>
       <Routes>
-        {!login && <Route path="/" element={<Home />}></Route>}
-        <Route
-          path="/login"
-          element={
-            <Login
-              signInAction={signInAction}
-              loginAction={loginAction}
-              loginGoogle={loginGoogle}
-              login={login}
-              signIn={false}
-            />
-          }
-        />
-        <Route
-          path="/signup"
-          element={
-            <Login
-              signInAction={signInAction}
-              loginAction={loginAction}
-              loginGoogle={loginGoogle}
-              login={login}
-              signIn={true}
-            />
-          }
-        />
-        {login && (
+        {load && <Route path="*" element={<SpinPage />} />}
+        {!load && (
           <>
+            {!login && <Route path="/" element={<Home />}></Route>}
             <Route
-              path={"/"}
+              path="/login"
               element={
-                <Navigate
-                  to={`/user/${
-                    JSON.parse(localStorage.getItem("userData")!)._id
-                  }/boards`}
+                <Login
+                  signInAction={signInAction}
+                  loginAction={loginAction}
+                  loginGoogle={loginGoogle}
+                  login={login}
+                  signIn={false}
+                  getOrganization={getOrganization}
                 />
               }
             />
             <Route
-              index
-              path={`/user/:userId/boards`}
+              path="/signup"
               element={
-                <LoginLayout
-                  children={<WorkSpace setWrokSpace={changeWorkSpace} />}
+                <Login
+                  signInAction={signInAction}
+                  loginAction={loginAction}
+                  loginGoogle={loginGoogle}
+                  login={login}
+                  signIn={true}
+                  getOrganization={getOrganization}
                 />
               }
             />
-            <Route
-              index
-              path={`/workspace/:workSpaceId/home`}
-              element={
-                <LoginLayout
-                  children={<WorkSpace setWrokSpace={changeWorkSpace} />}
+            <Route path="*" element={<ErrorPage />} />
+            {login && (
+              <>
+                {console.log("in route")}
+
+                {organization?.length ? (
+                  <Route
+                    path={"/"}
+                    element={
+                      <Navigate to={`/workspace/${organization[0]._id}/home`} />
+                    }
+                  />
+                ) : (
+                  <Route
+                    path={"/"}
+                    element={<Navigate to={"/workspace/new"} />}
+                  />
+                )}
+                <Route
+                  path={"/workspace/new"}
+                  element={<NewWorkSpace getOrganization={getOrganization} />}
                 />
-              }
-            />
-            <Route
-              path="/board/:boardId"
-              element={
-                <LoginLayout
-                  children={
-                    <Billboard
-                      data={card}
-                      // showNavbar={showNavbar}
-                      workSpace={showWorkSpace}
-                      setWrokSpace={changeWorkSpace}
+                <Route
+                  index
+                  path={`/workspace/:workSpaceId/home`}
+                  element={
+                    <LoginLayout
+                      children={<WorkSpace setWrokSpace={changeWorkSpace} />}
                     />
                   }
                 />
-              }
-            />
+                <Route
+                  path="/board/:boardId"
+                  element={
+                    <LoginLayout
+                      children={
+                        <Billboard
+                          data={card}
+                          // showNavbar={showNavbar}
+                          workSpace={showWorkSpace}
+                          setWrokSpace={changeWorkSpace}
+                        />
+                      }
+                    />
+                  }
+                />
+              </>
+            )}
           </>
         )}
-        <Route path="*" element={<ErrorPage />} />
       </Routes>
     </BrowserRouter>
   );
@@ -151,6 +169,7 @@ const mapStateToProps = (state: any) => ({
   showWorkSpace: state.screen.showWorkSpace,
   card: state.card.cardList,
   login: state.auth.login,
+  organization: state.user.organization,
 });
 export default connect(mapStateToProps, {
   openNav: openNavbarAction,

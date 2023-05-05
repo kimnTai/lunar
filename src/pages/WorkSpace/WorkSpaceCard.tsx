@@ -1,11 +1,11 @@
 import React from "react";
-import { Row, Col, Button, Select } from "antd";
+import { Row, Col, Button, Select, Skeleton } from "antd";
 import { WoarkSpaceCardCss } from "./style";
 import { WoarkSpaceCardProps } from "@/interfaces/workspace";
 import { LockOutlined, EllipsisOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 
-const WorkSpaceCard: React.FC<WoarkSpaceCardProps> = ({
+export const WorkSpaceCard: React.FC<WoarkSpaceCardProps> = ({
   title,
   privacy,
   backgroundUrl,
@@ -49,4 +49,13 @@ const WorkSpaceCard: React.FC<WoarkSpaceCardProps> = ({
   );
 };
 
-export default WorkSpaceCard;
+export const SkeletonCard: React.FC = () => {
+  return (
+    <WoarkSpaceCardCss
+      backgroundurl={"none"}
+      style={{ backgroundColor: "var(--grey9F)" }}
+    >
+      <Skeleton active />
+    </WoarkSpaceCardCss>
+  );
+};

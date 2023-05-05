@@ -9,51 +9,74 @@ import {
 } from "@ant-design/icons";
 import { ColorIcon } from "@/components/Icons";
 import { useParams } from "react-router-dom";
-import WorkSpaceCard from "./WorkSpaceCard";
+import { WorkSpaceCard, SkeletonCard } from "./WorkSpaceCard";
+import { useApi } from "@/hooks/useApiHook";
+import { getBordsApi } from "@/api/boards";
+import { useSelector } from "react-redux";
+import { OrganizationProps } from "@/interfaces/organization";
+import { BoardsProps } from "@/interfaces/boards";
 
 const WorkSpace: React.FC<{
   setWrokSpace: Function;
 }> = (props) => {
   const { setWrokSpace } = props;
-  const { userId } = useParams();
-  console.log(userId);
+  const { workSpaceId } = useParams();
+  console.log(workSpaceId);
+  const [result, loading, callApi] = useApi(getBordsApi);
+  const userOrganization: OrganizationProps = useSelector(
+    (state: any) => state.user.organization
+  ).length
+    ? useSelector((state: any) => state.user.organization).filter(
+        (ele: OrganizationProps) => ele._id === workSpaceId
+      )[0]
+    : [];
+  console.log("===userOrganization===", userOrganization);
   const handleChange = (value: string) => {
     console.log(`selected ${value}`);
   };
-
+  useEffect(() => {
+    if (workSpaceId) {
+      (async () => {
+        await callApi(workSpaceId);
+      })();
+    }
+  }, [workSpaceId]);
+  console.log("===result===", result);
   return (
     <WorkSpaceCss>
       <Row align={"middle"} justify={"space-between"}>
         <Row>
           <ColorIcon
             color={"white"}
-            text={"我"}
+            text={userOrganization.name[0]}
             fontSize={"32px"}
             size={"72px"}
             background={"var(--blue)"}
           />
           <Col className="workSpace" style={{ marginLeft: "16px" }}>
             <Row align={"middle"} justify={"center"}>
-              <h2>我的工作區</h2>
+              <h2>{userOrganization.name}</h2>
               <Button
                 style={{ width: "28px", background: "#F7F7F7", border: 0 }}
                 shape="circle"
                 icon={<EditOutlined />}
               />
             </Row>
-            <Row
-              align={"middle"}
-              justify={"start"}
-              style={{ marginTop: "8px" }}
-            >
-              <Button
-                style={{ width: "69px", height: "29px" }}
-                type="primary"
-                danger
-                ghost
-                icon={<LockOutlined />}
-              />
-            </Row>
+            {userOrganization.permission === "private" && (
+              <Row
+                align={"middle"}
+                justify={"start"}
+                style={{ marginTop: "8px" }}
+              >
+                <Button
+                  style={{ width: "69px", height: "29px" }}
+                  type="primary"
+                  danger
+                  ghost
+                  icon={<LockOutlined />}
+                />
+              </Row>
+            )}
           </Col>
         </Row>
         <Col>
@@ -76,7 +99,7 @@ const WorkSpace: React.FC<{
         justify={"space-between"}
         style={{ marginTop: "16px" }}
       >
-        <Col style={{ fontWeight: 700, fontSize: " 16px", lineHeight: "150%" }}>
+        <Col style={{ fontWeight: 700, fontSize: "16px", lineHeight: "150%" }}>
           我的看板
         </Col>
         <Col>
@@ -94,15 +117,22 @@ const WorkSpace: React.FC<{
           />
         </Col>
       </Row>
-      <Row>
-        <Col>
-          <WorkSpaceCard
-            title={"UI / UX 前端網頁設計課程的筆記"}
-            privacy={"私人"}
-            backgroundUrl={""}
-            setWrokSpace={setWrokSpace}
-          />
-        </Col>
+      <Row style={{ marginTop: "16px", columnGap: "8px" }}>
+        {loading ? (
+          <SkeletonCard />
+        ) : result && result.result.length ? (
+          result.result.map((ele: BoardsProps, idx: number) => (
+            <WorkSpaceCard
+              title={ele.name}
+              privacy={ele.permission}
+              backgroundUrl={""}
+              setWrokSpace={setWrokSpace}
+              key={idx}
+            />
+          ))
+        ) : (
+          <></>
+        )}
       </Row>
     </WorkSpaceCss>
   );
