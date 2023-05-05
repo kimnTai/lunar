@@ -138,7 +138,7 @@ const AppRouter: React.FC<any> = (props) => {
                     <LoginLayout
                       children={
                         <WorkSpace
-                          setWrokSpace={changeWorkSpace}
+                          setWorkSpace={changeWorkSpace}
                           getOrganization={getOrganization}
                         />
                       }
