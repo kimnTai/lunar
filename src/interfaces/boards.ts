@@ -11,3 +11,9 @@ export interface BoardsProps {
   createdAt: string;
   updatedAt: string;
 }
+
+export interface NewBoardsProps {
+  organizationId: string;
+  name: string;
+  permission: string;
+}

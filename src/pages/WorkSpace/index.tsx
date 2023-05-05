@@ -1,27 +1,22 @@
-import React, { useCallback, useEffect } from "react";
+import React, { useState } from "react";
 import { WorkSpaceCss } from "./style";
 import { Row, Col, Button, Select } from "antd";
-import {
-  PlusOutlined,
-  EditOutlined,
-  LockOutlined,
-  EllipsisOutlined,
-} from "@ant-design/icons";
+import { PlusOutlined, EditOutlined, LockOutlined } from "@ant-design/icons";
 import { ColorIcon } from "@/components/Icons";
 import { useParams } from "react-router-dom";
-import { WorkSpaceCard, SkeletonCard } from "./WorkSpaceCard";
-import { useApi } from "@/hooks/useApiHook";
-import { getBordsApi } from "@/api/boards";
+import { WorkSpaceCard } from "./WorkSpaceCard";
 import { useSelector } from "react-redux";
 import { OrganizationProps } from "@/interfaces/organization";
 import { BoardsProps } from "@/interfaces/boards";
+import AddBorards from "@/components/Modal/AddBorards";
 
 const WorkSpace: React.FC<{
   setWrokSpace: Function;
+  getOrganization: Function;
 }> = (props) => {
-  const { setWrokSpace } = props;
+  const { setWrokSpace, getOrganization } = props;
   const { workSpaceId } = useParams();
-  console.log(workSpaceId);
+  const [openModal, setOpenModal] = useState(false);
   const userOrganization: OrganizationProps = useSelector(
     (state: any) => state.user.organization
   ).length
@@ -79,9 +74,15 @@ const WorkSpace: React.FC<{
               width: "121px",
               height: "45px",
             }}
+            onClick={() => setOpenModal(true)}
           >
             新增看板
           </Button>
+          <AddBorards
+            open={openModal}
+            setOpen={setOpenModal}
+            getOrganization={getOrganization}
+          />
         </Col>
       </Row>
 
