@@ -38,8 +38,10 @@ export const AddBoardsCss = styled(Modal)`
   }
   .ant-select-selector {
     height: 48px !important;
-  }
-  .ant-select-selection-item {
-    line-height: 48px;
+    overflow: auto;
+    .ant-select-selection-item {
+      display: flex;
+      align-items: center;
+    }
   }
 `;

@@ -9,8 +9,9 @@ import Cover from "@/assets/images/img_cover.png";
 const AddBorards: React.FC<{
   open: boolean;
   setOpen: Function;
+  organizationId: string;
   getOrganization: Function;
-}> = ({ open, setOpen, getOrganization }) => {
+}> = ({ open, setOpen, organizationId, getOrganization }) => {
   const [form] = Form.useForm<NewBoardsProps>();
   const onCancel: () => void = () => {
     setOpen(false);
@@ -18,9 +19,10 @@ const AddBorards: React.FC<{
   const [result, loading, callApi] = useApi(newBoardApi);
 
   const onFinish = async (values: NewBoardsProps) => {
+    console.log("===values===", values);
     await callApi({
       name: values.name,
-      organizationId: values.organizationId,
+      organizationId,
       permission: values.permission,
     });
     await getOrganization();
@@ -36,7 +38,7 @@ const AddBorards: React.FC<{
     >
       <img src={Cover} alt="" className="head-img" />
       <Form
-        form={form}
+        // form={form}
         onFinish={onFinish}
         layout="vertical"
         // style={{ marginTop: "16px" }}
@@ -44,8 +46,12 @@ const AddBorards: React.FC<{
         <Form.Item label="看板名稱" name="name">
           <Input style={{ height: "48px" }} />
         </Form.Item>
-        <Form.Item label={"觀看權限"} name="permission">
-          <Select defaultValue="workSpace">
+        <Form.Item
+          label={"觀看權限"}
+          name="permission"
+          initialValue="workSpace"
+        >
+          <Select>
             <Select.Option value="workSpace">工作區</Select.Option>
             <Select.Option value="green">私人</Select.Option>
             <Select.Option value="public">公開</Select.Option>

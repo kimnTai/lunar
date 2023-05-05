@@ -81,6 +81,7 @@ const WorkSpace: React.FC<{
           <AddBorards
             open={openModal}
             setOpen={setOpenModal}
+            organizationId={workSpaceId!}
             getOrganization={getOrganization}
           />
         </Col>
