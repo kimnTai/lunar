@@ -1,4 +1,4 @@
-import axios, { AxiosInstance } from "axios";
+import axios, { AxiosHeaders } from "axios";
 import { openNotification } from "@/utils/openNotification";
 
 // 顯示axios 返回的資料
@@ -15,8 +15,7 @@ interface Error<_T> {
   data: BaseResponse | string;
 }
 
-let responseErrorData: Error<object>;
-const instance: AxiosInstance = axios.create({
+const instance = axios.create({
   // 基本設定
   baseURL: import.meta.env.VITE_REACT_API,
   timeout: 10000,
@@ -26,19 +25,18 @@ const instance: AxiosInstance = axios.create({
 });
 
 instance.interceptors.request.use(
-  (config: any) => {
+  (config) => {
     // cookie 設定
-    const auth = `Bearer ${localStorage.getItem("token")}`;
-    config.headers = {
-      Authorization: auth,
-    };
+    config.headers = new AxiosHeaders({
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+    });
     return config;
   },
-  (error: any) => Promise.reject(error)
+  (error) => Promise.reject(error)
 );
 
 instance.interceptors.response.use(
-  (response: any) => {
+  (response) => {
     // const hasDisposition = response.request.getResponseHeader(
     //   "Content-Disposition"
     // );
@@ -52,9 +50,9 @@ instance.interceptors.response.use(
 
     return response.data;
   },
-  (error: any) => {
-    let { status, data } = error.response;
-    responseErrorData = {
+  (error) => {
+    const { status, data } = error.response;
+    const responseErrorData: Error<object> = {
       message: error.message,
       status,
       data,
