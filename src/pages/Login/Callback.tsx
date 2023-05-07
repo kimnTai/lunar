@@ -8,19 +8,17 @@ export default function Callback() {
     const searchParams = new URLSearchParams(window.location.search);
 
     const token = searchParams.get("token");
-    if (!token) {
-      return;
+    if (token) {
+      const userData = ["_id", "name", "email", "avatar"].reduce((pre, key) => {
+        return {
+          ...pre,
+          [key]: searchParams.get(key),
+        };
+      }, {});
+
+      localStorage.setItem("token", token);
+      localStorage.setItem("userData", JSON.stringify(userData));
     }
-
-    const userData = ["_id", "name", "email", "avatar"].reduce((pre, key) => {
-      return {
-        ...pre,
-        [key]: searchParams.get(key),
-      };
-    }, {});
-
-    localStorage.setItem("token", token);
-    localStorage.setItem("userData", JSON.stringify(userData));
 
     navigate("/login");
   });
