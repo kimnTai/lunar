@@ -24,6 +24,7 @@ import Billboard from "@/pages/Billboard";
 import NewWorkSpace from "@/pages/WorkSpace/NewWorkSpace";
 import { MainLayoutCss } from "@/pages/Billboard/style";
 import SpinPage from "@/pages/SpinPage";
+import Callback from "@/pages/Login/Callback";
 
 const AppRouter: React.FC<any> = (props) => {
   const {
@@ -78,6 +79,9 @@ const AppRouter: React.FC<any> = (props) => {
         {!load && (
           <>
             {!login && <Route path="/" element={<Home />}></Route>}
+            {!login && (
+              <Route path="/login/callback" element={<Callback />}></Route>
+            )}
             <Route
               path="/login"
               element={
