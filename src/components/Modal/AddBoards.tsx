@@ -52,8 +52,7 @@ const AddBoards: React.FC<{
           initialValue="workSpace"
         >
           <Select>
-            <Select.Option value="workSpace">工作區</Select.Option>
-            <Select.Option value="green">私人</Select.Option>
+            <Select.Option value="private">私人</Select.Option>
             <Select.Option value="public">公開</Select.Option>
           </Select>
         </Form.Item>
