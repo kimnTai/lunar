@@ -21,9 +21,6 @@ export const loginApi = (data: {
 // google 登入
 export const loginGoogleApi = () => Request.get("/user/google");
 
-export const loginGoogleJWT = (token: string) =>
-  Request.post("/user/google/verifyToken", { token });
-
 // 驗證登入
 export const loginJwtApi = () => Request.get("/user/verifyJwt");
 

@@ -6,7 +6,6 @@ export const CREATE_CARD_LIST = "CREATE_CARD_LIST";
 export const ADD_CARD = "ADD_CARD";
 // 登入
 export const LOGIN = "LOGIN";
-export const GOOGLE_LOGIN = "GOOGLE_LOGIN";
 export const LOGOUT = "LOGOUT";
 // 會員
 export const GET_USER = "GET_USER";
