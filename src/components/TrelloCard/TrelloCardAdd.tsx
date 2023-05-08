@@ -4,7 +4,7 @@ import { EllipsisOutlined, CloseOutlined } from "@ant-design/icons";
 import { Button, Input, Card } from "antd";
 import type { InputRef } from "antd";
 import { useDispatch } from "react-redux";
-import { ADD_CARD } from "@/redux/constants";
+import CONSTANTS from "@/redux/constants";
 
 const TrelloCardAddCss = styled(Card)<{ useadd: string }>`
   // height: ${(props) => props.useadd === "true" && "1px"};
@@ -74,7 +74,7 @@ const TrelloCardAdd: React.FC<{
               type="primary"
               onClick={() => {
                 dispatch({
-                  type: ADD_CARD,
+                  type: CONSTANTS.ADD_CARD,
                   payload: { title: text, listIndex },
                 });
                 setShowAddCard(false);

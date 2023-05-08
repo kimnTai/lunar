@@ -1,4 +1,4 @@
-import { OPEN_CLOSE_NAVBAR, CHANGE_WORK_SPACE } from "../constants";
+import CONSTANTS from "../constants";
 
 interface ScreenActionProps {
   type: string;
@@ -6,10 +6,10 @@ interface ScreenActionProps {
 
 export const openNavbarAction =
   () => async (dispatch: (arg: ScreenActionProps) => ScreenActionProps) => {
-    dispatch({ type: OPEN_CLOSE_NAVBAR });
+    dispatch({ type: CONSTANTS.OPEN_CLOSE_NAVBAR });
   };
 
 export const changeWorkSpaceAction =
   () => async (dispatch: (arg: ScreenActionProps) => ScreenActionProps) => {
-    dispatch({ type: CHANGE_WORK_SPACE });
+    dispatch({ type: CONSTANTS.CHANGE_WORK_SPACE });
   };

@@ -1,4 +1,4 @@
-import { GET_USER, GET_ORGANIZATION } from "../constants";
+import CONSTANTS from "../constants";
 import { UserProps } from "@/interfaces/user";
 import { OrganizationProps } from "@/interfaces/organization";
 
@@ -26,16 +26,16 @@ const UserReducer = function (
   action: { type: string; payload: any }
 ) {
   switch (action.type) {
-    case GET_USER: {
+    case CONSTANTS.GET_USER: {
       return {
         user: { ...action.payload.result },
         token: action.payload.token,
       };
     }
-    case GET_ORGANIZATION: {
+    case CONSTANTS.GET_ORGANIZATION: {
       return {
         ...state,
-        organization : [...action.payload]
+        organization: [...action.payload],
       };
     }
     default: {

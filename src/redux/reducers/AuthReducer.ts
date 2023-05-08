@@ -1,15 +1,15 @@
-import { LOGIN, LOGOUT } from "../constants";
+import CONSTANTS from "../constants";
 
-const initialState: { login: boolean } = {
+const initialState = {
   login: false,
 };
 
-const AuthReducer = function (
+export default function AuthReducer(
   state = initialState,
   action: { type: string; payload: any }
 ) {
   switch (action.type) {
-    case LOGIN: {
+    case CONSTANTS.LOGIN: {
       localStorage.setItem(
         "token",
         typeof action.payload.token === "string"
@@ -21,8 +21,7 @@ const AuthReducer = function (
         login: true,
       };
     }
-
-    case LOGOUT: {
+    case CONSTANTS.LOGOUT: {
       localStorage.removeItem("token");
       localStorage.removeItem("userData");
       return {
@@ -35,6 +34,4 @@ const AuthReducer = function (
       };
     }
   }
-};
-
-export default AuthReducer;
+}
