@@ -1,11 +1,6 @@
-import { LOGIN, GOOGLE_LOGIN, GET_USER } from "../constants";
+import { LOGIN, GET_USER } from "../constants";
 import { LoginProps } from "@/interfaces/user";
-import {
-  loginApi,
-  loginGoogleJWT,
-  signInApi,
-  loginJwtApi,
-} from "@/api/auth";
+import { loginApi, signInApi, loginJwtApi } from "@/api/auth";
 
 interface LoginActionProps {
   type: string;
@@ -29,16 +24,6 @@ export const loginAction =
       if (res.status === "success") {
         dispatch({ type: GET_USER, payload: res });
         dispatch({ type: LOGIN, payload: res });
-      }
-    });
-  };
-
-export const loginGoogleJwtAction =
-  (token: string) => async (dispatch: (arg: any) => any) => {
-    await loginGoogleJWT(token).then((res: any) => {
-      if (res.status === "success") {
-        dispatch({ type: GET_USER, payload: res });
-        dispatch({ type: GOOGLE_LOGIN, payload: res });
       }
     });
   };

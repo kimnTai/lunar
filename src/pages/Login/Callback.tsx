@@ -1,27 +1,27 @@
 import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
-export default function Callback() {
+const Callback: React.FC<{ loginJwt: Function; getOrganization: Function }> = ({
+  loginJwt,
+  getOrganization,
+}) => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const token = searchParams.get("token");
 
   useEffect(() => {
-    const searchParams = new URLSearchParams(window.location.search);
-
-    const token = searchParams.get("token");
     if (token) {
-      const userData = ["_id", "name", "email", "avatar"].reduce((pre, key) => {
-        return {
-          ...pre,
-          [key]: searchParams.get(key),
-        };
-      }, {});
-
       localStorage.setItem("token", token);
-      localStorage.setItem("userData", JSON.stringify(userData));
+      (async () => {
+        await loginJwt();
+        await getOrganization();
+      })();
     }
-
     navigate("/login");
-  });
+  }, [token]);
 
   return <div></div>;
-}
+};
+
+export default Callback;

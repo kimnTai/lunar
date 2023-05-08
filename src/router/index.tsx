@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Routes, Route, BrowserRouter, Navigate } from "react-router-dom";
+import { Routes, Route, Navigate, HashRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import {
   changeWorkSpaceAction,
@@ -11,7 +11,6 @@ import Login from "@/pages/Login";
 import {
   signInAction,
   loginAction,
-  loginGoogleJwtAction,
   loginJwtAction,
 } from "@/redux/actions/AuthAction";
 import Home from "@/pages/Home";
@@ -33,7 +32,6 @@ const AppRouter: React.FC<any> = (props) => {
     card,
     login,
     loginAction,
-    loginGoogle,
     loginJwt,
     signInAction,
     showWorkSpace,
@@ -44,6 +42,7 @@ const AppRouter: React.FC<any> = (props) => {
   const [load, setLoad] = useState(true);
   useEffect(() => {
     if (localStorage.getItem("token")) {
+      setLoad(true);
       (async () => {
         await loginJwt();
         await getOrganization();
@@ -52,8 +51,7 @@ const AppRouter: React.FC<any> = (props) => {
     } else {
       setLoad(false);
     }
-  }, [localStorage.getItem("token"), login]);
-
+  }, [login, organization.length]);
   const LoginLayout = React.memo(({ children }: any) => (
     <Layout>
       <Navbar
@@ -73,22 +71,28 @@ const AppRouter: React.FC<any> = (props) => {
   ));
 
   return (
-    <BrowserRouter>
+    <HashRouter>
       <Routes>
         {load && <Route path="*" element={<SpinPage />} />}
         {!load && (
           <>
             {!login && <Route path="/" element={<Home />}></Route>}
-            {!login && (
-              <Route path="/login/callback" element={<Callback />}></Route>
-            )}
+
+            <Route
+              path="/login/:callback"
+              element={
+                <Callback
+                  loginJwt={loginJwt}
+                  getOrganization={getOrganization}
+                />
+              }
+            ></Route>
             <Route
               path="/login"
               element={
                 <Login
                   signInAction={signInAction}
                   loginAction={loginAction}
-                  loginGoogle={loginGoogle}
                   login={login}
                   signIn={false}
                   getOrganization={getOrganization}
@@ -101,7 +105,6 @@ const AppRouter: React.FC<any> = (props) => {
                 <Login
                   signInAction={signInAction}
                   loginAction={loginAction}
-                  loginGoogle={loginGoogle}
                   login={login}
                   signIn={true}
                   getOrganization={getOrganization}
@@ -111,8 +114,6 @@ const AppRouter: React.FC<any> = (props) => {
             <Route path="*" element={<ErrorPage />} />
             {login && (
               <>
-                {console.log("in route")}
-
                 {organization?.length ? (
                   <Route
                     path={"/"}
@@ -164,7 +165,7 @@ const AppRouter: React.FC<any> = (props) => {
           </>
         )}
       </Routes>
-    </BrowserRouter>
+    </HashRouter>
   );
 };
 const mapStateToProps = (state: any) => ({
@@ -180,7 +181,6 @@ export default connect(mapStateToProps, {
   addCardList: addCardListAction,
   signInAction,
   loginAction,
-  loginGoogle: loginGoogleJwtAction,
   loginJwt: loginJwtAction,
   getOrganization: getOrganizationsAction,
 })(React.memo(AppRouter));

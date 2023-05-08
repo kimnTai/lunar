@@ -4,7 +4,6 @@ import { Card, Button, Divider, Form, Input } from "antd";
 import GoogleIcon from "@/assets/images/google.png";
 import AppleIcon from "@/assets/images/apple.png";
 import { LoginCss, ThirdPartyButtonCss } from "./style";
-import { GoogleLogin } from "react-google-login";
 import { gapi } from "gapi-script";
 import { useNavigate } from "react-router-dom";
 
@@ -27,18 +26,10 @@ const ThirdPartyButton: React.FC<{
 const Login: React.FC<{
   signInAction: Function;
   loginAction: Function;
-  loginGoogle: Function;
   getOrganization: Function;
   login: boolean;
   signIn: boolean;
-}> = ({
-  signInAction,
-  loginAction,
-  getOrganization,
-  loginGoogle,
-  login,
-  signIn,
-}) => {
+}> = ({ signInAction, loginAction, getOrganization, login, signIn }) => {
   const navigate = useNavigate();
   const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
   useEffect(() => {
@@ -68,9 +59,6 @@ const Login: React.FC<{
 
   const onFinishFailed = (errorInfo: any) => {
     console.log("Failed:", errorInfo);
-  };
-  const responseGoogle = async (response: any) => {
-    await loginGoogle(response.xc.id_token);
   };
 
   return (
@@ -143,30 +131,20 @@ const Login: React.FC<{
         >
           或
         </Divider>
-        <GoogleLogin
-          clientId={clientId}
-          render={(renderProps) => (
-            <ThirdPartyButton
-              icon={GoogleIcon}
-              text={signIn ? "使用 Google 註冊" : "使用 Google 登入"}
-              handleClick={renderProps.onClick}
-              // disabled={renderProps.disabled}
-            />
-          )}
-          buttonText="Login"
-          onSuccess={responseGoogle}
-          onFailure={responseGoogle}
-          cookiePolicy={"single_host_origin"}
-        />
 
         <ThirdPartyButton
-          icon={AppleIcon}
-          text={signIn ? "使用 Apple 註冊" : "使用 Apple 登入"}
+          icon={GoogleIcon}
+          text={signIn ? "使用 Google 註冊" : "使用 Google 登入"}
           handleClick={() => {
             window.location.href = `${
               import.meta.env.VITE_REACT_API
             }/user/google`;
           }}
+        />
+        <ThirdPartyButton
+          icon={AppleIcon}
+          text={signIn ? "使用 Apple 註冊" : "使用 Apple 登入"}
+          handleClick={() => {}}
         />
         <div className="have-account">
           <div>已經有帳戶了嗎？</div>
