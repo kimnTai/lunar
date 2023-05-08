@@ -6,10 +6,10 @@ import type { InputRef } from "antd";
 import { useDispatch } from "react-redux";
 import CONSTANTS from "@/redux/constants";
 
-const TrelloCardAddCss = styled(Card)<{ useadd: string }>`
-  // height: ${(props) => props.useadd === "true" && "1px"};
+const TrelloCardAddCss = styled(Card)<{ useAdd: string }>`
+  // height: ${(props) => props.useAdd === "true" && "1px"};
   min-height: 1px;
-  display: ${(props) => (props.useadd === "true" ? "block" : "none")};
+  display: ${(props) => (props.useAdd === "true" ? "block" : "none")};
   .bottom-func {
     margin-top: 5px;
     display: flex;
@@ -44,11 +44,14 @@ const TrelloCardAdd: React.FC<{
   // };
   const inputRef = useRef<InputRef>(null);
   useEffect(() => {
-    if (showAddCard) inputRef.current!.focus({ cursor: "start" });
+    if (showAddCard) {
+      inputRef.current!.focus({ cursor: "start" });
+    }
   }, [showAddCard]);
+
   return (
     <TrelloCardAddCss
-      useadd={showAddCard.toString()}
+      useAdd={showAddCard.toString()}
       bordered={false}
       bodyStyle={{ padding: 0 }}
     >

@@ -27,7 +27,7 @@ const PopoverContent: React.FC = () => {
   const handleClick: MenuProps["onClick"] = (element) => {
     setCurrent(element.key);
   };
-  console.log(current);
+
   return (
     <PopoverContentStyled>
       <Menu
@@ -66,6 +66,7 @@ const TrelloCardHeader: React.FC<TrelloCardHeaderProps> = (props) => {
   const [openPopover, setOpenPopover] = useState(false);
   const closePopover = () => setOpenPopover(false);
   const handleOpenChange = (ele: boolean) => setOpenPopover(ele);
+
   return (
     <TrelloCardHeaderStyled>
       {title}

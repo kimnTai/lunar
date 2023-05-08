@@ -10,6 +10,7 @@ export default function Header() {
   const handleLogin = () => {
     navigate("/login");
   };
+
   return (
     <HeaderCss>
       <Row justify="space-between">

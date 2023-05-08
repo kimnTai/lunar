@@ -18,13 +18,17 @@ import TrelloCardAdd from "./TrelloCardAdd";
 import TrelloCardModal from "./Modal";
 
 export const TrelloCard: React.FC<TrelloCardProps> = (props) => {
-  const { index, quotes } = props;
-  const { id, title } = quotes;
+  const {
+    index,
+    quotes: { id, title },
+  } = props;
+
   const [showAddCard, setShowAddCard] = useState(false);
   const [openModal, setOpenModal] = useState({
     id: "",
     open: false,
   });
+
   return (
     <>
       <Draggable draggableId={id} index={index}>
@@ -32,7 +36,7 @@ export const TrelloCard: React.FC<TrelloCardProps> = (props) => {
           <div ref={provided.innerRef} {...provided.draggableProps}>
             <TrelloCardStyled
               size="small"
-              isdargging={snapshot.isDragging.toString()}
+              isDragging={snapshot.isDragging.toString()}
             >
               <Card.Meta
                 title={<TrelloCardHeader title={title} />}
@@ -116,6 +120,7 @@ export const TrelloCardList: React.FC<TrelloCardListProps> = (props) => {
 
 const TrelloCardInner: React.FC<TrelloCardInnerProps> = React.memo((props) => {
   const { quotes, setOpenModal } = props;
+
   return quotes.children.map((quote: CardProps, index: number) => (
     <Draggable key={quote.id} draggableId={quote.id} index={index}>
       {(dragProvided, dragSnapshot) => (

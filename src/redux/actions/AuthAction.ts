@@ -17,6 +17,7 @@ export const signInAction =
       }
     });
   };
+
 export const loginAction =
   (data: LoginProps) =>
   async (dispatch: (arg: LoginActionProps) => LoginActionProps) => {
