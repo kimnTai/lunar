@@ -47,7 +47,7 @@ export const WorkSpaceCard: React.FC<WorkSpaceCardProps> = ({
     <WorkSpaceCardCss
       hoverable
       backgroundurl={backgroundUrl}
-      onClick={(e) => {
+      onClick={(_e) => {
         setWorkSpace(false);
         navigate(`/board/${id}`);
       }}
