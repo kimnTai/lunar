@@ -3,4 +3,6 @@ export interface WorkSpaceCardProps {
   backgroundUrl: string;
   privacy: string;
   setWorkSpace: Function;
+  getOrganization: Function;
+  id: string;
 }

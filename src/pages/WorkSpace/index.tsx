@@ -118,6 +118,8 @@ const WorkSpace: React.FC<{
               privacy={ele.permission}
               backgroundUrl={""}
               setWorkSpace={setWorkSpace}
+              getOrganization={getOrganization}
+              id={ele._id}
               key={idx}
             />
           ))

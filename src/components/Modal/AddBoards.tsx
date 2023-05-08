@@ -19,7 +19,6 @@ const AddBoards: React.FC<{
   const [_result, loading, callApi] = useApi(newBoardApi);
 
   const onFinish = async (values: NewBoardsProps) => {
-    console.log("===values===", values);
     await callApi({
       name: values.name,
       organizationId,
@@ -46,11 +45,7 @@ const AddBoards: React.FC<{
         <Form.Item label="看板名稱" name="name">
           <Input style={{ height: "48px" }} />
         </Form.Item>
-        <Form.Item
-          label={"觀看權限"}
-          name="permission"
-          initialValue="workSpace"
-        >
+        <Form.Item label={"觀看權限"} name="permission" initialValue="private">
           <Select>
             <Select.Option value="private">私人</Select.Option>
             <Select.Option value="public">公開</Select.Option>
