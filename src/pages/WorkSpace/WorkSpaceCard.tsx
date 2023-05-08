@@ -1,25 +1,55 @@
 import React from "react";
-import { Row, Col, Button, Skeleton } from "antd";
+import { Row, Col, Button, Skeleton, Popover } from "antd";
 import { WorkSpaceCardCss } from "./style";
 import { WorkSpaceCardProps } from "@/interfaces/workspace";
 import { LockOutlined, EllipsisOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
+import { deleteBoardApi } from "@/api/boards";
 
 export const WorkSpaceCard: React.FC<WorkSpaceCardProps> = ({
   title,
   privacy,
   backgroundUrl,
   setWorkSpace,
+  getOrganization,
+  id,
 }) => {
   const navigate = useNavigate();
 
+  const EllipsisAction: React.FC<{ id: string }> = ({ id }) => {
+    return (
+      <>
+        <Button
+          type="text"
+          onClick={(e) => {
+            e.stopPropagation();
+          }}
+        >
+          分享看板
+        </Button>
+        <div></div>
+        <Button
+          danger
+          type="text"
+          onClick={async (e) => {
+            e.stopPropagation();
+            await deleteBoardApi(id);
+            await getOrganization();
+          }}
+        >
+          刪除看板
+        </Button>
+        <div style={{ color: "red" }}></div>
+      </>
+    );
+  };
   return (
     <WorkSpaceCardCss
       hoverable
       backgroundurl={backgroundUrl}
-      onClick={() => {
-        setWorkSpace("billboard");
-        navigate("/board/6451de40d14c79f29ef99b74");
+      onClick={(e) => {
+        setWorkSpace(false);
+        navigate(`/board/${id}`);
       }}
     >
       <Row style={{ marginBottom: "auto" }}>
@@ -38,11 +68,22 @@ export const WorkSpaceCard: React.FC<WorkSpaceCardProps> = ({
           </Button>
         </Col>
         <Col>
-          <Button
-            icon={<EllipsisOutlined />}
-            type={"text"}
-            style={{ color: "white" }}
-          />
+          <Popover
+            content={<EllipsisAction id={id} />}
+            trigger="click"
+            placement="bottomRight"
+            arrow={false}
+          >
+            <Button
+              icon={<EllipsisOutlined />}
+              type={"text"}
+              style={{ color: "white" }}
+              className="EllipsisOutlined"
+              onClick={(e) => {
+                e.stopPropagation();
+              }}
+            />
+          </Popover>
         </Col>
       </Row>
     </WorkSpaceCardCss>
