@@ -5,6 +5,11 @@ import { CardProps } from "@/interfaces/trelloCard";
 import { DragDropContext, DropResult, Droppable } from "react-beautiful-dnd";
 import { reorder, reorderQuoteMap } from "@/utils/func";
 import { BillboardStyled } from "./style";
+import BillboardHeader from "./BillboardHeader";
+import { useParams } from "react-router";
+import { useApi } from "@/hooks/useApiHook";
+import { getBoardApi } from "@/api/boards";
+import { Spin } from "antd";
 
 const Billboard: React.FC<{
   data: CardProps[];
@@ -13,14 +18,26 @@ const Billboard: React.FC<{
 }> = ({ data, workSpace, setWorkSpace }) => {
   const [cardList, setCardList] = useState<CardProps[]>([]);
   const [ordered, setOrdered] = useState<string[]>([]);
-
+  const { boardId } = useParams();
+  const [result, loading, callApi] = useApi(getBoardApi);
+  // useEffect(() => {
+  //   if (data) {
+  //     setCardList(data);
+  //     setOrdered(data.map((ele) => ele.title));
+  //   }
+  // }, [data]);
   useEffect(() => {
-    if (data) {
-      setCardList(data);
-      setOrdered(data.map((ele) => ele.title));
+    if (result?.result) {
+      setCardList(result.result.list);
     }
-  }, [data]);
-
+  }, [result?.result]);
+  useEffect(() => {
+    if (boardId) {
+      (async () => {
+        await callApi(boardId);
+      })();
+    }
+  }, [boardId]);
   useEffect(() => {
     if (workSpace) {
       setWorkSpace(false);
@@ -46,34 +63,48 @@ const Billboard: React.FC<{
     const data = reorderQuoteMap(cardList, source, destination);
     setCardList(data);
   };
-
+  console.log("===result===", result);
+  console.log("===cardList===", cardList);
+  console.log("===data===", data);
   return (
-    <DragDropContext onDragEnd={onDragEnd}>
-      <Droppable
-        droppableId="board"
-        type="COLUMN"
-        direction="horizontal"
-        ignoreContainerClipping={false}
-        isCombineEnabled={false}
-      >
-        {(provided) => (
-          <BillboardStyled {...provided.droppableProps} ref={provided.innerRef}>
-            {ordered.map((key, index) => (
-              <TrelloCard
-                key={key}
-                index={index}
-                quotes={cardList.filter((ele) => ele.title === key)[0]}
-                isScrollable={true}
-                isCombineEnabled={false}
-                useClone={undefined}
-              />
-            ))}
-            {provided.placeholder}
-            <AddList />
-          </BillboardStyled>
-        )}
-      </Droppable>
-    </DragDropContext>
+    <>
+      {loading ? (
+        <Spin />
+      ) : (
+        <>
+          <BillboardHeader name={""} />
+          <DragDropContext onDragEnd={onDragEnd}>
+            <Droppable
+              droppableId="board"
+              type="COLUMN"
+              direction="horizontal"
+              ignoreContainerClipping={false}
+              isCombineEnabled={false}
+            >
+              {(provided) => (
+                <BillboardStyled
+                  {...provided.droppableProps}
+                  ref={provided.innerRef}
+                >
+                  {ordered.map((key, index) => (
+                    <TrelloCard
+                      key={key}
+                      index={index}
+                      quotes={cardList.filter((ele) => ele.title === key)[0]}
+                      isScrollable={true}
+                      isCombineEnabled={false}
+                      useClone={undefined}
+                    />
+                  ))}
+                  {provided.placeholder}
+                  <AddList />
+                </BillboardStyled>
+              )}
+            </Droppable>
+          </DragDropContext>
+        </>
+      )}
+    </>
   );
 };
 

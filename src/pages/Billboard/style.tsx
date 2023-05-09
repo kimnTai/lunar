@@ -14,3 +14,7 @@ export const MainLayoutCss = styled(Layout.Content)<{ workspace: string }>`
     props.workspace === "true" ? "white" : "var(--black23)"};
   padding: 24px 48px;
 `;
+
+export const BillboardHeaderCss = styled.div`
+
+`

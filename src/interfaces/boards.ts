@@ -17,3 +17,8 @@ export interface NewBoardsProps {
   name: string;
   permission: string;
 }
+
+export interface BillboardHeaderProps {
+  name :string;
+  
+}

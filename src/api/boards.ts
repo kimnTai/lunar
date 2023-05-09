@@ -7,4 +7,7 @@ export const newBoardApi = (data: NewBoardsProps) => {
 };
 
 // 刪除boards
-export const deleteBoardApi = (id:string) => Request.delete(`/boards/${id}`)
+export const deleteBoardApi = (id: string) => Request.delete(`/boards/${id}`);
+
+// 取得單一看板, 取得所有列表
+export const getBoardApi = (id: string) => Request.get(`/boards/${id}`);
