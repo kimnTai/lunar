@@ -53,7 +53,7 @@ const AppRouter: React.FC<any> = (props) => {
     } else {
       setLoad(false);
     }
-  }, [login, organization.length]);
+  }, [login, organization?.length]);
 
   const LoginLayout = React.memo(({ children }: any) => (
     <Layout>
