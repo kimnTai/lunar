@@ -1,4 +1,5 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import { Button, Col, Form, Input, Layout, Row } from "antd";
 import { NewOrganizationFormProps as FormValues } from "@/interfaces/organization";
 import { useApi } from "@/hooks/useApiHook";
@@ -7,13 +8,13 @@ import { NewWorkSpaceCss } from "./style";
 import Logo from "@/assets/images/img_logo.png";
 import Bg from "@/assets/images/newWorkSpace_bg.png";
 import CreateWork from "@/assets/images/img_createWork.png";
-import { useNavigate } from "react-router-dom";
 
 const NewWorkSpace: React.FC<{ getOrganization: Function }> = ({
   getOrganization,
 }) => {
   const [form] = Form.useForm<FormValues>();
   const [_result, loading, callApi] = useApi(newOrganizationApi);
+
   const navigate = useNavigate();
   const onFinish = async (values: FormValues) => {
     await callApi({ name: values.name });
@@ -49,7 +50,7 @@ const NewWorkSpace: React.FC<{ getOrganization: Function }> = ({
                   marginTop: "12px",
                   fontSize: "16px",
                   lineHeight: "120%",
-                  color: "var(--grey66)",
+                  color: "var(--gray66)",
                 }}
               >
                 所有人和事物都集中在一個地方。這是一個供團隊協作、組織和分享項目看的空間。

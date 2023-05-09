@@ -1,5 +1,5 @@
 import { getOrganizationsApi } from "@/api/organization";
-import { GET_ORGANIZATION } from "../constants";
+import CONSTANTS from "../constants";
 
 interface GetOrganizationsListProps {
   type: string;
@@ -13,6 +13,6 @@ export const getOrganizationsAction =
   ) => {
     await getOrganizationsApi().then((res: any) => {
       if (res.status === "success")
-        dispatch({ type: GET_ORGANIZATION, payload: res.result });
+        dispatch({ type: CONSTANTS.GET_ORGANIZATION, payload: res.result });
     });
   };

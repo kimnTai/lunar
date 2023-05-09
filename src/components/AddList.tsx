@@ -4,10 +4,10 @@ import { PlusOutlined, CloseOutlined } from "@ant-design/icons";
 import { Button, Input, Form, Row, Col } from "antd";
 import type { InputRef } from "antd";
 import { useDispatch } from "react-redux";
-import { CREATE_CARD_LIST } from "@/redux/constants";
+import CONSTANTS from "@/redux/constants";
 
-const AddListCss = styled(Form)<{ useadd: string }>`
-  height: ${(props) => (props.useadd === "true" ? "80px" : "32px")};
+const AddListCss = styled(Form)<{ useAdd: string }>`
+  height: ${(props) => (props.useAdd === "true" ? "80px" : "32px")};
   width: 276px;
   cursor: pointer;
   border-radius: 3px;
@@ -21,6 +21,7 @@ const AddList: React.FC = () => {
   const [add, setAdd] = useState(false);
   const [text, setText] = useState("");
   const dispatch = useDispatch();
+  const inputRef = useRef<InputRef>(null);
 
   const handleMouseDown = (e: any) => {
     e.preventDefault();
@@ -30,21 +31,24 @@ const AddList: React.FC = () => {
     setText("");
   };
 
-  const inputRef = useRef<InputRef>(null);
   const onFinish = () => {
     dispatch({
-      type: CREATE_CARD_LIST,
+      type: CONSTANTS.CREATE_CARD_LIST,
       payload: text,
     });
 
     setAdd(false);
   };
+
   useEffect(() => {
-    if (add) inputRef.current!.focus({ cursor: "start" });
+    if (add) {
+      inputRef.current!.focus({ cursor: "start" });
+    }
   }, [add]);
+
   return (
     <AddListCss
-      useadd={add.toString()}
+      useAdd={add.toString()}
       style={{ backgroundColor: add ? "white" : "#ffffff3d" }}
       onBlur={() => setAdd(false)}
       onMouseDown={handleMouseDown}

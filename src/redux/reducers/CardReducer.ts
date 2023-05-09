@@ -1,5 +1,6 @@
-import { CREATE_CARD_LIST, ADD_CARD } from "../constants";
+import CONSTANTS from "../constants";
 import { CardReducerProps } from "@/interfaces/trelloCard";
+
 const initialState: CardReducerProps = {
   cardList: [
     {
@@ -19,7 +20,7 @@ const CardReducer = function (
   action: { type: string; payload: any }
 ) {
   switch (action.type) {
-    case CREATE_CARD_LIST: {
+    case CONSTANTS.CREATE_CARD_LIST: {
       const id = (Math.random() + new Date().getTime())
         .toString(32)
         .slice(0, 8);
@@ -28,7 +29,7 @@ const CardReducer = function (
         cardList: [...state.cardList, useObj],
       };
     }
-    case ADD_CARD: {
+    case CONSTANTS.ADD_CARD: {
       const id = (Math.random() + new Date().getTime())
         .toString(32)
         .slice(0, 8);

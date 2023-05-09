@@ -43,13 +43,13 @@ export const LoginCss = styled.div`
     }
   }
   .terms {
-    color: var(--grey9F);
+    color: var(--gray9f);
     text-align: center;
   }
   .have-account {
     margin-top: 24px;
     text-align: center;
-    color: var(--grey66);
+    color: var(--gray66);
   }
 
   .contentText {

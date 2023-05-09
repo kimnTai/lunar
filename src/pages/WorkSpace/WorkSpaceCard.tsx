@@ -2,7 +2,11 @@ import React from "react";
 import { Row, Col, Button, Skeleton, Popover } from "antd";
 import { WorkSpaceCardCss } from "./style";
 import { WorkSpaceCardProps } from "@/interfaces/workspace";
-import { LockOutlined, EllipsisOutlined } from "@ant-design/icons";
+import {
+  LockOutlined,
+  EllipsisOutlined,
+  GlobalOutlined,
+} from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 import { deleteBoardApi } from "@/api/boards";
 
@@ -47,7 +51,7 @@ export const WorkSpaceCard: React.FC<WorkSpaceCardProps> = ({
     <WorkSpaceCardCss
       hoverable
       backgroundurl={backgroundUrl}
-      onClick={(e) => {
+      onClick={(_e) => {
         setWorkSpace(false);
         navigate(`/board/${id}`);
       }}
@@ -60,11 +64,12 @@ export const WorkSpaceCard: React.FC<WorkSpaceCardProps> = ({
       <Row justify={"space-between"} align={"middle"}>
         <Col>
           <Button
-            icon={<LockOutlined />}
+            icon={privacy === "private" ? <LockOutlined /> : <GlobalOutlined />}
             style={{ height: "29px", padding: "4px 8px" }}
             ghost
+            className="d-center"
           >
-            {privacy}
+            {privacy === "private" ? "私人" : "公開"}
           </Button>
         </Col>
         <Col>
@@ -94,7 +99,7 @@ export const SkeletonCard: React.FC = () => {
   return (
     <WorkSpaceCardCss
       backgroundurl={"none"}
-      style={{ backgroundColor: "var(--grey9F)" }}
+      style={{ backgroundColor: "var(--gray9f)" }}
     >
       <Skeleton active />
     </WorkSpaceCardCss>
