@@ -45,6 +45,7 @@ const ModalSidebar: React.FC = () => {
       </div>
     );
   };
+
   return (
     <ModalSidebarStyled style={ModalStyle}>
       <SidebarBox
@@ -96,6 +97,7 @@ const ModalContent: React.FC = () => {
     form.resetFields();
     setOpenTextEditor(false);
   };
+
   return (
     <ModalContentStyled style={ModalStyle}>
       <div className="contentHeader">

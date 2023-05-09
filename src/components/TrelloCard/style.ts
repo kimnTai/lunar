@@ -1,11 +1,11 @@
 import styled from "styled-components";
 import { Card } from "antd";
 
-export const TrelloCardStyled = styled(Card)<{ isdargging: string }>`
+export const TrelloCardStyled = styled(Card)<{ isDragging: string }>`
   width: 276px;
 
   /* transform: ${(props) =>
-    props.isdargging === "true" ? "rotate(10deg)" : "rotate(0deg)"}; */
+    props.isDragging === "true" ? "rotate(10deg)" : "rotate(0deg)"}; */
 `;
 
 export const ScrollContainer = styled.div<{ internalScroll: boolean }>`
@@ -55,4 +55,3 @@ export const PopoverHeaderStyled = styled.div`
 `;
 
 export const PopoverContentStyled = styled.div``;
-

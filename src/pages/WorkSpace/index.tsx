@@ -17,13 +17,12 @@ const WorkSpace: React.FC<{
   const { setWorkSpace, getOrganization } = props;
   const { workSpaceId } = useParams();
   const [openModal, setOpenModal] = useState(false);
-  const userOrganization: OrganizationProps = useSelector(
-    (state: any) => state.user.organization
-  ).length
-    ? useSelector((state: any) => state.user.organization).filter(
-        (ele: OrganizationProps) => ele._id === workSpaceId
-      )[0]
-    : [];
+
+  const userOrganization: OrganizationProps =
+    useSelector((state: any) => state.user.organization).filter(
+      (ele: OrganizationProps) => ele._id === workSpaceId
+    )?.[0] ?? [];
+
   const handleChange = (value: string) => {
     console.log(`selected ${value}`);
   };

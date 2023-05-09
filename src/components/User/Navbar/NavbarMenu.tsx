@@ -31,11 +31,15 @@ const NavBarMenu: React.FC<NavBarMenuProps> = ({
 
   const handleClick: MenuProps["onClick"] = (element) => {
     console.log(element);
-    if (element.key === "addModal") {setOpen(true)};
+    if (element.key === "addModal") {
+      setOpen(true);
+    }
     if (element.key.indexOf("/home") !== -1) {
       navigate(`/workspace/${element.key}`);
     }
-    if (!workSpace && element.key !== "addModal") navigate(`/board/${element.key}`);
+    if (!workSpace && element.key !== "addModal") {
+      navigate(`/board/${element.key}`);
+    }
   };
   const handleSelectChange = (element: any) => {
     setSelect(element.key);

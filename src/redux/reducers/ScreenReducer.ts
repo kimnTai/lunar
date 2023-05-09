@@ -1,4 +1,4 @@
-import { OPEN_CLOSE_NAVBAR, CHANGE_WORK_SPACE } from "../constants";
+import CONSTANTS from "../constants";
 
 const initialState: { [x: string]: boolean } = {
   showNavbar: false,
@@ -10,15 +10,15 @@ const ScreenReducer = function (
   action: { type: string; payload: any }
 ) {
   switch (action.type) {
-    case OPEN_CLOSE_NAVBAR: {
+    case CONSTANTS.OPEN_CLOSE_NAVBAR: {
       console.log(state);
-      console.log(!state.showNavbar)
+      console.log(!state.showNavbar);
       return {
         ...state,
         showNavbar: !state.showNavbar,
       };
     }
-    case CHANGE_WORK_SPACE: {
+    case CONSTANTS.CHANGE_WORK_SPACE: {
       return {
         ...state,
         showWorkSpace: !state.showWorkSpace,

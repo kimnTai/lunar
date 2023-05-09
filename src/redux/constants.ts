@@ -1,13 +1,17 @@
-// 畫面
-export const OPEN_CLOSE_NAVBAR = "OPEN_CLOSE_NAVBAR";
-export const CHANGE_WORK_SPACE = "CHANGE_WORK_SPACE";
-// 卡片動作
-export const CREATE_CARD_LIST = "CREATE_CARD_LIST";
-export const ADD_CARD = "ADD_CARD";
-// 登入
-export const LOGIN = "LOGIN";
-export const LOGOUT = "LOGOUT";
-// 會員
-export const GET_USER = "GET_USER";
-// 組織
-export const GET_ORGANIZATION = "GET_ORGANIZATION";
+enum CONSTANTS {
+  // 畫面
+  OPEN_CLOSE_NAVBAR = "OPEN_CLOSE_NAVBAR",
+  CHANGE_WORK_SPACE = "CHANGE_WORK_SPACE",
+  // 卡片動作
+  CREATE_CARD_LIST = "CREATE_CARD_LIST",
+  ADD_CARD = "ADD_CARD",
+  // 登入
+  LOGIN = "LOGIN",
+  LOGOUT = "LOGOUT",
+  // 會員
+  GET_USER = "GET_USER",
+  // 組織
+  GET_ORGANIZATION = "GET_ORGANIZATION",
+}
+
+export default CONSTANTS;

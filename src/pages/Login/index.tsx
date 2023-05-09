@@ -116,9 +116,9 @@ const Login: React.FC<{
         <div className="terms" style={{ display: signIn ? "block" : "none" }}>
           <div>點擊註冊表示您同意我們的</div>
           <div>
-            <a href="">隱私政策</a>
+            <a href="https://policies.google.com/privacy">隱私政策</a>
             <span style={{ margin: "0 8px" }}>和</span>
-            <a href="">服務條款</a>
+            <a href="https://policies.google.com/terms">服務條款</a>
           </div>
         </div>
         <Divider

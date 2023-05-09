@@ -11,32 +11,42 @@ const Billboard: React.FC<{
   workSpace: boolean;
   setWorkSpace: Function;
 }> = ({ data, workSpace, setWorkSpace }) => {
-  useEffect(() => {
-    if (workSpace) setWorkSpace(false);
-  }, [workSpace]);
   const [cardList, setCardList] = useState<CardProps[]>([]);
   const [ordered, setOrdered] = useState<string[]>([]);
+
   useEffect(() => {
     if (data) {
       setCardList(data);
       setOrdered(data.map((ele) => ele.title));
     }
   }, [data]);
+
+  useEffect(() => {
+    if (workSpace) {
+      setWorkSpace(false);
+    }
+  }, [workSpace]);
+
   const onDragEnd = (result: DropResult) => {
     console.log(result);
-    if (!result.destination) return;
-    const source = result.source;
-    const destination = result.destination;
-    if (result.type === "COLUMN") {
-      console.log("in COLUMN");
-      const reorderedorder = reorder(ordered, source.index, destination.index);
-      setOrdered(reorderedorder);
+    if (!result.destination) {
       return;
     }
+
+    const source = result.source;
+    const destination = result.destination;
+
+    if (result.type === "COLUMN") {
+      console.log("in COLUMN");
+      const reorderedOrder = reorder(ordered, source.index, destination.index);
+      setOrdered(reorderedOrder);
+      return;
+    }
+
     const data = reorderQuoteMap(cardList, source, destination);
     setCardList(data);
   };
-  // console.log(data);
+
   return (
     <DragDropContext onDragEnd={onDragEnd}>
       <Droppable

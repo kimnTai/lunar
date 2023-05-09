@@ -1,6 +1,7 @@
 /// <reference types="vitest" />
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
+import progress from "vite-plugin-progress";
 import { join } from "path";
 import type { InlineConfig } from "vitest";
 import type { UserConfig } from "vite";
@@ -11,7 +12,7 @@ interface VitestConfigExport extends UserConfig {
 // https://vitejs.dev/config/
 export default ({ mode }: { mode: string }) =>
   defineConfig({
-    plugins: [react()],
+    plugins: [progress(), react()],
     test: {
       globals: true,
       environment: "jsdom",
