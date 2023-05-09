@@ -1,4 +1,4 @@
-import { Layout } from "antd";
+import { Layout, Modal } from "antd";
 import styled from "styled-components";
 
 export const HeaderCss = styled(Layout.Header)`
@@ -20,5 +20,12 @@ export const HeaderCss = styled(Layout.Header)`
     input {
       background-color: var(--graye9);
     }
+  }
+`;
+
+export const UserModalCss = styled(Modal)`
+  padding: 16px;
+  .ant-modal-body {
+    text-align: center;
   }
 `;

@@ -1,15 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
 import { HeaderCss } from "./style";
-import {
-  SearchOutlined,
-  BellOutlined,
-  PoweroffOutlined,
-} from "@ant-design/icons";
+import { SearchOutlined, BellOutlined } from "@ant-design/icons";
 import type { MenuProps } from "antd";
 import { Input, Button, Badge, Avatar } from "antd";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { DropdownBtn } from "@/components/DropdownBtn";
+import { UserModal } from "./UserModal";
 
 const items: MenuProps["items"] = [
   {
@@ -22,10 +19,11 @@ export const Header: React.FC<{
   workSpace: boolean;
 }> = (props) => {
   const { workSpace } = props;
-  const { avatar, name } = JSON.parse(localStorage.getItem("userData")!);
+  const { avatar, name, email } = JSON.parse(localStorage.getItem("userData")!);
   //const [search, setSearch] = useState("");
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
+  //   const dispatch = useDispatch();
+  //   const navigate = useNavigate();
+  const [userModal, setUserModal] = useState(false);
   return (
     <HeaderCss
       className="d-space"
@@ -64,25 +62,31 @@ export const Header: React.FC<{
           />
         </Badge>
         <Button
-          icon={<PoweroffOutlined />}
-          style={{
-            width: "36px",
-            height: "36px",
-            borderRadius: 50,
-            border: 0,
-            background: "#F7F7F7",
-            marginLeft: "16px",
-          }}
-          shape="circle"
+          type="text"
           onClick={() => {
-            dispatch({ type: "LOGOUT" });
-            navigate("/");
+            setUserModal(true);
           }}
+          style={{
+            display: "flex",
+            padding: 0,
+            marginLeft: "16px",
+            alignItems: "center",
+          }}
+        >
+          <Avatar src={avatar} />
+          <p
+            style={{ marginLeft: "8px", color: workSpace ? "black" : "white" }}
+          >
+            {name}
+          </p>
+        </Button>
+        <UserModal
+          open={userModal}
+          setOpen={setUserModal}
+          name={name}
+          avatar={avatar}
+          email={email}
         />
-        <Avatar src={avatar} style={{ marginLeft: "16px" }} />
-        <p style={{ marginLeft: "8px", color: workSpace ? "black" : "white" }}>
-          {name}
-        </p>
       </div>
     </HeaderCss>
   );

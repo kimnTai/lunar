@@ -92,7 +92,7 @@ export const Navbar: React.FC<{
               icon={<VerticalRightOutlined />}
               onClick={handleClosed}
               type="link"
-              style={{ width: "28px", height: "28px", color: "var(--grey9F)" }}
+              style={{ width: "28px", height: "28px", color: "var(--gray9f)" }}
             />
           </div>
           {workSpace ? (
@@ -119,7 +119,7 @@ export const Navbar: React.FC<{
           style={{
             width: "28px",
             height: "28px",
-            color: "var(--grey9F)",
+            color: "var(--gray9f)",
             backgroundColor: "darkblue",
           }}
         />

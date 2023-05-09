@@ -50,7 +50,7 @@ const NewWorkSpace: React.FC<{ getOrganization: Function }> = ({
                   marginTop: "12px",
                   fontSize: "16px",
                   lineHeight: "120%",
-                  color: "var(--grey66)",
+                  color: "var(--gray66)",
                 }}
               >
                 所有人和事物都集中在一個地方。這是一個供團隊協作、組織和分享項目看的空間。
