@@ -122,7 +122,7 @@ const TrelloCardInner: React.FC<TrelloCardInnerProps> = React.memo((props) => {
   return quotes.card
     .sort(
       (a: CardsProps, b: CardsProps) =>
-        parseInt(a.position) - parseInt(b.position)
+      Number(a.position) - Number(b.position)
     )
     .map((quote: CardsProps, index: number) => (
       <Draggable key={quote.id} draggableId={quote.id} index={index}>

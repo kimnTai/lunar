@@ -3,31 +3,32 @@ import { ListsProps } from "@/interfaces/lists";
 import { CardsProps } from "@/interfaces/cards";
 import { DropResult } from "react-beautiful-dnd";
 import { POSITION_GAP } from "./constant";
+import isUndefined from "lodash/isUndefined";
 
 export const nextPosition = (
   items: CardsProps[],
   index?: number,
   excludedId?: string
 ) => {
-  const filteredItems = excludedId
+  const filteredItems = isUndefined(excludedId)
     ? items
     : items.filter((item) => item.id !== excludedId);
-  // is new
-  if (index === undefined) {
-    const lastItem = filteredItems[filteredItems.length - 1];
 
-    return (lastItem ? parseInt(lastItem.position) : 0) + POSITION_GAP;
+  if (isUndefined(index)) {
+    const lastItem = filteredItems[filteredItems.length - 1];
+    return (lastItem ? Number(lastItem.position) : 0) + POSITION_GAP;
   }
 
   const prevItem = filteredItems[index - 1];
   const nextItem = filteredItems[index];
 
-  const prevPosition = prevItem ? parseInt(prevItem.position) : 0;
+  const prevPosition = prevItem ? Number(prevItem.position) : 0;
 
   if (!nextItem) {
     return prevPosition + POSITION_GAP;
   }
-  return prevPosition + (parseInt(nextItem.position) - prevPosition) / 2;
+
+  return prevPosition + (Number(nextItem.position) - prevPosition) / 2;
 };
 
 export const updateCardInColumn = (
@@ -42,16 +43,15 @@ export const updateCardInColumn = (
   const useCardIndex = useList.card.findIndex(
     (ele) => ele.id === result.draggableId
   );
-  useList.card[useCardIndex].position = nextPosition(
-    useList.card,
-    destination?.index
-  ).toString();
+  useList.card[useCardIndex].position =
+    destination!.index > useCardIndex
+      ? nextPosition(useList.card, Number(destination?.index) + 1).toString()
+      : nextPosition(useList.card, destination?.index).toString();
   updateCard({
     listId: source.droppableId,
     cardId: result.draggableId,
     position: useList.card[useCardIndex].position,
     closed: false,
   });
-  console.log(cardList);
   return cardList;
 };

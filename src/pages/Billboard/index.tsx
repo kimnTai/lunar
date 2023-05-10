@@ -25,7 +25,7 @@ const Billboard: React.FC<{
       setCardList(result.result.list);
       setOrdered(
         result.result.list.sort(
-          (a: any, b: any) => parseInt(a.position) - parseInt(b.position)
+          (a: any, b: any) => Number(a.position) - Number(b.position)
         )
       );
     }
@@ -53,7 +53,6 @@ const Billboard: React.FC<{
     }
 
     if (source.droppableId === destination?.droppableId) {
-      console.log("in COLUMN");
       const data = updateCardInColumn(result, cardList);
       setCardList(data);
       return;

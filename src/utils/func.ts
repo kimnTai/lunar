@@ -2,33 +2,6 @@ import { ListsProps } from "@/interfaces/lists";
 import { CardsProps } from "@/interfaces/cards";
 import { DraggableLocation } from "react-beautiful-dnd";
 import type { MenuProps } from "antd";
-import { POSITION_GAP } from "./constant";
-
-export const nextPosition = (
-  items: CardsProps[],
-  index?: number,
-  excludedId?: string
-) => {
-  const filteredItems = excludedId
-    ? items
-    : items.filter((item) => item.id !== excludedId);
-  // is new
-  if (index === undefined) {
-    const lastItem = filteredItems[filteredItems.length - 1];
-
-    return (lastItem ? parseInt(lastItem.position) : 0) + POSITION_GAP;
-  }
-
-  const prevItem = filteredItems[index];
-  const nextItem = filteredItems[index + 1];
-
-  const prevPosition = prevItem ? parseInt(prevItem.position) : 0;
-
-  if (!nextItem) {
-    return prevPosition + POSITION_GAP;
-  }
-  return prevPosition + (parseInt(nextItem.position) - prevPosition) / 2;
-};
 
 export const reorder = (
   list: CardsProps[],
@@ -39,7 +12,7 @@ export const reorder = (
   const [removed] = result.splice(startIndex, 1);
   result.splice(endIndex, 0, removed);
 
-  return result;
+  return result as any;
 };
 
 const getNewData = (
