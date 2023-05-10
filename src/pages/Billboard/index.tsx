@@ -1,34 +1,33 @@
 import React, { useState, useEffect } from "react";
 import AddList from "@/components/AddList";
 import { TrelloCard } from "@/components/TrelloCard";
-import { CardProps } from "@/interfaces/trelloCard";
 import { DragDropContext, DropResult, Droppable } from "react-beautiful-dnd";
-import { reorder, reorderQuoteMap } from "@/utils/func";
 import { BillboardStyled } from "./style";
 import BillboardHeader from "./BillboardHeader";
 import { useParams } from "react-router";
 import { useApi } from "@/hooks/useApiHook";
 import { getBoardApi } from "@/api/boards";
 import { Spin } from "antd";
+import { ListsProps } from "@/interfaces/lists";
+import { updateCardInColumn } from "@/utils/cardFunc";
 
 const Billboard: React.FC<{
-  data: CardProps[];
   workSpace: boolean;
   setWorkSpace: Function;
-}> = ({ data, workSpace, setWorkSpace }) => {
-  const [cardList, setCardList] = useState<CardProps[]>([]);
-  const [ordered, setOrdered] = useState<string[]>([]);
+}> = ({ workSpace, setWorkSpace }) => {
+  const [cardList, setCardList] = useState<ListsProps[]>([]);
+  const [ordered, setOrdered] = useState<ListsProps[]>([]);
   const { boardId } = useParams();
   const [result, loading, callApi] = useApi(getBoardApi);
-  // useEffect(() => {
-  //   if (data) {
-  //     setCardList(data);
-  //     setOrdered(data.map((ele) => ele.title));
-  //   }
-  // }, [data]);
+
   useEffect(() => {
     if (result?.result) {
       setCardList(result.result.list);
+      setOrdered(
+        result.result.list.sort(
+          (a: any, b: any) => parseInt(a.position) - parseInt(b.position)
+        )
+      );
     }
   }, [result?.result]);
   useEffect(() => {
@@ -46,26 +45,23 @@ const Billboard: React.FC<{
 
   const onDragEnd = (result: DropResult) => {
     console.log(result);
-    if (!result.destination) {
-      return;
-    }
-
     const source = result.source;
     const destination = result.destination;
 
-    if (result.type === "COLUMN") {
-      console.log("in COLUMN");
-      const reorderedOrder = reorder(ordered, source.index, destination.index);
-      setOrdered(reorderedOrder);
+    if (source.index === destination?.index) {
       return;
     }
 
-    const data = reorderQuoteMap(cardList, source, destination);
-    setCardList(data);
+    if (source.droppableId === destination?.droppableId) {
+      console.log("in COLUMN");
+      const data = updateCardInColumn(result, cardList);
+      setCardList(data);
+      return;
+    }
+
+    // setCardList(data);
   };
-  console.log("===result===", result);
-  console.log("===cardList===", cardList);
-  console.log("===data===", data);
+
   return (
     <>
       {loading ? (
@@ -86,11 +82,11 @@ const Billboard: React.FC<{
                   {...provided.droppableProps}
                   ref={provided.innerRef}
                 >
-                  {ordered.map((key, index) => (
+                  {ordered.map((ele, index) => (
                     <TrelloCard
-                      key={key}
+                      key={ele.id}
                       index={index}
-                      quotes={cardList.filter((ele) => ele.title === key)[0]}
+                      quotes={ele}
                       isScrollable={true}
                       isCombineEnabled={false}
                       useClone={undefined}

@@ -12,8 +12,12 @@ export interface OrganizationProps {
 }
 
 export interface OrganizationMemberProps {
-  userId: string;
   role: string;
+  userId: {
+    _id: string
+    name: string
+    avatar: string
+  };
 }
 
 export interface NewOrganizationFormProps {

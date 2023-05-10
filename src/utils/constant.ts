@@ -28,3 +28,5 @@ export const errorMessage: { [x: number]: string } = {
   406: "您的帳號已被凍結，請聯絡管理員",
   500: "其他錯誤",
 };
+
+export const POSITION_GAP = 65535;

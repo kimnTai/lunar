@@ -1,4 +1,5 @@
 import { OrganizationMemberProps } from "./organization";
+import { ListsProps } from "./lists";
 
 export interface BoardsProps {
   _id: string;
@@ -10,6 +11,9 @@ export interface BoardsProps {
   organizationId: string;
   createdAt: string;
   updatedAt: string;
+  list: ListsProps[];
+  label: any[];
+  id: string;
 }
 
 export interface NewBoardsProps {
@@ -19,6 +23,7 @@ export interface NewBoardsProps {
 }
 
 export interface BillboardHeaderProps {
-  name :string;
-  
+  name: string;
 }
+
+export interface SingleBoardProps {}

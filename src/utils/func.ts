@@ -1,9 +1,40 @@
-import { CardProps } from "@/interfaces/trelloCard";
+import { ListsProps } from "@/interfaces/lists";
+import { CardsProps } from "@/interfaces/cards";
 import { DraggableLocation } from "react-beautiful-dnd";
-
 import type { MenuProps } from "antd";
+import { POSITION_GAP } from "./constant";
 
-export const reorder = (list: any[], startIndex: number, endIndex: number) => {
+export const nextPosition = (
+  items: CardsProps[],
+  index?: number,
+  excludedId?: string
+) => {
+  const filteredItems = excludedId
+    ? items
+    : items.filter((item) => item.id !== excludedId);
+  // is new
+  if (index === undefined) {
+    const lastItem = filteredItems[filteredItems.length - 1];
+
+    return (lastItem ? parseInt(lastItem.position) : 0) + POSITION_GAP;
+  }
+
+  const prevItem = filteredItems[index];
+  const nextItem = filteredItems[index + 1];
+
+  const prevPosition = prevItem ? parseInt(prevItem.position) : 0;
+
+  if (!nextItem) {
+    return prevPosition + POSITION_GAP;
+  }
+  return prevPosition + (parseInt(nextItem.position) - prevPosition) / 2;
+};
+
+export const reorder = (
+  list: CardsProps[],
+  startIndex: number,
+  endIndex: number
+) => {
   const result = Array.from(list);
   const [removed] = result.splice(startIndex, 1);
   result.splice(endIndex, 0, removed);
@@ -12,12 +43,12 @@ export const reorder = (list: any[], startIndex: number, endIndex: number) => {
 };
 
 const getNewData = (
-  columns: CardProps[],
-  title: string,
-  newArr: CardProps[]
+  columns: ListsProps[],
+  name: string,
+  newArr: ListsProps[]
 ) => {
   let useColumn = [...columns];
-  const useIndex = columns.findIndex((ele) => ele.title === title);
+  const useIndex = columns.findIndex((ele) => ele.name === name);
   if (useIndex !== -1) {
     const useArr = { ...useColumn[useIndex], children: newArr };
     useColumn.splice(useIndex, 1, useArr);
@@ -25,17 +56,17 @@ const getNewData = (
   return useColumn;
 };
 
-const getColumn = (columns: CardProps[], title: string) => {
-  return columns.find((column) => column.title === title) || { children: [] };
+const getColumn = (columns: ListsProps[], name: string) => {
+  return columns.find((column) => column.name === name) || { card: [] };
 };
 
 export const reorderQuoteMap = (
-  columns: CardProps[],
+  columns: ListsProps[],
   source: DraggableLocation,
   destination: DraggableLocation
 ) => {
-  const current = [...getColumn(columns, source.droppableId).children];
-  const next = [...getColumn(columns, destination.droppableId).children];
+  const current = [...getColumn(columns, source.droppableId).card] as any;
+  const next = [...getColumn(columns, destination.droppableId).card] as any;
 
   // 同List
   if (source.droppableId === destination.droppableId) {
