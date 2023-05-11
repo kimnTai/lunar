@@ -71,9 +71,7 @@ const AddMember: React.FC<AddMemberProps> = ({ member, open, setOpen }) => {
           </Button>
         </Form.Item>
       </Form>
-      {member.map((ele, idx) => (
-        <UserList {...ele} />
-      ))}
+      {member && member?.map((ele, idx) => <UserList {...ele} key={idx} />)}
       <Divider style={{ margin: "12px 0" }} />
       <div
         className="d-flex"
