@@ -1,19 +1,12 @@
 import { DroppableProvided } from "react-beautiful-dnd";
-
+import { ListsProps } from "./lists";
 export interface CardReducerProps {
   cardList: any[];
 }
 
-export interface CardProps {
-  id: any;
-  title: string;
-  children: CardProps[];
-  index?: number;
-}
-
 export interface TrelloCardProps {
   index: number;
-  quotes: CardProps;
+  quotes: ListsProps;
   isScrollable: boolean;
   isCombineEnabled: boolean;
   useClone: any;

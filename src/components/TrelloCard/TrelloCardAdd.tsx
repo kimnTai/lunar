@@ -6,10 +6,10 @@ import type { InputRef } from "antd";
 import { useDispatch } from "react-redux";
 import CONSTANTS from "@/redux/constants";
 
-const TrelloCardAddCss = styled(Card)<{ useAdd: string }>`
-  // height: ${(props) => props.useAdd === "true" && "1px"};
+const TrelloCardAddCss = styled(Card)<{ useadd: string }>`
+  // height: ${(props) => props.useadd === "true" && "1px"};
   min-height: 1px;
-  display: ${(props) => (props.useAdd === "true" ? "block" : "none")};
+  display: ${(props) => (props.useadd === "true" ? "block" : "none")};
   .bottom-func {
     margin-top: 5px;
     display: flex;
@@ -51,7 +51,7 @@ const TrelloCardAdd: React.FC<{
 
   return (
     <TrelloCardAddCss
-      useAdd={showAddCard.toString()}
+      useadd={showAddCard.toString()}
       bordered={false}
       bodyStyle={{ padding: 0 }}
     >

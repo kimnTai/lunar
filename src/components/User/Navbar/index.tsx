@@ -52,7 +52,7 @@ export const Navbar: React.FC<{
     if (!workSpace && boardId) {
       setOpenKey(boardId);
     }
-  }, [workSpace]);
+  }, [workSpace, boardId]);
   return (
     <Sider
       width={257}
@@ -92,7 +92,11 @@ export const Navbar: React.FC<{
               icon={<VerticalRightOutlined />}
               onClick={handleClosed}
               type="link"
-              style={{ width: "28px", height: "28px", color: "var(--gray9f)" }}
+              style={{
+                width: "28px",
+                height: "28px",
+                color: "var(--gray9f)",
+              }}
             />
           </div>
           {workSpace ? (

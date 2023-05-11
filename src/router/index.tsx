@@ -29,7 +29,6 @@ const AppRouter: React.FC<any> = (props) => {
   const {
     openNav,
     showNavbar,
-    card,
     login,
     loginAction,
     loginJwt,
@@ -154,8 +153,6 @@ const AppRouter: React.FC<any> = (props) => {
                     <LoginLayout
                       children={
                         <Billboard
-                          data={card}
-                          // showNavbar={showNavbar}
                           workSpace={showWorkSpace}
                           setWorkSpace={changeWorkSpace}
                         />
@@ -175,7 +172,6 @@ const AppRouter: React.FC<any> = (props) => {
 const mapStateToProps = (state: any) => ({
   showNavbar: state.screen.showNavbar,
   showWorkSpace: state.screen.showWorkSpace,
-  card: state.card.cardList,
   login: state.auth.login,
   organization: state.user.organization,
 });

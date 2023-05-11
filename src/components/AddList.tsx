@@ -6,8 +6,8 @@ import type { InputRef } from "antd";
 import { useDispatch } from "react-redux";
 import CONSTANTS from "@/redux/constants";
 
-const AddListCss = styled(Form)<{ useAdd: string }>`
-  height: ${(props) => (props.useAdd === "true" ? "80px" : "32px")};
+const AddListCss = styled(Form)<{ useadd: string }>`
+  height: ${(props) => (props.useadd === "true" ? "80px" : "32px")};
   width: 276px;
   cursor: pointer;
   border-radius: 3px;
@@ -48,7 +48,7 @@ const AddList: React.FC = () => {
 
   return (
     <AddListCss
-      useAdd={add.toString()}
+      useadd={add.toString()}
       style={{ backgroundColor: add ? "white" : "#ffffff3d" }}
       onBlur={() => setAdd(false)}
       onMouseDown={handleMouseDown}

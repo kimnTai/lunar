@@ -1,11 +1,11 @@
 import styled from "styled-components";
 import { Card } from "antd";
 
-export const TrelloCardStyled = styled(Card)<{ isDragging: string }>`
+export const TrelloCardStyled = styled(Card)<{ isdragging: string }>`
   width: 276px;
 
   /* transform: ${(props) =>
-    props.isDragging === "true" ? "rotate(10deg)" : "rotate(0deg)"}; */
+    props.isdragging === "true" ? "rotate(10deg)" : "rotate(0deg)"}; */
 `;
 
 export const ScrollContainer = styled.div<{ internalScroll: boolean }>`
