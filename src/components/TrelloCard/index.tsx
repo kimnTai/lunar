@@ -118,11 +118,9 @@ export const TrelloCardList: React.FC<TrelloCardListProps> = (props) => {
 
 const TrelloCardInner: React.FC<TrelloCardInnerProps> = React.memo((props) => {
   const { quotes, setOpenModal } = props;
-
   return quotes.card
     .sort(
-      (a: CardsProps, b: CardsProps) =>
-      Number(a.position) - Number(b.position)
+      (a: CardsProps, b: CardsProps) => Number(a.position) - Number(b.position)
     )
     .map((quote: CardsProps, index: number) => (
       <Draggable key={quote.id} draggableId={quote.id} index={index}>

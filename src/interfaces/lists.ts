@@ -8,3 +8,11 @@ export interface ListsProps {
   card: CardsProps[];
   id: string;
 }
+
+export interface UpdateListProps {
+  name?: string;
+  listId: string;
+  position: string;
+  closed: boolean;
+  boardId?: string;
+}

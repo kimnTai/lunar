@@ -1,7 +1,7 @@
 import Request from "@/utils/request";
 import { UpdateCardProps } from "@/interfaces/cards";
 
-// 取得特定boradId 中所有cards
+// 更新card
 
-export const updateCard = (data: UpdateCardProps) =>
+export const updateCardApi = (data: UpdateCardProps) =>
   Request.put(`/cards/${data.cardId}`, data);
