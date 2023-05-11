@@ -11,6 +11,7 @@ const DropdownBtnCss = styled(Dropdown)`
   &:hover {
     color: white;
   }
+  width: 73px;
 `;
 
 export const DropdownBtn: React.FC<{

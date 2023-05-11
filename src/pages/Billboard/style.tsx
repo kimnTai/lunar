@@ -1,4 +1,4 @@
-import { Layout } from "antd";
+import { Button, Layout } from "antd";
 import styled from "styled-components";
 
 export const BillboardStyled = styled.div`
@@ -16,4 +16,26 @@ export const MainLayoutCss = styled(Layout.Content)<{ workspace: string }>`
   overflow-x: auto;
 `;
 
-export const BillboardHeaderCss = styled.div``;
+export const BillboardHeaderCss = styled.div`
+  margin-bottom: 16px;
+  .left-head {
+    color: white;
+    font-size: 24px;
+    font-weight: 700;
+    display: flex;
+  }
+  .right-head {
+    display: flex;
+    column-gap: 16px;
+  }
+
+`;
+
+export const BillboardHeaderBtn = styled(Button)`
+  color: white;
+  background-color: var(--black23);
+  padding: 8px;
+  display: flex;
+  align-items: center;
+  height: 36px;
+`;

@@ -32,11 +32,10 @@ export const Header: React.FC<{
       <div className="d-center">
         <div
           style={{
-            display: workSpace ? "none" : "inline-block",
-            width: "-webkit-fill-available",
+            display: workSpace ? "none" : "flex",
           }}
         >
-          <DropdownBtn items={items} title={"工作區"} />
+          <DropdownBtn items={items} title={"工作區"}/>
           <DropdownBtn items={items} title={"最近的"} />
         </div>
 

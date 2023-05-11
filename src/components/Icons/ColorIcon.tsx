@@ -17,6 +17,7 @@ const ColorIconCss = styled.div<ColorIconProps>`
   font-size: ${(props) => props.fontSize};
   border-radius: 8px;
   justify-content: center;
+  border: 1px solid #A0D7FF;
 `;
 
 const ColorIcon: React.FC<ColorIconProps> = (props) => (

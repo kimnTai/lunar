@@ -46,3 +46,26 @@ export const AddBoardsCss = styled(Modal)`
   }
 `;
 
+export const AddMemberCss = styled(Modal)`
+  .header {
+    margin-bottom: 12px;
+  }
+
+  .ant-form {
+    display: flex;
+    column-gap: 8px;
+    margin-bottom: 12px;
+    .user {
+      width: 320px;
+    }
+    .select {
+      width: 120px;
+    }
+    .btn {
+      width: 80px;
+    }
+    div {
+      margin: 0;
+    }
+  }
+`;

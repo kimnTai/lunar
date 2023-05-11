@@ -76,7 +76,10 @@ const Billboard: React.FC<{
         <Spin />
       ) : (
         <>
-          <BillboardHeader name={""} />
+          <BillboardHeader
+            name={result?.result.name}
+            member={result?.result.member}
+          />
           <DragDropContext onDragEnd={onDragEnd}>
             <Droppable
               droppableId="board"
