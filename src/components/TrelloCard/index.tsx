@@ -72,10 +72,8 @@ export const TrelloCard: React.FC<TrelloCardProps> = (props) => {
 
 export const TrelloCardList: React.FC<TrelloCardListProps> = (props) => {
   const {
-    index,
     listType,
     isCombineEnabled,
-    //useClone,
     internalScroll,
     quotes,
     showAddCard,
@@ -103,7 +101,7 @@ export const TrelloCardList: React.FC<TrelloCardListProps> = (props) => {
                 setOpenModal={setOpenModal}
               />
               <TrelloCardAdd
-                listIndex={index}
+                list={quotes}
                 showAddCard={showAddCard}
                 setShowAddCard={setShowAddCard}
               />

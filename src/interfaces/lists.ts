@@ -16,3 +16,15 @@ export interface UpdateListProps {
   closed: boolean;
   boardId?: string;
 }
+
+export interface AddListProps {
+  cardList: ListsProps[];
+  boardId: string;
+  callApi: Function;
+}
+
+export interface NewListProps {
+  name: string;
+  boardId: string;
+  position: string;
+}

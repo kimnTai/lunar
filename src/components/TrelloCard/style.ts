@@ -55,3 +55,22 @@ export const PopoverHeaderStyled = styled.div`
 `;
 
 export const PopoverContentStyled = styled.div``;
+
+
+export const TrelloCardAddCss = styled(Card)<{ useadd: string }>`
+  // height: ${(props) => props.useadd === "true" && "1px"};
+  min-height: 1px;
+  display: ${(props) => (props.useadd === "true" ? "block" : "none")};
+  .bottom-func {
+    margin-top: 5px;
+    display: flex;
+    justify-content: space-between;
+  }
+  width: 100%;
+  cursor: pointer;
+  border-radius: 3px;
+  .addCard {
+    color: black;
+    padding: 6px 4px;
+  }
+`;

@@ -26,11 +26,6 @@ const Billboard: React.FC<{
   useEffect(() => {
     if (result?.result) {
       setCardList(result.result.list);
-      // setOrdered(
-      //   result.result.list.sort(
-      //     (a: any, b: any) => Number(a.position) - Number(b.position)
-      //   )
-      // );
     }
   }, [result?.result]);
   useEffect(() => {
@@ -74,7 +69,7 @@ const Billboard: React.FC<{
     const data = updateCardDiffColumn(result, cardList);
     setCardList(data);
   };
-  console.log(cardList);
+
   return (
     <>
       {loading ? (
@@ -108,7 +103,11 @@ const Billboard: React.FC<{
                       />
                     ))}
                   {provided.placeholder}
-                  <AddList />
+                  <AddList
+                    cardList={cardList}
+                    boardId={boardId!}
+                    callApi={callApi}
+                  />
                 </BillboardStyled>
               )}
             </Droppable>

@@ -19,3 +19,9 @@ export interface UpdateCardProps {
   position: string;
   closed: boolean;
 }
+
+export interface NewCardProps {
+  name: string;
+  position: string;
+  listId: string;
+}

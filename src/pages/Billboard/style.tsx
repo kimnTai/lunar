@@ -13,8 +13,7 @@ export const MainLayoutCss = styled(Layout.Content)<{ workspace: string }>`
   background-color: ${(props) =>
     props.workspace === "true" ? "white" : "var(--black23)"};
   padding: 24px 48px;
+  overflow-x: auto;
 `;
 
-export const BillboardHeaderCss = styled.div`
-
-`
+export const BillboardHeaderCss = styled.div``;

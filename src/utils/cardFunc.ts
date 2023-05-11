@@ -98,7 +98,7 @@ export const updateCardDiffColumn = (
     position: usePosition,
     closed: false,
   });
-  
+
   return getNewColumn(
     getNewColumn(cardList, source.droppableId, current),
     destination!.droppableId,
