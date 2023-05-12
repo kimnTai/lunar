@@ -18,8 +18,36 @@ export const WorkSpaceCss = styled.div`
     color: white;
   }
   .add-board-button {
-    backgroundcolor: "#232323";
+    background-color: "#232323";
     color: "white";
+  }
+`;
+
+export const WorkSpaceMemberCss = styled.div`
+  .ant-menu-light.ant-menu-root.ant-menu-inline {
+    border-inline-end: 0px;
+  }
+  h3 {
+    color: var(--black23);
+    font-weight: 700;
+    font-size: 20px;
+    line-height: 120%;
+  }
+  .intro-col {
+    h4 {
+      font-weight: 600;
+      font-size: 18px;
+      line-height: 22px;
+      margin-bottom: 12px;
+    }
+    p {
+      font-weight: 400;
+      font-size: 14px;
+      line-height: 22px;
+    }
+  }
+  .ant-list-item-action-split {
+    display: none;
   }
 `;
 

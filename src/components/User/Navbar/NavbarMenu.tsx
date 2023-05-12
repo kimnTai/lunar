@@ -34,7 +34,7 @@ const NavBarMenu: React.FC<NavBarMenuProps> = ({
     if (element.key === "addModal") {
       setOpen(true);
     }
-    if (element.key.indexOf("/home") !== -1) {
+    if (element.key.indexOf("/") !== -1) {
       navigate(`/workspace/${element.key}`);
     }
     if (!workSpace && element.key !== "addModal") {

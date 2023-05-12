@@ -69,3 +69,40 @@ export const AddMemberCss = styled(Modal)`
     }
   }
 `;
+
+export const MemberModalCss = styled(Modal)`
+  .ant-modal-content {
+    padding: 0px;
+  }
+  .ant-modal-header {
+    padding: 16px;
+    border-bottom: 1px solid var(--grayd4);
+    margin-bottom: 0;
+  }
+  .ant-modal-body {
+    margin: 0;
+  }
+  .ant-btn {
+    white-space: normal;
+  }
+  .ant-form-item {
+    margin-bottom: 8px;
+  }
+`;
+
+export const InviteMemberCss = styled(Modal)`
+  .ant-modal-content {
+    padding: 0px;
+  }
+  .ant-modal-header {
+    padding: 16px;
+    margin-bottom: 0;
+  }
+  .ant-modal-body {
+    padding: 0;
+    margin: 0;
+  }
+  .ant-form-item {
+    padding: 16px 16px;
+  }
+`;
