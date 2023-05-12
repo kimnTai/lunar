@@ -11,15 +11,17 @@ const TrelloCardBottomFunc: React.FC<TrelloCardBottomFuncProps> = ({
     <TrelloCardBottomFuncStyled show={showAddCard.toString()}>
       <Button
         type="text"
-        icon={<PlusOutlined />}
+        icon={<PlusOutlined style={{ color: "white" }} />}
         className="add-title"
         onClick={() => setShowAddCard(true)}
+        style={{
+          color: "white",
+          backgroundColor: "var(--black23)",
+          height: "100%",
+        }}
       >
         新增卡片
       </Button>
-      <Tooltip placement="bottom" title={"從範本建立"} arrow={false}>
-        <Button type="text" icon={<FileTextOutlined />} className="sample" />
-      </Tooltip>
     </TrelloCardBottomFuncStyled>
   );
 };

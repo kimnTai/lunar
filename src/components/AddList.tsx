@@ -8,14 +8,19 @@ import { newListApi } from "@/api/lists";
 import { nextPosition } from "@/utils/cardFunc";
 
 const AddListCss = styled(Form)<{ useadd: string }>`
-  height: ${(props) => (props.useadd === "true" ? "80px" : "32px")};
-  min-width: 274px;
-  width: 274px;
+  height: ${(props) => (props.useadd === "true" ? "88px" : "40px")};
+  display: flex;
+  background-color: ${(props) =>
+    props.useadd === "true" ? "var(--gray66)" : "var(--black23)"};
+  min-width: 280px;
+  width: 280px;
   cursor: pointer;
-  border-radius: 3px;
+  padding: 8px;
+  border-radius: 8px;
   .addCard {
     color: white;
-    padding: 6px 4px;
+    font-size: 16px;
+    font-weight: 700;
   }
 `;
 
@@ -62,7 +67,6 @@ const AddList: React.FC<AddListProps> = ({ cardList, boardId, callApi }) => {
       ) : (
         <AddListCss
           useadd={add.toString()}
-          style={{ backgroundColor: add ? "white" : "#ffffff3d" }}
           onBlur={() => setAdd(false)}
           onMouseDown={handleMouseDown}
           onFinish={onFinish}
@@ -71,19 +75,18 @@ const AddList: React.FC<AddListProps> = ({ cardList, boardId, callApi }) => {
             <a
               onClick={handleClick}
               className="addCard"
-              style={{ display: add ? "none" : "block", width: "100%" }}
+              style={{ display: add ? "none" : "block" }}
             >
               <Col flex="auto">
                 <PlusOutlined
                   style={{ fontSize: "16px", marginRight: "2px" }}
                 />
-                新增其他列表
+                新增看板
               </Col>
             </a>
             <Col
               style={{
                 display: add ? "block" : "none",
-                padding: "5px",
                 width: "100%",
                 transition: "all 10s ease",
               }}
@@ -92,32 +95,37 @@ const AddList: React.FC<AddListProps> = ({ cardList, boardId, callApi }) => {
                 <Input
                   type="text"
                   name="title"
-                  placeholder="為列表輸入標題..."
+                  placeholder="輸入標題"
                   value={text}
                   onChange={(e) => setText(e.target.value)}
                   autoComplete="off"
                   ref={inputRef}
+                  style={{ width: "224px" }}
                 />
-              </Form.Item>
-              <Form.Item
-                style={{
-                  marginTop: "5px",
-                  display: "flex",
-                  justifyContent: "center",
-                  marginBottom: 0,
-                }}
-              >
-                <Button htmlType="submit" type="primary">
-                  新增列表
-                </Button>
                 <Button
-                  type="primary"
-                  icon={<CloseOutlined />}
+                  type="text"
+                  icon={<CloseOutlined style={{ color: "white" }} />}
                   onClick={() => {
                     setAdd(false);
                   }}
                   style={{ marginLeft: "5px" }}
                 />
+              </Form.Item>
+              <Form.Item
+                style={{
+                  marginTop: "8px",
+                  display: "flex",
+                  justifyContent: "center",
+                  marginBottom: 0,
+                }}
+              >
+                <Button
+                  htmlType="submit"
+                  type="primary"
+                  style={{ padding: "4px 12px" }}
+                >
+                  新增
+                </Button>
               </Form.Item>
             </Col>
           </Row>

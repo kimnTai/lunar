@@ -43,6 +43,7 @@ export const TrelloCard: React.FC<TrelloCardProps> = (props) => {
                 className="cardTitle"
                 {...provided.dragHandleProps}
                 aria-label={`${name} quote list`}
+                style={{ marginBottom: "8px" }}
               />
 
               <TrelloCardList
@@ -93,7 +94,15 @@ export const TrelloCardList: React.FC<TrelloCardListProps> = (props) => {
       {(dropProvided, dropSnapshot) => (
         <div>
           <ScrollContainer internalScroll={internalScroll}>
-            <div ref={dropProvided.innerRef} style={{ minHeight: "1px" }}>
+            <div
+              ref={dropProvided.innerRef}
+              style={{
+                minHeight: "1px",
+                display: "flex",
+                flexDirection: "column",
+                rowGap: "8px",
+              }}
+            >
               <TrelloCardInner
                 quotes={quotes}
                 dropProvided={dropProvided}
@@ -133,7 +142,7 @@ const TrelloCardInner: React.FC<TrelloCardInnerProps> = React.memo((props) => {
           >
             <TrelloCardInnerStyled
               // isdargging={dragSnapshot.isDragging.toString()}
-              title={`${quote.name} ${quote.position}`}
+              title={quote.name}
               size="small"
               ref={dragProvided.innerRef}
               {...dragProvided.draggableProps}

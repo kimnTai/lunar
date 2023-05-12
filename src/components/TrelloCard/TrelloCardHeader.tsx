@@ -1,5 +1,9 @@
 import React, { useState } from "react";
-import { EllipsisOutlined, CloseOutlined } from "@ant-design/icons";
+import {
+  EllipsisOutlined,
+  CloseOutlined,
+  PlusOutlined,
+} from "@ant-design/icons";
 import {
   TrelloCardHeaderStyled,
   PopoverHeaderStyled,
@@ -69,19 +73,30 @@ const TrelloCardHeader: React.FC<TrelloCardHeaderProps> = (props) => {
 
   return (
     <TrelloCardHeaderStyled>
-      {title}
-      <Popover
-        placement="bottomLeft"
-        content={<PopoverContent />}
-        title={<PopoverHeader close={closePopover} />}
-        trigger="click"
-        open={openPopover}
-        arrow={false}
-        onOpenChange={handleOpenChange}
-        overlayStyle={{ width: "280px" }}
-      >
-        <Button icon={<EllipsisOutlined />} type="text" />
-      </Popover>
+      <div className="d-flex" style={{ fontSize: "16px", lineHeight: "150%" ,fontWeight: 700 }}>
+        {title}
+      </div>
+      <div className="d-flex">
+        <Button
+          type="text"
+          icon={<PlusOutlined style={{ color: "white" }} />}
+        ></Button>
+        <Popover
+          placement="bottomLeft"
+          content={<PopoverContent />}
+          title={<PopoverHeader close={closePopover} />}
+          trigger="click"
+          open={openPopover}
+          arrow={false}
+          onOpenChange={handleOpenChange}
+          overlayStyle={{ width: "280px" }}
+        >
+          <Button
+            icon={<EllipsisOutlined style={{ color: "white" }} />}
+            type="text"
+          />
+        </Popover>
+      </div>
     </TrelloCardHeaderStyled>
   );
 };

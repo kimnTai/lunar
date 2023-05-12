@@ -2,10 +2,18 @@ import styled from "styled-components";
 import { Card } from "antd";
 
 export const TrelloCardStyled = styled(Card)<{ isdragging: string }>`
-  width: 276px;
-
-  /* transform: ${(props) =>
-    props.isdragging === "true" ? "rotate(10deg)" : "rotate(0deg)"}; */
+  width: 280px;
+  border: 0px;
+  background-color: ${(props) =>
+    props.isdragging === "true" ? " var(--gray66)" : "var(--black23)"};
+  .ant-card-meta-title {
+    color: white;
+  }
+  transform: ${(props) =>
+    props.isdragging === "true" ? "rotate(-5.75deg)" : "rotate(0deg)"};
+  .ant-card-body {
+    padding: 8px;
+  }
 `;
 
 export const ScrollContainer = styled.div<{ internalScroll: boolean }>`
@@ -22,12 +30,13 @@ export const TrelloCardInnerStyled = styled(Card)`
 
 export const TrelloCardBottomFuncStyled = styled.div<{ show: string }>`
   display: ${(props) => (props.show === "true" ? "none" : "block")};
-  margin-top: 10px;
+  height: 37px;
+  margin-top: 8px;
   .add-title {
-    width: calc(100% - 28px);
+    width: 100%;
   }
-  .sample {
-    width: 28px;
+  span {
+    margin-inline-start: 12px !important;
   }
 `;
 
@@ -35,7 +44,6 @@ export const TrelloCardHeaderStyled = styled.div`
   display: flex;
   align-content: center;
   justify-content: space-between;
-  padding: 5px;
 `;
 
 export const PopoverHeaderStyled = styled.div`
@@ -55,7 +63,6 @@ export const PopoverHeaderStyled = styled.div`
 `;
 
 export const PopoverContentStyled = styled.div``;
-
 
 export const TrelloCardAddCss = styled(Card)<{ useadd: string }>`
   // height: ${(props) => props.useadd === "true" && "1px"};
