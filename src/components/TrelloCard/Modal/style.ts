@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { Modal, Layout } from "antd";
+import { Modal, Layout, Input } from "antd";
 
 const { Sider, Content } = Layout;
 
@@ -13,6 +13,14 @@ export const TrelloCardModalStyled = styled(Modal)`
 export const ModalHeaderStyled = styled.div`
   background-color: var(--modal-background-color);
 `;
+
+export const TitleInputStyled = styled(Input)`
+  width: 100%;
+  font-size: 24px;
+  font-weight: 600;
+  line-height: 120%;
+`;
+
 export const ModalLayoutStyled = styled(Layout)``;
 export const ModalContentStyled = styled(Content)`
   .contentHeader {

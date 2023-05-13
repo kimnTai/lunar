@@ -17,7 +17,6 @@ const TrelloCardModal: React.FC<TrelloCardModalProps> = (props) => {
   const handleCancel = () => {
     setOpenModal({ id: "", open: false });
   };
-  return (
 
   // 打開卡片 Modal 時，取得卡片資料
   useEffect(() => {
@@ -34,16 +33,20 @@ const TrelloCardModal: React.FC<TrelloCardModalProps> = (props) => {
       }
     })();
   }, [openModal.open]);
+
+  return cardData !== null ? (
     <TrelloCardModalStyled
       open={openModal.open}
       onOk={handleOk}
       onCancel={handleCancel}
       width={768}
-      title={<ModalHeader />}
+      title={<ModalHeader cardData={cardData} />}
       footer={null}
     >
       <ModalLayout />
     </TrelloCardModalStyled>
+  ) : (
+    <></>
   );
 };
 
