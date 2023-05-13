@@ -24,6 +24,7 @@ import Billboard from "@/pages/Billboard";
 import NewWorkSpace from "@/pages/WorkSpace/NewWorkSpace";
 import SpinPage from "@/pages/SpinPage";
 import Callback from "@/pages/Login/Callback";
+import WorkSpaceMember from "@/pages/WorkSpace/WorkSpaceMember";
 
 const AppRouter: React.FC<any> = (props) => {
   const {
@@ -140,6 +141,20 @@ const AppRouter: React.FC<any> = (props) => {
                     <LoginLayout
                       children={
                         <WorkSpace
+                          setWorkSpace={changeWorkSpace}
+                          getOrganization={getOrganization}
+                        />
+                      }
+                    />
+                  }
+                />
+                <Route
+                  index
+                  path={`/workspace/:workSpaceId/members`}
+                  element={
+                    <LoginLayout
+                      children={
+                        <WorkSpaceMember
                           setWorkSpace={changeWorkSpace}
                           getOrganization={getOrganization}
                         />
