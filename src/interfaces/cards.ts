@@ -14,10 +14,11 @@ export interface CardsProps {
 
 export interface UpdateCardProps {
   name?: string;
-  listId: string;
+  listId?: string;
   cardId: string;
-  position: string;
-  closed: boolean;
+  position?: string;
+  closed?: boolean;
+  description?: string;
 }
 
 export interface NewCardProps {
