@@ -9,7 +9,7 @@ export default function AuthReducer(
   state = initialState,
   action: {
     type: string;
-    payload: PrometheusResponse<UserProps>;
+    payload: PrometheusResponseWithToken<UserProps>;
   }
 ) {
   switch (action.type) {

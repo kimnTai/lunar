@@ -7,7 +7,7 @@ export const signInApi = (data: {
   email: string;
   password: string;
 }) => {
-  return Request.post<any, PrometheusResponse<UserProps>>(
+  return Request.post<any, PrometheusResponseWithToken<UserProps>>(
     "/user/register",
     data
   );
@@ -19,7 +19,10 @@ export const loginApi = (data: {
   email: string;
   password: string;
 }) => {
-  return Request.post<any, PrometheusResponse<UserProps>>("/user/login", data);
+  return Request.post<any, PrometheusResponseWithToken<UserProps>>(
+    "/user/login",
+    data
+  );
 };
 
 // google 登入
@@ -27,7 +30,7 @@ export const loginGoogleApi = () => Request.get<any, any>("/user/google");
 
 // 驗證登入
 export const loginJwtApi = () =>
-  Request.get<any, PrometheusResponse<UserProps>>("/user/verifyJwt");
+  Request.get<any, PrometheusResponseWithToken<UserProps>>("/user/verifyJwt");
 
 // 登出
 export const logoutApi = () => Request.get<any, any>("/user/logout");

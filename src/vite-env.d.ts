@@ -4,5 +4,9 @@ interface PrometheusResponse<T = any> {
   status: "success" | "error";
   message?: string;
   result: T;
-  token?: string;
 }
+
+type PrometheusResponseWithToken<T> = PrometheusResponse<T> & {
+  token: string;
+  websocketUrl: string;
+};
