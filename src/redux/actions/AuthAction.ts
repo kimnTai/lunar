@@ -30,11 +30,9 @@ export const loginAction =
   };
 
 export const loginJwtAction =
-  () =>
-  async (
-    dispatch: ({ type, payload }: { type: string; payload: any }) => void
-  ) => {
+  () => async (dispatch: ({ type, payload }: LoginActionProps) => void) => {
     const res = await loginJwtApi();
+
     if (res.status === "success") {
       dispatch({ type: CONSTANTS.LOGIN, payload: res });
     }
