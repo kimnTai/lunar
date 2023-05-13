@@ -59,15 +59,16 @@ const TrelloCardAdd: React.FC<{
                   type="primary"
                   onClick={async () => {
                     setLoading(true);
-                    await newCardApi({
+
+                    const res = await newCardApi({
                       name: text,
                       position: nextPosition(list.card).toString(),
                       listId: list.id,
-                    }).then((res: any) => {
-                      if (res.status === "success") {
-                        list.card.push(res.result);
-                      }
                     });
+                    if (res.status === "success") {
+                      list.card.push(res.result);
+                    }
+
                     setLoading(false);
                     setShowAddCard(false);
                   }}

@@ -1,9 +1,10 @@
-import Request from "@/utils/request";
+import Request from "@/api/base/request";
 import { UpdateCardProps, NewCardProps } from "@/interfaces/cards";
 
 // 新增
-export const newCardApi = (data: NewCardProps) => Request.post("/cards", data);
+export const newCardApi = (data: NewCardProps) =>
+  Request.post<any, any>("/cards", data);
 
 // 更新card
 export const updateCardApi = (data: UpdateCardProps) =>
-  Request.put(`/cards/${data.cardId}`, data);
+  Request.put<any, any>(`/cards/${data.cardId}`, data);
