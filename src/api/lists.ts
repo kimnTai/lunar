@@ -1,10 +1,17 @@
 import Request from "@/api/base/request";
-import { UpdateListProps, NewListProps } from "@/interfaces/lists";
+import type {
+  UpdateListProps,
+  NewListProps,
+  ListsProps,
+} from "@/interfaces/lists";
 
 // 新增list
 export const newListApi = (data: NewListProps) =>
-  Request.post<any, any>("/lists", data);
+  Request.post<any, PrometheusResponse<ListsProps>>("/lists", data);
 
 // 更新list
 export const updateListApi = (data: UpdateListProps) =>
-  Request.put<any, any>(`/lists/${data.listId}`, data);
+  Request.put<any, PrometheusResponse<ListsProps>>(
+    `/lists/${data.listId}`,
+    data
+  );

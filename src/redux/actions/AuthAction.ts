@@ -1,10 +1,10 @@
 import CONSTANTS from "../constants";
-import { type LoginProps } from "@/interfaces/user";
+import type { UserProps, LoginProps } from "@/interfaces/user";
 import { loginApi, signInApi, loginJwtApi } from "@/api/auth";
 
 interface LoginActionProps {
   type: string;
-  payload: LoginProps;
+  payload: PrometheusResponse<UserProps>;
 }
 
 export const signInAction =

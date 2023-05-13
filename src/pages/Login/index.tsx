@@ -6,6 +6,7 @@ import AppleIcon from "@/assets/images/apple.png";
 import { LoginCss, ThirdPartyButtonCss } from "./style";
 import { gapi } from "gapi-script";
 import { useNavigate } from "react-router-dom";
+import type { LoginProps } from "@/interfaces/user";
 
 const ThirdPartyButton: React.FC<{
   icon: any;
@@ -53,7 +54,7 @@ const Login: React.FC<{
     }
   }, [login]);
 
-  const onFinish = async (values: any) => {
+  const onFinish = async (values: LoginProps) => {
     signIn ? await signInAction(values) : await loginAction(values);
   };
 

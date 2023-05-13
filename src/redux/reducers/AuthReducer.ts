@@ -1,4 +1,5 @@
 import CONSTANTS from "../constants";
+import type { UserProps } from "@/interfaces/user";
 
 const initialState = {
   login: false,
@@ -6,7 +7,10 @@ const initialState = {
 
 export default function AuthReducer(
   state = initialState,
-  action: { type: string; payload: any }
+  action: {
+    type: string;
+    payload: PrometheusResponse<UserProps>;
+  }
 ) {
   switch (action.type) {
     case CONSTANTS.LOGIN: {

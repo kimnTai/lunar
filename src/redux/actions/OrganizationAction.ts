@@ -1,9 +1,10 @@
 import { getOrganizationsApi } from "@/api/organization";
 import CONSTANTS from "../constants";
+import { OrganizationProps } from "@/interfaces/organization";
 
 interface GetOrganizationsListProps {
   type: string;
-  payload: string;
+  payload: PrometheusResponse<OrganizationProps>["result"];
 }
 
 export const getOrganizationsAction =
