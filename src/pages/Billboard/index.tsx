@@ -77,8 +77,8 @@ const Billboard: React.FC<{
       ) : (
         <>
           <BillboardHeader
-            name={result?.result.name}
-            member={result?.result.member}
+            name={result?.result.name || ""}
+            member={result?.result.member || []}
           />
           <DragDropContext onDragEnd={onDragEnd}>
             <Droppable

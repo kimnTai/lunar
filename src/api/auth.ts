@@ -1,4 +1,5 @@
-import Request from "@/utils/request";
+import Request from "@/api/base/request";
+import type { UserProps } from "@/interfaces/user";
 
 // 註冊
 export const signInApi = (data: {
@@ -6,7 +7,10 @@ export const signInApi = (data: {
   email: string;
   password: string;
 }) => {
-  return Request.post("/user/register", data);
+  return Request.post<any, PrometheusResponseWithToken<UserProps>>(
+    "/user/register",
+    data
+  );
 };
 
 // 登入
@@ -15,14 +19,18 @@ export const loginApi = (data: {
   email: string;
   password: string;
 }) => {
-  return Request.post("/user/login", data);
+  return Request.post<any, PrometheusResponseWithToken<UserProps>>(
+    "/user/login",
+    data
+  );
 };
 
 // google 登入
-export const loginGoogleApi = () => Request.get("/user/google");
+export const loginGoogleApi = () => Request.get<any, any>("/user/google");
 
 // 驗證登入
-export const loginJwtApi = () => Request.get("/user/verifyJwt");
+export const loginJwtApi = () =>
+  Request.get<any, PrometheusResponseWithToken<UserProps>>("/user/verifyJwt");
 
 // 登出
-export const logoutApi = () => Request.get("/user/logout");
+export const logoutApi = () => Request.get<any, any>("/user/logout");
