@@ -1,19 +1,15 @@
 import { useState } from "react";
 
-type UseApiReturnType = [{ status: string; result: any } | null, boolean, (data: any) => Promise<void>];
+type ApiFunction<T, Args extends any[]> = (...args: Args) => Promise<T>;
 
-export function useApi<T>(
-  apiFunc: (data: any) => Promise<T>
-): UseApiReturnType {
-  const [result, setResult] = useState<{ status: string; result: any } | null>(
-    null
-  );
+export function useApi<T, Args extends any[]>(apiFunc: ApiFunction<T, Args>) {
+  const [result, setResult] = useState<T | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
 
-  async function callApi(data: any): Promise<void> {
+  async function callApi(...args: Args) {
     try {
       setLoading(true);
-      const result = (await apiFunc(data)) as { status: string; result: any };
+      const result = await apiFunc(...args);
       setResult(result);
     } catch (error) {
       console.error(error);
@@ -22,5 +18,5 @@ export function useApi<T>(
     }
   }
 
-  return [result, loading, callApi];
+  return [result, loading, callApi] as const;
 }
