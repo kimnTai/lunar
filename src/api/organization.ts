@@ -4,9 +4,9 @@ import type {
   OrganizationProps,
 } from "@/interfaces/organization";
 
-// 取得所有組織
-export const getOrganizationsApi = () => {
-  return Request.get<any, PrometheusResponse<OrganizationProps>>(
+// 取得會員所有組織
+export const getUserOrganizationsApi = () => {
+  return Request.get<any, PrometheusResponse<OrganizationProps[]>>(
     "/organizations/user"
   );
 };
