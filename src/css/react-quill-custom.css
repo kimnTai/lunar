@@ -1,0 +1,81 @@
+/* 編輯器內容區塊 */
+.ql-container .ql-editor {
+  min-height: 100px;
+}
+
+/* 工具列爆版 */
+.ql-toolbar.ql-snow .ql-formats {
+  margin-right: 0;
+}
+
+/* placeholder */
+.ql-editor.ql-blank::before {
+  font-size: 14px;
+  font-style: normal;
+}
+
+/* 編輯器文字 */
+.ql-container {
+  font-size: 14px;
+  line-height: 150%;
+}
+
+/* #region 編輯器 AntDesign 樣式衝突 */
+.react-quill-container .ql-editor strong {
+  font-weight: bold !important;
+}
+
+/* 斜體 */
+.react-quill-container .ql-editor em {
+  font-style: italic !important;
+}
+
+.react-quill-container .ql-editor ol,
+.react-quill-container .ql-editor ul {
+  margin-block-start: 1em !important;
+  margin-block-end: 1em !important;
+}
+/* #endregion */
+
+/* #region 內容顯示 AntDesign 樣式衝突 */
+:-webkit-any(.descriptionDisplay) h1 {
+  font-size: 1.5em !important;
+  font-weight: bold !important;
+}
+
+:-webkit-any(.descriptionDisplay) h2 {
+  font-size: 1.2em !important;
+  font-weight: bold !important;
+}
+
+:-webkit-any(.descriptionDisplay) strong {
+  font-weight: bold !important;
+}
+
+:-webkit-any(.descriptionDisplay) em {
+  font-style: italic !important;
+}
+
+:-webkit-any(.descriptionDisplay) ol {
+  list-style-type: decimal !important;
+}
+
+:-webkit-any(.descriptionDisplay) ul {
+  list-style-type: disc !important;
+}
+
+:-webkit-any(.descriptionDisplay) ol, 
+:-webkit-any(.descriptionDisplay) ul {
+  padding-inline-start: 40px !important;
+  margin-block-start: 1em !important;
+  margin-block-end: 1em !important;
+}
+
+:-webkit-any(.descriptionDisplay) code {
+  background-color: #f0f0f0;
+  font-family: monospace !important;
+  font-size: 95%;
+  border-radius: 4px;
+  padding: 2px 4px;
+}
+/* #endregion */
