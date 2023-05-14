@@ -220,7 +220,7 @@ const WorkSpaceMember: React.FC<{
                     <List.Item.Meta
                       avatar={<Avatar src={member.userId.avatar} />}
                       title={member.userId.name}
-                      description={member.userId._id}
+                      description={member.userId.email}
                     />
                   </Skeleton>
                   <ManageRole
