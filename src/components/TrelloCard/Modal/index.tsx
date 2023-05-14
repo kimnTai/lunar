@@ -43,7 +43,7 @@ const TrelloCardModal: React.FC<TrelloCardModalProps> = (props) => {
       title={<ModalHeader cardData={cardData} />}
       footer={null}
     >
-      <ModalLayout />
+      <ModalLayout cardData={cardData} />
     </TrelloCardModalStyled>
   ) : (
     <></>

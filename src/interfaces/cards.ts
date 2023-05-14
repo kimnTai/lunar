@@ -10,6 +10,11 @@ export interface CardsProps {
   createdAt: string;
   updatedAt: string;
   id: string;
+  description: string;
+  checklist: any[];
+  comment: any[];
+  attachment: any[];
+  date: object | null;
 }
 
 export interface UpdateCardProps {
