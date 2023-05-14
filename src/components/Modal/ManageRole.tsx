@@ -5,14 +5,15 @@ import { newBoardApi } from "@/api/boards";
 import { NewBoardsProps } from "@/interfaces/boards";
 import { Button, Form } from "antd";
 import { CheckOutlined } from "@ant-design/icons";
+import { OrganizationMemberProps } from "@/interfaces/organization";
 
 const ManageRole: React.FC<{
   open: boolean;
   setOpen: Function;
   organizationId: string;
   getOrganization: Function;
-  manageBtnText: string;
-}> = ({ open, setOpen, organizationId, getOrganization, manageBtnText }) => {
+  selectedMember: OrganizationMemberProps | null;
+}> = ({ open, setOpen, organizationId, getOrganization, selectedMember }) => {
   const [_form] = Form.useForm<NewBoardsProps>();
   const onCancel: () => void = () => {
     setOpen(false);
@@ -63,7 +64,7 @@ const ManageRole: React.FC<{
               }}
             >
               管理員
-              {manageBtnText === "管理員" && (
+              {selectedMember?.role === "manager" && (
                 <CheckOutlined style={{ fontSize: "14px" }} />
               )}
             </p>
@@ -91,7 +92,7 @@ const ManageRole: React.FC<{
               }}
             >
               一般
-              {manageBtnText === "成員" && (
+              {selectedMember?.role === "viewer" && (
                 <CheckOutlined style={{ fontSize: "14px" }} />
               )}
             </p>
