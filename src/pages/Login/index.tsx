@@ -4,7 +4,6 @@ import { Card, Button, Divider, Form, Input } from "antd";
 import GoogleIcon from "@/assets/images/google.png";
 import AppleIcon from "@/assets/images/apple.png";
 import { LoginCss, ThirdPartyButtonCss } from "./style";
-import { gapi } from "gapi-script";
 import { useNavigate } from "react-router-dom";
 import type { LoginProps } from "@/interfaces/user";
 
@@ -32,16 +31,6 @@ const Login: React.FC<{
   signIn: boolean;
 }> = ({ signInAction, loginAction, getOrganization, login, signIn }) => {
   const navigate = useNavigate();
-  const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
-  useEffect(() => {
-    const initClient = () => {
-      gapi.client.init({
-        clientId: clientId,
-        scope: "",
-      });
-    };
-    gapi.load("client:auth2", initClient);
-  });
 
   useEffect(() => {
     if (login) {
