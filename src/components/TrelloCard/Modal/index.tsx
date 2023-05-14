@@ -20,18 +20,18 @@ const TrelloCardModal: React.FC<TrelloCardModalProps> = (props) => {
 
   // 打開卡片 Modal 時，取得卡片資料
   useEffect(() => {
-    if (!openModal.open) return;
-
-    (async function () {
-      try {
-        const { result }: { result: CardsProps } = await getCardApi(
-          openModal.id
-        );
-        setCardData(result);
-      } catch (error) {
-        console.error(error);
-      }
-    })();
+    if (!openModal.open) {
+      setCardData(null);
+    } else {
+      (async function () {
+        try {
+          const { result } = await getCardApi(openModal.id);
+          setCardData(result);
+        } catch (error) {
+          console.error(error);
+        }
+      })();
+    }
   }, [openModal.open]);
 
   return cardData !== null ? (
@@ -43,7 +43,7 @@ const TrelloCardModal: React.FC<TrelloCardModalProps> = (props) => {
       title={<ModalHeader cardData={cardData} />}
       footer={null}
     >
-      <ModalLayout />
+      <ModalLayout cardData={cardData} />
     </TrelloCardModalStyled>
   ) : (
     <></>

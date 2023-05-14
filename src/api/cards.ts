@@ -6,7 +6,8 @@ import type {
 } from "@/interfaces/cards";
 
 // 取得單張卡片
-export const getCardApi = (cardId: string) => Request.get(`/cards/${cardId}`);
+export const getCardApi = (cardId: string) =>
+  Request.get<any, PrometheusResponse<CardsProps>>(`/cards/${cardId}`);
 
 // 新增
 export const newCardApi = (data: NewCardProps) =>
