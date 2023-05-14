@@ -25,9 +25,7 @@ const TrelloCardModal: React.FC<TrelloCardModalProps> = (props) => {
     } else {
       (async function () {
         try {
-          const { result }: { result: CardsProps } = await getCardApi(
-            openModal.id
-          );
+          const { result } = await getCardApi(openModal.id);
           setCardData(result);
         } catch (error) {
           console.error(error);

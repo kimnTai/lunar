@@ -18,7 +18,7 @@ const CardDescription: React.FC<{ cardData: CardsProps }> = ({ cardData }) => {
     form.resetFields();
 
     try {
-      const { result }: { result: CardsProps } = await updateCardApi({
+      const { result } = await updateCardApi({
         cardId: id,
         description: _values,
       });
