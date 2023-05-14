@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { Modal, Layout, Input } from "antd";
+import { Modal, Layout } from "antd";
 
 export const ModalStyle: React.CSSProperties = {
   color: "var(--modal-color)",
@@ -31,7 +31,7 @@ export const TrelloCardModalStyled = styled(Modal)`
 
 export const ModalHeaderStyled = styled.div`
   padding: 0;
-  margin: 0;
+  margin: 0 0 16px;
 
   .coverImg {
     width: 100%;
@@ -41,11 +41,6 @@ export const ModalHeaderStyled = styled.div`
   }
 `;
 
-export const TitleInputStyled = styled(Input)`
-  width: 100%;
-  font-size: 24px;
-  font-weight: 600;
-  line-height: 120%;
 export const CardHeaderToolbarStyled = styled.div`
   border-bottom: 1px solid #d4d4d4;
   padding: 20px 20px 12px;
@@ -71,3 +66,17 @@ export const CardHeaderToolbarStyled = styled.div`
   }
 `;
 
+export const CardTitleStyled = styled.div`
+  padding: 0 20px 0;
+
+  .titleInput {
+    width: 100%;
+  }
+
+  .titleTxt,
+  .titleInput {
+    font-size: 24px;
+    font-weight: 600;
+    line-height: 120%;
+  }
+`;

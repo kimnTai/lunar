@@ -1,6 +1,5 @@
 import React from "react";
-import { Row, Col, Image } from "antd";
-import { ContainerOutlined } from "@ant-design/icons";
+import { Row, Col, Image, Input } from "antd";
 import {
   InboxOutlined,
   UsergroupAddOutlined,
@@ -11,8 +10,10 @@ import { updateCardApi } from "@/api/cards";
 import {
   ModalHeaderStyled,
   CardHeaderToolbarStyled,
-  TitleInputStyled,
+  CardTitleStyled,
 } from "./style";
+
+const { TextArea } = Input;
 
 const ModalHeader: React.FC<{ cardData: CardsProps }> = ({ cardData }) => {
   const { id, name } = cardData;
@@ -67,24 +68,29 @@ const ModalHeader: React.FC<{ cardData: CardsProps }> = ({ cardData }) => {
             </Col>
           </Row>
         </CardHeaderToolbarStyled>
-        {/* Title */}
-        <Row align="middle" gutter={4}>
-          <Col flex="none">
-            <ContainerOutlined style={{ fontSize: "24px" }} />
-          </Col>
-          <Col flex="auto">
-            <TitleInputStyled
-              type="text"
-              placeholder="請輸入標題"
-              value={titleFiled}
-              onChange={(e) => setTitleFiled(e.target.value)}
-              onFocus={() => setIsEdit(true)}
-              onBlur={submitTitleField}
-              onKeyDown={handleKeyDown}
-              bordered={isEdit}
-            />
-          </Col>
-        </Row>
+        {/* 標題 */}
+        <CardTitleStyled>
+          <Row align="middle" gutter={4}>
+            <Col flex="auto">
+              {isEdit ? (
+                <TextArea
+                  autoSize
+                  placeholder="請輸入標題"
+                  value={titleFiled}
+                  onChange={(e) => setTitleFiled(e.target.value)}
+                  onFocus={() => setIsEdit(true)}
+                  onBlur={submitTitleField}
+                  onKeyDown={handleKeyDown}
+                  className="titleInput"
+                />
+              ) : (
+                <h2 onClick={() => setIsEdit(true)} className="titleTxt">
+                  {titleFiled}
+                </h2>
+              )}
+            </Col>
+          </Row>
+        </CardTitleStyled>
       </ModalHeaderStyled>
     </>
   );
