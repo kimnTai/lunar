@@ -9,8 +9,8 @@ export const TrelloCardStyled = styled(Card)<{ isdragging: string }>`
   .ant-card-meta-title {
     color: white;
   }
-  transform: ${(props) =>
-    props.isdragging === "true" ? "rotate(-5.75deg)" : "rotate(0deg)"};
+  /* transform: ${(props) =>
+    props.isdragging === "true" ? "rotate(-5.75deg)" : "rotate(0deg)"}; */
   .ant-card-body {
     padding: 8px;
   }
