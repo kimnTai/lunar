@@ -4,14 +4,15 @@ import { useApi } from "@/hooks/useApiHook";
 import { newBoardApi } from "@/api/boards";
 import { NewBoardsProps } from "@/interfaces/boards";
 import { Button, Form } from "antd";
+import { OrganizationMemberProps } from "@/interfaces/organization";
 
 const RemoveMember: React.FC<{
   open: boolean;
   setOpen: Function;
   organizationId: string;
   getOrganization: Function;
-  removeBtnText: string;
-}> = ({ open, setOpen, organizationId, getOrganization, removeBtnText }) => {
+  selectedMember: OrganizationMemberProps | null;
+}> = ({ open, setOpen, organizationId, getOrganization, selectedMember }) => {
   const [_form] = Form.useForm<NewBoardsProps>();
   const onCancel: () => void = () => {
     setOpen(false);
@@ -60,7 +61,9 @@ const RemoveMember: React.FC<{
                 lineHeight: "24px",
               }}
             >
-              {removeBtnText === "退 出" ? "離開工作區" : "從工作區中移除"}
+              {selectedMember?.role === "manager"
+                ? "離開工作區"
+                : "從工作區中移除"}
             </p>
             移除所有對此工作區的存取動作。
           </Button>

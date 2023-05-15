@@ -6,6 +6,7 @@ const { Content } = Layout;
 
 export const ModalStyle: React.CSSProperties = {
   color: "var(--modal-color)",
+  background: "white",
   padding: "16px 16px 0 0",
 };
 

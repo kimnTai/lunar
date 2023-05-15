@@ -42,13 +42,13 @@ const WorkSpaceMember: React.FC<{
   setWorkSpace: Function;
   getOrganization: Function;
 }> = (props) => {
-  const { setWorkSpace, getOrganization } = props;
+  const { getOrganization } = props;
   const { workSpaceId } = useParams();
-  const [openRemvoeModal, setOpenRemvoeModal] = useState(false);
+  const [openRemoveModal, setOpenRemoveModal] = useState(false);
   const [openManageRoleModal, setOpenManageRoleModal] = useState(false);
   const [openInviteModal, setOpenInviteModal] = useState(false);
-  const [removeBtnText, setRemoveBtnText] = useState("");
-  const [manageBtnText, setManageBtnText] = useState("");
+  const [selectedMember, setSelectedMember] =
+    useState<OrganizationMemberProps | null>(null);
 
   const userOrganization: OrganizationProps =
     useSelector((state: any) => state.user.organization).filter(
@@ -59,22 +59,15 @@ const WorkSpaceMember: React.FC<{
     console.log(element);
   };
 
-  const handleClickRemoveBtn = (
-    e: React.MouseEvent<HTMLAnchorElement | HTMLButtonElement, MouseEvent>
-  ) => {
-    const target = e.target as HTMLElement;
-    const buttonText = target.textContent || "";
-    setRemoveBtnText(buttonText);
-    setOpenRemvoeModal(true);
+  const handleClickRemoveBtn = (member: OrganizationMemberProps) => {
+    setSelectedMember(member);
+    setOpenRemoveModal(true);
   };
 
-  const handleClickManageBtn = (
-    e: React.MouseEvent<HTMLAnchorElement | HTMLButtonElement, MouseEvent>
-  ) => {
-    const target = e.target as HTMLElement;
-    const buttonText = target.textContent || "";
-    setManageBtnText(buttonText);
+  const handleClickManageBtn = (member: OrganizationMemberProps) => {
+    setSelectedMember(member);
     setOpenManageRoleModal(true);
+    console.log(member);
   };
 
   return (
@@ -180,7 +173,7 @@ const WorkSpaceMember: React.FC<{
                       width: "130px",
                       height: "32px",
                     }}
-                    // onClick={() => setOpenRemvoeModal(true)}
+                    // onClick={() => setOpenRemoveModal(true)}
                   >
                     以連結邀請
                   </Button>
@@ -193,10 +186,9 @@ const WorkSpaceMember: React.FC<{
             </Col>
             <Divider />
             <List
-              className="demo-loadmore-list"
               itemLayout="horizontal"
               dataSource={userOrganization.member}
-              renderItem={(member) => (
+              renderItem={(member: OrganizationMemberProps) => (
                 <List.Item
                   actions={[
                     <Button
@@ -206,7 +198,7 @@ const WorkSpaceMember: React.FC<{
                         color: "var(--black23)",
                         padding: "4px 16px",
                       }}
-                      onClick={(e) => handleClickManageBtn(e)}
+                      onClick={() => handleClickManageBtn(member)}
                     >
                       {member.role === "manager" ? "管理員" : "成員"}
                     </Button>,
@@ -218,7 +210,7 @@ const WorkSpaceMember: React.FC<{
                         padding: "4px 16px",
                         textAlign: "center",
                       }}
-                      onClick={(e) => handleClickRemoveBtn(e)}
+                      onClick={() => handleClickRemoveBtn(member)}
                     >
                       {member.role === "manager" ? "退出" : "移除"}
                     </Button>,
@@ -226,9 +218,9 @@ const WorkSpaceMember: React.FC<{
                 >
                   <Skeleton avatar title={false} loading={false} active>
                     <List.Item.Meta
-                      avatar={<Avatar src={member.userId} />}
-                      title={member.userId}
-                      description={member.userId}
+                      avatar={<Avatar src={member.userId.avatar} />}
+                      title={member.userId.name}
+                      description={member.userId.email}
                     />
                   </Skeleton>
                   <ManageRole
@@ -236,14 +228,14 @@ const WorkSpaceMember: React.FC<{
                     setOpen={setOpenManageRoleModal}
                     organizationId={workSpaceId!}
                     getOrganization={getOrganization}
-                    manageBtnText={manageBtnText}
+                    selectedMember={selectedMember}
                   />
                   <RemoveMember
-                    open={openRemvoeModal}
-                    setOpen={setOpenRemvoeModal}
+                    open={openRemoveModal}
+                    setOpen={setOpenRemoveModal}
                     organizationId={workSpaceId!}
                     getOrganization={getOrganization}
-                    removeBtnText={removeBtnText}
+                    selectedMember={selectedMember}
                   />
                 </List.Item>
               )}

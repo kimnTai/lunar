@@ -14,9 +14,10 @@ export interface OrganizationProps {
 export interface OrganizationMemberProps {
   role: string;
   userId: {
-    _id: string
-    name: string
-    avatar: string
+    _id: string;
+    name: string;
+    avatar: string;
+    email: string;
   };
 }
 
