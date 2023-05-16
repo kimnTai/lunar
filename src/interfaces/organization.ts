@@ -29,3 +29,9 @@ export interface DeleteOrganizationMemberProps {
   organizationId: string;
   memberId: string;
 }
+
+export interface UpdateOrganizationMemberProps {
+  organizationId: string;
+  memberId: string;
+  role?: string;
+}

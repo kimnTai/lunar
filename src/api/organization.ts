@@ -3,6 +3,7 @@ import type {
   DeleteOrganizationMemberProps,
   NewOrganizationFormProps,
   OrganizationProps,
+  UpdateOrganizationMemberProps,
 } from "@/interfaces/organization";
 
 // 取得會員所有組織
@@ -28,5 +29,17 @@ export const deleteOrganizationMemberApi = (
 
   return Request.delete<any, PrometheusResponse<OrganizationProps>>(
     `/organizations/${organizationId}/members/${memberId}`
+  );
+};
+
+// 更新成員權限
+export const updateOrganizationMemberApi = (
+  data: UpdateOrganizationMemberProps
+) => {
+  const { organizationId, memberId } = data;
+
+  return Request.put<any, PrometheusResponse<OrganizationProps>>(
+    `/organizations/${organizationId}/members/${memberId}`,
+    data
   );
 };

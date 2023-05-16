@@ -88,6 +88,13 @@ export const MemberModalCss = styled(Modal)`
   .ant-form-item {
     margin-bottom: 8px;
   }
+  .ant-radio-button-wrapper {
+    height: auto;
+    background: transparent;
+  }
+  .ant-radio-button-wrapper::before {
+    display: none;
+  }
 `;
 
 export const InviteMemberCss = styled(Modal)`

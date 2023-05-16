@@ -1,11 +1,14 @@
 import React from "react";
 import { MemberModalCss } from "./style";
 import { useApi } from "@/hooks/useApiHook";
-import { newBoardApi } from "@/api/boards";
-import { NewBoardsProps } from "@/interfaces/boards";
-import { Button, Form } from "antd";
+import { updateOrganizationMemberApi } from "@/api/organization";
+import { Form, Radio } from "antd";
 import { CheckOutlined } from "@ant-design/icons";
-import { OrganizationMemberProps } from "@/interfaces/organization";
+import {
+  OrganizationMemberProps,
+  UpdateOrganizationMemberProps,
+} from "@/interfaces/organization";
+import { useForm } from "antd/lib/form/Form";
 
 const ManageRole: React.FC<{
   open: boolean;
@@ -14,17 +17,19 @@ const ManageRole: React.FC<{
   getOrganization: Function;
   selectedMember: OrganizationMemberProps | null;
 }> = ({ open, setOpen, organizationId, getOrganization, selectedMember }) => {
-  const [_form] = Form.useForm<NewBoardsProps>();
   const onCancel: () => void = () => {
     setOpen(false);
   };
+  const [form] = useForm();
+  const userId = selectedMember?.userId._id;
 
-  const [_result, loading, callApi] = useApi(newBoardApi);
-  const onFinish = async (values: NewBoardsProps) => {
+  const [_result, loading, callApi] = useApi(updateOrganizationMemberApi);
+  const onFinish = async (values: UpdateOrganizationMemberProps) => {
+    console.log(values);
     await callApi({
-      name: values.name,
       organizationId,
-      permission: values.permission,
+      memberId: userId || "",
+      role: values.role,
     });
     await getOrganization();
     onCancel();
@@ -38,66 +43,76 @@ const ManageRole: React.FC<{
       onCancel={onCancel}
       footer={null}
     >
-      <Form
-        // form={form}
-        onFinish={onFinish}
-        layout="vertical"
-      >
-        <Form.Item name="manager">
-          <Button
-            type="text"
-            htmlType="submit"
-            loading={loading}
-            style={{
-              width: "100%",
-              height: "auto",
-              textAlign: "left",
-              margin: "8px 0px 4px 0px",
-            }}
-            block
-          >
-            <p
+      <Form form={form} onFinish={onFinish} layout="vertical">
+        <Form.Item name="role">
+          <Radio.Group size="large">
+            <Radio.Button
+              value="manager"
               style={{
-                fontWeight: "500",
-                fontSize: "16px",
-                lineHeight: "24px",
+                textAlign: "left",
+                border: "0",
+                width: "100%",
+                padding: "4px 15px",
+                margin: "8px 0 4px 0",
               }}
+              onClick={() => form.submit()}
             >
-              管理員
-              {selectedMember?.role === "manager" && (
-                <CheckOutlined style={{ fontSize: "14px" }} />
-              )}
-            </p>
-            可以查看、建立及編輯工作區看板，並可以為工作區更改設定。在此工作區中的所有看板上將擁有管理員權限。
-          </Button>
-        </Form.Item>
-        <Form.Item name="viewer">
-          <Button
-            type="text"
-            htmlType="submit"
-            loading={loading}
-            style={{
-              width: "100%",
-              height: "auto",
-              textAlign: "left",
-              margin: "4px 0px 8px 0px",
-            }}
-            block
-          >
-            <p
+              <p
+                style={{
+                  fontWeight: "500",
+                  fontSize: "16px",
+                  lineHeight: "24px",
+                }}
+              >
+                管理員
+                {selectedMember?.role === "manager" && (
+                  <CheckOutlined style={{ fontSize: "14px" }} />
+                )}
+              </p>
+              <span
+                style={{
+                  lineHeight: "24px",
+                  fontWeight: "400",
+                  fontSize: "12px",
+                }}
+              >
+                可以查看、建立及編輯工作區看板，並可以為工作區更改設定。在此工作區中的所有看板上將擁有管理員權限。
+              </span>
+            </Radio.Button>
+            <Radio.Button
+              value="viewer"
               style={{
-                fontWeight: "500",
-                fontSize: "16px",
-                lineHeight: "24px",
+                textAlign: "left",
+                border: "0",
+                width: "100%",
+                padding: "4px 15px",
+                margin: "4px 0 8px 0",
               }}
+              onClick={() => form.submit()}
             >
-              一般
-              {selectedMember?.role === "viewer" && (
-                <CheckOutlined style={{ fontSize: "14px" }} />
-              )}
-            </p>
-            可以查看、建立及編輯工作區看板，但不能更改設定。
-          </Button>
+              <p
+                style={{
+                  fontWeight: "500",
+                  fontSize: "16px",
+                  lineHeight: "24px",
+                }}
+              >
+                一般
+                {selectedMember?.role === "viewer" && (
+                  <CheckOutlined style={{ fontSize: "14px" }} />
+                )}
+              </p>
+              <span
+                style={{
+                  lineHeight: "24px",
+                  fontWeight: "400",
+                  fontSize: "12px",
+                }}
+              >
+                可以查看、建立及編輯工作區看板，但不能更改設定。
+              </span>
+            </Radio.Button>
+          </Radio.Group>
         </Form.Item>
       </Form>
     </MemberModalCss>
