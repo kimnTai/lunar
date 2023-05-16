@@ -43,11 +43,13 @@ const AddList: React.FC<AddListProps> = ({ cardList, boardId, callApi }) => {
       name: text,
       boardId: boardId,
       position: nextPosition(cardList).toString(),
-    }).then((res: any) => {
-      if (res.status === "success") {
-        callApi(boardId);
-      }
-    });
+    })
+      .then((res: any) => {
+        if (res.status === "success") {
+          callApi(boardId);
+        }
+      })
+      .catch(() => setLoading(false));
     setLoading(false);
     setAdd(false);
   };
@@ -81,7 +83,7 @@ const AddList: React.FC<AddListProps> = ({ cardList, boardId, callApi }) => {
                 <PlusOutlined
                   style={{ fontSize: "16px", marginRight: "2px" }}
                 />
-                新增看板
+                新增列表
               </Col>
             </a>
             <Col

@@ -4,13 +4,21 @@ import { Card } from "antd";
 export const TrelloCardStyled = styled(Card)<{ isdragging: string }>`
   width: 280px;
   border: 0px;
-  background-color: ${(props) =>
-    props.isdragging === "true" ? " var(--gray66)" : "var(--black23)"};
+
   .ant-card-meta-title {
     color: white;
   }
-  /* transform: ${(props) =>
-    props.isdragging === "true" ? "rotate(-5.75deg)" : "rotate(0deg)"}; */
+  background-color: ${(props) =>
+    props.isdragging === "true" ? " var(--gray66)" : "var(--black23)"};
+
+  animation: ${(props) =>
+    props.isdragging === "true" && "rotate 0s linear forwards"};
+
+  @keyframes rotate {
+    100% {
+      transform: rotate(-5.75deg);
+    }
+  }
   .ant-card-body {
     padding: 8px;
   }
