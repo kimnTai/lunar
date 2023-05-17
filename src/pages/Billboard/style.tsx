@@ -1,4 +1,4 @@
-import { Button, Layout } from "antd";
+import { Button, Layout, Modal } from "antd";
 import styled from "styled-components";
 
 export const BillboardStyled = styled.div`
@@ -28,7 +28,6 @@ export const BillboardHeaderCss = styled.div`
     display: flex;
     column-gap: 16px;
   }
-
 `;
 
 export const BillboardHeaderBtn = styled(Button)`
@@ -38,4 +37,23 @@ export const BillboardHeaderBtn = styled(Button)`
   display: flex;
   align-items: center;
   height: 36px;
+`;
+
+export const PopoverTitleStyle = styled.div`
+  display: flex;
+  align-items: cetner;
+  justify-content: center;
+  position: relative;
+`;
+
+export const PopoverContentStyle = styled.div`
+  .top-border {
+    border-top: 1px solid var(--grayd5);
+    padding: 8px 0;
+  }
+  .listBtn {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
 `;

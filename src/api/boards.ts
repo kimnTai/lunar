@@ -15,3 +15,9 @@ export const deleteBoardApi = (id: string) =>
 // 取得單一看板, 取得所有列表
 export const getBoardApi = (id: string) =>
   Request.get<any, PrometheusResponse<BoardsProps>>(`/boards/${id}`);
+
+// 刪除Boards Member
+export const deletBoardMemberApi = (boardId: string, memberId: string) =>
+  Request.delete<any, PrometheusResponse<BoardsProps>>(
+    `/${boardId}/members/${memberId}`
+  );
