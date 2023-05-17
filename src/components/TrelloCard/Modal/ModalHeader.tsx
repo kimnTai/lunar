@@ -1,11 +1,11 @@
-import React, { useContext } from "react";
+import React from "react";
 import { Row, Col, Image, Input } from "antd";
 import {
   InboxOutlined,
   UsergroupAddOutlined,
   EyeOutlined,
 } from "@ant-design/icons";
-import { CardModalContext } from "@/components/TrelloCard/Modal/index.tsx";
+import { useCardModalContext } from "@/context/CardModalContext";
 import { updateCardApi } from "@/api/cards";
 import {
   ModalHeaderStyled,
@@ -16,7 +16,7 @@ import {
 const { TextArea } = Input;
 
 const ModalHeader: React.FC = () => {
-  const { cardData } = useContext(CardModalContext);
+  const { cardData } = useCardModalContext();
   const { id = "", name = "" } = cardData ?? {};
   const [isEdit, setIsEdit] = React.useState(false);
   const [titleFiled, setTitleFiled] = React.useState(name);

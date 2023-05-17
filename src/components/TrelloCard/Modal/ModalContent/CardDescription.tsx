@@ -1,12 +1,12 @@
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import { Button, Form, Col, Space } from "antd";
-import { CardModalContext } from "@/components/TrelloCard/Modal";
+import { useCardModalContext } from "@/context/CardModalContext";
 import { updateCardApi } from "@/api/cards";
 import TextEditor from "@/components/TextEditor";
 import { SectionHeaderStyled, SectionContentStyled } from "./style";
 
 const CardDescription: React.FC = () => {
-  const { cardData } = useContext(CardModalContext);
+  const { cardData } = useCardModalContext();
   const { id = "", description = "" } = cardData ?? {};
 
   const [openTextEditor, setOpenTextEditor] = useState(false);
