@@ -26,10 +26,10 @@ export const Navbar: React.FC<{
   const navigate = useNavigate();
   const { boardId } = useParams();
   const handleClosed = () => {
-    openNav(true);
+    openNav();
   };
   const handleOpen = () => {
-    openNav(false);
+    openNav();
   };
 
   const [open, setOpen] = useState(false);
@@ -82,7 +82,7 @@ export const Navbar: React.FC<{
                   }}
                   className="d-center"
                   onClick={() => {
-                    setWorkSpace(true);
+                    setWorkSpace();
                     navigate("/");
                   }}
                 />

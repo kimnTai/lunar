@@ -11,8 +11,8 @@ describe("登入頁面測試", () => {
     render(
       <Login
         loginAction={vi.fn()}
-        signInAction={() => {}}
-        getOrganization={() => {}}
+        signInAction={async () => {}}
+        getOrganization={async () => {}}
         login={false}
         signIn={false}
       />

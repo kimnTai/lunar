@@ -38,7 +38,7 @@ const Billboard: React.FC<{
   }, [boardId]);
   useEffect(() => {
     if (workSpace) {
-      setWorkSpace(false);
+      setWorkSpace();
     }
   }, [workSpace]);
 
