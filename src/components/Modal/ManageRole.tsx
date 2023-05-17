@@ -25,7 +25,6 @@ const ManageRole: React.FC<{
 
   const [_result, loading, callApi] = useApi(updateOrganizationMemberApi);
   const onFinish = async (values: UpdateOrganizationMemberProps) => {
-    console.log(values);
     await callApi({
       organizationId,
       memberId: userId || "",

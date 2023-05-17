@@ -19,7 +19,6 @@ const AddBoards: React.FC<{
   const [_result, loading, callApi] = useApi(newBoardApi);
 
   const onFinish = async (values: NewBoardsProps) => {
-    console.log(values);
     await callApi({
       name: values.name,
       organizationId,

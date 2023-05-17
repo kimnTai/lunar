@@ -1,10 +1,7 @@
 import React from "react";
 import { MemberModalCss } from "./style";
 import { Button, Form } from "antd";
-import {
-  DeleteOrganizationMemberProps,
-  OrganizationMemberProps,
-} from "@/interfaces/organization";
+import { OrganizationMemberProps } from "@/interfaces/organization";
 import { deleteOrganizationMemberApi } from "@/api/organization";
 import { useApi } from "@/hooks/useApiHook";
 
@@ -23,7 +20,7 @@ const RemoveMember: React.FC<{
 
   const [_result, loading, callApi] = useApi(deleteOrganizationMemberApi);
 
-  const onFinish = async (values: DeleteOrganizationMemberProps) => {
+  const onFinish = async () => {
     await callApi({
       organizationId,
       memberId: userId || "",
