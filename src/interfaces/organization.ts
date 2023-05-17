@@ -35,3 +35,13 @@ export interface UpdateOrganizationMemberProps {
   memberId: string;
   role?: string;
 }
+
+// export interface UpdateOrganizationProps {
+//   organizationId: string;
+//   name?: string;
+//   permission?: string;
+// }
+
+export interface DeleteOrganizationProps {
+  organizationId: string;
+}

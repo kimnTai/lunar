@@ -1,6 +1,7 @@
 import Request from "@/api/base/request";
 import type {
   DeleteOrganizationMemberProps,
+  DeleteOrganizationProps,
   NewOrganizationFormProps,
   OrganizationProps,
   UpdateOrganizationMemberProps,
@@ -41,5 +42,24 @@ export const updateOrganizationMemberApi = (
   return Request.put<any, PrometheusResponse<OrganizationProps>>(
     `/organizations/${organizationId}/members/${memberId}`,
     data
+  );
+};
+
+// 更新組織
+// export const updateOrganizationApi = (data: UpdateOrganizationProps) => {
+//   const { organizationId } = data;
+
+//   return Request.put<any, PrometheusResponse<OrganizationProps>>(
+//     `/organizations/${organizationId}`,
+//     data
+//   );
+// };
+
+//移除組織成員
+export const deleteOrganizationApi = (data: DeleteOrganizationProps) => {
+  const { organizationId } = data;
+
+  return Request.delete<any, PrometheusResponse<OrganizationProps>>(
+    `/organizations/${organizationId}`
   );
 };

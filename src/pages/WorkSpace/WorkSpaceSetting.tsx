@@ -13,6 +13,7 @@ import { useSelector } from "react-redux";
 import { OrganizationProps } from "@/interfaces/organization";
 import { OrganizationMemberProps } from "@/interfaces/organization";
 import InviteMember from "@/components/Modal/InviteMember";
+import DeleteOrganization from "@/components/Modal/DeleteOrganization";
 
 const WorkSpaceSetting: React.FC<{
   setWorkSpace: Function;
@@ -20,7 +21,7 @@ const WorkSpaceSetting: React.FC<{
 }> = (props) => {
   const { getOrganization } = props;
   const { workSpaceId } = useParams();
-  const [openRemoveModal, setOpenRemoveModal] = useState(false);
+  const [openDeleteModal, setOpenDeleteModal] = useState(false);
   const [openInviteModal, setOpenInviteModal] = useState(false);
 
   const currentUser = JSON.parse(localStorage.getItem("userData")!);
@@ -29,8 +30,6 @@ const WorkSpaceSetting: React.FC<{
     useSelector((state: any) => state.user.organization).filter(
       (ele: OrganizationProps) => ele._id === workSpaceId
     )?.[0] ?? [];
-
-  console.log(userOrganization);
 
   return (
     <WorkSpaceCss>
@@ -141,11 +140,19 @@ const WorkSpaceSetting: React.FC<{
                 padding: "0",
                 marginTop: "48px",
               }}
+              onClick={() => setOpenDeleteModal(true)}
             >
               要刪除此工作區嗎？
             </Button>
           </div>
         </Col>
+        <DeleteOrganization
+          open={openDeleteModal}
+          setOpen={setOpenDeleteModal}
+          organizationId={workSpaceId!}
+          getOrganization={getOrganization}
+          userOrganization={userOrganization}
+        />
       </WorkSpaceMemberCss>
     </WorkSpaceCss>
   );
