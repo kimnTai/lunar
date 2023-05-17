@@ -66,7 +66,7 @@ const PopoverContent: React.FC = () => {
 };
 
 const TrelloCardHeader: React.FC<TrelloCardHeaderProps> = (props) => {
-  const { title } = props;
+  const { title, showAddCard, setShowAddCard } = props;
   const [openPopover, setOpenPopover] = useState(false);
   const closePopover = () => setOpenPopover(false);
   const handleOpenChange = (ele: boolean) => setOpenPopover(ele);
@@ -78,8 +78,11 @@ const TrelloCardHeader: React.FC<TrelloCardHeaderProps> = (props) => {
       </div>
       <div className="d-flex">
         <Button
+          className="button-hover"
           type="text"
           icon={<PlusOutlined style={{ color: "white" }} />}
+          title="新增卡片"
+          onClick={() => setShowAddCard(true)}
         ></Button>
         <Popover
           placement="bottomLeft"
@@ -94,6 +97,7 @@ const TrelloCardHeader: React.FC<TrelloCardHeaderProps> = (props) => {
           <Button
             icon={<EllipsisOutlined style={{ color: "white" }} />}
             type="text"
+            className="button-hover"
           />
         </Popover>
       </div>
