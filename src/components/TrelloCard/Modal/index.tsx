@@ -1,10 +1,18 @@
-import React, { useEffect, useState } from "react";
+import React, { createContext, useEffect, useState } from "react";
 import { TrelloCardModalStyled } from "./style";
 import { TrelloCardModalProps } from "@/interfaces/trelloCard";
 import { CardsProps } from "@/interfaces/cards";
 import { getCardApi } from "@/api/cards";
 import ModalHeader from "./ModalHeader";
 import ModalLayout from "./ModalLayout";
+
+interface CardModalContextValue {
+  cardData: CardsProps | null;
+}
+
+export const CardModalContext = createContext<CardModalContextValue>({
+  cardData: null,
+});
 
 const TrelloCardModal: React.FC<TrelloCardModalProps> = (props) => {
   const { openModal, setOpenModal } = props;
@@ -35,16 +43,18 @@ const TrelloCardModal: React.FC<TrelloCardModalProps> = (props) => {
   }, [openModal.open]);
 
   return cardData !== null ? (
-    <TrelloCardModalStyled
-      open={openModal.open}
-      onOk={handleOk}
-      onCancel={handleCancel}
-      width={768}
-      title={<ModalHeader cardData={cardData} />}
-      footer={null}
-    >
-      <ModalLayout cardData={cardData} />
-    </TrelloCardModalStyled>
+    <CardModalContext.Provider value={{ cardData }}>
+      <TrelloCardModalStyled
+        open={openModal.open}
+        onOk={handleOk}
+        onCancel={handleCancel}
+        width={768}
+        title={<ModalHeader />}
+        footer={null}
+      >
+        <ModalLayout />
+      </TrelloCardModalStyled>
+    </CardModalContext.Provider>
   ) : (
     <></>
   );

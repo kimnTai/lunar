@@ -1,12 +1,13 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Button, Form, Col, Space } from "antd";
-import { CardsProps } from "@/interfaces/cards";
+import { CardModalContext } from "@/components/TrelloCard/Modal";
 import { updateCardApi } from "@/api/cards";
 import TextEditor from "@/components/TextEditor";
 import { SectionHeaderStyled, SectionContentStyled } from "./style";
 
-const CardDescription: React.FC<{ cardData: CardsProps }> = ({ cardData }) => {
-  const { id, description } = cardData;
+const CardDescription: React.FC = () => {
+  const { cardData } = useContext(CardModalContext);
+  const { id = "", description = "" } = cardData ?? {};
 
   const [openTextEditor, setOpenTextEditor] = useState(false);
   const [descriptionField, setDescriptionField] = useState(description); // 編輯中的內容
