@@ -1,10 +1,11 @@
 import CONSTANTS from "../constants";
 import type { UserProps, LoginProps } from "@/interfaces/user";
 import { loginApi, signInApi, loginJwtApi } from "@/api/auth";
+import { openNotification } from "@/utils/openNotification";
 
 interface LoginActionProps {
   type: string;
-  payload: PrometheusResponse<UserProps>;
+  payload?: PrometheusResponse<UserProps>;
 }
 
 export const signInAction =
@@ -31,9 +32,13 @@ export const loginAction =
 
 export const loginJwtAction =
   () => async (dispatch: ({ type, payload }: LoginActionProps) => void) => {
-    const res = await loginJwtApi();
-
-    if (res.status === "success") {
-      dispatch({ type: CONSTANTS.LOGIN, payload: res });
-    }
+    await loginJwtApi()
+      .then((res) => {
+        if (res.status === "success") {
+          dispatch({ type: CONSTANTS.LOGIN, payload: res });
+        }
+      })
+      .catch(() => {
+        dispatch({ type: CONSTANTS.LOGOUT });
+      });
   };

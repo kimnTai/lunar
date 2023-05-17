@@ -6,7 +6,6 @@ import {
   changeWorkSpaceAction,
   openNavbarAction,
 } from "@/redux/actions/ScreenAction";
-import { addCardListAction } from "@/redux/actions/CardAction";
 import { getOrganizationsAction } from "@/redux/actions/OrganizationAction";
 import {
   signInAction,
@@ -46,13 +45,14 @@ const AppRouter: React.FC<any> = (props) => {
     if (localStorage.getItem("token")) {
       setLoad(true);
       (async () => {
-        await loginJwt();
-        await getOrganization();
+        await loginJwt().catch(() => setLoad(false));
+        await getOrganization().catch(() => setLoad(false));
         setLoad(false);
       })();
     } else {
       setLoad(false);
     }
+    // setLoad(false);
   }, [login, organization?.length]);
 
   const LoginLayout = React.memo(({ children }: any) => (
@@ -194,7 +194,6 @@ const mapStateToProps = (state: any) => ({
 export default connect(mapStateToProps, {
   openNav: openNavbarAction,
   changeWorkSpace: changeWorkSpaceAction,
-  addCardList: addCardListAction,
   signInAction,
   loginAction,
   loginJwt: loginJwtAction,

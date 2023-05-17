@@ -33,14 +33,14 @@ const WorkSpace: React.FC<{
         <Row>
           <ColorIcon
             color={"white"}
-            text={userOrganization.name[0]}
+            text={userOrganization?.name[0]}
             fontSize={"32px"}
             size={"72px"}
             background={"var(--blue)"}
           />
           <Col className="workSpace" style={{ marginLeft: "16px" }}>
             <Row align={"middle"} justify={"center"}>
-              <h2>{userOrganization.name}</h2>
+              <h2>{userOrganization?.name}</h2>
               <Button
                 style={{ width: "28px", background: "#F7F7F7", border: 0 }}
                 shape="circle"
