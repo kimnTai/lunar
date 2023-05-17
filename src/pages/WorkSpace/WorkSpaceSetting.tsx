@@ -14,10 +14,11 @@ import { OrganizationProps } from "@/interfaces/organization";
 import { OrganizationMemberProps } from "@/interfaces/organization";
 import InviteMember from "@/components/Modal/InviteMember";
 import DeleteOrganization from "@/components/Modal/DeleteOrganization";
+import type { PropsFromRedux } from "@/router";
 
 const WorkSpaceSetting: React.FC<{
-  setWorkSpace: Function;
-  getOrganization: Function;
+  setWorkSpace: PropsFromRedux["changeWorkSpace"];
+  getOrganization: PropsFromRedux["getOrganization"];
 }> = (props) => {
   const { getOrganization } = props;
   const { workSpaceId } = useParams();

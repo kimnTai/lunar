@@ -28,7 +28,9 @@ import WorkSpaceMember from "@/pages/WorkSpace/WorkSpaceMember";
 import WorkSpaceSetting from "@/pages/WorkSpace/WorkSpaceSetting";
 import type { store } from "@/redux/store";
 
-const AppRouter: React.FC<ConnectedProps<typeof connector>> = (props) => {
+export type PropsFromRedux = ConnectedProps<typeof connector>;
+
+const AppRouter: React.FC<PropsFromRedux> = (props) => {
   const {
     openNav,
     showNavbar,

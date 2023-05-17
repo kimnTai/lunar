@@ -6,6 +6,7 @@ import AppleIcon from "@/assets/images/apple.png";
 import { LoginCss, ThirdPartyButtonCss } from "./style";
 import { useNavigate } from "react-router-dom";
 import type { LoginProps } from "@/interfaces/user";
+import type { PropsFromRedux } from "@/router";
 
 const ThirdPartyButton: React.FC<{
   icon: any;
@@ -24,9 +25,9 @@ const ThirdPartyButton: React.FC<{
 };
 
 const Login: React.FC<{
-  signInAction: Function;
-  loginAction: Function;
-  getOrganization: Function;
+  signInAction: PropsFromRedux["signInAction"];
+  loginAction: PropsFromRedux["loginAction"];
+  getOrganization: PropsFromRedux["getOrganization"];
   login: boolean;
   signIn: boolean;
 }> = ({ signInAction, loginAction, getOrganization, login, signIn }) => {

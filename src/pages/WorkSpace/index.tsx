@@ -9,10 +9,11 @@ import { useSelector } from "react-redux";
 import { OrganizationProps } from "@/interfaces/organization";
 import { BoardsProps } from "@/interfaces/boards";
 import AddBoards from "@/components/Modal/AddBoards";
+import type { PropsFromRedux } from "@/router";
 
 const WorkSpace: React.FC<{
-  setWorkSpace: Function;
-  getOrganization: Function;
+  setWorkSpace: PropsFromRedux["changeWorkSpace"];
+  getOrganization: PropsFromRedux["getOrganization"];
 }> = (props) => {
   const { setWorkSpace, getOrganization } = props;
   const { workSpaceId } = useParams();

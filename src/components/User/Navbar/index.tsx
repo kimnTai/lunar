@@ -14,13 +14,14 @@ import { useSelector } from "react-redux";
 import NavBarMenu from "./NavbarMenu";
 import { OrganizationProps } from "@/interfaces/organization";
 import AddBoards from "@/components/Modal/AddBoards";
+import type { PropsFromRedux } from "@/router";
 
 export const Navbar: React.FC<{
   showNavbar: boolean;
-  openNav: Function;
+  openNav: PropsFromRedux["openNav"];
   workSpace: boolean;
-  setWorkSpace: Function;
-  getOrganization: Function;
+  setWorkSpace: PropsFromRedux["changeWorkSpace"];
+  getOrganization: PropsFromRedux["getOrganization"];
 }> = ({ showNavbar, openNav, workSpace, setWorkSpace, getOrganization }) => {
   const navigate = useNavigate();
   const { boardId } = useParams();

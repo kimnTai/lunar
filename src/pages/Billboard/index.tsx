@@ -14,10 +14,11 @@ import {
   updateCardDiffColumn,
   updateColumn,
 } from "@/utils/cardFunc";
+import type { PropsFromRedux } from "@/router";
 
 const Billboard: React.FC<{
   workSpace: boolean;
-  setWorkSpace: Function;
+  setWorkSpace: PropsFromRedux["changeWorkSpace"];
 }> = ({ workSpace, setWorkSpace }) => {
   const [cardList, setCardList] = useState<ListsProps[]>([]);
   const { boardId } = useParams();

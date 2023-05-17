@@ -27,6 +27,7 @@ import RemoveMember from "@/components/Modal/RemoveMember";
 import { OrganizationMemberProps } from "@/interfaces/organization";
 import ManageRole from "@/components/Modal/ManageRole";
 import InviteMember from "@/components/Modal/InviteMember";
+import type { PropsFromRedux } from "@/router";
 
 const items: MenuProps["items"] = [
   getItem(
@@ -39,8 +40,8 @@ const items: MenuProps["items"] = [
 ];
 
 const WorkSpaceMember: React.FC<{
-  setWorkSpace: Function;
-  getOrganization: Function;
+  setWorkSpace: PropsFromRedux["changeWorkSpace"];
+  getOrganization: PropsFromRedux["getOrganization"];
 }> = (props) => {
   const { getOrganization } = props;
   const { workSpaceId } = useParams();
