@@ -57,7 +57,7 @@ const NavBarMenu: React.FC<NavBarMenuProps> = ({
     ),
     getItem(
       "設定",
-      `${id}/account`,
+      `${id}/setting`,
       <SettingOutlined style={{ fontSize: "20px" }} />
     ),
   ];
