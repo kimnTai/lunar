@@ -16,6 +16,7 @@ interface NavBarMenuProps {
   data: { name: string; _id: string }[];
   setOpen: Function;
   id?: string;
+  workSpaceId?: string;
 }
 
 const NavBarMenu: React.FC<NavBarMenuProps> = ({
@@ -23,6 +24,7 @@ const NavBarMenu: React.FC<NavBarMenuProps> = ({
   data,
   setOpen,
   id,
+  workSpaceId,
 }) => {
   const navigate = useNavigate();
   const [items, setItems] = useState<MenuProps["items"]>();
@@ -30,7 +32,6 @@ const NavBarMenu: React.FC<NavBarMenuProps> = ({
   const [openKey, setOpenKey] = useState<string[]>();
 
   const handleClick: MenuProps["onClick"] = (element) => {
-    console.log(element);
     if (element.key === "addModal") {
       setOpen(true);
     }
@@ -57,7 +58,7 @@ const NavBarMenu: React.FC<NavBarMenuProps> = ({
     ),
     getItem(
       "設定",
-      `${id}/account`,
+      `${id}/setting`,
       <SettingOutlined style={{ fontSize: "20px" }} />
     ),
   ];
@@ -107,12 +108,15 @@ const NavBarMenu: React.FC<NavBarMenuProps> = ({
             );
       });
 
-      setSelect(workSpace ? `${data[0]._id}/home` : `${id}`);
-      setOpenKey([data[0]._id]);
       setItems([...useItem, ...defaultItems]);
     }
   }, [data?.length]);
 
+  useEffect(() => {
+    setSelect(workSpace ? `${workSpaceId}/home` : `${id}`);
+    workSpace &&
+      setOpenKey([data.filter((ele) => ele?._id === workSpaceId)[0]?._id]);
+  }, [workSpace, workSpaceId, id]);
   return (
     <>
       <Menu

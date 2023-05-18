@@ -30,31 +30,29 @@ const UserReducer = function (
       | PrometheusResponse<OrganizationProps[]>["result"];
   }
 ) {
-  switch (action.type) {
-    case CONSTANTS.GET_USER: {
-      if ("token" in action.payload) {
-        return {
-          user: { ...action.payload.result },
-          token: action.payload.token,
-        };
-      }
-      break;
-    }
-    case CONSTANTS.GET_ORGANIZATION: {
-      if (Array.isArray(action.payload)) {
-        return {
-          ...state,
-          organization: [...action.payload],
-        };
-      }
-      break;
-    }
-    default: {
-      return {
-        ...state,
-      };
-    }
+  if (action.type === CONSTANTS.GET_USER && "token" in action.payload) {
+    return {
+      ...state,
+      user: {
+        ...action.payload.result,
+      },
+      token: action.payload.token,
+    };
   }
+
+  if (
+    action.type === CONSTANTS.GET_ORGANIZATION &&
+    Array.isArray(action.payload)
+  ) {
+    return {
+      ...state,
+      organization: [...action.payload],
+    };
+  }
+
+  return {
+    ...state,
+  };
 };
 
 export default UserReducer;

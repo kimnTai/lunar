@@ -4,9 +4,9 @@ import { SearchOutlined, BellOutlined } from "@ant-design/icons";
 import type { MenuProps } from "antd";
 import { Input, Button, Badge, Avatar } from "antd";
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
 import { DropdownBtn } from "@/components/DropdownBtn";
 import { UserModal } from "./UserModal";
+import { OrganizationProps } from "@/interfaces/organization";
 
 const items: MenuProps["items"] = [
   {
@@ -17,13 +17,26 @@ const items: MenuProps["items"] = [
 
 export const Header: React.FC<{
   workSpace: boolean;
+  setWorkSpace: React.Dispatch<React.SetStateAction<boolean>>;
+  organization: OrganizationProps[];
 }> = (props) => {
-  const { workSpace } = props;
+  const { workSpace, organization, setWorkSpace } = props;
   const { avatar, name, email } = JSON.parse(localStorage.getItem("userData")!);
-  //const [search, setSearch] = useState("");
-  //   const dispatch = useDispatch();
-  //   const navigate = useNavigate();
+  const navigate = useNavigate();
   const [userModal, setUserModal] = useState(false);
+  const selectOrganizationItem = organization.map((ele) => ({
+    label: (
+      <a
+        onClick={() => {
+          navigate(`/workspace/${ele._id}/home`);
+          setWorkSpace(true);
+        }}
+      >
+        {ele.name}
+      </a>
+    ),
+    key: ele._id,
+  }));
   return (
     <HeaderCss
       className="d-space"
@@ -35,7 +48,7 @@ export const Header: React.FC<{
             display: workSpace ? "none" : "flex",
           }}
         >
-          <DropdownBtn items={items} title={"工作區"}/>
+          <DropdownBtn items={selectOrganizationItem} title={"工作區"} />
           <DropdownBtn items={items} title={"最近的"} />
         </div>
 

@@ -6,8 +6,8 @@ import { DropResult } from "react-beautiful-dnd";
 import { POSITION_GAP } from "./constant";
 import isUndefined from "lodash/isUndefined";
 
-export const nextPosition = (
-  items: CardsProps[] | ListsProps[] | { id: string; position: string }[],
+export const nextPosition = <T extends { id: string; position: string }>(
+  items: T[],
   index?: number,
   excludedId?: string
 ) => {
@@ -27,10 +27,8 @@ export const nextPosition = (
   const prevPosition = prevItem ? Number(prevItem.position) : 0;
 
   if (!nextItem) {
-    console.log("no next");
     return prevPosition + POSITION_GAP;
   }
-  console.log("end");
   return prevPosition + (Number(nextItem.position) - prevPosition) / 2;
 };
 
@@ -38,18 +36,23 @@ export const updateCardInColumn = (
   result: DropResult,
   cardList: ListsProps[]
 ) => {
+  if (!result.destination) {
+    return cardList;
+  }
+
   const source = result.source;
   const destination = result.destination;
   const useList = cardList.filter(
-    (ele) => ele.id === destination?.droppableId
+    (ele) => ele.id === destination.droppableId
   )[0];
   const useCardIndex = useList.card.findIndex(
     (ele) => ele.id === result.draggableId
   );
-  useList.card[useCardIndex].position =
-    destination!.index > useCardIndex
-      ? nextPosition(useList.card, Number(destination?.index) + 1).toString()
-      : nextPosition(useList.card, destination?.index).toString();
+  useList.card[useCardIndex].position = nextPosition(
+    useList.card,
+    destination.index + (destination.index > useCardIndex ? 1 : 0)
+  ).toString();
+
   updateCardApi({
     listId: source.droppableId,
     cardId: result.draggableId,
@@ -68,7 +71,7 @@ const getNewColumn = (
   id: string,
   newArr: CardsProps[]
 ) => {
-  let useColumn = [...columns];
+  const useColumn = [...columns];
   const useIndex = columns.findIndex((ele) => ele.id === id);
   if (useIndex !== -1) {
     const useArr = { ...useColumn[useIndex], card: newArr };
@@ -81,19 +84,23 @@ export const updateCardDiffColumn = (
   result: DropResult,
   cardList: ListsProps[]
 ) => {
+  if (!result.destination) {
+    return cardList;
+  }
+
   const source = result.source;
   const destination = result.destination;
   const current = [...getColumn(cardList, source.droppableId).card];
-  const next = [...getColumn(cardList, destination!.droppableId).card];
-  const usePosition = nextPosition(next, Number(destination!.index)).toString();
+  const next = [...getColumn(cardList, destination.droppableId).card];
+  const usePosition = nextPosition(next, destination.index).toString();
   const target = current[source.index];
   target.position = usePosition;
 
   current.splice(source.index, 1);
-  next.splice(destination!.index, 0, target);
+  next.splice(destination.index, 0, target);
 
   updateCardApi({
-    listId: destination!.droppableId,
+    listId: destination.droppableId,
     cardId: result.draggableId,
     position: usePosition,
     closed: false,
@@ -101,18 +108,21 @@ export const updateCardDiffColumn = (
 
   return getNewColumn(
     getNewColumn(cardList, source.droppableId, current),
-    destination!.droppableId,
+    destination.droppableId,
     next
   );
 };
 
 export const updateColumn = (result: DropResult, cardList: ListsProps[]) => {
+  if (!result.destination) {
+    return cardList;
+  }
   const startIndex = result.source.index;
-  const endIndex = result.destination!.index;
-  const usePosition =
-    startIndex < endIndex
-      ? nextPosition(cardList, endIndex + 1).toString()
-      : nextPosition(cardList, endIndex).toString();
+  const endIndex = result.destination.index;
+  const usePosition = nextPosition(
+    cardList,
+    endIndex + (startIndex < endIndex ? 1 : 0)
+  ).toString();
   cardList.filter((ele) => ele.id === result.draggableId)[0].position =
     usePosition;
   updateListApi({

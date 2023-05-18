@@ -14,21 +14,22 @@ import { useSelector } from "react-redux";
 import NavBarMenu from "./NavbarMenu";
 import { OrganizationProps } from "@/interfaces/organization";
 import AddBoards from "@/components/Modal/AddBoards";
+import type { PropsFromRedux } from "@/router";
 
 export const Navbar: React.FC<{
   showNavbar: boolean;
-  openNav: Function;
+  openNav: PropsFromRedux["openNav"];
   workSpace: boolean;
-  setWorkSpace: Function;
-  getOrganization: Function;
+  setWorkSpace: PropsFromRedux["changeWorkSpace"];
+  getOrganization: PropsFromRedux["getOrganization"];
 }> = ({ showNavbar, openNav, workSpace, setWorkSpace, getOrganization }) => {
   const navigate = useNavigate();
-  const { boardId } = useParams();
+  const { boardId, workSpaceId } = useParams();
   const handleClosed = () => {
-    openNav(true);
+    openNav();
   };
   const handleOpen = () => {
-    openNav(false);
+    openNav();
   };
 
   const [open, setOpen] = useState(false);
@@ -53,6 +54,7 @@ export const Navbar: React.FC<{
       setOpenKey(boardId);
     }
   }, [workSpace, boardId]);
+
   return (
     <Sider
       width={257}
@@ -81,7 +83,7 @@ export const Navbar: React.FC<{
                   }}
                   className="d-center"
                   onClick={() => {
-                    setWorkSpace(true);
+                    setWorkSpace();
                     navigate("/");
                   }}
                 />
@@ -101,6 +103,7 @@ export const Navbar: React.FC<{
           </div>
           {workSpace ? (
             <NavBarMenu
+              workSpaceId={workSpaceId}
               workSpace={workSpace}
               data={userOrganization}
               setOpen={setOpen}

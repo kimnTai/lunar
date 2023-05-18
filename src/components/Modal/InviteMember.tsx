@@ -10,14 +10,14 @@ const InviteMember: React.FC<{
   open: boolean;
   setOpen: Function;
   organizationId: string;
-}> = ({ open, setOpen, organizationId }) => {
+}> = ({ open, setOpen }) => {
   const [_form] = Form.useForm<NewBoardsProps>();
   const onCancel: () => void = () => {
     setOpen(false);
   };
-  const [_result, loading, callApi] = useApi(newBoardApi);
+  const [_result, _loading, _callApi] = useApi(newBoardApi);
 
-  const onFinish = async (values: NewBoardsProps) => {
+  const onFinish = async (_values: NewBoardsProps) => {
     // await callApi({
     //   name: values.name,
     //   organizationId,

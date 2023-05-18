@@ -1,6 +1,7 @@
 import "@testing-library/jest-dom";
 import { render, screen, cleanup } from "@testing-library/react";
 import Login from "@/pages/Login/index";
+import { nextPosition } from "@/utils/cardFunc";
 
 afterEach(() => {
   cleanup();
@@ -11,8 +12,8 @@ describe("登入頁面測試", () => {
     render(
       <Login
         loginAction={vi.fn()}
-        signInAction={() => {}}
-        getOrganization={() => {}}
+        signInAction={async () => {}}
+        getOrganization={async () => {}}
         login={false}
         signIn={false}
       />
@@ -22,14 +23,12 @@ describe("登入頁面測試", () => {
 });
 
 describe("拖曳座標計算測試", () => {
-  test("測試", async () => {
-    const { nextPosition } = await import("@/utils/core");
-
+  test("nextPosition 測試", async () => {
     const items = [
-      { id: 1, position: 100 },
-      { id: 2, position: 200 },
-      { id: 3, position: 300 },
-      { id: 4, position: 400 },
+      { id: "1", position: "100" },
+      { id: "2", position: "200" },
+      { id: "3", position: "300" },
+      { id: "4", position: "400" },
     ];
     // 空陣列新增
     expect(nextPosition([])).toBe(65535);
@@ -42,9 +41,11 @@ describe("拖曳座標計算測試", () => {
     expect(nextPosition(items, 3)).toBe(350);
     expect(nextPosition(items, 4)).toBe(65935);
     // 拖曳 id:2 項目時
-    expect(nextPosition(items, 0, 2)).toBe(50);
-    expect(nextPosition(items, 1, 2)).toBe(200);
-    expect(nextPosition(items, 2, 2)).toBe(350);
-    expect(nextPosition(items, 3, 2)).toBe(65935);
+    expect(nextPosition(items, 0, "2")).toBe(50);
+    expect(nextPosition(items, 1, "2")).toBe(200);
+    expect(nextPosition(items, 2, "2")).toBe(350);
+    expect(nextPosition(items, 3, "2")).toBe(65935);
+    // FIXME: id 為 NaN 時
+    expect(nextPosition(items, NaN, "2")).toBe(65535);
   });
 });

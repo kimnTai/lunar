@@ -21,7 +21,7 @@ const ModalHeader: React.FC<{ cardData: CardsProps }> = ({ cardData }) => {
   const [titleFiled, setTitleFiled] = React.useState(name);
 
   // Title Enter Submit
-  const handleKeyDown = (event) => {
+  const handleKeyDown = (event: any) => {
     const { keyCode, key } = event;
 
     if (keyCode === 13 || key.toUpperCase() === "ENTER") {

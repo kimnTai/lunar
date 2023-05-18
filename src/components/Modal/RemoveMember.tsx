@@ -1,10 +1,9 @@
 import React from "react";
 import { MemberModalCss } from "./style";
-import { useApi } from "@/hooks/useApiHook";
-import { newBoardApi } from "@/api/boards";
-import { NewBoardsProps } from "@/interfaces/boards";
 import { Button, Form } from "antd";
 import { OrganizationMemberProps } from "@/interfaces/organization";
+import { deleteOrganizationMemberApi } from "@/api/organization";
+import { useApi } from "@/hooks/useApiHook";
 
 const RemoveMember: React.FC<{
   open: boolean;
@@ -13,19 +12,21 @@ const RemoveMember: React.FC<{
   getOrganization: Function;
   selectedMember: OrganizationMemberProps | null;
 }> = ({ open, setOpen, organizationId, getOrganization, selectedMember }) => {
-  const [_form] = Form.useForm<NewBoardsProps>();
+  const userId = selectedMember?.userId._id;
+
   const onCancel: () => void = () => {
     setOpen(false);
   };
 
-  const [_result, loading, callApi] = useApi(newBoardApi);
-  const onFinish = async (values: NewBoardsProps) => {
+  const [_result, loading, callApi] = useApi(deleteOrganizationMemberApi);
+
+  const onFinish = async () => {
     await callApi({
-      name: values.name,
       organizationId,
-      permission: values.permission,
+      memberId: userId || "",
     });
     await getOrganization();
+
     onCancel();
   };
   return (
@@ -38,8 +39,8 @@ const RemoveMember: React.FC<{
     >
       <Form
         // form={form}
-        onFinish={onFinish}
         layout="vertical"
+        onFinish={onFinish}
       >
         <Form.Item name="exit">
           <Button

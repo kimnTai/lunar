@@ -1,34 +1,32 @@
 import React from "react";
 import { MemberModalCss } from "./style";
 import { useApi } from "@/hooks/useApiHook";
-import { updateOrganizationMemberApi } from "@/api/organization";
+import { updateOrganizationApi } from "@/api/organization";
 import { Form, Radio } from "antd";
-import { CheckOutlined } from "@ant-design/icons";
+import { CheckOutlined, LockOutlined, GlobalOutlined } from "@ant-design/icons";
 import {
-  OrganizationMemberProps,
-  UpdateOrganizationMemberProps,
+  OrganizationProps,
+  UpdateOrganizationProps,
 } from "@/interfaces/organization";
 import { useForm } from "antd/lib/form/Form";
 
-const ManageRole: React.FC<{
+const ManagePermission: React.FC<{
   open: boolean;
   setOpen: Function;
   organizationId: string;
   getOrganization: Function;
-  selectedMember: OrganizationMemberProps | null;
-}> = ({ open, setOpen, organizationId, getOrganization, selectedMember }) => {
+  userOrganization: OrganizationProps;
+}> = ({ open, setOpen, organizationId, getOrganization, userOrganization }) => {
   const onCancel: () => void = () => {
     setOpen(false);
   };
   const [form] = useForm();
-  const userId = selectedMember?.userId._id;
 
-  const [_result, _loading, callApi] = useApi(updateOrganizationMemberApi);
-  const onFinish = async (values: UpdateOrganizationMemberProps) => {
+  const [_result, _loading, callApi] = useApi(updateOrganizationApi);
+  const onFinish = async (values: UpdateOrganizationProps) => {
     await callApi({
       organizationId,
-      memberId: userId || "",
-      role: values.role,
+      permission: values.permission,
     });
     await getOrganization();
     onCancel();
@@ -36,17 +34,17 @@ const ManageRole: React.FC<{
 
   return (
     <MemberModalCss
-      title={<p style={{ textAlign: "center" }}>更改許可設定</p>}
+      title={<p style={{ textAlign: "center" }}>選取工作區觀看權限</p>}
       width={332}
       open={open}
       onCancel={onCancel}
       footer={null}
     >
       <Form form={form} onFinish={onFinish} layout="vertical">
-        <Form.Item name="role">
+        <Form.Item name="permission">
           <Radio.Group size="large">
             <Radio.Button
-              value="manager"
+              value="private"
               style={{
                 textAlign: "left",
                 border: "0",
@@ -63,8 +61,8 @@ const ManageRole: React.FC<{
                   lineHeight: "24px",
                 }}
               >
-                管理員
-                {selectedMember?.role === "manager" && (
+                <LockOutlined /> 私密{" "}
+                {userOrganization.permission === "private" && (
                   <CheckOutlined style={{ fontSize: "14px" }} />
                 )}
               </p>
@@ -75,11 +73,11 @@ const ManageRole: React.FC<{
                   fontSize: "12px",
                 }}
               >
-                可以查看、建立及編輯工作區看板，並可以為工作區更改設定。在此工作區中的所有看板上將擁有管理員權限。
+                這是私人工作區。此工作區沒有編入索引、也不開放工作區以外的成員觀看
               </span>
             </Radio.Button>
             <Radio.Button
-              value="viewer"
+              value="public"
               style={{
                 textAlign: "left",
                 border: "0",
@@ -96,8 +94,8 @@ const ManageRole: React.FC<{
                   lineHeight: "24px",
                 }}
               >
-                一般
-                {selectedMember?.role === "viewer" && (
+                <GlobalOutlined /> 公開{" "}
+                {userOrganization.permission === "public" && (
                   <CheckOutlined style={{ fontSize: "14px" }} />
                 )}
               </p>
@@ -108,7 +106,9 @@ const ManageRole: React.FC<{
                   fontSize: "12px",
                 }}
               >
-                可以查看、建立及編輯工作區看板，但不能更改設定。
+                這些是公開的工作區。任何擁有此連結的人皆可觀看這些工作區，同時這些工作區也會出現在搜尋引擎
+                (如 Google)
+                結果中。只有獲邀加入這些工作區的人員可以新增及編輯工作區看板。
               </span>
             </Radio.Button>
           </Radio.Group>
@@ -117,4 +117,4 @@ const ManageRole: React.FC<{
     </MemberModalCss>
   );
 };
-export default ManageRole;
+export default ManagePermission;

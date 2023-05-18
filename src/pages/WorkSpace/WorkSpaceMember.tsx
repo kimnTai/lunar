@@ -27,6 +27,7 @@ import RemoveMember from "@/components/Modal/RemoveMember";
 import { OrganizationMemberProps } from "@/interfaces/organization";
 import ManageRole from "@/components/Modal/ManageRole";
 import InviteMember from "@/components/Modal/InviteMember";
+import type { PropsFromRedux } from "@/router";
 
 const items: MenuProps["items"] = [
   getItem(
@@ -39,8 +40,8 @@ const items: MenuProps["items"] = [
 ];
 
 const WorkSpaceMember: React.FC<{
-  setWorkSpace: Function;
-  getOrganization: Function;
+  setWorkSpace: PropsFromRedux["changeWorkSpace"];
+  getOrganization: PropsFromRedux["getOrganization"];
 }> = (props) => {
   const { getOrganization } = props;
   const { workSpaceId } = useParams();
@@ -50,10 +51,16 @@ const WorkSpaceMember: React.FC<{
   const [selectedMember, setSelectedMember] =
     useState<OrganizationMemberProps | null>(null);
 
+  const currentUser = JSON.parse(localStorage.getItem("userData")!);
+
   const userOrganization: OrganizationProps =
     useSelector((state: any) => state.user.organization).filter(
       (ele: OrganizationProps) => ele._id === workSpaceId
     )?.[0] ?? [];
+
+  const [orgUser] = userOrganization.member.filter(
+    (user) => user.userId._id === currentUser._id
+  );
 
   const handleClick: MenuProps["onClick"] = (element) => {
     console.log(element);
@@ -65,9 +72,10 @@ const WorkSpaceMember: React.FC<{
   };
 
   const handleClickManageBtn = (member: OrganizationMemberProps) => {
-    setSelectedMember(member);
-    setOpenManageRoleModal(true);
-    console.log(member);
+    if (orgUser.role === "manager") {
+      setSelectedMember(member);
+      setOpenManageRoleModal(true);
+    }
   };
 
   return (
@@ -185,61 +193,63 @@ const WorkSpaceMember: React.FC<{
               <Input placeholder="依名字篩選" />
             </Col>
             <Divider />
-            <List
-              itemLayout="horizontal"
-              dataSource={userOrganization.member}
-              renderItem={(member: OrganizationMemberProps) => (
-                <List.Item
-                  actions={[
-                    <Button
-                      icon={<ExclamationCircleOutlined />}
-                      style={{
-                        backgroundColor: "white",
-                        color: "var(--black23)",
-                        padding: "4px 16px",
-                      }}
-                      onClick={() => handleClickManageBtn(member)}
-                    >
-                      {member.role === "manager" ? "管理員" : "成員"}
-                    </Button>,
+            {userOrganization.member && (
+              <List
+                itemLayout="horizontal"
+                dataSource={userOrganization.member}
+                renderItem={(member: OrganizationMemberProps) => (
+                  <List.Item
+                    actions={[
+                      <Button
+                        icon={<ExclamationCircleOutlined />}
+                        style={{
+                          backgroundColor: "white",
+                          color: "var(--black23)",
+                          padding: "4px 16px",
+                        }}
+                        onClick={() => handleClickManageBtn(member)}
+                      >
+                        {member.role === "manager" ? "管理員" : "成員"}
+                      </Button>,
 
-                    <Button
-                      style={{
-                        backgroundColor: "white",
-                        color: "var(--black23)",
-                        padding: "4px 16px",
-                        textAlign: "center",
-                      }}
-                      onClick={() => handleClickRemoveBtn(member)}
-                    >
-                      {member.role === "manager" ? "退出" : "移除"}
-                    </Button>,
-                  ]}
-                >
-                  <Skeleton avatar title={false} loading={false} active>
-                    <List.Item.Meta
-                      avatar={<Avatar src={member.userId.avatar} />}
-                      title={member.userId.name}
-                      description={member.userId.email}
+                      <Button
+                        style={{
+                          backgroundColor: "white",
+                          color: "var(--black23)",
+                          padding: "4px 16px",
+                          textAlign: "center",
+                        }}
+                        onClick={() => handleClickRemoveBtn(member)}
+                      >
+                        {member.role === "manager" ? "退出" : "移除"}
+                      </Button>,
+                    ]}
+                  >
+                    <Skeleton avatar title={false} loading={false} active>
+                      <List.Item.Meta
+                        avatar={<Avatar src={member.userId.avatar} />}
+                        title={member.userId.name}
+                        description={member.userId.email}
+                      />
+                    </Skeleton>
+                    <ManageRole
+                      open={openManageRoleModal}
+                      setOpen={setOpenManageRoleModal}
+                      organizationId={workSpaceId!}
+                      getOrganization={getOrganization}
+                      selectedMember={selectedMember}
                     />
-                  </Skeleton>
-                  <ManageRole
-                    open={openManageRoleModal}
-                    setOpen={setOpenManageRoleModal}
-                    organizationId={workSpaceId!}
-                    getOrganization={getOrganization}
-                    selectedMember={selectedMember}
-                  />
-                  <RemoveMember
-                    open={openRemoveModal}
-                    setOpen={setOpenRemoveModal}
-                    organizationId={workSpaceId!}
-                    getOrganization={getOrganization}
-                    selectedMember={selectedMember}
-                  />
-                </List.Item>
-              )}
-            />
+                    <RemoveMember
+                      open={openRemoveModal}
+                      setOpen={setOpenRemoveModal}
+                      organizationId={workSpaceId!}
+                      getOrganization={getOrganization}
+                      selectedMember={selectedMember}
+                    />
+                  </List.Item>
+                )}
+              />
+            )}
           </Col>
         </Row>
       </WorkSpaceMemberCss>

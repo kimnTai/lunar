@@ -1,10 +1,11 @@
 import { useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
+import type { PropsFromRedux } from "@/router";
 
-const Callback: React.FC<{ loginJwt: Function; getOrganization: Function }> = ({
-  loginJwt,
-  getOrganization,
-}) => {
+const Callback: React.FC<{
+  loginJwt: PropsFromRedux["loginJwt"];
+  getOrganization: PropsFromRedux["getOrganization"];
+}> = ({ loginJwt, getOrganization }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);

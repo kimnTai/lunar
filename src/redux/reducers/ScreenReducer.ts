@@ -1,6 +1,6 @@
 import CONSTANTS from "../constants";
 
-const initialState: { [x: string]: boolean } = {
+const initialState = {
   showNavbar: false,
   showWorkSpace: true,
 };
@@ -11,8 +11,6 @@ const ScreenReducer = function (
 ) {
   switch (action.type) {
     case CONSTANTS.OPEN_CLOSE_NAVBAR: {
-      console.log(state);
-      console.log(!state.showNavbar);
       return {
         ...state,
         showNavbar: !state.showNavbar,
