@@ -30,4 +30,5 @@ export interface NewCardProps {
   name: string;
   position: string;
   listId: string;
+  boardId: string;
 }
