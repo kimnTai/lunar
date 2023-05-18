@@ -5,7 +5,6 @@ import { PlusOutlined, EditOutlined, LockOutlined } from "@ant-design/icons";
 import { ColorIcon } from "@/components/Icons";
 import { useParams } from "react-router-dom";
 import { WorkSpaceCard } from "./WorkSpaceCard";
-import { BoardsProps } from "@/interfaces/boards";
 import AddBoards from "@/components/Modal/AddBoards";
 import type { PropsFromRedux } from "@/router";
 import { useAppSelector } from "@/hooks/useAppSelector";
@@ -18,10 +17,9 @@ const WorkSpace: React.FC<{
   const { workSpaceId } = useParams();
   const [openModal, setOpenModal] = useState(false);
 
-  const userOrganization =
-    useAppSelector((state) => state.user.organization).filter(
-      (ele) => ele._id === workSpaceId
-    )[0] ?? [];
+  const userOrganization = useAppSelector(
+    (state) => state.user.organization
+  ).find((ele) => ele._id === workSpaceId);
 
   const handleChange = (value: string) => {
     console.log(`selected ${value}`);
@@ -33,7 +31,7 @@ const WorkSpace: React.FC<{
         <Row>
           <ColorIcon
             color={"white"}
-            text={userOrganization?.name[0]}
+            text={userOrganization?.name[0] || ""}
             fontSize={"32px"}
             size={"72px"}
             background={"var(--blue)"}
@@ -47,7 +45,7 @@ const WorkSpace: React.FC<{
                 icon={<EditOutlined />}
               />
             </Row>
-            {userOrganization.permission === "private" && (
+            {userOrganization?.permission === "private" && (
               <Row
                 align={"middle"}
                 justify={"start"}
@@ -110,8 +108,8 @@ const WorkSpace: React.FC<{
         </Col>
       </Row>
       <Row style={{ marginTop: "16px", columnGap: "8px" }}>
-        {userOrganization.board.length ? (
-          userOrganization.board.map((ele: BoardsProps, idx: number) => (
+        {userOrganization?.board.length ? (
+          userOrganization.board.map((ele, idx) => (
             <WorkSpaceCard
               title={ele.name}
               privacy={ele.permission}

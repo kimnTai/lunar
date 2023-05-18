@@ -52,12 +52,11 @@ const WorkSpaceMember: React.FC<{
 
   const currentUser = JSON.parse(localStorage.getItem("userData")!);
 
-  const userOrganization =
-    useAppSelector((state) => state.user.organization).filter(
-      (ele) => ele._id === workSpaceId
-    )[0] ?? [];
+  const userOrganization = useAppSelector(
+    (state) => state.user.organization
+  ).find((ele) => ele._id === workSpaceId);
 
-  const [orgUser] = userOrganization.member.filter(
+  const orgUser = userOrganization?.member.find(
     (user) => user.userId._id === currentUser._id
   );
 
@@ -71,7 +70,7 @@ const WorkSpaceMember: React.FC<{
   };
 
   const handleClickManageBtn = (member: OrganizationMemberProps) => {
-    if (orgUser.role === "manager") {
+    if (orgUser?.role === "manager") {
       setSelectedMember(member);
       setOpenManageRoleModal(true);
     }
@@ -83,21 +82,21 @@ const WorkSpaceMember: React.FC<{
         <Row>
           <ColorIcon
             color={"white"}
-            text={userOrganization.name[0]}
+            text={userOrganization?.name[0] || ""}
             fontSize={"32px"}
             size={"72px"}
             background={"var(--blue)"}
           />
           <Col className="workSpace" style={{ marginLeft: "16px" }}>
             <Row align={"middle"} justify={"center"}>
-              <h2>{userOrganization.name}</h2>
+              <h2>{userOrganization?.name}</h2>
               <Button
                 style={{ width: "28px", background: "#F7F7F7", border: 0 }}
                 shape="circle"
                 icon={<EditOutlined />}
               />
             </Row>
-            {userOrganization.permission === "private" && (
+            {userOrganization?.permission === "private" && (
               <Row
                 align={"middle"}
                 justify={"start"}
@@ -192,7 +191,7 @@ const WorkSpaceMember: React.FC<{
               <Input placeholder="依名字篩選" />
             </Col>
             <Divider />
-            {userOrganization.member && (
+            {userOrganization?.member && (
               <List
                 itemLayout="horizontal"
                 dataSource={userOrganization.member}

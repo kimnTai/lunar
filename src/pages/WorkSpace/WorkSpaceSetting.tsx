@@ -28,12 +28,11 @@ const WorkSpaceSetting: React.FC<{
 
   const currentUser = JSON.parse(localStorage.getItem("userData")!);
 
-  const userOrganization =
-    useAppSelector((state) => state.user.organization).filter(
-      (ele) => ele._id === workSpaceId
-    )?.[0] ?? [];
+  const userOrganization = useAppSelector(
+    (state) => state.user.organization
+  ).find((ele) => ele._id === workSpaceId);
 
-  const [orgUser] = userOrganization.member.filter(
+  const orgUser = userOrganization?.member.find(
     (user) => user.userId._id === currentUser._id
   );
 
@@ -43,21 +42,21 @@ const WorkSpaceSetting: React.FC<{
         <Row>
           <ColorIcon
             color={"white"}
-            text={userOrganization.name[0]}
+            text={userOrganization?.name[0] || ""}
             fontSize={"32px"}
             size={"72px"}
             background={"var(--blue)"}
           />
           <Col className="workSpace" style={{ marginLeft: "16px" }}>
             <Row align={"middle"} justify={"center"}>
-              <h2>{userOrganization.name}</h2>
+              <h2>{userOrganization?.name}</h2>
               <Button
                 style={{ width: "28px", background: "#F7F7F7", border: 0 }}
                 shape="circle"
                 icon={<EditOutlined />}
               />
             </Row>
-            {userOrganization.permission === "private" && (
+            {userOrganization?.permission === "private" && (
               <Row
                 align={"middle"}
                 justify={"start"}
@@ -111,7 +110,7 @@ const WorkSpaceSetting: React.FC<{
               style={{ marginTop: "16px" }}
             >
               <Col span={20}>
-                {userOrganization.permission === "private" ? (
+                {userOrganization?.permission === "private" ? (
                   <p style={{ lineHeight: "28px" }}>
                     <LockOutlined style={{ color: "red" }} /> 私密 <br />
                     這是私人工作區。此工作區沒有編入索引、也不開放工作區以外的成員觀看
@@ -125,7 +124,7 @@ const WorkSpaceSetting: React.FC<{
                   </p>
                 )}
               </Col>
-              {orgUser.role === "manager" && (
+              {orgUser?.role === "manager" && (
                 <Col>
                   <Button
                     style={{
