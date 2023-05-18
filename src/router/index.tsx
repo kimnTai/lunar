@@ -70,7 +70,11 @@ const AppRouter: React.FC<PropsFromRedux> = (props) => {
           getOrganization={getOrganization}
         />
         <Layout>
-          <Header workSpace={showWorkSpace} />
+          <Header
+            workSpace={showWorkSpace}
+            setWorkSpace={changeWorkSpace}
+            organization={organization}
+          />
           <MainLayoutCss workspace={showWorkSpace.toString()}>
             {children}
           </MainLayoutCss>

@@ -20,7 +20,11 @@ export const DropdownBtn: React.FC<{
 }> = ({ items, title }) => {
   return (
     <DropdownBtnCss menu={{ items }} trigger={["click"]}>
-      <a onClick={(e) => e.preventDefault()}>
+      <a
+        onClick={(e) => {
+          e.preventDefault();
+        }}
+      >
         <Space>
           {title}
           <DownOutlined />

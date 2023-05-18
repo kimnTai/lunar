@@ -24,7 +24,7 @@ export const Navbar: React.FC<{
   getOrganization: PropsFromRedux["getOrganization"];
 }> = ({ showNavbar, openNav, workSpace, setWorkSpace, getOrganization }) => {
   const navigate = useNavigate();
-  const { boardId } = useParams();
+  const { boardId, workSpaceId } = useParams();
   const handleClosed = () => {
     openNav();
   };
@@ -54,6 +54,7 @@ export const Navbar: React.FC<{
       setOpenKey(boardId);
     }
   }, [workSpace, boardId]);
+
   return (
     <Sider
       width={257}
@@ -102,6 +103,7 @@ export const Navbar: React.FC<{
           </div>
           {workSpace ? (
             <NavBarMenu
+              workSpaceId={workSpaceId}
               workSpace={workSpace}
               data={userOrganization}
               setOpen={setOpen}

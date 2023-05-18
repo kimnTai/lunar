@@ -1,7 +1,6 @@
 import CONSTANTS from "../constants";
 import type { UserProps, LoginProps } from "@/interfaces/user";
 import { loginApi, signInApi, loginJwtApi } from "@/api/auth";
-import { openNotification } from "@/utils/openNotification";
 
 interface LoginActionProps {
   type: string;

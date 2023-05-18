@@ -1,4 +1,4 @@
-import { Button, Layout, Modal } from "antd";
+import { Button, Layout } from "antd";
 import styled from "styled-components";
 
 export const BillboardStyled = styled.div`

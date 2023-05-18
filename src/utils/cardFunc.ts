@@ -27,10 +27,8 @@ export const nextPosition = <T extends { id: string; position: string }>(
   const prevPosition = prevItem ? Number(prevItem.position) : 0;
 
   if (!nextItem) {
-    console.log("no next");
     return prevPosition + POSITION_GAP;
   }
-  console.log("end");
   return prevPosition + (Number(nextItem.position) - prevPosition) / 2;
 };
 

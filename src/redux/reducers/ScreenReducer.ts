@@ -11,8 +11,6 @@ const ScreenReducer = function (
 ) {
   switch (action.type) {
     case CONSTANTS.OPEN_CLOSE_NAVBAR: {
-      console.log(state);
-      console.log(!state.showNavbar);
       return {
         ...state,
         showNavbar: !state.showNavbar,
