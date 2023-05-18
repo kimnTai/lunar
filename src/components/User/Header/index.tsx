@@ -33,7 +33,6 @@ export const Header: React.FC<{
         }}
       >
         {ele.name}
-        {ele._id}
       </a>
     ),
     key: ele._id,
