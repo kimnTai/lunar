@@ -23,7 +23,7 @@ const ManageRole: React.FC<{
   const [form] = useForm();
   const userId = selectedMember?.userId._id;
 
-  const [_result, loading, callApi] = useApi(updateOrganizationMemberApi);
+  const [_result, _loading, callApi] = useApi(updateOrganizationMemberApi);
   const onFinish = async (values: UpdateOrganizationMemberProps) => {
     await callApi({
       organizationId,

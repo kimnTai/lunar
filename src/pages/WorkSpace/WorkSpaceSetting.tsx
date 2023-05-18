@@ -11,7 +11,6 @@ import { ColorIcon } from "@/components/Icons";
 import { useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { OrganizationProps } from "@/interfaces/organization";
-import { OrganizationMemberProps } from "@/interfaces/organization";
 import InviteMember from "@/components/Modal/InviteMember";
 import DeleteOrganization from "@/components/Modal/DeleteOrganization";
 import type { PropsFromRedux } from "@/router";
@@ -25,7 +24,7 @@ const WorkSpaceSetting: React.FC<{
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
   const [openInviteModal, setOpenInviteModal] = useState(false);
 
-  const currentUser = JSON.parse(localStorage.getItem("userData")!);
+  //const currentUser = JSON.parse(localStorage.getItem("userData")!);
 
   const userOrganization: OrganizationProps =
     useSelector((state: any) => state.user.organization).filter(

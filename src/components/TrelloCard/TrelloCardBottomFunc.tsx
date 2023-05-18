@@ -1,5 +1,5 @@
-import { Button, Tooltip } from "antd";
-import { PlusOutlined, FileTextOutlined } from "@ant-design/icons";
+import { Button } from "antd";
+import { PlusOutlined } from "@ant-design/icons";
 import { TrelloCardBottomFuncProps } from "@/interfaces/trelloCard";
 import { TrelloCardBottomFuncStyled } from "./style";
 

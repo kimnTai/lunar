@@ -3,8 +3,6 @@ import { HeaderCss } from "./style";
 import { SearchOutlined, BellOutlined } from "@ant-design/icons";
 import type { MenuProps } from "antd";
 import { Input, Button, Badge, Avatar } from "antd";
-import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
 import { DropdownBtn } from "@/components/DropdownBtn";
 import { UserModal } from "./UserModal";
 
