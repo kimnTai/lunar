@@ -12,13 +12,7 @@ import {
   Skeleton,
 } from "antd";
 import type { MenuProps } from "antd";
-import {
-  UserAddOutlined,
-  EditOutlined,
-  LockOutlined,
-  ExclamationCircleOutlined,
-} from "@ant-design/icons";
-import { ColorIcon } from "@/components/Icons";
+import { UserAddOutlined, ExclamationCircleOutlined } from "@ant-design/icons";
 import { useParams } from "react-router-dom";
 import { getMenuItem as getItem } from "@/utils/func";
 import RemoveMember from "@/components/Modal/RemoveMember";
@@ -26,6 +20,7 @@ import { OrganizationMemberProps } from "@/interfaces/organization";
 import ManageRole from "@/components/Modal/ManageRole";
 import InviteMember from "@/components/Modal/InviteMember";
 import type { PropsFromRedux } from "@/router";
+import { WorkSpaceHeader } from "@/components/WorkSpace/WorkSpaceHeader";
 import { useAppSelector } from "@/hooks/useAppSelector";
 
 const items: MenuProps["items"] = [
@@ -79,40 +74,11 @@ const WorkSpaceMember: React.FC<{
   return (
     <WorkSpaceCss>
       <Row align={"middle"} justify={"space-between"}>
-        <Row>
-          <ColorIcon
-            color={"white"}
-            text={userOrganization?.name[0] || ""}
-            fontSize={"32px"}
-            size={"72px"}
-            background={"var(--blue)"}
-          />
-          <Col className="workSpace" style={{ marginLeft: "16px" }}>
-            <Row align={"middle"} justify={"center"}>
-              <h2>{userOrganization?.name}</h2>
-              <Button
-                style={{ width: "28px", background: "#F7F7F7", border: 0 }}
-                shape="circle"
-                icon={<EditOutlined />}
-              />
-            </Row>
-            {userOrganization?.permission === "private" && (
-              <Row
-                align={"middle"}
-                justify={"start"}
-                style={{ marginTop: "8px" }}
-              >
-                <Button
-                  style={{ width: "69px", height: "29px" }}
-                  type="primary"
-                  danger
-                  ghost
-                  icon={<LockOutlined />}
-                />
-              </Row>
-            )}
-          </Col>
-        </Row>
+        <WorkSpaceHeader
+          userOrganization={userOrganization}
+          organizationId={workSpaceId!}
+          getOrganization={getOrganization}
+        />
         <Col>
           <Button
             icon={<UserAddOutlined />}
