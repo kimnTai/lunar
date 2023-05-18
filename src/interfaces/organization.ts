@@ -9,6 +9,7 @@ export interface OrganizationProps {
   updatedAt: string;
   board: BoardsProps[];
   id: string;
+  inviteLink?: string;
 }
 
 export interface OrganizationMemberProps {
