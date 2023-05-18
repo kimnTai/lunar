@@ -26,6 +26,7 @@ import Callback from "@/pages/Login/Callback";
 import WorkSpaceMember from "@/pages/WorkSpace/WorkSpaceMember";
 import WorkSpaceSetting from "@/pages/WorkSpace/WorkSpaceSetting";
 import type { store } from "@/redux/store";
+import Invitation from "@/pages/InvitationPage";
 
 export type PropsFromRedux = ConnectedProps<typeof connector>;
 
@@ -86,7 +87,10 @@ const AppRouter: React.FC<PropsFromRedux> = (props) => {
         {!load && (
           <>
             {!login && <Route path="/" element={<Home />}></Route>}
-
+            <Route
+              path="/invitation/:type/:invitationToken"
+              element={<Invitation login={login} />}
+            ></Route>
             <Route
               path="/login/:callback"
               element={
