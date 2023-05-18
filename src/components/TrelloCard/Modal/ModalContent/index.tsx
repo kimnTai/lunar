@@ -1,12 +1,11 @@
 import React from "react";
 import { ModalStyle, ModalContentStyled } from "./style";
-import { CardsProps } from "@/interfaces/cards";
 import CardDescription from "./CardDescription";
 
-const ModalContent: React.FC<{ cardData: CardsProps }> = ({ cardData }) => {
+const ModalContent: React.FC = () => {
   return (
     <ModalContentStyled style={ModalStyle}>
-      <CardDescription cardData={cardData} />
+      <CardDescription />
     </ModalContentStyled>
   );
 };

@@ -1,15 +1,14 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { TrelloCardModalStyled } from "./style";
 import { TrelloCardModalProps } from "@/interfaces/trelloCard";
-import { CardsProps } from "@/interfaces/cards";
 import { getCardApi } from "@/api/cards";
 import ModalHeader from "./ModalHeader";
 import ModalLayout from "./ModalLayout";
+import { useCardModalContext } from "@/context/CardModalContext";
 
 const TrelloCardModal: React.FC<TrelloCardModalProps> = (props) => {
+  const { cardData, setCardData } = useCardModalContext();
   const { openModal, setOpenModal } = props;
-
-  const [cardData, setCardData] = useState<CardsProps | null>(null);
 
   const handleOk = () => {
     setOpenModal({ id: "", open: false });
@@ -40,10 +39,10 @@ const TrelloCardModal: React.FC<TrelloCardModalProps> = (props) => {
       onOk={handleOk}
       onCancel={handleCancel}
       width={768}
-      title={<ModalHeader cardData={cardData} />}
+      title={<ModalHeader />}
       footer={null}
     >
-      <ModalLayout cardData={cardData} />
+      <ModalLayout />
     </TrelloCardModalStyled>
   ) : (
     <></>
