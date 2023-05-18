@@ -9,7 +9,7 @@ const Invitation: React.FC<{ login: boolean }> = ({ login }) => {
   const [_result, _loading, callApi] = useApi(invitationApi);
 
   useEffect(() => {
-    if (login || !invitationToken || !type) {
+    if (!login || !invitationToken || !type) {
       return navigate("/login");
     }
 
