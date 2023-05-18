@@ -6,8 +6,8 @@ import { DropResult } from "react-beautiful-dnd";
 import { POSITION_GAP } from "./constant";
 import isUndefined from "lodash/isUndefined";
 
-export const nextPosition = (
-  items: CardsProps[] | ListsProps[] | { id: string; position: string }[],
+export const nextPosition = <T extends { id: string; position: string }>(
+  items: T[],
   index?: number,
   excludedId?: string
 ) => {
