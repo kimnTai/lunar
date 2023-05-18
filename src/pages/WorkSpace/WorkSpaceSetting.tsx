@@ -3,11 +3,9 @@ import { WorkSpaceCss, WorkSpaceMemberCss } from "./style";
 import { Row, Col, Button, Divider } from "antd";
 import {
   UserAddOutlined,
-  EditOutlined,
   LockOutlined,
   GlobalOutlined,
 } from "@ant-design/icons";
-import { ColorIcon } from "@/components/Icons";
 import { useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { OrganizationProps } from "@/interfaces/organization";
@@ -15,6 +13,7 @@ import InviteMember from "@/components/Modal/InviteMember";
 import DeleteOrganization from "@/components/Modal/DeleteOrganization";
 import type { PropsFromRedux } from "@/router";
 import ManagePermission from "@/components/Modal/ManagePermission";
+import { WorkSpaceHeader } from "@/components/WorkSpace/WorkSpaceHeader";
 
 const WorkSpaceSetting: React.FC<{
   setWorkSpace: PropsFromRedux["changeWorkSpace"];
@@ -41,40 +40,12 @@ const WorkSpaceSetting: React.FC<{
   return (
     <WorkSpaceCss>
       <Row align={"middle"} justify={"space-between"}>
-        <Row>
-          <ColorIcon
-            color={"white"}
-            text={userOrganization.name[0]}
-            fontSize={"32px"}
-            size={"72px"}
-            background={"var(--blue)"}
-          />
-          <Col className="workSpace" style={{ marginLeft: "16px" }}>
-            <Row align={"middle"} justify={"center"}>
-              <h2>{userOrganization.name}</h2>
-              <Button
-                style={{ width: "28px", background: "#F7F7F7", border: 0 }}
-                shape="circle"
-                icon={<EditOutlined />}
-              />
-            </Row>
-            {userOrganization.permission === "private" && (
-              <Row
-                align={"middle"}
-                justify={"start"}
-                style={{ marginTop: "8px" }}
-              >
-                <Button
-                  style={{ width: "69px", height: "29px" }}
-                  type="primary"
-                  danger
-                  ghost
-                  icon={<LockOutlined />}
-                />
-              </Row>
-            )}
-          </Col>
-        </Row>
+        <WorkSpaceHeader
+          userOrganization={userOrganization}
+          organizationId={workSpaceId!}
+          getOrganization={getOrganization}
+        />
+
         <Col>
           <Button
             icon={<UserAddOutlined />}
