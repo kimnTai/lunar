@@ -27,7 +27,7 @@ const WorkSpaceSetting: React.FC<{
   const [openManagePermissionModal, setOpenManagePermissionModal] =
     useState(false);
 
-  //const currentUser = JSON.parse(localStorage.getItem("userData")!);
+  const currentUser = JSON.parse(localStorage.getItem("userData")!);
 
   const userOrganization: OrganizationProps =
     useSelector((state: any) => state.user.organization).filter(
