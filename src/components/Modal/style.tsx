@@ -88,6 +88,13 @@ export const MemberModalCss = styled(Modal)`
   .ant-form-item {
     margin-bottom: 8px;
   }
+  .ant-radio-button-wrapper {
+    height: auto;
+    background: transparent;
+  }
+  .ant-radio-button-wrapper::before {
+    display: none;
+  }
 `;
 
 export const InviteMemberCss = styled(Modal)`
@@ -104,5 +111,35 @@ export const InviteMemberCss = styled(Modal)`
   }
   .ant-form-item {
     padding: 16px 16px;
+  }
+`;
+
+export const DeleteOrgModalCss = styled(Modal)`
+  .ant-modal-content {
+    padding: 0px;
+  }
+  .ant-modal-header {
+    padding: 16px;
+    border-bottom: 1px solid var(--grayd4);
+    margin-bottom: 0;
+  }
+  .ant-modal-body {
+    margin: 0;
+    padding: 24px;
+  }
+  .delete-org-reminder {
+    margin: 8px 0 16px 0;
+  }
+  .reminder-list {
+    list-style: circle;
+    display: grid;
+    gap: 4px;
+    margin-left: 24px;
+  }
+  .ant-form-item label {
+    font-weight: 700;
+    font-size: 12px;
+    line-height: 24px;
+    color: var(--gray9f);
   }
 `;

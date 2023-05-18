@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Routes, Route, Navigate, HashRouter } from "react-router-dom";
-import { connect } from "react-redux";
+import { ConnectedProps, connect } from "react-redux";
 import { Layout } from "antd";
 import {
   changeWorkSpaceAction,
@@ -24,8 +24,12 @@ import NewWorkSpace from "@/pages/WorkSpace/NewWorkSpace";
 import SpinPage from "@/pages/SpinPage";
 import Callback from "@/pages/Login/Callback";
 import WorkSpaceMember from "@/pages/WorkSpace/WorkSpaceMember";
+import WorkSpaceSetting from "@/pages/WorkSpace/WorkSpaceSetting";
+import type { store } from "@/redux/store";
 
-const AppRouter: React.FC<any> = (props) => {
+export type PropsFromRedux = ConnectedProps<typeof connector>;
+
+const AppRouter: React.FC<PropsFromRedux> = (props) => {
   const {
     openNav,
     showNavbar,
@@ -55,23 +59,25 @@ const AppRouter: React.FC<any> = (props) => {
     // setLoad(false);
   }, [login, organization?.length]);
 
-  const LoginLayout = React.memo(({ children }: any) => (
-    <Layout>
-      <Navbar
-        showNavbar={showNavbar}
-        openNav={openNav}
-        workSpace={showWorkSpace}
-        setWorkSpace={changeWorkSpace}
-        getOrganization={getOrganization}
-      />
+  const LoginLayout = React.memo<{ children: React.ReactElement }>(
+    ({ children }) => (
       <Layout>
-        <Header workSpace={showWorkSpace} />
-        <MainLayoutCss workspace={showWorkSpace.toString()}>
-          {children}
-        </MainLayoutCss>
+        <Navbar
+          showNavbar={showNavbar}
+          openNav={openNav}
+          workSpace={showWorkSpace}
+          setWorkSpace={changeWorkSpace}
+          getOrganization={getOrganization}
+        />
+        <Layout>
+          <Header workSpace={showWorkSpace} />
+          <MainLayoutCss workspace={showWorkSpace.toString()}>
+            {children}
+          </MainLayoutCss>
+        </Layout>
       </Layout>
-    </Layout>
-  ));
+    )
+  );
 
   return (
     <HashRouter>
@@ -149,12 +155,24 @@ const AppRouter: React.FC<any> = (props) => {
                   }
                 />
                 <Route
-                  index
                   path={`/workspace/:workSpaceId/members`}
                   element={
                     <LoginLayout
                       children={
                         <WorkSpaceMember
+                          setWorkSpace={changeWorkSpace}
+                          getOrganization={getOrganization}
+                        />
+                      }
+                    />
+                  }
+                />
+                <Route
+                  path={`/workspace/:workSpaceId/setting`}
+                  element={
+                    <LoginLayout
+                      children={
+                        <WorkSpaceSetting
                           setWorkSpace={changeWorkSpace}
                           getOrganization={getOrganization}
                         />
@@ -184,18 +202,20 @@ const AppRouter: React.FC<any> = (props) => {
   );
 };
 
-const mapStateToProps = (state: any) => ({
+const mapStateToProps = (state: ReturnType<typeof store.getState>) => ({
   showNavbar: state.screen.showNavbar,
   showWorkSpace: state.screen.showWorkSpace,
   login: state.auth.login,
   organization: state.user.organization,
 });
 
-export default connect(mapStateToProps, {
+const connector = connect(mapStateToProps, {
   openNav: openNavbarAction,
   changeWorkSpace: changeWorkSpaceAction,
   signInAction,
   loginAction,
   loginJwt: loginJwtAction,
   getOrganization: getOrganizationsAction,
-})(React.memo(AppRouter));
+});
+
+export default connector(React.memo(AppRouter));

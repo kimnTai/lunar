@@ -1,6 +1,6 @@
 import CONSTANTS from "../constants";
 
-const initialState: { [x: string]: boolean } = {
+const initialState = {
   showNavbar: false,
   showWorkSpace: true,
 };

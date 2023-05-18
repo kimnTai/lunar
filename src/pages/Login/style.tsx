@@ -1,10 +1,10 @@
 import styled from "styled-components";
 import { Button } from "antd";
-import Bg_createAccoun from "@/assets/images/bg_createAccoun.png";
+import Bg_createAccount from "@/assets/images/bg_createAccount.png";
 
 export const LoginCss = styled.div`
   position: relative;
-  background-image: url(${Bg_createAccoun});
+  background-image: url(${Bg_createAccount});
   background-size: cover;
   background-position: center;
   height: 100%;

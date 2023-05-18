@@ -8,10 +8,11 @@ import { NewWorkSpaceCss } from "./style";
 import Logo from "@/assets/images/img_logo.png";
 import Bg from "@/assets/images/newWorkSpace_bg.png";
 import CreateWork from "@/assets/images/img_createWork.png";
+import type { PropsFromRedux } from "@/router";
 
-const NewWorkSpace: React.FC<{ getOrganization: Function }> = ({
-  getOrganization,
-}) => {
+const NewWorkSpace: React.FC<{
+  getOrganization: PropsFromRedux["getOrganization"];
+}> = ({ getOrganization }) => {
   const [form] = Form.useForm<FormValues>();
   const [_result, loading, callApi] = useApi(newOrganizationApi);
 
