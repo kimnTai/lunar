@@ -14,6 +14,7 @@ import { OrganizationProps } from "@/interfaces/organization";
 import InviteMember from "@/components/Modal/InviteMember";
 import DeleteOrganization from "@/components/Modal/DeleteOrganization";
 import type { PropsFromRedux } from "@/router";
+import ManagePermission from "@/components/Modal/ManagePermission";
 
 const WorkSpaceSetting: React.FC<{
   setWorkSpace: PropsFromRedux["changeWorkSpace"];
@@ -23,6 +24,8 @@ const WorkSpaceSetting: React.FC<{
   const { workSpaceId } = useParams();
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
   const [openInviteModal, setOpenInviteModal] = useState(false);
+  const [openManagePermissionModal, setOpenManagePermissionModal] =
+    useState(false);
 
   //const currentUser = JSON.parse(localStorage.getItem("userData")!);
 
@@ -30,6 +33,10 @@ const WorkSpaceSetting: React.FC<{
     useSelector((state: any) => state.user.organization).filter(
       (ele: OrganizationProps) => ele._id === workSpaceId
     )?.[0] ?? [];
+
+  const [orgUser] = userOrganization.member.filter(
+    (user) => user.userId._id === currentUser._id
+  );
 
   return (
     <WorkSpaceCss>
@@ -119,19 +126,21 @@ const WorkSpaceSetting: React.FC<{
                   </p>
                 )}
               </Col>
-              <Col>
-                <Button
-                  style={{
-                    backgroundColor: "white",
-                    color: "var(--black23)",
-                    width: "62px",
-                    height: "32px",
-                  }}
-                  // onClick={() => setOpenRemoveModal(true)}
-                >
-                  修改
-                </Button>
-              </Col>
+              {orgUser.role === "manager" && (
+                <Col>
+                  <Button
+                    style={{
+                      backgroundColor: "white",
+                      color: "var(--black23)",
+                      width: "62px",
+                      height: "32px",
+                    }}
+                    onClick={() => setOpenManagePermissionModal(true)}
+                  >
+                    修改
+                  </Button>
+                </Col>
+              )}
             </Row>
             <Button
               type="link"
@@ -149,6 +158,13 @@ const WorkSpaceSetting: React.FC<{
         <DeleteOrganization
           open={openDeleteModal}
           setOpen={setOpenDeleteModal}
+          organizationId={workSpaceId!}
+          getOrganization={getOrganization}
+          userOrganization={userOrganization}
+        />
+        <ManagePermission
+          open={openManagePermissionModal}
+          setOpen={setOpenManagePermissionModal}
           organizationId={workSpaceId!}
           getOrganization={getOrganization}
           userOrganization={userOrganization}

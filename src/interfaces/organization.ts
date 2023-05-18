@@ -36,11 +36,11 @@ export interface UpdateOrganizationMemberProps {
   role?: string;
 }
 
-// export interface UpdateOrganizationProps {
-//   organizationId: string;
-//   name?: string;
-//   permission?: string;
-// }
+export interface UpdateOrganizationProps {
+  organizationId: string;
+  name?: string;
+  permission?: string;
+}
 
 export interface DeleteOrganizationProps {
   organizationId: string;
