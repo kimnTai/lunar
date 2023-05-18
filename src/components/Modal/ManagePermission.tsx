@@ -22,7 +22,7 @@ const ManagePermission: React.FC<{
   };
   const [form] = useForm();
 
-  const [_result, loading, callApi] = useApi(updateOrganizationApi);
+  const [_result, _loading, callApi] = useApi(updateOrganizationApi);
   const onFinish = async (values: UpdateOrganizationProps) => {
     await callApi({
       organizationId,
