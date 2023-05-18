@@ -20,14 +20,13 @@ import {
 } from "@ant-design/icons";
 import { ColorIcon } from "@/components/Icons";
 import { useParams } from "react-router-dom";
-import { useSelector } from "react-redux";
-import { OrganizationProps } from "@/interfaces/organization";
 import { getMenuItem as getItem } from "@/utils/func";
 import RemoveMember from "@/components/Modal/RemoveMember";
 import { OrganizationMemberProps } from "@/interfaces/organization";
 import ManageRole from "@/components/Modal/ManageRole";
 import InviteMember from "@/components/Modal/InviteMember";
 import type { PropsFromRedux } from "@/router";
+import { useAppSelector } from "@/hooks/useAppSelector";
 
 const items: MenuProps["items"] = [
   getItem(
@@ -53,10 +52,10 @@ const WorkSpaceMember: React.FC<{
 
   const currentUser = JSON.parse(localStorage.getItem("userData")!);
 
-  const userOrganization: OrganizationProps =
-    useSelector((state: any) => state.user.organization).filter(
-      (ele: OrganizationProps) => ele._id === workSpaceId
-    )?.[0] ?? [];
+  const userOrganization =
+    useAppSelector((state) => state.user.organization).filter(
+      (ele) => ele._id === workSpaceId
+    )[0] ?? [];
 
   const [orgUser] = userOrganization.member.filter(
     (user) => user.userId._id === currentUser._id

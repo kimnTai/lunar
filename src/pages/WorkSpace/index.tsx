@@ -5,11 +5,10 @@ import { PlusOutlined, EditOutlined, LockOutlined } from "@ant-design/icons";
 import { ColorIcon } from "@/components/Icons";
 import { useParams } from "react-router-dom";
 import { WorkSpaceCard } from "./WorkSpaceCard";
-import { useSelector } from "react-redux";
-import { OrganizationProps } from "@/interfaces/organization";
 import { BoardsProps } from "@/interfaces/boards";
 import AddBoards from "@/components/Modal/AddBoards";
 import type { PropsFromRedux } from "@/router";
+import { useAppSelector } from "@/hooks/useAppSelector";
 
 const WorkSpace: React.FC<{
   setWorkSpace: PropsFromRedux["changeWorkSpace"];
@@ -19,10 +18,10 @@ const WorkSpace: React.FC<{
   const { workSpaceId } = useParams();
   const [openModal, setOpenModal] = useState(false);
 
-  const userOrganization: OrganizationProps =
-    useSelector((state: any) => state.user.organization).filter(
-      (ele: OrganizationProps) => ele._id === workSpaceId
-    )?.[0] ?? [];
+  const userOrganization =
+    useAppSelector((state) => state.user.organization).filter(
+      (ele) => ele._id === workSpaceId
+    )[0] ?? [];
 
   const handleChange = (value: string) => {
     console.log(`selected ${value}`);

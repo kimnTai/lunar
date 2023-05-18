@@ -10,11 +10,10 @@ import { useNavigate, useParams } from "react-router-dom";
 import Logo from "@/assets/images/logo.png";
 import Logo2 from "@/assets/images/img_logo2.png";
 import AddWorkSpace from "@/components/Modal/AddWorkSpace";
-import { useSelector } from "react-redux";
 import NavBarMenu from "./NavbarMenu";
-import { OrganizationProps } from "@/interfaces/organization";
 import AddBoards from "@/components/Modal/AddBoards";
 import type { PropsFromRedux } from "@/router";
+import { useAppSelector } from "@/hooks/useAppSelector";
 
 export const Navbar: React.FC<{
   showNavbar: boolean;
@@ -34,9 +33,8 @@ export const Navbar: React.FC<{
 
   const [open, setOpen] = useState(false);
   const [openKey, setOpenKey] = useState("");
-  const userOrganization: OrganizationProps[] = useSelector(
-    (state: any) => state.user.organization
-  );
+  const userOrganization = useAppSelector((state) => state.user.organization);
+
   const getBoards = (key: string) => {
     return userOrganization.filter((ele) => {
       let getAns = false;

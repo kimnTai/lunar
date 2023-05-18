@@ -21,7 +21,7 @@ const initialState: {
   organization: [],
 };
 
-const UserReducer = function (
+export default function UserReducer(
   state = initialState,
   action: {
     type: string;
@@ -53,6 +53,4 @@ const UserReducer = function (
   return {
     ...state,
   };
-};
-
-export default UserReducer;
+}

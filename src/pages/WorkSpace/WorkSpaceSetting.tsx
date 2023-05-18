@@ -9,12 +9,11 @@ import {
 } from "@ant-design/icons";
 import { ColorIcon } from "@/components/Icons";
 import { useParams } from "react-router-dom";
-import { useSelector } from "react-redux";
-import { OrganizationProps } from "@/interfaces/organization";
 import InviteMember from "@/components/Modal/InviteMember";
 import DeleteOrganization from "@/components/Modal/DeleteOrganization";
 import type { PropsFromRedux } from "@/router";
 import ManagePermission from "@/components/Modal/ManagePermission";
+import { useAppSelector } from "@/hooks/useAppSelector";
 
 const WorkSpaceSetting: React.FC<{
   setWorkSpace: PropsFromRedux["changeWorkSpace"];
@@ -29,9 +28,9 @@ const WorkSpaceSetting: React.FC<{
 
   const currentUser = JSON.parse(localStorage.getItem("userData")!);
 
-  const userOrganization: OrganizationProps =
-    useSelector((state: any) => state.user.organization).filter(
-      (ele: OrganizationProps) => ele._id === workSpaceId
+  const userOrganization =
+    useAppSelector((state) => state.user.organization).filter(
+      (ele) => ele._id === workSpaceId
     )?.[0] ?? [];
 
   const [orgUser] = userOrganization.member.filter(

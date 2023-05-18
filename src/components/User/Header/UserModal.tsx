@@ -2,7 +2,7 @@ import React from "react";
 import { UserModalCss } from "./style";
 import { Avatar, Button, Divider } from "antd";
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useAppDispatch } from "@/hooks/useAppDispatch";
 
 interface UserModalProps {
   open: boolean;
@@ -19,7 +19,7 @@ export const UserModal: React.FC<UserModalProps> = ({
   avatar,
   email,
 }) => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const handleCancel = () => {
     setOpen(false);
