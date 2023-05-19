@@ -177,6 +177,7 @@ const WorkSpaceMember: React.FC<{
             <Divider />
             {userOrganization?.member && (
               <List
+                style={{ height: "24vh", overflowY: "scroll" }}
                 itemLayout="horizontal"
                 dataSource={userOrganization.member}
                 renderItem={(member: OrganizationMemberProps) => (
@@ -214,24 +215,24 @@ const WorkSpaceMember: React.FC<{
                         description={member.userId.email}
                       />
                     </Skeleton>
-                    <ManageRole
-                      open={openManageRoleModal}
-                      setOpen={setOpenManageRoleModal}
-                      organizationId={workSpaceId!}
-                      getOrganization={getOrganization}
-                      selectedMember={selectedMember}
-                    />
-                    <RemoveMember
-                      open={openRemoveModal}
-                      setOpen={setOpenRemoveModal}
-                      organizationId={workSpaceId!}
-                      getOrganization={getOrganization}
-                      selectedMember={selectedMember}
-                    />
                   </List.Item>
                 )}
               />
             )}
+            <ManageRole
+              open={openManageRoleModal}
+              setOpen={setOpenManageRoleModal}
+              organizationId={workSpaceId!}
+              getOrganization={getOrganization}
+              selectedMember={selectedMember}
+            />
+            <RemoveMember
+              open={openRemoveModal}
+              setOpen={setOpenRemoveModal}
+              organizationId={workSpaceId!}
+              getOrganization={getOrganization}
+              selectedMember={selectedMember}
+            />
           </Col>
         </Row>
       </WorkSpaceMemberCss>
