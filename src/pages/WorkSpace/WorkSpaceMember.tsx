@@ -10,9 +10,14 @@ import {
   Avatar,
   List,
   Skeleton,
+  Popover,
 } from "antd";
 import type { MenuProps } from "antd";
-import { UserAddOutlined, ExclamationCircleOutlined } from "@ant-design/icons";
+import {
+  UserAddOutlined,
+  ExclamationCircleOutlined,
+  CheckCircleOutlined,
+} from "@ant-design/icons";
 import { useParams } from "react-router-dom";
 import { getMenuItem as getItem } from "@/utils/func";
 import RemoveMember from "@/components/Modal/RemoveMember";
@@ -32,6 +37,13 @@ const items: MenuProps["items"] = [
     "group"
   ),
 ];
+
+const popoverContent = (
+  <Row align={"middle"} style={{ gap: "4px", color: "#3B855D" }}>
+    <CheckCircleOutlined />
+    <p>已複製到剪貼簿</p>
+  </Row>
+);
 
 const WorkSpaceMember: React.FC<{
   setWorkSpace: PropsFromRedux["changeWorkSpace"];
@@ -69,6 +81,10 @@ const WorkSpaceMember: React.FC<{
       setSelectedMember(member);
       setOpenManageRoleModal(true);
     }
+  };
+
+  const handleClickInviteBtn = () => {
+    navigator.clipboard.writeText(userOrganization?.inviteLink ?? "");
   };
 
   return (
@@ -137,18 +153,20 @@ const WorkSpaceMember: React.FC<{
                   </p>
                 </Col>
                 <Col>
-                  <Button
-                    icon={<UserAddOutlined />}
-                    style={{
-                      backgroundColor: "white",
-                      color: "var(--black23)",
-                      width: "130px",
-                      height: "32px",
-                    }}
-                    // onClick={() => setOpenRemoveModal(true)}
-                  >
-                    以連結邀請
-                  </Button>
+                  <Popover content={popoverContent} trigger="click">
+                    <Button
+                      icon={<UserAddOutlined />}
+                      style={{
+                        backgroundColor: "white",
+                        color: "var(--black23)",
+                        width: "130px",
+                        height: "32px",
+                      }}
+                      onClick={handleClickInviteBtn}
+                    >
+                      以連結邀請
+                    </Button>
+                  </Popover>
                 </Col>
               </Row>
             </div>
