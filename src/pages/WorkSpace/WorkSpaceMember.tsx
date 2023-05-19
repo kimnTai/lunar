@@ -10,14 +10,9 @@ import {
   Avatar,
   List,
   Skeleton,
-  Popover,
 } from "antd";
 import type { MenuProps } from "antd";
-import {
-  UserAddOutlined,
-  ExclamationCircleOutlined,
-  CheckCircleOutlined,
-} from "@ant-design/icons";
+import { UserAddOutlined, ExclamationCircleOutlined } from "@ant-design/icons";
 import { useParams } from "react-router-dom";
 import { getMenuItem as getItem } from "@/utils/func";
 import RemoveMember from "@/components/Modal/RemoveMember";
@@ -27,6 +22,7 @@ import InviteMember from "@/components/Modal/InviteMember";
 import type { PropsFromRedux } from "@/router";
 import { WorkSpaceHeader } from "@/components/WorkSpace/WorkSpaceHeader";
 import { useAppSelector } from "@/hooks/useAppSelector";
+import CopyInviteLinkBtn from "@/components/WorkSpace/CopyInviteLinkBtn";
 
 const items: MenuProps["items"] = [
   getItem(
@@ -37,13 +33,6 @@ const items: MenuProps["items"] = [
     "group"
   ),
 ];
-
-const popoverContent = (
-  <Row align={"middle"} style={{ gap: "4px", color: "#3B855D" }}>
-    <CheckCircleOutlined />
-    <p>已複製到剪貼簿</p>
-  </Row>
-);
 
 const WorkSpaceMember: React.FC<{
   setWorkSpace: PropsFromRedux["changeWorkSpace"];
@@ -83,8 +72,8 @@ const WorkSpaceMember: React.FC<{
     }
   };
 
-  const handleClickInviteBtn = () => {
-    navigator.clipboard.writeText(userOrganization?.inviteLink ?? "");
+  const onCancel: () => void = () => {
+    setOpenInviteModal(false);
   };
 
   return (
@@ -112,6 +101,7 @@ const WorkSpaceMember: React.FC<{
             open={openInviteModal}
             setOpen={setOpenInviteModal}
             organizationId={workSpaceId!}
+            userOrganization={userOrganization}
           />
         </Col>
       </Row>
@@ -152,22 +142,10 @@ const WorkSpaceMember: React.FC<{
                     任何擁有邀請連結的人都可以加入此免費工作區。你也可以隨時停用並為此工作區建立新的邀請連結，並在工作區中建立新看板。
                   </p>
                 </Col>
-                <Col>
-                  <Popover content={popoverContent} trigger="click">
-                    <Button
-                      icon={<UserAddOutlined />}
-                      style={{
-                        backgroundColor: "white",
-                        color: "var(--black23)",
-                        width: "130px",
-                        height: "32px",
-                      }}
-                      onClick={handleClickInviteBtn}
-                    >
-                      以連結邀請
-                    </Button>
-                  </Popover>
-                </Col>
+                <CopyInviteLinkBtn
+                  userOrganization={userOrganization}
+                  onCancel={onCancel}
+                />
               </Row>
             </div>
             <Divider />
