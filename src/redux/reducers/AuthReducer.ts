@@ -20,7 +20,6 @@ export default function AuthReducer(
           ? action.payload.token
           : JSON.stringify(action.payload.token)
       );
-
       return {
         login: true,
       };

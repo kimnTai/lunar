@@ -34,6 +34,7 @@ export const loginJwtAction =
     await loginJwtApi()
       .then((res) => {
         if (res.status === "success") {
+          dispatch({ type: CONSTANTS.GET_USER, payload: res });
           dispatch({ type: CONSTANTS.LOGIN, payload: res });
         }
       })

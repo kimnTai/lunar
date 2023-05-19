@@ -57,8 +57,7 @@ const AppRouter: React.FC<PropsFromRedux> = (props) => {
     } else {
       setLoad(false);
     }
-    // setLoad(false);
-  }, [login, organization?.length]);
+  }, []);
 
   const LoginLayout = React.memo<{ children: React.ReactElement }>(
     ({ children }) => (
