@@ -5,13 +5,14 @@ import { deleteOrganizationApi } from "@/api/organization";
 import { useApi } from "@/hooks/useApiHook";
 import { OrganizationProps } from "@/interfaces/organization";
 import { useNavigate } from "react-router-dom";
+import { PropsFromRedux } from "@/router";
 
 const DeleteOrganization: React.FC<{
   open: boolean;
-  setOpen: Function;
+  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
   organizationId: string;
-  getOrganization: Function;
-  userOrganization: OrganizationProps;
+  getOrganization: PropsFromRedux["getOrganization"];
+  userOrganization?: OrganizationProps;
 }> = ({ open, setOpen, organizationId, getOrganization, userOrganization }) => {
   const navigate = useNavigate();
   const [isButtonDisabled, setIsButtonDisabled] = useState<boolean>(true);
@@ -19,10 +20,10 @@ const DeleteOrganization: React.FC<{
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
 
-    setIsButtonDisabled(value !== userOrganization.name);
+    setIsButtonDisabled(value !== userOrganization?.name);
   };
 
-  const onCancel: () => void = () => {
+  const onCancel = () => {
     setOpen(false);
   };
 
@@ -56,7 +57,7 @@ const DeleteOrganization: React.FC<{
             lineHeight: "24px",
           }}
         >
-          輸入要刪除的工作區名稱「{userOrganization.name}」
+          輸入要刪除的工作區名稱「{userOrganization?.name}」
         </p>
         <div className="delete-org-reminder">
           <span

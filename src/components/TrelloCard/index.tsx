@@ -16,6 +16,7 @@ import {
 } from "./style";
 import TrelloCardAdd from "./TrelloCardAdd";
 import TrelloCardModal from "./Modal";
+import { CardModalProvider } from "@/context/CardModalContext";
 
 export const TrelloCard: React.FC<TrelloCardProps> = (props) => {
   const {
@@ -66,7 +67,9 @@ export const TrelloCard: React.FC<TrelloCardProps> = (props) => {
           </div>
         )}
       </Draggable>
-      <TrelloCardModal openModal={openModal} setOpenModal={setOpenModal} />
+      <CardModalProvider>
+        <TrelloCardModal openModal={openModal} setOpenModal={setOpenModal} />
+      </CardModalProvider>
     </>
   );
 };

@@ -80,6 +80,7 @@ const TrelloCardAdd: React.FC<{
                     name: text,
                     position: nextPosition(list.card).toString(),
                     listId: list.id,
+                    boardId: list.boardId,
                   })
                     .then((res) => {
                       if (res.status === "success") {

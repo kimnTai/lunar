@@ -5,7 +5,7 @@ import {
   UsergroupAddOutlined,
   EyeOutlined,
 } from "@ant-design/icons";
-import { CardsProps } from "@/interfaces/cards";
+import { useCardModalContext } from "@/context/CardModalContext";
 import { updateCardApi } from "@/api/cards";
 import {
   ModalHeaderStyled,
@@ -15,8 +15,9 @@ import {
 
 const { TextArea } = Input;
 
-const ModalHeader: React.FC<{ cardData: CardsProps }> = ({ cardData }) => {
-  const { id, name } = cardData;
+const ModalHeader: React.FC = () => {
+  const { cardData } = useCardModalContext();
+  const { id = "", name = "" } = cardData ?? {};
   const [isEdit, setIsEdit] = React.useState(false);
   const [titleFiled, setTitleFiled] = React.useState(name);
 

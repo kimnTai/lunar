@@ -25,7 +25,7 @@ import SpinPage from "@/pages/SpinPage";
 import Callback from "@/pages/Login/Callback";
 import WorkSpaceMember from "@/pages/WorkSpace/WorkSpaceMember";
 import WorkSpaceSetting from "@/pages/WorkSpace/WorkSpaceSetting";
-import type { store } from "@/redux/store";
+import type { RootState } from "@/redux/store";
 import Invitation from "@/pages/InvitationPage";
 
 export type PropsFromRedux = ConnectedProps<typeof connector>;
@@ -210,7 +210,7 @@ const AppRouter: React.FC<PropsFromRedux> = (props) => {
   );
 };
 
-const mapStateToProps = (state: ReturnType<typeof store.getState>) => ({
+const mapStateToProps = (state: RootState) => ({
   showNavbar: state.screen.showNavbar,
   showWorkSpace: state.screen.showWorkSpace,
   login: state.auth.login,

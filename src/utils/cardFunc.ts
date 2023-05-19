@@ -42,23 +42,26 @@ export const updateCardInColumn = (
 
   const source = result.source;
   const destination = result.destination;
-  const useList = cardList.filter(
-    (ele) => ele.id === destination.droppableId
-  )[0];
-  const useCardIndex = useList.card.findIndex(
-    (ele) => ele.id === result.draggableId
-  );
-  useList.card[useCardIndex].position = nextPosition(
-    useList.card,
-    destination.index + (destination.index > useCardIndex ? 1 : 0)
-  ).toString();
+  const useList = cardList.find((ele) => ele.id === destination.droppableId);
 
-  updateCardApi({
-    listId: source.droppableId,
-    cardId: result.draggableId,
-    position: useList.card[useCardIndex].position,
-    closed: false,
-  });
+  if (useList) {
+    const useCardIndex = useList.card.findIndex(
+      (ele) => ele.id === result.draggableId
+    );
+
+    useList.card[useCardIndex].position = nextPosition(
+      useList.card,
+      destination.index + (destination.index > useCardIndex ? 1 : 0)
+    ).toString();
+
+    updateCardApi({
+      listId: source.droppableId,
+      cardId: result.draggableId,
+      position: useList.card[useCardIndex].position,
+      closed: false,
+    });
+  }
+
   return cardList;
 };
 
@@ -123,8 +126,12 @@ export const updateColumn = (result: DropResult, cardList: ListsProps[]) => {
     cardList,
     endIndex + (startIndex < endIndex ? 1 : 0)
   ).toString();
-  cardList.filter((ele) => ele.id === result.draggableId)[0].position =
-    usePosition;
+
+  const target = cardList.find((ele) => ele.id === result.draggableId);
+  if (target) {
+    target.position = usePosition;
+  }
+
   updateListApi({
     listId: result.draggableId,
     position: usePosition,

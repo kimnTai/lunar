@@ -12,22 +12,16 @@ import {
   Skeleton,
 } from "antd";
 import type { MenuProps } from "antd";
-import {
-  UserAddOutlined,
-  EditOutlined,
-  LockOutlined,
-  ExclamationCircleOutlined,
-} from "@ant-design/icons";
-import { ColorIcon } from "@/components/Icons";
+import { UserAddOutlined, ExclamationCircleOutlined } from "@ant-design/icons";
 import { useParams } from "react-router-dom";
-import { useSelector } from "react-redux";
-import { OrganizationProps } from "@/interfaces/organization";
 import { getMenuItem as getItem } from "@/utils/func";
 import RemoveMember from "@/components/Modal/RemoveMember";
 import { OrganizationMemberProps } from "@/interfaces/organization";
 import ManageRole from "@/components/Modal/ManageRole";
 import InviteMember from "@/components/Modal/InviteMember";
 import type { PropsFromRedux } from "@/router";
+import { WorkSpaceHeader } from "@/components/WorkSpace/WorkSpaceHeader";
+import { useAppSelector } from "@/hooks/useAppSelector";
 
 const items: MenuProps["items"] = [
   getItem(
@@ -51,14 +45,13 @@ const WorkSpaceMember: React.FC<{
   const [selectedMember, setSelectedMember] =
     useState<OrganizationMemberProps | null>(null);
 
-  const currentUser = JSON.parse(localStorage.getItem("userData")!);
+  const currentUser = useAppSelector((state) => state.user.user);
 
-  const userOrganization: OrganizationProps =
-    useSelector((state: any) => state.user.organization).filter(
-      (ele: OrganizationProps) => ele._id === workSpaceId
-    )?.[0] ?? [];
+  const userOrganization = useAppSelector(
+    (state) => state.user.organization
+  ).find((ele) => ele._id === workSpaceId);
 
-  const [orgUser] = userOrganization.member.filter(
+  const orgUser = userOrganization?.member.find(
     (user) => user.userId._id === currentUser._id
   );
 
@@ -72,7 +65,7 @@ const WorkSpaceMember: React.FC<{
   };
 
   const handleClickManageBtn = (member: OrganizationMemberProps) => {
-    if (orgUser.role === "manager") {
+    if (orgUser?.role === "manager") {
       setSelectedMember(member);
       setOpenManageRoleModal(true);
     }
@@ -81,40 +74,11 @@ const WorkSpaceMember: React.FC<{
   return (
     <WorkSpaceCss>
       <Row align={"middle"} justify={"space-between"}>
-        <Row>
-          <ColorIcon
-            color={"white"}
-            text={userOrganization.name[0]}
-            fontSize={"32px"}
-            size={"72px"}
-            background={"var(--blue)"}
-          />
-          <Col className="workSpace" style={{ marginLeft: "16px" }}>
-            <Row align={"middle"} justify={"center"}>
-              <h2>{userOrganization.name}</h2>
-              <Button
-                style={{ width: "28px", background: "#F7F7F7", border: 0 }}
-                shape="circle"
-                icon={<EditOutlined />}
-              />
-            </Row>
-            {userOrganization.permission === "private" && (
-              <Row
-                align={"middle"}
-                justify={"start"}
-                style={{ marginTop: "8px" }}
-              >
-                <Button
-                  style={{ width: "69px", height: "29px" }}
-                  type="primary"
-                  danger
-                  ghost
-                  icon={<LockOutlined />}
-                />
-              </Row>
-            )}
-          </Col>
-        </Row>
+        <WorkSpaceHeader
+          userOrganization={userOrganization}
+          organizationId={workSpaceId!}
+          getOrganization={getOrganization}
+        />
         <Col>
           <Button
             icon={<UserAddOutlined />}
@@ -193,7 +157,7 @@ const WorkSpaceMember: React.FC<{
               <Input placeholder="依名字篩選" />
             </Col>
             <Divider />
-            {userOrganization.member && (
+            {userOrganization?.member && (
               <List
                 itemLayout="horizontal"
                 dataSource={userOrganization.member}

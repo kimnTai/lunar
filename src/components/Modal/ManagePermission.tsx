@@ -9,15 +9,16 @@ import {
   UpdateOrganizationProps,
 } from "@/interfaces/organization";
 import { useForm } from "antd/lib/form/Form";
+import { PropsFromRedux } from "@/router";
 
 const ManagePermission: React.FC<{
   open: boolean;
-  setOpen: Function;
+  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
   organizationId: string;
-  getOrganization: Function;
-  userOrganization: OrganizationProps;
+  getOrganization: PropsFromRedux["getOrganization"];
+  userOrganization?: OrganizationProps;
 }> = ({ open, setOpen, organizationId, getOrganization, userOrganization }) => {
-  const onCancel: () => void = () => {
+  const onCancel = () => {
     setOpen(false);
   };
   const [form] = useForm();
@@ -62,7 +63,7 @@ const ManagePermission: React.FC<{
                 }}
               >
                 <LockOutlined /> 私密{" "}
-                {userOrganization.permission === "private" && (
+                {userOrganization?.permission === "private" && (
                   <CheckOutlined style={{ fontSize: "14px" }} />
                 )}
               </p>
@@ -95,7 +96,7 @@ const ManagePermission: React.FC<{
                 }}
               >
                 <GlobalOutlined /> 公開{" "}
-                {userOrganization.permission === "public" && (
+                {userOrganization?.permission === "public" && (
                   <CheckOutlined style={{ fontSize: "14px" }} />
                 )}
               </p>

@@ -5,9 +5,9 @@ const initialState = {
   showWorkSpace: true,
 };
 
-const ScreenReducer = function (
+export default function ScreenReducer(
   state = initialState,
-  action: { type: string; payload: any }
+  action: { type: string }
 ) {
   switch (action.type) {
     case CONSTANTS.OPEN_CLOSE_NAVBAR: {
@@ -28,6 +28,4 @@ const ScreenReducer = function (
       };
     }
   }
-};
-
-export default ScreenReducer;
+}
