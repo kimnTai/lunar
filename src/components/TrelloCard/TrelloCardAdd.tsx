@@ -14,14 +14,14 @@ const TrelloCardAdd: React.FC<{
 }> = ({ list, showAddCard, setShowAddCard }) => {
   const [text, setText] = useState("");
   const [loading, setLoading] = useState(false);
-  const handleMouseDown = (e: any) => {
+  const handleMouseDown: React.MouseEventHandler = (e) => {
     e.preventDefault();
   };
 
   const inputRef = useRef<InputRef>(null);
   useEffect(() => {
-    if (showAddCard) {
-      inputRef.current!.focus({ cursor: "start" });
+    if (showAddCard && inputRef.current) {
+      inputRef.current.focus({ cursor: "start" });
     }
   }, [showAddCard]);
 
