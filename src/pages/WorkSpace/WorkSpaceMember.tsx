@@ -29,7 +29,7 @@ const items: MenuProps["items"] = [
     "工作區看板成員",
     "g1",
     null,
-    [getItem("工作區成員（5）", "workSpaceMember")],
+    [getItem("工作區成員", "workSpaceMember")],
     "group"
   ),
 ];
@@ -124,7 +124,7 @@ const WorkSpaceMember: React.FC<{
           </Col>
           <Col span={18}>
             <div className="intro-col">
-              <h4>工作區成員（5）</h4>
+              <h4>工作區成員（{userOrganization?.member.length}）</h4>
               <p>
                 工作區成員可以查看及加入所有開放工作區觀看權限的看板，並在工作區中建立新看板。
               </p>
