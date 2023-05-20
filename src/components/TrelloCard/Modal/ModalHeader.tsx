@@ -1,5 +1,6 @@
 import React from "react";
-import { Row, Col, Image, Input } from "antd";
+import { Row, Col, Image } from "antd";
+import TextArea from "antd/es/input/TextArea";
 import {
   InboxOutlined,
   UsergroupAddOutlined,
@@ -13,8 +14,6 @@ import {
   CardTitleStyled,
 } from "./style";
 
-const { TextArea } = Input;
-
 const ModalHeader: React.FC = () => {
   const { cardData } = useCardModalContext();
   const { id = "", name = "" } = cardData ?? {};
@@ -22,12 +21,9 @@ const ModalHeader: React.FC = () => {
   const [titleFiled, setTitleFiled] = React.useState(name);
 
   // Title Enter Submit
-  const handleKeyDown = (event: any) => {
-    const { keyCode, key } = event;
-
-    if (keyCode === 13 || key.toUpperCase() === "ENTER") {
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (event.key === "Enter") {
       submitTitleField();
-      event?.target?.blur();
     }
   };
 
