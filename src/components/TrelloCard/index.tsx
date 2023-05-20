@@ -10,10 +10,9 @@ import { CardModalProvider } from "@/context/CardModalContext";
 import { TrelloCardList } from "./TrelloCardList";
 
 export const TrelloCard: React.FC<TrelloCardProps> = (props) => {
-  const {
-    index,
-    quotes: { id, name },
-  } = props;
+  const index = props.index;
+  const listId = props.quotes.id;
+  const listName = props.quotes.name;
 
   const [showAddCard, setShowAddCard] = useState(false);
   const [openModal, setOpenModal] = useState({
@@ -23,7 +22,7 @@ export const TrelloCard: React.FC<TrelloCardProps> = (props) => {
 
   return (
     <>
-      <Draggable draggableId={id} index={index}>
+      <Draggable draggableId={listId} index={index}>
         {(provided, snapshot) => (
           <div ref={provided.innerRef} {...provided.draggableProps}>
             <TrelloCardStyled
@@ -31,21 +30,21 @@ export const TrelloCard: React.FC<TrelloCardProps> = (props) => {
               isdragging={snapshot.isDragging.toString()}
             >
               <Card.Meta
-                title={<TrelloCardHeader title={name} />}
+                title={<TrelloCardHeader title={listName} />}
                 className="cardTitle"
                 {...provided.dragHandleProps}
-                aria-label={`${name} quote list`}
+                aria-label={`${listName} quote list`}
                 style={{ marginBottom: "8px" }}
               />
 
               <TrelloCardList
                 {...props}
                 isScrollable={false}
-                listId={name}
+                listId={listId}
                 listType="QUOTE"
                 internalScroll={props.isScrollable}
-                isCombineEnabled={Boolean(props.isCombineEnabled)}
-                useClone={Boolean(props.useClone)}
+                isCombineEnabled={props.isCombineEnabled}
+                useClone={props.useClone}
                 showAddCard={showAddCard}
                 setShowAddCard={setShowAddCard}
                 setOpenModal={setOpenModal}
@@ -59,7 +58,11 @@ export const TrelloCard: React.FC<TrelloCardProps> = (props) => {
         )}
       </Draggable>
       <CardModalProvider>
-        <TrelloCardModal openModal={openModal} setOpenModal={setOpenModal} />
+        <TrelloCardModal
+          listName={listName}
+          openModal={openModal}
+          setOpenModal={setOpenModal}
+        />
       </CardModalProvider>
     </>
   );

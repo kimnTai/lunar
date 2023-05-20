@@ -14,7 +14,7 @@ import {
   CardTitleStyled,
 } from "./style";
 
-const ModalHeader: React.FC = () => {
+const ModalHeader: React.FC<{ listName: string }> = (props) => {
   const { cardData } = useCardModalContext();
   const { id = "", name = "" } = cardData ?? {};
   const [isEdit, setIsEdit] = React.useState(false);
@@ -53,7 +53,7 @@ const ModalHeader: React.FC = () => {
           <Row align="middle" gutter={24}>
             <Col flex="none" className="col">
               <InboxOutlined className="icon" />
-              <p>在「ＯＯＯＯＯ」列表中</p>
+              <p>在「{props.listName}」列表中</p>
             </Col>
             <Col flex="none" className="col">
               <UsergroupAddOutlined className="icon" />

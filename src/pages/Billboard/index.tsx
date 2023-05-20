@@ -109,7 +109,7 @@ const Billboard: React.FC<{
                   {provided.placeholder}
                   <AddList
                     cardList={cardList}
-                    boardId={boardId!}
+                    boardId={boardId || ""}
                     callApi={callApi}
                   />
                 </BillboardStyled>

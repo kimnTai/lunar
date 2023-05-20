@@ -40,6 +40,7 @@ export interface TrelloCardHeaderProps {
 export interface TrelloCardModalProps {
   openModal: openModalProps;
   setOpenModal: React.Dispatch<React.SetStateAction<openModalProps>>;
+  listName: string;
 }
 
 interface openModalProps {
