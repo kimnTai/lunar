@@ -9,15 +9,16 @@ import {
   UpdateOrganizationMemberProps,
 } from "@/interfaces/organization";
 import { useForm } from "antd/lib/form/Form";
+import { PropsFromRedux } from "@/router";
 
 const ManageRole: React.FC<{
   open: boolean;
-  setOpen: Function;
+  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
   organizationId: string;
-  getOrganization: Function;
+  getOrganization: PropsFromRedux["getOrganization"];
   selectedMember: OrganizationMemberProps | null;
 }> = ({ open, setOpen, organizationId, getOrganization, selectedMember }) => {
-  const onCancel: () => void = () => {
+  const onCancel = () => {
     setOpen(false);
   };
   const [form] = useForm();

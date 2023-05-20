@@ -4,12 +4,13 @@ import { Button, Form } from "antd";
 import { OrganizationMemberProps } from "@/interfaces/organization";
 import { deleteOrganizationMemberApi } from "@/api/organization";
 import { useApi } from "@/hooks/useApiHook";
+import { PropsFromRedux } from "@/router";
 
 const RemoveMember: React.FC<{
   open: boolean;
-  setOpen: Function;
+  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
   organizationId: string;
-  getOrganization: Function;
+  getOrganization: PropsFromRedux["getOrganization"];
   selectedMember: OrganizationMemberProps | null;
 }> = ({ open, setOpen, organizationId, getOrganization, selectedMember }) => {
   const userId = selectedMember?.userId._id;

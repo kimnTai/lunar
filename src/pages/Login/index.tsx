@@ -3,26 +3,11 @@ import Logo from "@/assets/images/img_logo.png";
 import { Card, Button, Divider, Form, Input } from "antd";
 import GoogleIcon from "@/assets/images/google.png";
 import AppleIcon from "@/assets/images/apple.png";
-import { LoginCss, ThirdPartyButtonCss } from "./style";
+import { LoginCss } from "./style";
 import { useNavigate } from "react-router-dom";
 import type { LoginProps } from "@/interfaces/user";
 import type { PropsFromRedux } from "@/router";
-
-const ThirdPartyButton: React.FC<{
-  icon: any;
-  text: string;
-  handleClick: Function;
-}> = ({ icon, text, handleClick }) => {
-  return (
-    <ThirdPartyButtonCss
-      icon={<img src={icon} alt="" />}
-      className="d-center"
-      onClick={() => handleClick()}
-    >
-      {text}
-    </ThirdPartyButtonCss>
-  );
-};
+import ThirdPartyButton from "./ThirdPartyButton";
 
 const Login: React.FC<{
   signInAction: PropsFromRedux["signInAction"];

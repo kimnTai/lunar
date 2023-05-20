@@ -10,7 +10,7 @@ import CopyInviteLinkBtn from "@/components/WorkSpace/CopyInviteLinkBtn";
 
 const InviteMember: React.FC<{
   open: boolean;
-  setOpen: Function;
+  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
   organizationId: string;
   userOrganization?: OrganizationProps;
 }> = ({ open, setOpen, userOrganization }) => {
