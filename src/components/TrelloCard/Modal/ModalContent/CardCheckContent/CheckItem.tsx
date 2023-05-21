@@ -18,7 +18,7 @@ const CheckItem: React.FC<{ checkItem?: CheckItemProps[] }> = ({
                 {...provided.draggableProps}
                 {...provided.dragHandleProps}
                 style={{
-                  ...provided?.draggableProps?.style,
+                  ...provided.draggableProps.style,
                   padding: `4px 8px`,
                   margin: `0 0 8px 0`,
                   background: (() => {

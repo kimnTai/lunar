@@ -19,7 +19,7 @@ const CheckList: React.FC<{ checkList?: ChecklistProps[] }> = ({
                 {...provided.draggableProps}
                 {...provided.dragHandleProps}
                 style={{
-                  ...provided?.draggableProps?.style,
+                  ...provided.draggableProps.style,
                 }}
               >
                 <SectionHeaderStyled align="middle" gutter={8}>
