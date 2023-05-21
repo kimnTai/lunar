@@ -6,6 +6,7 @@ import CardComment from "./CardComment";
 import CardLabel from "./CardLabel";
 import CardDate from "./CardDate";
 import CardAttachment from "./CardAttachment";
+import CardCheckContent from "./CardCheckContent";
 
 const ModalContent: React.FC = () => {
   return (
@@ -14,6 +15,7 @@ const ModalContent: React.FC = () => {
       <CardLabel />
       <CardDate />
       <CardAttachment />
+      <CardCheckContent />
       <CardDescription />
       <CardComment />
     </ModalContentStyled>
