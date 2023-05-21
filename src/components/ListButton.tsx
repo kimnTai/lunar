@@ -15,13 +15,15 @@ export const ListButton: React.FC<{
   icon: React.ReactNode;
   text: string;
   danger?: boolean;
-}> = ({ icon, text, danger }) => {
+  // onClick?: ;
+}> = ({ icon, text, danger, onClick }) => {
   return (
     <ListButtonStyled
       type="text"
       icon={icon}
       style={{ padding: 0 }}
       danger={danger}
+      // onClick={onClick}
     >
       {text}
     </ListButtonStyled>

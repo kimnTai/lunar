@@ -53,6 +53,7 @@ const BillboardHeader: React.FC<BillboardHeaderProps> = ({ name, member }) => {
             <UserOutlined style={{ fontSize: "20px", marginRight: "12px" }} />
           }
           text="查看看板管理員"
+          // onClick={}
         />
         <ListButton
           icon={
