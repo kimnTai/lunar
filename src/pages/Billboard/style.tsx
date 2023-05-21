@@ -56,4 +56,7 @@ export const PopoverContentStyle = styled.div`
     flex-direction: column;
     align-items: flex-start;
   }
+  .isAdministrator{
+    
+  }
 `;
