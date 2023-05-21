@@ -200,8 +200,7 @@ const WorkSpaceMember: React.FC<{
             <ManageRole
               open={openManageRoleModal}
               setOpen={setOpenManageRoleModal}
-              organizationId={workSpaceId!}
-              getOrganization={getOrganization}
+              organizationId={workSpaceId || ""}
               selectedMember={selectedMember}
             />
             <RemoveMember

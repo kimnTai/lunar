@@ -27,6 +27,7 @@ export default function UserReducer(
     type: string;
     payload:
       | PrometheusResponseWithToken<UserProps>
+      | PrometheusResponse<OrganizationProps>["result"]
       | PrometheusResponse<OrganizationProps[]>["result"];
   }
 ) {
@@ -47,6 +48,24 @@ export default function UserReducer(
     return {
       ...state,
       organization: [...action.payload],
+    };
+  }
+
+  if (
+    action.type === CONSTANTS.UPDATE_ONE_ORGANIZATION &&
+    "board" in action.payload
+  ) {
+    const newOrganization = state.organization.map((value) => {
+      if ("board" in action.payload && value._id === action.payload.id) {
+        return action.payload;
+      }
+
+      return value;
+    });
+
+    return {
+      ...state,
+      organization: newOrganization,
     };
   }
 

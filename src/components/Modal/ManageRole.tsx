@@ -1,6 +1,5 @@
 import React from "react";
 import { MemberModalCss } from "./style";
-import { useApi } from "@/hooks/useApiHook";
 import { updateOrganizationMemberApi } from "@/api/organization";
 import { Form, Radio } from "antd";
 import { CheckOutlined } from "@ant-design/icons";
@@ -9,30 +8,33 @@ import {
   UpdateOrganizationMemberProps,
 } from "@/interfaces/organization";
 import { useForm } from "antd/lib/form/Form";
-import { PropsFromRedux } from "@/router";
+import { useAppDispatch } from "@/hooks/useAppDispatch";
+import CONSTANTS from "@/redux/constants";
 
 const ManageRole: React.FC<{
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
   organizationId: string;
-  getOrganization: PropsFromRedux["getOrganization"];
   selectedMember: OrganizationMemberProps | null;
-}> = ({ open, setOpen, organizationId, getOrganization, selectedMember }) => {
+}> = ({ open, setOpen, organizationId, selectedMember }) => {
   const onCancel = () => {
     setOpen(false);
   };
   const [form] = useForm();
   const userId = selectedMember?.userId._id;
+  const dispatch = useAppDispatch();
 
-  const [_result, _loading, callApi] = useApi(updateOrganizationMemberApi);
   const onFinish = async (values: UpdateOrganizationMemberProps) => {
-    await callApi({
+    onCancel();
+
+    const res = await updateOrganizationMemberApi({
       organizationId,
       memberId: userId || "",
       role: values.role,
     });
-    await getOrganization();
-    onCancel();
+    dispatch({ type: CONSTANTS.UPDATE_ONE_ORGANIZATION, payload: res.result });
+
+    alert("更新完成");
   };
 
   return (
@@ -118,4 +120,5 @@ const ManageRole: React.FC<{
     </MemberModalCss>
   );
 };
+
 export default ManageRole;
