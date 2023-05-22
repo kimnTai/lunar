@@ -4,10 +4,11 @@ import {
   OrganizationProps,
   UpdateOrganizationProps,
 } from "@/interfaces/organization";
-import { EditOutlined, GlobalOutlined, LockOutlined } from "@ant-design/icons";
+import { EditOutlined } from "@ant-design/icons";
 import { Button, Col, Form, Input, Row } from "antd";
 import { useState } from "react";
 import { ColorIcon } from "../Icons";
+import PermissionBtn from "./PermissionBtn";
 
 export const WorkSpaceHeader: React.FC<{
   userOrganization?: OrganizationProps;
@@ -63,54 +64,7 @@ export const WorkSpaceHeader: React.FC<{
             </>
           )}
         </Row>
-        <Row
-          align={"middle"}
-          justify={"start"}
-          style={{
-            marginTop: "8px",
-            gap: "4px",
-          }}
-        >
-          {userOrganization?.permission === "private" ? (
-            <>
-              <LockOutlined
-                style={{
-                  color: "red",
-                  fontSize: "12px",
-                }}
-              />
-              <p
-                style={{
-                  fontWeight: "400",
-                  fontSize: "12px",
-                  lineHeight: "22px",
-                  color: "red",
-                }}
-              >
-                私密
-              </p>
-            </>
-          ) : (
-            <>
-              <GlobalOutlined
-                style={{
-                  color: "green",
-                  fontSize: "12px",
-                }}
-              />
-              <p
-                style={{
-                  fontWeight: "400",
-                  fontSize: "12px",
-                  lineHeight: "22px",
-                  color: "green",
-                }}
-              >
-                公開
-              </p>
-            </>
-          )}
-        </Row>
+        <PermissionBtn permission={userOrganization?.permission!} id={null} />
       </Col>
     </Row>
   );
