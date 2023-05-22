@@ -25,7 +25,7 @@ export const newOrganizationApi = (data: NewOrganizationFormProps) => {
 };
 
 // 新增組織成員
-export const addOrganizationMember = (data: addOrganizationMemberProps) => {
+export const addOrganizationMemberApi = (data: addOrganizationMemberProps) => {
   const { organizationId } = data;
 
   return Request.post<any, PrometheusResponse<OrganizationProps>>(

@@ -1,53 +1,48 @@
 import React, { useState } from "react";
 import { InviteMemberCss } from "./style";
 import { useApi } from "@/hooks/useApiHook";
-import { Avatar, Button, Form, List, Row, Select, Spin } from "antd";
+import { Button, Form, Row } from "antd";
 import { LinkOutlined } from "@ant-design/icons";
 import {
   OrganizationProps,
   addOrganizationMemberProps,
 } from "@/interfaces/organization";
 import CopyInviteLinkBtn from "@/components/WorkSpace/CopyInviteLinkBtn";
-import { searchLunarMemberApi } from "@/api/search";
+import { addOrganizationMemberApi } from "@/api/organization";
+import InviteMemberSelect from "../WorkSpace/InviteMemberSelect";
+import { PropsFromRedux } from "@/router";
 
 const InviteMember: React.FC<{
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
   organizationId: string;
   userOrganization?: OrganizationProps;
-}> = ({ open, setOpen, userOrganization, organizationId }) => {
-  const [result, loading, callApi] = useApi(searchLunarMemberApi);
+  getOrganization: PropsFromRedux["getOrganization"];
+}> = ({ open, setOpen, userOrganization, organizationId, getOrganization }) => {
+  const [_result, loading, callApi] = useApi(addOrganizationMemberApi);
   const [form] = Form.useForm<addOrganizationMemberProps>();
   const [selectedUsers, setSelectedUsers] = useState<{ userIdList: string[] }>({
     userIdList: [],
   });
-
-  const handleSelectChange = (values: string[]) => {
-    const userIdList = values;
-    setSelectedUsers({ userIdList });
-  };
 
   const onCancel: () => void = () => {
     setOpen(false);
   };
 
   const onFinish = async () => {
-    console.log("selectedUsers", selectedUsers);
-  };
+    await callApi({
+      organizationId,
+      userIdList: selectedUsers.userIdList,
+    });
 
-  const onSearch = async (value: string) => {
-    if (value.length >= 1) {
-      await callApi({
-        query: value,
-        organizationId,
-      });
-    }
-  };
+    setSelectedUsers({
+      userIdList: [],
+    });
 
-  const filteredUsers = result?.result.filter(
-    (user) => !selectedUsers.userIdList.includes(user._id)
-  );
-  // console.log(selectedUsers.userIdList.includes("6468e269f506bb6a30bc7f99"));
+    await getOrganization();
+
+    onCancel();
+  };
 
   return (
     <InviteMemberCss
@@ -70,50 +65,13 @@ const InviteMember: React.FC<{
             justify={"space-between"}
             style={{ flexWrap: "nowrap", gap: "4px" }}
           >
-            <Select
-              mode="multiple"
-              showSearch
-              style={{ height: "auto" }}
-              placeholder="請輸入姓名或電子郵件"
-              filterOption={false}
-              onSearch={onSearch}
-              loading={loading}
-              notFoundContent={
-                loading ? (
-                  <Row justify={"center"} style={{ padding: "8px" }}>
-                    <Spin />
-                  </Row>
-                ) : (
-                  result?.result.length === 0 && (
-                    <p style={{ textAlign: "center", padding: "8px" }}>
-                      這個人似乎尚未註冊 Lunar。
-                    </p>
-                  )
-                )
-              }
-              onChange={handleSelectChange}
-              optionLabelProp="email"
-            >
-              {filteredUsers?.map((user) => (
-                <Select.Option
-                  key={user._id}
-                  value={user._id}
-                  email={user.email}
-                >
-                  <List itemLayout="horizontal">
-                    <List.Item>
-                      <List.Item.Meta
-                        avatar={<Avatar src={user.avatar} />}
-                        title={user.name}
-                        description={user.email}
-                      />
-                    </List.Item>
-                  </List>
-                </Select.Option>
-              ))}
-            </Select>
-            <Button type="primary" htmlType="submit">
-              傳送邀請
+            <InviteMemberSelect
+              organizationId={organizationId}
+              selectedUsers={selectedUsers}
+              setSelectedUsers={setSelectedUsers}
+            />
+            <Button type="primary" htmlType="submit" loading={loading}>
+              邀請加入
             </Button>
           </Row>
         </Form.Item>

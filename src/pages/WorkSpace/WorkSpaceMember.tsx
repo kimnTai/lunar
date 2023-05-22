@@ -102,6 +102,7 @@ const WorkSpaceMember: React.FC<{
             setOpen={setOpenInviteModal}
             organizationId={workSpaceId!}
             userOrganization={userOrganization}
+            getOrganization={getOrganization}
           />
         </Col>
       </Row>
