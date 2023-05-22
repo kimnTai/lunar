@@ -28,7 +28,7 @@ export interface NewOrganizationFormProps {
 
 export interface addOrganizationMemberProps {
   organizationId: string;
-  userId: string;
+  userIdList: string[];
 }
 
 export interface DeleteOrganizationMemberProps {

@@ -18,18 +18,23 @@ const InviteMember: React.FC<{
 }> = ({ open, setOpen, userOrganization, organizationId }) => {
   const [result, loading, callApi] = useApi(searchLunarMemberApi);
   const [form] = Form.useForm<addOrganizationMemberProps>();
-  const [selectedUsers, setSelectedUsers] = useState<{ userId: string }[]>([]);
+  const [selectedUsers, setSelectedUsers] = useState<{ userIdList: string[] }>({
+    userIdList: [],
+  });
+
   const handleSelectChange = (values: string[]) => {
-    console.log({ userId: [...values] });
-    const userIdList = values.map((value) => ({ userId: value }));
-    setSelectedUsers(userIdList);
+    const userIdList = values;
+    setSelectedUsers({ userIdList });
   };
+
   const onCancel: () => void = () => {
     setOpen(false);
   };
+
   const onFinish = async () => {
-    console.log(selectedUsers);
+    console.log("selectedUsers", selectedUsers);
   };
+
   const onSearch = async (value: string) => {
     if (value.length >= 1) {
       await callApi({
@@ -38,9 +43,11 @@ const InviteMember: React.FC<{
       });
     }
   };
+
   const filteredUsers = result?.result.filter(
-    (user: any) => !selectedUsers.includes(user.value)
+    (user) => !selectedUsers.userIdList.includes(user._id)
   );
+  // console.log(selectedUsers.userIdList.includes("6468e269f506bb6a30bc7f99"));
 
   return (
     <InviteMemberCss
@@ -84,12 +91,15 @@ const InviteMember: React.FC<{
                   )
                 )
               }
-              value={selectedUsers.map((user) => user.userId)}
               onChange={handleSelectChange}
               optionLabelProp="email"
             >
-              {filteredUsers?.map((user, index: number) => (
-                <Select.Option key={index} value={user.name} email={user.email}>
+              {filteredUsers?.map((user) => (
+                <Select.Option
+                  key={user._id}
+                  value={user._id}
+                  email={user.email}
+                >
                   <List itemLayout="horizontal">
                     <List.Item>
                       <List.Item.Meta
