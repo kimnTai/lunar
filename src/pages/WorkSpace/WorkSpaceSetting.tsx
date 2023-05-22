@@ -3,18 +3,16 @@ import { WorkSpaceCss, WorkSpaceMemberCss } from "./style";
 import { Row, Col, Button, Divider } from "antd";
 import {
   UserAddOutlined,
-  EditOutlined,
   LockOutlined,
   GlobalOutlined,
 } from "@ant-design/icons";
-import { ColorIcon } from "@/components/Icons";
 import { useParams } from "react-router-dom";
-import { useSelector } from "react-redux";
-import { OrganizationProps } from "@/interfaces/organization";
 import InviteMember from "@/components/Modal/InviteMember";
 import DeleteOrganization from "@/components/Modal/DeleteOrganization";
 import type { PropsFromRedux } from "@/router";
 import ManagePermission from "@/components/Modal/ManagePermission";
+import { WorkSpaceHeader } from "@/components/WorkSpace/WorkSpaceHeader";
+import { useAppSelector } from "@/hooks/useAppSelector";
 
 const WorkSpaceSetting: React.FC<{
   setWorkSpace: PropsFromRedux["changeWorkSpace"];
@@ -27,54 +25,25 @@ const WorkSpaceSetting: React.FC<{
   const [openManagePermissionModal, setOpenManagePermissionModal] =
     useState(false);
 
-  const currentUser = JSON.parse(localStorage.getItem("userData")!);
+  const currentUser = useAppSelector((state) => state.user.user);
 
-  const userOrganization: OrganizationProps =
-    useSelector((state: any) => state.user.organization).filter(
-      (ele: OrganizationProps) => ele._id === workSpaceId
-    )?.[0] ?? [];
+  const userOrganization = useAppSelector(
+    (state) => state.user.organization
+  ).find((ele) => ele._id === workSpaceId);
 
-  const [orgUser] = userOrganization.member.filter(
+  const orgUser = userOrganization?.member.find(
     (user) => user.userId._id === currentUser._id
   );
 
   return (
     <WorkSpaceCss>
       <Row align={"middle"} justify={"space-between"}>
-        <Row>
-          <ColorIcon
-            color={"white"}
-            text={userOrganization.name[0]}
-            fontSize={"32px"}
-            size={"72px"}
-            background={"var(--blue)"}
-          />
-          <Col className="workSpace" style={{ marginLeft: "16px" }}>
-            <Row align={"middle"} justify={"center"}>
-              <h2>{userOrganization.name}</h2>
-              <Button
-                style={{ width: "28px", background: "#F7F7F7", border: 0 }}
-                shape="circle"
-                icon={<EditOutlined />}
-              />
-            </Row>
-            {userOrganization.permission === "private" && (
-              <Row
-                align={"middle"}
-                justify={"start"}
-                style={{ marginTop: "8px" }}
-              >
-                <Button
-                  style={{ width: "69px", height: "29px" }}
-                  type="primary"
-                  danger
-                  ghost
-                  icon={<LockOutlined />}
-                />
-              </Row>
-            )}
-          </Col>
-        </Row>
+        <WorkSpaceHeader
+          userOrganization={userOrganization}
+          organizationId={workSpaceId!}
+          getOrganization={getOrganization}
+        />
+
         <Col>
           <Button
             icon={<UserAddOutlined />}
@@ -112,7 +81,7 @@ const WorkSpaceSetting: React.FC<{
               style={{ marginTop: "16px" }}
             >
               <Col span={20}>
-                {userOrganization.permission === "private" ? (
+                {userOrganization?.permission === "private" ? (
                   <p style={{ lineHeight: "28px" }}>
                     <LockOutlined style={{ color: "red" }} /> 私密 <br />
                     這是私人工作區。此工作區沒有編入索引、也不開放工作區以外的成員觀看
@@ -126,7 +95,7 @@ const WorkSpaceSetting: React.FC<{
                   </p>
                 )}
               </Col>
-              {orgUser.role === "manager" && (
+              {orgUser?.role === "manager" && (
                 <Col>
                   <Button
                     style={{

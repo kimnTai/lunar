@@ -1,12 +1,23 @@
 import React from "react";
 import { ModalStyle, ModalContentStyled } from "./style";
-import { CardsProps } from "@/interfaces/cards";
 import CardDescription from "./CardDescription";
+import CardMember from "./CardMember";
+import CardComment from "./CardComment";
+import CardLabel from "./CardLabel";
+import CardDate from "./CardDate";
+import CardAttachment from "./CardAttachment";
+import CardCheckContent from "./CardCheckContent";
 
-const ModalContent: React.FC<{ cardData: CardsProps }> = ({ cardData }) => {
+const ModalContent: React.FC = () => {
   return (
     <ModalContentStyled style={ModalStyle}>
-      <CardDescription cardData={cardData} />
+      <CardMember />
+      <CardLabel />
+      <CardDate />
+      <CardAttachment />
+      <CardCheckContent />
+      <CardDescription />
+      <CardComment />
     </ModalContentStyled>
   );
 };

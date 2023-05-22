@@ -1,21 +1,14 @@
 import CONSTANTS from "../constants";
 
 const initialState = {
-  showNavbar: false,
   showWorkSpace: true,
 };
 
-const ScreenReducer = function (
+export default function ScreenReducer(
   state = initialState,
-  action: { type: string; payload: any }
+  action: { type: string }
 ) {
   switch (action.type) {
-    case CONSTANTS.OPEN_CLOSE_NAVBAR: {
-      return {
-        ...state,
-        showNavbar: !state.showNavbar,
-      };
-    }
     case CONSTANTS.CHANGE_WORK_SPACE: {
       return {
         ...state,
@@ -28,6 +21,4 @@ const ScreenReducer = function (
       };
     }
   }
-};
-
-export default ScreenReducer;
+}

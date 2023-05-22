@@ -16,17 +16,14 @@ import {
   SettingOutlined,
   TagOutlined,
   InboxOutlined,
-  CopyOutlined,
   UploadOutlined,
   LogoutOutlined,
   LeftOutlined,
 } from "@ant-design/icons";
 import { Avatar, Button, Popover, Menu, MenuProps } from "antd";
 import AddMember from "@/components/Modal/AddMember";
-import { ListButton } from "@/components/ListButton";
-import { set } from "lodash";
-import { useApi } from "@/hooks/useApiHook";
-import { getUserOrganizationsApi } from "@/api/organization";
+import ListButton from "@/components/ListButton";
+import CloneBoardButton from "@/components/CloneBoardButton";
 
 
 const PopoverTitle: React.FC<PopoverTitleProps> = (props) => {
@@ -128,8 +125,6 @@ const PopoverContent: React.FC<PopoverContentProps> = (props) => {
   const [isShowChangePeople, setIsShowChangePeople] = useState(false)
   const [people, setPeople] = useState("成員")
   const [current, setCurrent] = useState("");
-  const [result, loading, callApi] = useApi(getUserOrganizationsApi);
-  console.log("--result--", result);
 
   const click = (e) => {
     console.log(e.target.innerText);
@@ -204,13 +199,7 @@ const PopoverContent: React.FC<PopoverContentProps> = (props) => {
             />
           </div>
           <div className="top-border listBtn">
-            <ListButton
-              icon={
-                <CopyOutlined style={{ fontSize: "20px", marginRight: "12px" }} />
-              }
-              text="複製看板"
-              onClick={click}
-            />
+            <CloneBoardButton />
             <ListButton
               icon={
                 <UploadOutlined style={{ fontSize: "20px", marginRight: "12px" }} />

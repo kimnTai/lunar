@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { DropdownBtn } from "@/components/DropdownBtn";
 import { UserModal } from "./UserModal";
 import { OrganizationProps } from "@/interfaces/organization";
+import { useAppSelector } from "@/hooks/useAppSelector";
 
 const items: MenuProps["items"] = [
   {
@@ -21,7 +22,7 @@ export const Header: React.FC<{
   organization: OrganizationProps[];
 }> = (props) => {
   const { workSpace, organization, setWorkSpace } = props;
-  const { avatar, name, email } = JSON.parse(localStorage.getItem("userData")!);
+  const { avatar, name, email } = useAppSelector((state) => state.user.user);
   const navigate = useNavigate();
   const [userModal, setUserModal] = useState(false);
   const selectOrganizationItem = organization.map((ele) => ({

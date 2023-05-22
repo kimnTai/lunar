@@ -1,11 +1,12 @@
 import React from "react";
-import { Row, Col, Image, Input } from "antd";
+import { Row, Col, Image } from "antd";
+import TextArea from "antd/es/input/TextArea";
 import {
   InboxOutlined,
   UsergroupAddOutlined,
   EyeOutlined,
 } from "@ant-design/icons";
-import { CardsProps } from "@/interfaces/cards";
+import { useCardModalContext } from "@/context/CardModalContext";
 import { updateCardApi } from "@/api/cards";
 import {
   ModalHeaderStyled,
@@ -13,20 +14,16 @@ import {
   CardTitleStyled,
 } from "./style";
 
-const { TextArea } = Input;
-
-const ModalHeader: React.FC<{ cardData: CardsProps }> = ({ cardData }) => {
-  const { id, name } = cardData;
+const ModalHeader: React.FC<{ listName: string }> = (props) => {
+  const { cardData } = useCardModalContext();
+  const { id = "", name = "" } = cardData ?? {};
   const [isEdit, setIsEdit] = React.useState(false);
   const [titleFiled, setTitleFiled] = React.useState(name);
 
   // Title Enter Submit
-  const handleKeyDown = (event: any) => {
-    const { keyCode, key } = event;
-
-    if (keyCode === 13 || key.toUpperCase() === "ENTER") {
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (event.key === "Enter") {
       submitTitleField();
-      event?.target?.blur();
     }
   };
 
@@ -56,7 +53,7 @@ const ModalHeader: React.FC<{ cardData: CardsProps }> = ({ cardData }) => {
           <Row align="middle" gutter={24}>
             <Col flex="none" className="col">
               <InboxOutlined className="icon" />
-              <p>在「ＯＯＯＯＯ」列表中</p>
+              <p>在「{props.listName}」列表中</p>
             </Col>
             <Col flex="none" className="col">
               <UsergroupAddOutlined className="icon" />

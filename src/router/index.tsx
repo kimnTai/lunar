@@ -2,10 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Routes, Route, Navigate, HashRouter } from "react-router-dom";
 import { ConnectedProps, connect } from "react-redux";
 import { Layout } from "antd";
-import {
-  changeWorkSpaceAction,
-  openNavbarAction,
-} from "@/redux/actions/ScreenAction";
+import { changeWorkSpaceAction } from "@/redux/actions/ScreenAction";
 import { getOrganizationsAction } from "@/redux/actions/OrganizationAction";
 import {
   signInAction,
@@ -25,15 +22,13 @@ import SpinPage from "@/pages/SpinPage";
 import Callback from "@/pages/Login/Callback";
 import WorkSpaceMember from "@/pages/WorkSpace/WorkSpaceMember";
 import WorkSpaceSetting from "@/pages/WorkSpace/WorkSpaceSetting";
-import type { store } from "@/redux/store";
+import type { RootState } from "@/redux/store";
 import Invitation from "@/pages/InvitationPage";
 
 export type PropsFromRedux = ConnectedProps<typeof connector>;
 
 const AppRouter: React.FC<PropsFromRedux> = (props) => {
   const {
-    openNav,
-    showNavbar,
     login,
     loginAction,
     loginJwt,
@@ -57,15 +52,12 @@ const AppRouter: React.FC<PropsFromRedux> = (props) => {
     } else {
       setLoad(false);
     }
-    // setLoad(false);
-  }, [login, organization?.length]);
+  }, []);
 
   const LoginLayout = React.memo<{ children: React.ReactElement }>(
     ({ children }) => (
       <Layout>
         <Navbar
-          showNavbar={showNavbar}
-          openNav={openNav}
           workSpace={showWorkSpace}
           setWorkSpace={changeWorkSpace}
           getOrganization={getOrganization}
@@ -210,15 +202,13 @@ const AppRouter: React.FC<PropsFromRedux> = (props) => {
   );
 };
 
-const mapStateToProps = (state: ReturnType<typeof store.getState>) => ({
-  showNavbar: state.screen.showNavbar,
+const mapStateToProps = (state: RootState) => ({
   showWorkSpace: state.screen.showWorkSpace,
   login: state.auth.login,
   organization: state.user.organization,
 });
 
 const connector = connect(mapStateToProps, {
-  openNav: openNavbarAction,
   changeWorkSpace: changeWorkSpaceAction,
   signInAction,
   loginAction,

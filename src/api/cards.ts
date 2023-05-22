@@ -3,6 +3,8 @@ import type {
   UpdateCardProps,
   NewCardProps,
   CardsProps,
+  UpdateCardCheckItem,
+  UpdateCardCheckList,
 } from "@/interfaces/cards";
 
 // 取得單張卡片
@@ -19,3 +21,14 @@ export const updateCardApi = (data: UpdateCardProps) =>
     `/cards/${data.cardId}`,
     data
   );
+
+// 更新checkItem
+export const updateCheckItemApi = (data: UpdateCardCheckItem) =>
+  Request.put(
+    `/cards/${data.cardId}/checklist/${data.checklistId}/checkItem/${data.checkItemId}`,
+    data
+  );
+
+// 更新checkList
+export const updateChecklist = (data: UpdateCardCheckList) =>
+  Request.put(`/cards/${data.cardId}/checklist/${data.checklistId}`, data);

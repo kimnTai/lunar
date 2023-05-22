@@ -38,7 +38,7 @@
 
 ```env
 VITE_REACT_API = API網域
-VITE_GOOGLE_CLIENT_ID = google client id 
+VITE_SOCKET_SERVER = socket server 
 ```
 
 ## 頁面對應資料夾 (src/pages)

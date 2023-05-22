@@ -23,7 +23,7 @@ const Billboard: React.FC<{
   const [cardList, setCardList] = useState<ListsProps[]>([]);
   const { boardId } = useParams();
   const [result, loading, callApi] = useApi(getBoardApi);
-
+  console.log("render time AAA");
   useEffect(() => {
     if (result?.result) {
       setCardList(result.result.list);
@@ -56,13 +56,13 @@ const Billboard: React.FC<{
     }
     // Column 互換
     if (result.type === "COLUMN") {
-      const data = updateColumn(result, cardList);
+      const data = updateColumn(result, cardList) as ListsProps[];
       setCardList(data);
       return;
     }
     if (source.droppableId === destination.droppableId) {
       // List 中間互換
-      const data = updateCardInColumn(result, cardList);
+      const data = updateCardInColumn(result, cardList) as ListsProps[];
       setCardList(data);
       return;
     }
@@ -109,7 +109,7 @@ const Billboard: React.FC<{
                   {provided.placeholder}
                   <AddList
                     cardList={cardList}
-                    boardId={boardId!}
+                    boardId={boardId || ""}
                     callApi={callApi}
                   />
                 </BillboardStyled>

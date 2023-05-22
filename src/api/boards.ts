@@ -21,3 +21,13 @@ export const deleteBoardMemberApi = (boardId: string, memberId: string) =>
   Request.delete<any, PrometheusResponse<BoardsProps>>(
     `/${boardId}/members/${memberId}`
   );
+
+// 複製單一看板
+export const postCloneBoardApi = (data: {
+  sourceBoardId: string;
+  organizationId: string;
+  name: string;
+}) =>
+  Request.post<any, PrometheusResponse<BoardsProps>>(`/boards/cloneById`, {
+    ...data,
+  });

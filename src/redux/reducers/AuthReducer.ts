@@ -20,14 +20,13 @@ export default function AuthReducer(
           ? action.payload.token
           : JSON.stringify(action.payload.token)
       );
-      localStorage.setItem("userData", JSON.stringify(action.payload.result));
       return {
         login: true,
       };
     }
     case CONSTANTS.LOGOUT: {
       localStorage.removeItem("token");
-      localStorage.removeItem("userData");
+
       return {
         login: false,
       };

@@ -6,7 +6,7 @@ export interface BoardsProps {
   name: string;
   permission: string;
   closed: boolean;
-  inviteLink: string;
+  inviteLink?: string;
   member: OrganizationMemberProps[];
   organizationId: string;
   createdAt: string;

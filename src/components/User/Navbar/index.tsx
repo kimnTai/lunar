@@ -10,45 +10,32 @@ import { useNavigate, useParams } from "react-router-dom";
 import Logo from "@/assets/images/logo.png";
 import Logo2 from "@/assets/images/img_logo2.png";
 import AddWorkSpace from "@/components/Modal/AddWorkSpace";
-import { useSelector } from "react-redux";
 import NavBarMenu from "./NavbarMenu";
-import { OrganizationProps } from "@/interfaces/organization";
 import AddBoards from "@/components/Modal/AddBoards";
 import type { PropsFromRedux } from "@/router";
+import { useAppSelector } from "@/hooks/useAppSelector";
 
 export const Navbar: React.FC<{
-  showNavbar: boolean;
-  openNav: PropsFromRedux["openNav"];
   workSpace: boolean;
   setWorkSpace: PropsFromRedux["changeWorkSpace"];
   getOrganization: PropsFromRedux["getOrganization"];
-}> = ({ showNavbar, openNav, workSpace, setWorkSpace, getOrganization }) => {
+}> = ({ workSpace, setWorkSpace, getOrganization }) => {
+  const [showNavbar, setShowNavBar] = useState(false);
   const navigate = useNavigate();
   const { boardId, workSpaceId } = useParams();
   const handleClosed = () => {
-    openNav();
+    setShowNavBar(true);
   };
   const handleOpen = () => {
-    openNav();
+    setShowNavBar(false);
   };
-
   const [open, setOpen] = useState(false);
   const [openKey, setOpenKey] = useState("");
-  const userOrganization: OrganizationProps[] = useSelector(
-    (state: any) => state.user.organization
+  const userOrganization = useAppSelector((state) => state.user.organization);
+
+  const currentOrganization = userOrganization.find(({ board }) =>
+    board.map(({ _id }) => _id).includes(openKey)
   );
-  const getBoards = (key: string) => {
-    return userOrganization.filter((ele) => {
-      let getAns = false;
-      ele.board.forEach((board) => {
-        if (board._id === key) {
-          getAns = true;
-          return;
-        }
-      });
-      if (getAns) return ele;
-    })[0];
-  };
   useEffect(() => {
     if (!workSpace && boardId) {
       setOpenKey(boardId);
@@ -112,7 +99,7 @@ export const Navbar: React.FC<{
             <>
               <NavBarMenu
                 workSpace={workSpace}
-                data={getBoards(openKey)?.board}
+                data={currentOrganization?.board || []}
                 setOpen={setOpen}
                 id={openKey}
               />
@@ -141,7 +128,7 @@ export const Navbar: React.FC<{
         <AddBoards
           open={open}
           setOpen={setOpen}
-          organizationId={getBoards(openKey)?._id}
+          organizationId={currentOrganization?._id || ""}
           getOrganization={getOrganization}
         />
       )}

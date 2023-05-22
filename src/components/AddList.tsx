@@ -51,7 +51,7 @@ const AddList: React.FC<AddListProps> = ({ cardList, boardId, callApi }) => {
       boardId: boardId,
       position: nextPosition(cardList).toString(),
     })
-      .then((res: any) => {
+      .then((res) => {
         if (res.status === "success") {
           callApi(boardId);
         }

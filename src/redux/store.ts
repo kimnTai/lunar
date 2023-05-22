@@ -1,5 +1,10 @@
-import thunk from "redux-thunk";
-import { legacy_createStore, applyMiddleware } from "redux";
 import RootReducer from "./reducers/RootReducer";
+import { configureStore } from "@reduxjs/toolkit";
 
-export const store = legacy_createStore(RootReducer, applyMiddleware(thunk));
+export const store = configureStore({
+  reducer: RootReducer,
+});
+
+export type AppDispatch = typeof store.dispatch;
+
+export type RootState = ReturnType<typeof store.getState>;

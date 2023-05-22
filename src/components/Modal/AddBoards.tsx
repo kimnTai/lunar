@@ -5,12 +5,13 @@ import { newBoardApi } from "@/api/boards";
 import { NewBoardsProps } from "@/interfaces/boards";
 import { Button, Form, Input, Select } from "antd";
 import Cover from "@/assets/images/img_cover.png";
+import { PropsFromRedux } from "@/router";
 
 const AddBoards: React.FC<{
   open: boolean;
-  setOpen: Function;
+  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
   organizationId: string;
-  getOrganization: Function;
+  getOrganization: PropsFromRedux["getOrganization"];
 }> = ({ open, setOpen, organizationId, getOrganization }) => {
   const [_form] = Form.useForm<NewBoardsProps>();
   const onCancel: () => void = () => {
