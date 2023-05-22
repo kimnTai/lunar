@@ -1,19 +1,19 @@
 import { invitationApi } from "@/api/invitation";
-import { useApi } from "@/hooks/useApiHook";
+import { useAppSelector } from "@/hooks/useAppSelector";
 import { useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
-const Invitation: React.FC<{ login: boolean }> = ({ login }) => {
-  const navigate = useNavigate();
+const InvitationPage: React.FC = () => {
+  const isUserLogin = useAppSelector((state) => state.auth.login);
   const { type, invitationToken } = useParams();
-  const [_result, _loading, callApi] = useApi(invitationApi);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    if (!login || !invitationToken || !type) {
+    if (!isUserLogin || !invitationToken || !type) {
       return navigate("/login");
     }
 
-    callApi({ type, invitationToken }).finally(() => {
+    invitationApi({ type, invitationToken }).finally(() => {
       navigate("/");
     });
   }, [invitationToken]);
@@ -21,4 +21,4 @@ const Invitation: React.FC<{ login: boolean }> = ({ login }) => {
   return <></>;
 };
 
-export default Invitation;
+export default InvitationPage;

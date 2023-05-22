@@ -85,7 +85,7 @@ const AppRouter: React.FC<PropsFromRedux> = (props) => {
             {!login && <Route path="/" element={<Home />}></Route>}
             <Route
               path="/invitation/:type/:invitationToken"
-              element={<Invitation login={login} />}
+              element={<Invitation />}
             ></Route>
             <Route
               path="/login/:callback"
