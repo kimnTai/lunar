@@ -29,7 +29,6 @@ export const Navbar: React.FC<{
   const handleOpen = () => {
     setShowNavBar(false);
   };
-  console.log(showNavbar);
   const [open, setOpen] = useState(false);
   const [openKey, setOpenKey] = useState("");
   const userOrganization = useAppSelector((state) => state.user.organization);
