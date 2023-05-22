@@ -15,7 +15,7 @@ export const ListButton: React.FC<{
   icon: React.ReactNode;
   text: string;
   danger?: boolean;
-  onClick?: () => void;
+  onClick?: ((event: React.MouseEvent<HTMLElement, MouseEvent>) => void)
 }> = ({ icon, text, danger, onClick}) => {
   return (
     <ListButtonStyled

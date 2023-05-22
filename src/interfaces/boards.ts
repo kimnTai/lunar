@@ -28,3 +28,24 @@ export interface BillboardHeaderProps {
 }
 
 export interface SingleBoardProps {}
+
+export interface PopoverTitleProps {
+  isMenu: boolean;
+  isUser: boolean;
+  isSetting: boolean;
+  setIsMenu: React.Dispatch<React.SetStateAction<boolean>>;
+  setOpenPopover: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsUser: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsSetting: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+export interface PopoverContentProps {
+  name: string;
+  member: OrganizationMemberProps[];
+  isUser: boolean;
+  isMenu: boolean;
+  isSetting: boolean;
+  setIsUser: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsMenu: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsSetting: React.Dispatch<React.SetStateAction<boolean>>;
+}
