@@ -24,10 +24,10 @@ describe("登入頁面測試", () => {
 describe("拖曳座標計算測試", () => {
   test("nextPosition 測試", async () => {
     const items = [
-      { id: "1", position: "100" },
-      { id: "2", position: "200" },
-      { id: "3", position: "300" },
-      { id: "4", position: "400" },
+      { _id: "1", position: "100" },
+      { _id: "2", position: "200" },
+      { _id: "3", position: "300" },
+      { _id: "4", position: "400" },
     ];
     // 空陣列新增
     expect(nextPosition([])).toBe(65535);
