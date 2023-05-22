@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { InviteMemberCss } from "./style";
 import { useApi } from "@/hooks/useApiHook";
 import { Avatar, Button, Form, List, Row, Select, Spin } from "antd";
@@ -16,30 +16,19 @@ const InviteMember: React.FC<{
   organizationId: string;
   userOrganization?: OrganizationProps;
 }> = ({ open, setOpen, userOrganization, organizationId }) => {
+  const [result, loading, callApi] = useApi(searchLunarMemberApi);
   const [form] = Form.useForm<addOrganizationMemberProps>();
-  const [userOptions, setUserOptions] = useState<
-    Array<{ label: string; value: string; avatar: string }>
-  >([]);
   const [selectedUsers, setSelectedUsers] = useState<{ userId: string }[]>([]);
-  const [showNotFound, setShowNotFound] = useState(false);
-
   const handleSelectChange = (values: string[]) => {
     console.log({ userId: [...values] });
-
     const userIdList = values.map((value) => ({ userId: value }));
     setSelectedUsers(userIdList);
-    setShowNotFound(false);
   };
-
   const onCancel: () => void = () => {
     setOpen(false);
   };
-
-  const [result, loading, callApi] = useApi(searchLunarMemberApi);
-
   const onFinish = async () => {
     console.log(selectedUsers);
-    // onCancel();
   };
   const onSearch = async (value: string) => {
     if (value.length >= 1) {
@@ -47,30 +36,11 @@ const InviteMember: React.FC<{
         query: value,
         organizationId,
       });
-      setShowNotFound(true);
-    } else {
-      setUserOptions([]);
-      setShowNotFound(false);
     }
   };
-
-  const filteredUsers = userOptions.filter(
+  const filteredUsers = result?.result.filter(
     (user: any) => !selectedUsers.includes(user.value)
   );
-
-  useEffect(() => {
-    if (result?.result) {
-      const UserList = result.result.map((user) => ({
-        label: user.name,
-        value: user.email,
-        avatar: user.avatar,
-        userId: user._id,
-      }));
-      setUserOptions(UserList);
-    } else {
-      setUserOptions([]);
-    }
-  }, [result]);
 
   return (
     <InviteMemberCss
@@ -107,7 +77,7 @@ const InviteMember: React.FC<{
                     <Spin />
                   </Row>
                 ) : (
-                  showNotFound && (
+                  result?.result.length === 0 && (
                     <p style={{ textAlign: "center", padding: "8px" }}>
                       這個人似乎尚未註冊 Lunar。
                     </p>
@@ -118,18 +88,14 @@ const InviteMember: React.FC<{
               onChange={handleSelectChange}
               optionLabelProp="email"
             >
-              {filteredUsers.map((user: any) => (
-                <Select.Option
-                  key={user.value}
-                  value={user.userId}
-                  email={user.value}
-                >
+              {filteredUsers?.map((user, index: number) => (
+                <Select.Option key={index} value={user.name} email={user.email}>
                   <List itemLayout="horizontal">
                     <List.Item>
                       <List.Item.Meta
                         avatar={<Avatar src={user.avatar} />}
-                        title={user.label}
-                        description={user.value}
+                        title={user.name}
+                        description={user.email}
                       />
                     </List.Item>
                   </List>
