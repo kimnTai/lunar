@@ -61,6 +61,7 @@ const WorkSpaceSetting: React.FC<{
             open={openInviteModal}
             setOpen={setOpenInviteModal}
             organizationId={workSpaceId!}
+            getOrganization={getOrganization}
           />
         </Col>
       </Row>
