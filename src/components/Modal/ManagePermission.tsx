@@ -62,7 +62,7 @@ const ManagePermission: React.FC<{
                   lineHeight: "24px",
                 }}
               >
-                <LockOutlined /> 私密{" "}
+                <LockOutlined /> 私人{" "}
                 {userOrganization?.permission === "private" && (
                   <CheckOutlined style={{ fontSize: "14px" }} />
                 )}
