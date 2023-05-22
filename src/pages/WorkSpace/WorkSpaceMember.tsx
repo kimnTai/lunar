@@ -22,13 +22,14 @@ import InviteMember from "@/components/Modal/InviteMember";
 import type { PropsFromRedux } from "@/router";
 import { WorkSpaceHeader } from "@/components/WorkSpace/WorkSpaceHeader";
 import { useAppSelector } from "@/hooks/useAppSelector";
+import CopyInviteLinkBtn from "@/components/WorkSpace/CopyInviteLinkBtn";
 
 const items: MenuProps["items"] = [
   getItem(
     "工作區看板成員",
     "g1",
     null,
-    [getItem("工作區成員（5）", "workSpaceMember")],
+    [getItem("工作區成員", "workSpaceMember")],
     "group"
   ),
 ];
@@ -71,6 +72,10 @@ const WorkSpaceMember: React.FC<{
     }
   };
 
+  const onCancel: () => void = () => {
+    setOpenInviteModal(false);
+  };
+
   return (
     <WorkSpaceCss>
       <Row align={"middle"} justify={"space-between"}>
@@ -96,6 +101,7 @@ const WorkSpaceMember: React.FC<{
             open={openInviteModal}
             setOpen={setOpenInviteModal}
             organizationId={workSpaceId!}
+            userOrganization={userOrganization}
           />
         </Col>
       </Row>
@@ -118,7 +124,7 @@ const WorkSpaceMember: React.FC<{
           </Col>
           <Col span={18}>
             <div className="intro-col">
-              <h4>工作區成員（5）</h4>
+              <h4>工作區成員（{userOrganization?.member.length}）</h4>
               <p>
                 工作區成員可以查看及加入所有開放工作區觀看權限的看板，並在工作區中建立新看板。
               </p>
@@ -136,20 +142,10 @@ const WorkSpaceMember: React.FC<{
                     任何擁有邀請連結的人都可以加入此免費工作區。你也可以隨時停用並為此工作區建立新的邀請連結，並在工作區中建立新看板。
                   </p>
                 </Col>
-                <Col>
-                  <Button
-                    icon={<UserAddOutlined />}
-                    style={{
-                      backgroundColor: "white",
-                      color: "var(--black23)",
-                      width: "130px",
-                      height: "32px",
-                    }}
-                    // onClick={() => setOpenRemoveModal(true)}
-                  >
-                    以連結邀請
-                  </Button>
-                </Col>
+                <CopyInviteLinkBtn
+                  userOrganization={userOrganization}
+                  onCancel={onCancel}
+                />
               </Row>
             </div>
             <Divider />
@@ -159,6 +155,7 @@ const WorkSpaceMember: React.FC<{
             <Divider />
             {userOrganization?.member && (
               <List
+                style={{ height: "24vh", overflowY: "scroll" }}
                 itemLayout="horizontal"
                 dataSource={userOrganization.member}
                 renderItem={(member: OrganizationMemberProps) => (
@@ -196,24 +193,23 @@ const WorkSpaceMember: React.FC<{
                         description={member.userId.email}
                       />
                     </Skeleton>
-                    <ManageRole
-                      open={openManageRoleModal}
-                      setOpen={setOpenManageRoleModal}
-                      organizationId={workSpaceId!}
-                      getOrganization={getOrganization}
-                      selectedMember={selectedMember}
-                    />
-                    <RemoveMember
-                      open={openRemoveModal}
-                      setOpen={setOpenRemoveModal}
-                      organizationId={workSpaceId!}
-                      getOrganization={getOrganization}
-                      selectedMember={selectedMember}
-                    />
                   </List.Item>
                 )}
               />
             )}
+            <ManageRole
+              open={openManageRoleModal}
+              setOpen={setOpenManageRoleModal}
+              organizationId={workSpaceId || ""}
+              selectedMember={selectedMember}
+            />
+            <RemoveMember
+              open={openRemoveModal}
+              setOpen={setOpenRemoveModal}
+              organizationId={workSpaceId!}
+              getOrganization={getOrganization}
+              selectedMember={selectedMember}
+            />
           </Col>
         </Row>
       </WorkSpaceMemberCss>

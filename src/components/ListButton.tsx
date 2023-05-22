@@ -1,4 +1,4 @@
-import { Button } from "antd";
+import { Button, ButtonProps } from "antd";
 import React from "react";
 import styled from "styled-components";
 
@@ -11,19 +11,12 @@ const ListButtonStyled = styled(Button)`
   align-items: center;
 `;
 
-export const ListButton: React.FC<{
-  icon: React.ReactNode;
-  text: string;
-  danger?: boolean;
-}> = ({ icon, text, danger }) => {
+const ListButton: React.FC<ButtonProps & { text: string }> = (props) => {
   return (
-    <ListButtonStyled
-      type="text"
-      icon={icon}
-      style={{ padding: 0 }}
-      danger={danger}
-    >
-      {text}
+    <ListButtonStyled {...props} type="text" style={{ padding: 0 }}>
+      {props.text}
     </ListButtonStyled>
   );
 };
+
+export default ListButton;

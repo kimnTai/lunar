@@ -16,13 +16,13 @@ import {
   SettingOutlined,
   TagOutlined,
   InboxOutlined,
-  CopyOutlined,
   UploadOutlined,
   LogoutOutlined,
 } from "@ant-design/icons";
 import { Avatar, Button, Popover } from "antd";
 import AddMember from "@/components/Modal/AddMember";
-import { ListButton } from "@/components/ListButton";
+import ListButton from "@/components/ListButton";
+import CloneBoardButton from "@/components/CloneBoardButton";
 
 const BillboardHeader: React.FC<BillboardHeaderProps> = ({ name, member }) => {
   const [openInvite, setOpenInvite] = useState(false);
@@ -76,12 +76,7 @@ const BillboardHeader: React.FC<BillboardHeaderProps> = ({ name, member }) => {
         />
       </div>
       <div className="top-border listBtn">
-        <ListButton
-          icon={
-            <CopyOutlined style={{ fontSize: "20px", marginRight: "12px" }} />
-          }
-          text="複製看板"
-        />
+        <CloneBoardButton />
         <ListButton
           icon={
             <UploadOutlined style={{ fontSize: "20px", marginRight: "12px" }} />

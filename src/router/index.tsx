@@ -93,7 +93,7 @@ const AppRouter: React.FC<PropsFromRedux> = (props) => {
             <Route
               path="/invitation/:type/:invitationToken"
               element={<Invitation login={login} />}
-            ></Route>
+            />
             <Route
               path="/login/:callback"
               element={
@@ -102,7 +102,7 @@ const AppRouter: React.FC<PropsFromRedux> = (props) => {
                   getOrganization={getOrganization}
                 />
               }
-            ></Route>
+            />
             <Route
               path="/login"
               element={

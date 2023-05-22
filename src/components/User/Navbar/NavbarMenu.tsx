@@ -14,7 +14,7 @@ import {
 interface NavBarMenuProps {
   workSpace: boolean;
   data: { name: string; _id: string }[];
-  setOpen: Function;
+  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
   id?: string;
   workSpaceId?: string;
 }

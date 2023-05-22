@@ -6,7 +6,7 @@ import { useAppDispatch } from "@/hooks/useAppDispatch";
 
 interface UserModalProps {
   open: boolean;
-  setOpen: Function;
+  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
   name: string;
   avatar: string;
   email: string;

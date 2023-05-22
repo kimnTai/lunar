@@ -2,6 +2,7 @@ import { AttachmentProps } from "./attachment";
 import { ChecklistProps } from "./checklists";
 import { CommentProps } from "./comments";
 import { LabelsProps } from "./labels";
+import { OrganizationMemberProps } from "./organization";
 
 export interface CardsProps {
   name: string;
@@ -10,7 +11,7 @@ export interface CardsProps {
   listId: string;
   label: LabelsProps[];
   _id: string;
-  member: string[];
+  member: OrganizationMemberProps[];
   createdAt: string;
   updatedAt: string;
   id: string;

@@ -22,7 +22,7 @@ export interface TrelloCardListProps
 }
 
 export interface TrelloCardInnerProps {
-  quotes: any;
+  quotes: ListsProps;
   dropProvided: DroppableProvided;
   isDrag: boolean;
   setOpenModal: React.Dispatch<React.SetStateAction<openModalProps>>;
@@ -40,6 +40,7 @@ export interface TrelloCardHeaderProps {
 export interface TrelloCardModalProps {
   openModal: openModalProps;
   setOpenModal: React.Dispatch<React.SetStateAction<openModalProps>>;
+  listName: string;
 }
 
 interface openModalProps {

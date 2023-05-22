@@ -35,18 +35,9 @@ export const Navbar: React.FC<{
   const [openKey, setOpenKey] = useState("");
   const userOrganization = useAppSelector((state) => state.user.organization);
 
-  const getBoards = (key: string) => {
-    return userOrganization.filter((ele) => {
-      let getAns = false;
-      ele.board.forEach((board) => {
-        if (board._id === key) {
-          getAns = true;
-          return;
-        }
-      });
-      if (getAns) return ele;
-    })[0];
-  };
+  const currentOrganization = userOrganization.find(({ board }) =>
+    board.map(({ _id }) => _id).includes(openKey)
+  );
   useEffect(() => {
     if (!workSpace && boardId) {
       setOpenKey(boardId);
@@ -110,7 +101,7 @@ export const Navbar: React.FC<{
             <>
               <NavBarMenu
                 workSpace={workSpace}
-                data={getBoards(openKey)?.board}
+                data={currentOrganization?.board || []}
                 setOpen={setOpen}
                 id={openKey}
               />
@@ -139,7 +130,7 @@ export const Navbar: React.FC<{
         <AddBoards
           open={open}
           setOpen={setOpen}
-          organizationId={getBoards(openKey)?._id}
+          organizationId={currentOrganization?._id || ""}
           getOrganization={getOrganization}
         />
       )}

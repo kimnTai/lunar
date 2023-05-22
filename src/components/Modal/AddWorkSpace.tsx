@@ -4,11 +4,12 @@ import { Button, Form, Input } from "antd";
 import { NewOrganizationFormProps as FormValues } from "@/interfaces/organization";
 import { useApi } from "@/hooks/useApiHook";
 import { newOrganizationApi } from "@/api/organization";
+import { PropsFromRedux } from "@/router";
 
 const AddWorkSpace: React.FC<{
   open: boolean;
-  setOpen: Function;
-  getOrganization: Function;
+  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  getOrganization: PropsFromRedux["getOrganization"];
 }> = ({ open, setOpen, getOrganization }) => {
   const [form] = Form.useForm<FormValues>();
   const onCancel: () => void = () => {

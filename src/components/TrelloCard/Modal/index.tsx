@@ -39,7 +39,7 @@ const TrelloCardModal: React.FC<TrelloCardModalProps> = (props) => {
       onOk={handleOk}
       onCancel={handleCancel}
       width={768}
-      title={<ModalHeader />}
+      title={<ModalHeader listName={props.listName} />}
       footer={null}
     >
       <ModalLayout />
