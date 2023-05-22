@@ -26,6 +26,11 @@ export interface NewOrganizationFormProps {
   name: string;
 }
 
+export interface addOrganizationMemberProps {
+  organizationId: string;
+  userId: string;
+}
+
 export interface DeleteOrganizationMemberProps {
   organizationId: string;
   memberId: string;
