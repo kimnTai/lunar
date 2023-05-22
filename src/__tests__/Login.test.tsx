@@ -14,8 +14,7 @@ describe("登入頁面測試", () => {
         loginAction={vi.fn()}
         signInAction={async () => {}}
         getOrganization={async () => {}}
-        login={false}
-        signIn={false}
+        isSignUpPage={false}
       />
     );
     expect(screen.getByText("讓工作，更有序")).toBeInTheDocument();

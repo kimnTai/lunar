@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Logo from "@/assets/images/img_logo.png";
 import { Card, Button, Divider, Form, Input } from "antd";
 import GoogleIcon from "@/assets/images/google.png";
@@ -8,45 +8,50 @@ import { useNavigate } from "react-router-dom";
 import type { LoginProps } from "@/interfaces/user";
 import type { PropsFromRedux } from "@/router";
 import ThirdPartyButton from "./ThirdPartyButton";
+import { useAppSelector } from "@/hooks/useAppSelector";
 
 const Login: React.FC<{
   signInAction: PropsFromRedux["signInAction"];
   loginAction: PropsFromRedux["loginAction"];
   getOrganization: PropsFromRedux["getOrganization"];
-  login: boolean;
-  signIn: boolean;
-}> = ({ signInAction, loginAction, getOrganization, login, signIn }) => {
+  isSignUpPage: boolean;
+}> = ({ signInAction, loginAction, getOrganization, isSignUpPage }) => {
+  const isUserLogin = useAppSelector((state) => state.auth.login);
+  const [buttonLoading, setButtonLoading] = useState(false);
+
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (login) {
-      //const id = JSON.parse(localStorage.getItem("userData")!)._id;
-      // navigate(`/user/${id}/boards`);
+    if (isUserLogin) {
       (async () => {
         await getOrganization();
         navigate(`/`);
       })();
     }
-  }, [login]);
+  }, [isUserLogin]);
 
   const onFinish = async (values: LoginProps) => {
-    signIn ? await signInAction(values) : await loginAction(values);
-  };
+    setButtonLoading(true);
 
-  const onFinishFailed = (errorInfo: any) => {
-    console.log("Failed:", errorInfo);
+    try {
+      isSignUpPage ? await signInAction(values) : await loginAction(values);
+    } catch (error) {}
+
+    setButtonLoading(false);
   };
 
   return (
     <LoginCss>
       <img className="header" src={Logo} alt="" />
       <Card>
-        <h1 className="cardHeader">{signIn ? "免費註冊" : "登入"}</h1>
+        <h1 className="cardHeader">{isSignUpPage ? "免費註冊" : "登入"}</h1>
         <Form
           name="login-form"
           wrapperCol={{ span: 24 }}
           onFinish={onFinish}
-          onFinishFailed={onFinishFailed}
+          onFinishFailed={(errorInfo) => {
+            console.log("Failed:", errorInfo);
+          }}
           autoComplete="off"
         >
           <Form.Item
@@ -54,29 +59,42 @@ const Login: React.FC<{
             rules={[
               {
                 required: true,
-                message: "Please input your Email!",
+                message: "請輸入您的 Email!",
                 type: "email",
               },
             ]}
           >
             <Input placeholder="Email" />
           </Form.Item>
-          <Form.Item
-            name="name"
-            rules={[{ required: true, message: "Please input your name!" }]}
-          >
-            <Input placeholder="帳號" />
-          </Form.Item>
+          {isSignUpPage && (
+            <Form.Item
+              name="name"
+              rules={[
+                {
+                  required: true,
+                  message: "請輸入您的帳號!",
+                },
+              ]}
+            >
+              <Input placeholder="帳號" />
+            </Form.Item>
+          )}
 
           <Form.Item
             name="password"
-            rules={[{ required: true, message: "Please input your password!" }]}
+            rules={[
+              {
+                required: true,
+                message: "請輸入您的密碼!",
+              },
+            ]}
           >
             <Input placeholder="密碼" type="password" />
           </Form.Item>
 
           <Form.Item>
             <Button
+              loading={buttonLoading}
               type="primary"
               htmlType="submit"
               style={{
@@ -85,11 +103,14 @@ const Login: React.FC<{
                 fontWeight: 700,
               }}
             >
-              {signIn ? "註冊" : "登入"}
+              {isSignUpPage ? "註冊" : "登入"}
             </Button>
           </Form.Item>
         </Form>
-        <div className="terms" style={{ display: signIn ? "block" : "none" }}>
+        <div
+          className="terms"
+          style={{ display: isSignUpPage ? "block" : "none" }}
+        >
           <div>點擊註冊表示您同意我們的</div>
           <div>
             <a href="https://policies.google.com/privacy">隱私政策</a>
@@ -110,7 +131,7 @@ const Login: React.FC<{
 
         <ThirdPartyButton
           icon={GoogleIcon}
-          text={signIn ? "使用 Google 註冊" : "使用 Google 登入"}
+          text={isSignUpPage ? "使用 Google 註冊" : "使用 Google 登入"}
           handleClick={() => {
             window.location.href = `${
               import.meta.env.VITE_REACT_API
@@ -119,8 +140,12 @@ const Login: React.FC<{
         />
         <ThirdPartyButton
           icon={AppleIcon}
-          text={signIn ? "使用 Apple 註冊" : "使用 Apple 登入"}
-          handleClick={() => {}}
+          text={isSignUpPage ? "使用 GitHub 註冊" : "使用 GitHub 登入"}
+          handleClick={() => {
+            window.location.href = `${
+              import.meta.env.VITE_REACT_API
+            }/user/github`;
+          }}
         />
         <div className="have-account">
           <div>已經有帳戶了嗎？</div>
@@ -128,12 +153,11 @@ const Login: React.FC<{
             <Button
               type="link"
               style={{ fontSize: "16px", padding: "0" }}
-              // onClick={() => setSignIn(!signIn)}
               onClick={() =>
-                signIn ? navigate("/login") : navigate("/signup")
+                isSignUpPage ? navigate("/login") : navigate("/signup")
               }
             >
-              {signIn ? "登入" : "註冊"}
+              {isSignUpPage ? "登入" : "註冊"}
             </Button>
           </div>
         </div>

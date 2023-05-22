@@ -102,8 +102,7 @@ const AppRouter: React.FC<PropsFromRedux> = (props) => {
                 <Login
                   signInAction={signInAction}
                   loginAction={loginAction}
-                  login={login}
-                  signIn={false}
+                  isSignUpPage={false}
                   getOrganization={getOrganization}
                 />
               }
@@ -114,8 +113,7 @@ const AppRouter: React.FC<PropsFromRedux> = (props) => {
                 <Login
                   signInAction={signInAction}
                   loginAction={loginAction}
-                  login={login}
-                  signIn={true}
+                  isSignUpPage={true}
                   getOrganization={getOrganization}
                 />
               }
