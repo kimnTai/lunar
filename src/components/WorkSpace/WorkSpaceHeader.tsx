@@ -63,45 +63,54 @@ export const WorkSpaceHeader: React.FC<{
             </>
           )}
         </Row>
-        {userOrganization?.permission === "private" ? (
-          <Row align={"middle"} justify={"start"} style={{ marginTop: "8px" }}>
-            <LockOutlined
-              style={{
-                color: "var(--gray9f)",
-                fontSize: "12px",
-              }}
-            />
-            <p
-              style={{
-                fontWeight: "400",
-                fontSize: "12px",
-                lineHeight: "22px",
-                color: "var(--gray9f)",
-              }}
-            >
-              私密
-            </p>
-          </Row>
-        ) : (
-          <Row align={"middle"} justify={"start"} style={{ marginTop: "8px" }}>
-            <GlobalOutlined
-              style={{
-                color: "var(--gray9f)",
-                fontSize: "12px",
-              }}
-            />
-            <p
-              style={{
-                fontWeight: "400",
-                fontSize: "12px",
-                lineHeight: "22px",
-                color: "var(--gray9f)",
-              }}
-            >
-              公開
-            </p>
-          </Row>
-        )}
+        <Row
+          align={"middle"}
+          justify={"start"}
+          style={{
+            marginTop: "8px",
+            gap: "4px",
+          }}
+        >
+          {userOrganization?.permission === "private" ? (
+            <>
+              <LockOutlined
+                style={{
+                  color: "red",
+                  fontSize: "12px",
+                }}
+              />
+              <p
+                style={{
+                  fontWeight: "400",
+                  fontSize: "12px",
+                  lineHeight: "22px",
+                  color: "red",
+                }}
+              >
+                私密
+              </p>
+            </>
+          ) : (
+            <>
+              <GlobalOutlined
+                style={{
+                  color: "green",
+                  fontSize: "12px",
+                }}
+              />
+              <p
+                style={{
+                  fontWeight: "400",
+                  fontSize: "12px",
+                  lineHeight: "22px",
+                  color: "green",
+                }}
+              >
+                公開
+              </p>
+            </>
+          )}
+        </Row>
       </Col>
     </Row>
   );
