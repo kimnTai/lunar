@@ -32,7 +32,7 @@ export const WorkSpaceHeader: React.FC<{
     <Row>
       <ColorIcon
         color={"white"}
-        text={userOrganization?.name[0] || ""}
+        text={userOrganization?.name.at(0) || ""}
         fontSize={"32px"}
         size={"72px"}
         background={"var(--blue)"}

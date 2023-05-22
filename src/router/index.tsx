@@ -125,7 +125,9 @@ const AppRouter: React.FC<PropsFromRedux> = (props) => {
                   <Route
                     path={"/"}
                     element={
-                      <Navigate to={`/workspace/${organization[0]._id}/home`} />
+                      <Navigate
+                        to={`/workspace/${organization.at(0)?._id}/home`}
+                      />
                     }
                   />
                 ) : (
