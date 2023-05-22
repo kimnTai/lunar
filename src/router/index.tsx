@@ -2,10 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Routes, Route, Navigate, HashRouter } from "react-router-dom";
 import { ConnectedProps, connect } from "react-redux";
 import { Layout } from "antd";
-import {
-  changeWorkSpaceAction,
-  openNavbarAction,
-} from "@/redux/actions/ScreenAction";
+import { changeWorkSpaceAction } from "@/redux/actions/ScreenAction";
 import { getOrganizationsAction } from "@/redux/actions/OrganizationAction";
 import {
   signInAction,
@@ -32,8 +29,6 @@ export type PropsFromRedux = ConnectedProps<typeof connector>;
 
 const AppRouter: React.FC<PropsFromRedux> = (props) => {
   const {
-    openNav,
-    showNavbar,
     login,
     loginAction,
     loginJwt,
@@ -63,8 +58,6 @@ const AppRouter: React.FC<PropsFromRedux> = (props) => {
     ({ children }) => (
       <Layout>
         <Navbar
-          showNavbar={showNavbar}
-          openNav={openNav}
           workSpace={showWorkSpace}
           setWorkSpace={changeWorkSpace}
           getOrganization={getOrganization}
@@ -93,7 +86,7 @@ const AppRouter: React.FC<PropsFromRedux> = (props) => {
             <Route
               path="/invitation/:type/:invitationToken"
               element={<Invitation login={login} />}
-            />
+            ></Route>
             <Route
               path="/login/:callback"
               element={
@@ -102,7 +95,7 @@ const AppRouter: React.FC<PropsFromRedux> = (props) => {
                   getOrganization={getOrganization}
                 />
               }
-            />
+            ></Route>
             <Route
               path="/login"
               element={
@@ -210,14 +203,12 @@ const AppRouter: React.FC<PropsFromRedux> = (props) => {
 };
 
 const mapStateToProps = (state: RootState) => ({
-  showNavbar: state.screen.showNavbar,
   showWorkSpace: state.screen.showWorkSpace,
   login: state.auth.login,
   organization: state.user.organization,
 });
 
 const connector = connect(mapStateToProps, {
-  openNav: openNavbarAction,
   changeWorkSpace: changeWorkSpaceAction,
   signInAction,
   loginAction,

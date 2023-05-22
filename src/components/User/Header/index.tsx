@@ -38,6 +38,7 @@ export const Header: React.FC<{
     ),
     key: ele._id,
   }));
+  console.log("render time");
   return (
     <HeaderCss
       className="d-space"

@@ -46,3 +46,15 @@ export interface DateProps {
   dueReminder: number;
   startDate: string;
 }
+
+export interface UpdateCardCheckItem extends UpdateCardCheckList {
+  checkItemId: string;
+  completed?: boolean;
+}
+
+export interface UpdateCardCheckList {
+  cardId: string;
+  checklistId: string;
+  name?: string;
+  position: string;
+}

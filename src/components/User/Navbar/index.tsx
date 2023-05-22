@@ -16,21 +16,20 @@ import type { PropsFromRedux } from "@/router";
 import { useAppSelector } from "@/hooks/useAppSelector";
 
 export const Navbar: React.FC<{
-  showNavbar: boolean;
-  openNav: PropsFromRedux["openNav"];
   workSpace: boolean;
   setWorkSpace: PropsFromRedux["changeWorkSpace"];
   getOrganization: PropsFromRedux["getOrganization"];
-}> = ({ showNavbar, openNav, workSpace, setWorkSpace, getOrganization }) => {
+}> = ({ workSpace, setWorkSpace, getOrganization }) => {
+  const [showNavbar, setShowNavBar] = useState(false);
   const navigate = useNavigate();
   const { boardId, workSpaceId } = useParams();
   const handleClosed = () => {
-    openNav();
+    setShowNavBar(true);
   };
   const handleOpen = () => {
-    openNav();
+    setShowNavBar(false);
   };
-
+  console.log(showNavbar);
   const [open, setOpen] = useState(false);
   const [openKey, setOpenKey] = useState("");
   const userOrganization = useAppSelector((state) => state.user.organization);
