@@ -17,17 +17,17 @@ const InviteMember: React.FC<{
   userOrganization?: OrganizationProps;
 }> = ({ open, setOpen, userOrganization, organizationId }) => {
   const [form] = Form.useForm<addOrganizationMemberProps>();
-  const [options, setOptions] = useState<
+  const [userOptions, setUserOptions] = useState<
     Array<{ label: string; value: string; avatar: string }>
   >([]);
-  const [selectedOptions, setSelectedOptions] = useState<{ userId: string }[]>(
-    []
-  );
+  const [selectedUsers, setSelectedUsers] = useState<{ userId: string }[]>([]);
   const [showNotFound, setShowNotFound] = useState(false);
 
   const handleSelectChange = (values: string[]) => {
-    const updatedOptions = values.map((value) => ({ userId: value }));
-    setSelectedOptions(updatedOptions);
+    console.log({ userId: [...values] });
+
+    const userIdList = values.map((value) => ({ userId: value }));
+    setSelectedUsers(userIdList);
     setShowNotFound(false);
   };
 
@@ -37,8 +37,8 @@ const InviteMember: React.FC<{
 
   const [result, loading, callApi] = useApi(searchLunarMemberApi);
 
-  const onFinish = async (values: addOrganizationMemberProps) => {
-    console.log(values);
+  const onFinish = async () => {
+    console.log(selectedUsers);
     // onCancel();
   };
   const onSearch = async (value: string) => {
@@ -49,26 +49,26 @@ const InviteMember: React.FC<{
       });
       setShowNotFound(true);
     } else {
-      setOptions([]);
+      setUserOptions([]);
       setShowNotFound(false);
     }
   };
 
-  const filteredOptions = options.filter(
-    (option: any) => !selectedOptions.includes(option.value)
+  const filteredUsers = userOptions.filter(
+    (user: any) => !selectedUsers.includes(user.value)
   );
 
   useEffect(() => {
     if (result?.result) {
-      const transformedOptions = result.result.map((item) => ({
-        label: item.name,
-        value: item.email,
-        avatar: item.avatar,
-        userId: item._id,
+      const UserList = result.result.map((user) => ({
+        label: user.name,
+        value: user.email,
+        avatar: user.avatar,
+        userId: user._id,
       }));
-      setOptions(transformedOptions);
+      setUserOptions(UserList);
     } else {
-      setOptions([]);
+      setUserOptions([]);
     }
   }, [result]);
 
@@ -114,22 +114,22 @@ const InviteMember: React.FC<{
                   )
                 )
               }
-              value={selectedOptions.map((option) => option.userId)}
+              value={selectedUsers.map((user) => user.userId)}
               onChange={handleSelectChange}
               optionLabelProp="email"
             >
-              {filteredOptions.map((option: any) => (
+              {filteredUsers.map((user: any) => (
                 <Select.Option
-                  key={option.value}
-                  value={option.userId}
-                  email={option.value}
+                  key={user.value}
+                  value={user.userId}
+                  email={user.value}
                 >
                   <List itemLayout="horizontal">
                     <List.Item>
                       <List.Item.Meta
-                        avatar={<Avatar src={option.avatar} />}
-                        title={option.label}
-                        description={option.value}
+                        avatar={<Avatar src={user.avatar} />}
+                        title={user.label}
+                        description={user.value}
                       />
                     </List.Item>
                   </List>
