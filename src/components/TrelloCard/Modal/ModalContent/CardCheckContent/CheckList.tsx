@@ -1,4 +1,4 @@
-import { Draggable } from "react-beautiful-dnd";
+import { Draggable, Droppable } from "react-beautiful-dnd";
 import { SectionHeaderStyled } from "../style";
 import { Col } from "antd";
 import CheckItem from "./CheckItem";
@@ -27,7 +27,26 @@ const CheckList: React.FC<{ checkList?: ChecklistProps[] }> = ({
                     <h3>{name}</h3>
                   </Col>
                 </SectionHeaderStyled>
-                {<CheckItem checkItem={checkItem} />}
+
+                <Droppable
+                  droppableId={_id}
+                  type={"QUOTE"}
+                  ignoreContainerClipping={undefined}
+                  isDropDisabled={undefined}
+                  isCombineEnabled={false}
+                  // renderClone={useClone ? (provided, snapshot, descriptor) => <QuoteItem quote={quotes[descriptor.source.index]} provided={provided} isDragging={snapshot.isDragging} isClone /> : null}
+                  renderClone={undefined}
+                >
+                  {(dropProvided, dropSnapshot) => (
+                    <div
+                      ref={dropProvided.innerRef}
+                      style={{ minHeight: "1px" }}
+                    >
+                      <CheckItem checkItem={checkItem} />
+                      {dropProvided.placeholder}
+                    </div>
+                  )}
+                </Droppable>
               </div>
             )}
           </Draggable>
