@@ -69,6 +69,18 @@ export default function UserReducer(
     };
   }
 
+  if (
+    action.type === CONSTANTS.CREATE_NEW_ORGANIZATION &&
+    "board" in action.payload
+  ) {
+    const newOrganization = [...state.organization, action.payload];
+
+    return {
+      ...state,
+      organization: newOrganization,
+    };
+  }
+
   return {
     ...state,
   };

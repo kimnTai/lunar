@@ -1,29 +1,36 @@
-import React from "react";
+import React, { useState } from "react";
 import { AddWorkSpaceCss } from "./style";
 import { Button, Form, Input } from "antd";
-import { NewOrganizationFormProps as FormValues } from "@/interfaces/organization";
-import { useApi } from "@/hooks/useApiHook";
+import { NewOrganizationFormProps } from "@/interfaces/organization";
 import { newOrganizationApi } from "@/api/organization";
-import { PropsFromRedux } from "@/router";
+import { useAppDispatch } from "@/hooks/useAppDispatch";
+import CONSTANTS from "@/redux/constants";
 
 const AddWorkSpace: React.FC<{
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  getOrganization: PropsFromRedux["getOrganization"];
-}> = ({ open, setOpen, getOrganization }) => {
-  const [form] = Form.useForm<FormValues>();
-  const onCancel: () => void = () => {
-    setOpen(false);
-  };
-  const [_result, loading, callApi] = useApi(newOrganizationApi);
+}> = ({ open, setOpen }) => {
+  const [form] = Form.useForm<NewOrganizationFormProps>();
+  const [buttonLoading, setButtonLoading] = useState(false);
+  const dispatch = useAppDispatch();
 
-  const onFinish = async (values: FormValues) => {
-    await callApi({ name: values.name });
-    await getOrganization();
-    onCancel();
+  const onFinish = async (values: NewOrganizationFormProps) => {
+    setButtonLoading(true);
+
+    newOrganizationApi({ name: values.name })
+      .then((res) => {
+        dispatch({
+          type: CONSTANTS.CREATE_NEW_ORGANIZATION,
+          payload: res.result,
+        });
+      })
+      .finally(() => {
+        setButtonLoading(false);
+        setOpen(false);
+      });
   };
   return (
-    <AddWorkSpaceCss open={open} onCancel={onCancel} footer={null}>
+    <AddWorkSpaceCss open={open} onCancel={() => setOpen(false)} footer={null}>
       <Form form={form} onFinish={onFinish} layout="vertical">
         <div>
           <h2>讓我們開始打造工作區吧</h2>
@@ -45,7 +52,7 @@ const AddWorkSpace: React.FC<{
           <Input />
         </Form.Item>
         <Form.Item>
-          <Button type="primary" htmlType="submit" loading={loading}>
+          <Button type="primary" htmlType="submit" loading={buttonLoading}>
             繼續
           </Button>
         </Form.Item>
