@@ -3,6 +3,7 @@ import { Sider } from "./style";
 import { Button } from "antd";
 import {
   VerticalRightOutlined,
+  VerticalLeftOutlined,
   RightOutlined,
   ArrowLeftOutlined,
 } from "@ant-design/icons";
@@ -108,13 +109,14 @@ export const Navbar: React.FC<{
         </>
       ) : (
         <Button
-          icon={<RightOutlined />}
+          icon={<VerticalLeftOutlined />}
           onClick={handleOpen}
           style={{
             width: "28px",
             height: "28px",
-            color: "var(--gray9f)",
-            backgroundColor: "darkblue",
+            marginTop: "16px",
+            color: "var(--gray66)",
+            backgroundColor: "var(--grayd4)",
           }}
         />
       )}
