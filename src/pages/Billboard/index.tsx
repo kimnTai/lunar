@@ -16,20 +16,23 @@ import {
 } from "@/utils/cardFunc";
 import type { PropsFromRedux } from "@/router";
 import { useAppSelector } from "@/hooks/useAppSelector";
+import useWebSocket from "@/hooks/useWebSocket";
 
 const Billboard: React.FC<{
   setWorkSpace: PropsFromRedux["changeWorkSpace"];
 }> = ({ setWorkSpace }) => {
   const workSpace = useAppSelector((state) => state.screen.showWorkSpace);
+
   const [cardList, setCardList] = useState<ListsProps[]>([]);
   const { boardId } = useParams();
   const [result, loading, callApi] = useApi(getBoardApi);
-  console.log("render time AAA");
+  const { data, sendMessage } = useWebSocket(boardId!);
+
+  // socket
   useEffect(() => {
-    if (result?.result) {
-      setCardList(result.result.list);
-    }
-  }, [result?.result]);
+    sendMessage({ type: "subscribe", boardId: boardId });
+  });
+
   useEffect(() => {
     if (boardId) {
       (async () => {
@@ -42,6 +45,11 @@ const Billboard: React.FC<{
       setWorkSpace();
     }
   }, [workSpace]);
+  useEffect(() => {
+    if (result?.result) {
+      setCardList(result.result.list);
+    }
+  }, [result?.result]);
 
   const onDragEnd = (result: DropResult) => {
     console.log(result);
@@ -59,6 +67,7 @@ const Billboard: React.FC<{
     if (result.type === "COLUMN") {
       const data = updateColumn(result, cardList) as ListsProps[];
       setCardList(data);
+
       return;
     }
     if (source.droppableId === destination.droppableId) {
@@ -123,4 +132,4 @@ const Billboard: React.FC<{
   );
 };
 
-export default Billboard;
+export default React.memo(Billboard);
