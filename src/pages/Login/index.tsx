@@ -130,18 +130,18 @@ const Login: React.FC<{
         </Divider>
 
         <ThirdPartyButton
-          icon={GoogleIcon}
+          iconSrc={GoogleIcon}
           text={isSignUpPage ? "使用 Google 註冊" : "使用 Google 登入"}
-          handleClick={() => {
+          onClick={() => {
             window.location.href = `${
               import.meta.env.VITE_REACT_API
             }/user/google`;
           }}
         />
         <ThirdPartyButton
-          icon={AppleIcon}
+          iconSrc={AppleIcon}
           text={isSignUpPage ? "使用 GitHub 註冊" : "使用 GitHub 登入"}
-          handleClick={() => {
+          onClick={() => {
             window.location.href = `${
               import.meta.env.VITE_REACT_API
             }/user/github`;
