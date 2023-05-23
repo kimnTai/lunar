@@ -9,30 +9,37 @@ const TrelloCardInner: React.FC<TrelloCardInnerProps> = React.memo((props) => {
   return (
     <>
       {quotes.card
-        .sort((a, b) => Number(a.position) - Number(b.position))
-        .map((quote, index) => (
-          <Draggable key={quote.id} draggableId={quote.id} index={index}>
+        .sort((a, b) => +a.position - +b.position)
+        .map(({ id, name, attachment }, index) => (
+          <Draggable key={id} draggableId={id} index={index}>
             {(dragProvided, dragSnapshot) => (
               <a
                 onClick={() =>
                   setOpenModal({
-                    id: quote.id,
+                    id: id,
                     open: true,
                   })
                 }
               >
                 <TrelloCardInnerStyled
-                  // isdargging={dragSnapshot.isDragging.toString()}
-                  title={quote.name}
+                  title={name}
                   size="small"
                   ref={dragProvided.innerRef}
                   {...dragProvided.draggableProps}
                   {...dragProvided.dragHandleProps}
                   data-is-dragging={dragSnapshot.isDragging}
-                  data-testid={quote.id}
                   data-index={index}
-                  aria-label={`${quote.name} quote`}
+                  aria-label={`${name} quote`}
                   className="trello-card-inner"
+                  cover={
+                    <img
+                      src={attachment.at(0)?.dirname}
+                      style={{
+                        height: attachment.at(0) ? 133 : 0,
+                        objectFit: "cover",
+                      }}
+                    />
+                  }
                 />
               </a>
             )}

@@ -1,82 +1,135 @@
 import React, { useState } from "react";
-import { Button, Form, Input, Modal, Select } from "antd";
+import { Button, Form, Input, Popover, Select } from "antd";
 import ListButton from "./ListButton";
 import { CopyOutlined } from "@ant-design/icons";
 import { useAppSelector } from "@/hooks/useAppSelector";
-import { useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import { postCloneBoardApi } from "@/api/boards";
 
-type FormValues = { name: string; organizationId: string };
+type FormValues = {
+  name: string;
+  organizationId: string;
+};
 
 const CloneBoardButton: React.FC = () => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [componentState, setComponentState] = useState({
+    isLoading: false,
+    isPopoverOpen: false,
+  });
   const [form] = Form.useForm<FormValues>();
   const { boardId } = useParams();
-  const options = useAppSelector((state) =>
-    state.user.organization.map(({ _id, name }) => ({
-      value: _id,
-      label: name,
-    }))
-  );
+  const organization = useAppSelector((state) => state.user.organization);
 
-  const onFinish = async (value: FormValues) => {
+  const navigate = useNavigate();
+
+  const onFinish = (value: FormValues) => {
     if (boardId) {
-      setIsModalOpen(false);
-      await postCloneBoardApi({
+      setComponentState((pre) => ({
+        ...pre,
+        isLoading: true,
+      }));
+
+      postCloneBoardApi({
         ...value,
         sourceBoardId: boardId,
-      });
-      alert("複製完成");
+      })
+        .then((res) => {
+          navigate(`/board/${res.result.id}`);
+        })
+        .finally(() => {
+          setComponentState({
+            isPopoverOpen: false,
+            isLoading: false,
+          });
+        });
     }
   };
 
   return (
-    <>
-      <ListButton
-        icon={
-          <CopyOutlined style={{ fontSize: "20px", marginRight: "12px" }} />
-        }
-        text="複製看板"
-        onClick={() => setIsModalOpen(true)}
-      />
-      <Modal
-        footer={null}
-        title="複製看板"
-        open={isModalOpen}
-        onOk={() => setIsModalOpen(false)}
-        onCancel={() => setIsModalOpen(false)}
-      >
-        <Form
-          labelCol={{ span: 8 }}
-          wrapperCol={{ span: 16 }}
-          form={form}
-          name="control-hooks"
-          onFinish={onFinish}
+    <Popover
+      placement="bottom"
+      trigger="click"
+      open={componentState.isPopoverOpen}
+      onOpenChange={(visible) => {
+        setComponentState((pre) => ({
+          ...pre,
+          isPopoverOpen: visible,
+        }));
+      }}
+      title={
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            position: "relative",
+          }}
         >
-          <Form.Item name="name" label="名稱" rules={[{ required: true }]}>
+          複製看板
+        </div>
+      }
+      content={
+        <Form
+          layout="vertical"
+          form={form}
+          onFinish={onFinish}
+          initialValues={{
+            organizationId: organization.find(({ board }) =>
+              board.map(({ id }) => id).includes(`${boardId}`)
+            )?.id,
+          }}
+        >
+          <Form.Item
+            name="name"
+            label="看板名稱"
+            rules={[
+              {
+                required: true,
+                message: "請輸入看板名稱!",
+              },
+            ]}
+          >
             <Input />
           </Form.Item>
           <Form.Item
             name="organizationId"
-            label="組織"
-            rules={[{ required: true }]}
+            label="工作區"
+            rules={[
+              {
+                required: true,
+                message: "請選擇工作區!",
+              },
+            ]}
           >
             <Select
               onChange={(value) => {
                 form.setFieldsValue({ organizationId: value });
               }}
-              allowClear
-              options={options}
+              options={organization.map(({ _id, name }) => ({
+                value: _id,
+                label: name,
+              }))}
             />
           </Form.Item>
-          <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
-            <Button htmlType="submit" type="primary">
+          <Form.Item>
+            <Button
+              htmlType="submit"
+              type="primary"
+              loading={componentState.isLoading}
+            >
               新建
             </Button>
           </Form.Item>
         </Form>
-      </Modal>
-    </>
+      }
+    >
+      <ListButton
+        icon={
+          <CopyOutlined style={{ fontSize: "20px", marginRight: "12px" }} />
+        }
+        text="複製看板"
+      />
+    </Popover>
   );
 };
 

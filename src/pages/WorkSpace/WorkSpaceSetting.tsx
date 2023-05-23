@@ -61,6 +61,7 @@ const WorkSpaceSetting: React.FC<{
             open={openInviteModal}
             setOpen={setOpenInviteModal}
             organizationId={workSpaceId!}
+            getOrganization={getOrganization}
           />
         </Col>
       </Row>
@@ -83,7 +84,7 @@ const WorkSpaceSetting: React.FC<{
               <Col span={20}>
                 {userOrganization?.permission === "private" ? (
                   <p style={{ lineHeight: "28px" }}>
-                    <LockOutlined style={{ color: "red" }} /> 私密 <br />
+                    <LockOutlined style={{ color: "red" }} /> 私人 <br />
                     這是私人工作區。此工作區沒有編入索引、也不開放工作區以外的成員觀看
                   </p>
                 ) : (

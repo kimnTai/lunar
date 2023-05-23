@@ -119,11 +119,7 @@ export const Navbar: React.FC<{
         />
       )}
       {workSpace ? (
-        <AddWorkSpace
-          open={open}
-          setOpen={setOpen}
-          getOrganization={getOrganization}
-        />
+        <AddWorkSpace open={open} setOpen={setOpen} />
       ) : (
         <AddBoards
           open={open}

@@ -63,8 +63,8 @@ const NavBarMenu: React.FC<NavBarMenuProps> = ({
     ),
   ];
 
-  const defaultItems: MenuProps["items"] = [
-    { type: "divider" },
+  const defaultItems = [
+    { label: "", key: "", type: "divider" },
     getItem(
       <a
         target="_blank"
@@ -81,30 +81,18 @@ const NavBarMenu: React.FC<NavBarMenuProps> = ({
   useEffect(() => {
     if (data) {
       const useItem = data.map((ele) => {
-        return workSpace
-          ? getItem(
-              ele.name,
-              ele._id,
-              <ColorIcon
-                color={"white"}
-                text={`${ele.name[0]}`}
-                size={"24px"}
-                fontSize={"14px"}
-                background={"var(--blue)"}
-              />,
-              getSubMenu(ele._id)
-            )
-          : getItem(
-              ele.name,
-              ele._id,
-              <ColorIcon
-                color={"white"}
-                text={`${ele.name[0]}`}
-                size={"24px"}
-                fontSize={"14px"}
-                background={"var(--blue)"}
-              />
-            );
+        return getItem(
+          ele.name,
+          ele._id,
+          <ColorIcon
+            color={"white"}
+            text={`${ele.name.at(0)}`}
+            size={"24px"}
+            fontSize={"14px"}
+            background={"var(--blue)"}
+          />,
+          workSpace ? getSubMenu(ele._id) : undefined
+        );
       });
 
       setItems([...useItem, ...defaultItems]);
@@ -113,8 +101,10 @@ const NavBarMenu: React.FC<NavBarMenuProps> = ({
 
   useEffect(() => {
     setSelect(workSpace ? `${workSpaceId}/home` : `${id}`);
-    workSpace &&
-      setOpenKey([data.filter((ele) => ele?._id === workSpaceId)[0]?._id]);
+    if (workSpace) {
+      const key = `${data.find((ele) => ele?._id === workSpaceId)?._id}`;
+      setOpenKey([key]);
+    }
   }, [workSpace, workSpaceId, id]);
   return (
     <>

@@ -101,7 +101,7 @@ const BillboardHeader: React.FC<BillboardHeaderProps> = ({ name, member }) => {
       <div className="left-head">
         <ColorIcon
           color={"white"}
-          text={name && name[0]}
+          text={name.at(0) || ""}
           size={"24px"}
           fontSize={"14px"}
           background={""}
