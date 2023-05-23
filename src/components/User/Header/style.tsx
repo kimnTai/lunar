@@ -8,17 +8,37 @@ export const HeaderCss = styled(Layout.Header)`
   .headerFunc {
     padding-right: 10px;
   }
-  .serch {
+  .search {
     padding: 12px 16px;
     width: 500px;
     height: 44px;
     background-color: var(--graye9);
     border-radius: 8px;
     .ant-input-prefix {
-      margin-left: 14px;
+      // margin-left: 14px;
     }
     input {
       background-color: var(--graye9);
+      padding-left: 14px;
+    }
+  }
+  .darkSearch {
+    padding: 12px 16px;
+    width: 500px;
+    height: 44px;
+    background-color: var(--black);
+    border-radius: 8px;
+    border: 0;
+    .ant-input-prefix {
+      // margin-left: 14px;
+    }
+    input {
+      background-color: var(--black);
+      ::placeholder{
+        color: #9F9F9F;
+        padding-left: 14px;
+        font-size: 16px;
+      }
     }
   }
 `;

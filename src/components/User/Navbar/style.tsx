@@ -61,6 +61,9 @@ export const Sider = styled(Layout.Sider)`
     .ant-menu-item-only-child {
       margin-bottom: 4px;
     }
+    .ant-menu-item-active {
+      background-color: #bfbfbf !important;
+    }
   }
   /* @media only screen and ${media.md} {
     right: unset;

@@ -40,8 +40,13 @@ export const TrelloCardBottomFuncStyled = styled.div<{ show: string }>`
   display: ${(props) => (props.show === "true" ? "none" : "block")};
   height: 37px;
   margin-top: 8px;
+  width: 264px;
+  height: 37px;
   .add-title {
     width: 100%;
+  }
+  .add-title:hover {
+    background-color: #404040 !important;
   }
   span {
     margin-inline-start: 12px !important;
@@ -52,6 +57,9 @@ export const TrelloCardHeaderStyled = styled.div`
   display: flex;
   align-content: center;
   justify-content: space-between;
+  .button-hover:hover {
+    background-color: var(--black);
+  }
 `;
 
 export const PopoverHeaderStyled = styled.div`

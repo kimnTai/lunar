@@ -69,7 +69,8 @@ const NavBarMenu: React.FC<NavBarMenuProps> = ({
       <a
         target="_blank"
         rel="noopener noreferrer"
-        className="ant-menu-submenu-title"
+        // className="ant-menu-submenu-title"
+        // style={{background: workSpace ? "var(--graye9)" : "#e9e9e9"}}
       >
         {workSpace ? "新增工作區" : "新增看板"}
       </a>,

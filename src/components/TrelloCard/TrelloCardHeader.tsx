@@ -26,10 +26,18 @@ const PopoverHeader: React.FC<{ close: Function }> = ({ close }) => {
   );
 };
 
-const PopoverContent: React.FC = () => {
+const PopoverContent: React.FC<{
+  close: Function;
+  setShowAddCard: Function;
+}> = ({ setShowAddCard, close }) => {
   const [current, setCurrent] = useState("");
   const handleClick: MenuProps["onClick"] = (element) => {
     setCurrent(element.key);
+
+    if (element.key === "newCard") {
+      setShowAddCard(true);
+      close();
+    }
   };
 
   return (
@@ -66,24 +74,38 @@ const PopoverContent: React.FC = () => {
 };
 
 const TrelloCardHeader: React.FC<TrelloCardHeaderProps> = (props) => {
-  const { title } = props;
   const [openPopover, setOpenPopover] = useState(false);
   const closePopover = () => setOpenPopover(false);
   const handleOpenChange = (ele: boolean) => setOpenPopover(ele);
 
   return (
     <TrelloCardHeaderStyled>
-      <div className="d-flex" style={{ fontSize: "16px", lineHeight: "150%" ,fontWeight: 700 }}>
-        {title}
+      <div
+        className="d-flex"
+        style={{
+          fontSize: "16px",
+          lineHeight: "150%",
+          fontWeight: 700,
+        }}
+      >
+        {props.title}
       </div>
       <div className="d-flex">
         <Button
           type="text"
           icon={<PlusOutlined style={{ color: "white" }} />}
+          className="button-hover"
+          title="新增卡片"
+          onClick={() => props.setShowAddCard(true)}
         ></Button>
         <Popover
           placement="bottomLeft"
-          content={<PopoverContent />}
+          content={
+            <PopoverContent
+              setShowAddCard={props.setShowAddCard}
+              close={closePopover}
+            />
+          }
           title={<PopoverHeader close={closePopover} />}
           trigger="click"
           open={openPopover}
@@ -94,6 +116,7 @@ const TrelloCardHeader: React.FC<TrelloCardHeaderProps> = (props) => {
           <Button
             icon={<EllipsisOutlined style={{ color: "white" }} />}
             type="text"
+            className="button-hover"
           />
         </Popover>
       </div>
