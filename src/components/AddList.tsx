@@ -21,6 +21,13 @@ const AddListCss = styled(Form)<{ useadd: string }>`
     color: white;
     font-size: 16px;
     font-weight: 700;
+    padding: 4px 12px 4px 8px;
+    width: 109px;
+    height: 32px;
+  }
+  .addCard:hover {
+    background-color: var(--black);
+    border-radius: 8px;
   }
 `;
 
@@ -81,7 +88,10 @@ const AddList: React.FC<AddListProps> = ({ cardList, boardId, callApi }) => {
             >
               <Col flex="auto">
                 <PlusOutlined
-                  style={{ fontSize: "16px", marginRight: "2px" }}
+                  style={{
+                    fontSize: "16px",
+                    marginRight: "10px",
+                  }}
                 />
                 新增列表
               </Col>

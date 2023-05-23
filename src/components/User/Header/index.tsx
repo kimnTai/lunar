@@ -53,9 +53,15 @@ export const Header: React.FC<{
         </div>
 
         <Input
-          className="search"
+          className={workSpace ? "search" : "darkSearch"}
           placeholder="搜尋所有卡片"
-          prefix={<SearchOutlined />}
+          prefix={
+            <SearchOutlined
+              style={{
+                color: workSpace ? "var(--black23)" : "white",
+              }}
+            />
+          }
           style={{}}
         />
       </div>
