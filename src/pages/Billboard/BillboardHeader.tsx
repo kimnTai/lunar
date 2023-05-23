@@ -1,5 +1,9 @@
 import React, { useState } from "react";
-import { BillboardHeaderProps } from "@/interfaces/boards";
+import {
+  BillboardHeaderProps,
+  PopoverTitleProps,
+  PopoverContentProps,
+} from "@/interfaces/boards";
 import {
   BillboardHeaderCss,
   BillboardHeaderBtn,
@@ -18,141 +22,457 @@ import {
   InboxOutlined,
   UploadOutlined,
   LogoutOutlined,
+  LeftOutlined,
 } from "@ant-design/icons";
 import { Avatar, Button, Popover } from "antd";
 import AddMember from "@/components/Modal/AddMember";
 import ListButton from "@/components/ListButton";
 import CloneBoardButton from "@/components/CloneBoardButton";
+import { useApi } from "@/hooks/useApiHook";
+import { getUserOrganizationsApi } from "@/api/organization";
 
-const BillboardHeader: React.FC<BillboardHeaderProps> = ({ name, member }) => {
-  const [openInvite, setOpenInvite] = useState(false);
-  const [openPopover, setOpenPopover] = useState(false);
-  const [isAdministrator, setIsAdministrator] = useState(false);
-  const PopoverTitle: React.FC = () => (
+const PopoverTitle: React.FC<PopoverTitleProps> = (props) => {
+  const {
+    isMenu,
+    isUser,
+    isSetting,
+    setIsMenu,
+    setOpenPopover,
+    setIsUser,
+    setIsSetting,
+  } = props;
+  const handleClick = () => {
+    setOpenPopover(false);
+    setIsUser(false);
+    setIsSetting(false);
+    setIsMenu(true);
+  };
+  const previousClick = () => {
+    setIsMenu(true);
+    setIsUser(false);
+    setIsSetting(false);
+  };
+
+  return (
     <PopoverTitleStyle>
-      選單
-      <Button
-        size="small"
-        type="text"
-        icon={
-          <CloseOutlined
-            style={{
-              color: "var(--gray66)",
-            }}
+      {isMenu ? (
+        <>
+          選單
+          <Button
+            size="small"
+            type="text"
+            icon={
+              <CloseOutlined
+                style={{
+                  color: "var(--gray66)",
+                }}
+              />
+            }
+            style={{ position: "absolute", right: 3 }}
+            onClick={handleClick}
           />
-        }
-        style={{ position: "absolute", right: 3 }}
-        onClick={() => setOpenPopover(false)}
-      />
+        </>
+      ) : null}
+      {isUser ? (
+        <>
+          查看看板管理員
+          <Button
+            size="small"
+            type="text"
+            icon={
+              <CloseOutlined
+                style={{
+                  color: "var(--gray66)",
+                }}
+              />
+            }
+            style={{ position: "absolute", right: 3 }}
+            onClick={handleClick}
+          />
+          <Button
+            size="small"
+            type="text"
+            style={{ position: "absolute", left: -2, top: 2 }}
+            icon={
+              <LeftOutlined
+                style={{ color: "var(--gray66)", fontSize: "16px" }}
+              />
+            }
+            onClick={previousClick}
+          />
+        </>
+      ) : null}
+      {isSetting ? (
+        <>
+          設定
+          <Button
+            size="small"
+            type="text"
+            icon={
+              <CloseOutlined
+                style={{
+                  color: "var(--gray66)",
+                }}
+              />
+            }
+            style={{ position: "absolute", right: 3 }}
+            onClick={handleClick}
+          />
+          <Button
+            size="small"
+            type="text"
+            style={{ position: "absolute", left: -2, top: 2 }}
+            icon={
+              <LeftOutlined
+                style={{ color: "var(--gray66)", fontSize: "16px" }}
+              />
+            }
+            onClick={previousClick}
+          />
+        </>
+      ) : null}
     </PopoverTitleStyle>
   );
-  const PopoverContent: React.FC = () => {
-    const click = () => {
-      setIsAdministrator(true);
-      console.log(member);
-    };
+};
 
-    return (
-      <PopoverContentStyle>
-        {!isAdministrator ? (
-          <div>
-            <div className="top-border listBtn">
-              <ListButton
-                icon={
-                  <UserOutlined
-                    style={{ fontSize: "20px", marginRight: "12px" }}
-                  />
-                }
-                text="查看看板管理員"
-                onClick={click}
-              />
-              <ListButton
-                icon={
-                  <SettingOutlined
-                    style={{ fontSize: "20px", marginRight: "12px" }}
-                  />
-                }
-                text="設定"
-              />
-              <ListButton
-                icon={
-                  <TagOutlined
-                    style={{ fontSize: "20px", marginRight: "12px" }}
-                  />
-                }
-                text="標籤"
-              />
-              <ListButton
-                icon={
-                  <InboxOutlined
-                    style={{ fontSize: "20px", marginRight: "12px" }}
-                  />
-                }
-                text="已封存的項目"
-              />
-            </div>
-            <div className="top-border listBtn">
-              <CloneBoardButton />
-              <ListButton
-                icon={
-                  <UploadOutlined
-                    style={{ fontSize: "20px", marginRight: "12px" }}
-                  />
-                }
-                text="分享"
-              />
-            </div>
-            <div className="top-border" style={{ paddingBottom: 0 }}>
-              <ListButton
-                icon={
-                  <LogoutOutlined
-                    style={{ fontSize: "20px", marginRight: "12px" }}
-                  />
-                }
-                text="退出看板"
-                danger={true}
-              />
-            </div>
-          </div>
-        ) : null}
+const PopoverContent: React.FC<PopoverContentProps> = (props) => {
+  const {
+    name,
+    member,
+    isUser,
+    isMenu,
+    isSetting,
+    setIsUser,
+    setIsMenu,
+    setIsSetting,
+  } = props;
+  const [isShowChangeWorkSpace, setIsShowChangeWorkSpace] = useState(false);
+  const [isShowChangePeople, setIsShowChangePeople] = useState(false);
+  const [people, setPeople] = useState("成員");
+  const [result, _loading, _callApi] = useApi(getUserOrganizationsApi);
+  console.log("--result--", result);
 
-        {isAdministrator ? (
-          <div className="isAdministrator">
-            {member &&
-              member?.map((ele, idx) => (
-                <div style={{ display: "flex", textAlign: "center" }} key={idx}>
-                  <Avatar src={ele.userId.avatar} key={idx} />
-                  <p
-                    style={{
-                      // marginLeft: "8px",
-                      color: "black",
-                    }}
-                  >
-                    {ele.userId.name}
-                  </p>
-                </div>
-              ))}
-            {/* <ListButton
+  const click = (e: any) => {
+    console.log(e.target.innerText);
+    switch (e.target.innerText) {
+      case "查看看板管理員":
+        console.log(member);
+        setIsUser(true);
+        setIsMenu(false);
+        break;
+      case "設定":
+        setIsMenu(false);
+        setIsSetting(true);
+        break;
+      case "標籤":
+        setIsMenu(false);
+        break;
+
+      default:
+        break;
+    }
+  };
+
+  const ChangeWorkSpaceClick = () => {
+    setIsShowChangeWorkSpace(true);
+  };
+
+  const CommentPurviewClick = () => {
+    setIsShowChangePeople(true);
+  };
+
+  const PeopleClick = (e: any) => {
+    let str = e.currentTarget.innerText.split("\n\n")[0];
+    setPeople(str);
+    setIsShowChangePeople(false);
+  };
+
+  return (
+    <PopoverContentStyle>
+      {isMenu ? (
+        <>
+          <div className="top-border listBtn">
+            <ListButton
               icon={
-                <CopyOutlined
+                <UserOutlined
                   style={{ fontSize: "20px", marginRight: "12px" }}
                 />
               }
-              text="管理員一"
+              text="查看看板管理員"
+              onClick={click}
             />
+            <ListButton
+              icon={
+                <SettingOutlined
+                  style={{ fontSize: "20px", marginRight: "12px" }}
+                />
+              }
+              text="設定"
+              onClick={click}
+            />
+            <ListButton
+              icon={
+                <TagOutlined
+                  style={{ fontSize: "20px", marginRight: "12px" }}
+                />
+              }
+              text="標籤"
+              onClick={click}
+            />
+            <ListButton
+              icon={
+                <InboxOutlined
+                  style={{ fontSize: "20px", marginRight: "12px" }}
+                />
+              }
+              text="已封存的項目"
+              onClick={click}
+            />
+          </div>
+          <div className="top-border listBtn">
+            <CloneBoardButton />
             <ListButton
               icon={
                 <UploadOutlined
                   style={{ fontSize: "20px", marginRight: "12px" }}
                 />
               }
-              text="管理員一"
-            /> */}
+              text="分享"
+              onClick={click}
+            />
           </div>
-        ) : null}
-      </PopoverContentStyle>
-    );
-  };
+          <div className="top-border" style={{ paddingBottom: 0 }}>
+            <ListButton
+              icon={
+                <LogoutOutlined
+                  style={{ fontSize: "20px", marginRight: "12px" }}
+                />
+              }
+              text="退出看板"
+              danger={true}
+            />
+          </div>
+        </>
+      ) : null}
+      {isUser ? (
+        <div className="top-border" style={{ paddingBottom: 0 }}>
+          {member &&
+            member?.map((ele, idx) => (
+              <div style={{ display: "flex" }} key={idx}>
+                <Avatar src={ele.userId.avatar} key={idx} />
+                <p style={{ marginTop: "5px", marginLeft: "5px" }}>
+                  {ele.userId.name}
+                </p>
+              </div>
+            ))}
+        </div>
+      ) : null}
+      {isSetting ? (
+        <>
+          <div className="top-border">
+            <Button
+              type="text"
+              onClick={ChangeWorkSpaceClick}
+              style={{
+                width: "100%",
+                textAlign: "left",
+                padding: "0 12px",
+                height: "64px",
+                lineHeight: "32px",
+              }}
+            >
+              變更工作區...
+              <p
+                style={{
+                  fontSize: "12px",
+                  marginTop: "-10px",
+                  marginLeft: "2px",
+                  color: "gray",
+                }}
+              >
+                {name}
+              </p>
+            </Button>
+          </div>
+          <div className="top-border">
+            <Button
+              type="text"
+              onClick={CommentPurviewClick}
+              style={{
+                width: "100%",
+                textAlign: "left",
+                padding: "0 12px",
+                height: "64px",
+                lineHeight: "32px",
+              }}
+            >
+              評論權限...
+              <p
+                style={{
+                  fontSize: "12px",
+                  marginTop: "-10px",
+                  marginLeft: "2px",
+                  color: "gray",
+                }}
+              >
+                {people}
+              </p>
+            </Button>
+          </div>
+          {isShowChangeWorkSpace ? (
+            <div className="peopleView">
+              <div className="peopleTitle">
+                <p>更改工作區</p>
+                <Button
+                  size="small"
+                  type="text"
+                  icon={
+                    <CloseOutlined
+                      style={{
+                        color: "var(--gray66)",
+                      }}
+                    />
+                  }
+                  style={{ position: "absolute", right: 3 }}
+                  onClick={() => setIsShowChangeWorkSpace(false)}
+                />
+              </div>
+              <div className="peopleContent">
+                <form action="" method="post">
+                  <label htmlFor="">
+                    <small>該版是...的一部份</small>
+                  </label>
+                </form>
+
+                <Button
+                  type="text"
+                  onClick={PeopleClick}
+                  style={{
+                    width: "100%",
+                    textAlign: "left",
+                    padding: "0 12px",
+                    height: "64px",
+                    lineHeight: "32px",
+                  }}
+                >
+                  工作區成員
+                  <p
+                    style={{
+                      fontSize: "12px",
+                      marginTop: "-10px",
+                      marginLeft: "2px",
+                      color: "gray",
+                    }}
+                  >
+                    此工作區的所有成員皆可發表評論
+                  </p>
+                </Button>
+              </div>
+            </div>
+          ) : null}
+          {isShowChangePeople ? (
+            <div className="peopleView">
+              <div className="peopleTitle">
+                <p>評論權限</p>
+                <Button
+                  size="small"
+                  type="text"
+                  icon={
+                    <CloseOutlined
+                      style={{
+                        color: "var(--gray66)",
+                      }}
+                    />
+                  }
+                  style={{ position: "absolute", right: 3 }}
+                  onClick={() => setIsShowChangePeople(false)}
+                />
+              </div>
+              <div className="peopleContent">
+                <Button
+                  type="text"
+                  onClick={PeopleClick}
+                  style={{
+                    width: "100%",
+                    textAlign: "left",
+                    padding: "0 12px",
+                    height: "64px",
+                    lineHeight: "32px",
+                  }}
+                >
+                  Disabled
+                  <p
+                    style={{
+                      fontSize: "12px",
+                      marginTop: "-10px",
+                      marginLeft: "2px",
+                      color: "gray",
+                    }}
+                  >
+                    沒有人可以發表評論
+                  </p>
+                </Button>
+                <Button
+                  type="text"
+                  onClick={PeopleClick}
+                  style={{
+                    width: "100%",
+                    textAlign: "left",
+                    padding: "0 12px",
+                    height: "64px",
+                    lineHeight: "32px",
+                  }}
+                >
+                  成員
+                  <p
+                    style={{
+                      fontSize: "12px",
+                      marginTop: "-10px",
+                      marginLeft: "2px",
+                      color: "gray",
+                    }}
+                  >
+                    管理員及成員可以發表評論
+                  </p>
+                </Button>
+                <Button
+                  type="text"
+                  onClick={PeopleClick}
+                  style={{
+                    width: "100%",
+                    textAlign: "left",
+                    padding: "0 12px",
+                    height: "64px",
+                    lineHeight: "32px",
+                  }}
+                >
+                  工作區成員
+                  <p
+                    style={{
+                      fontSize: "12px",
+                      marginTop: "-10px",
+                      marginLeft: "2px",
+                      color: "gray",
+                    }}
+                  >
+                    此工作區的所有成員皆可發表評論
+                  </p>
+                </Button>
+              </div>
+            </div>
+          ) : null}
+        </>
+      ) : null}
+    </PopoverContentStyle>
+  );
+};
+
+const BillboardHeader: React.FC<BillboardHeaderProps> = ({ name, member }) => {
+  const [openInvite, setOpenInvite] = useState(false);
+  const [openPopover, setOpenPopover] = useState(false);
+  const [isMenu, setIsMenu] = useState(true);
+  const [isUser, setIsUser] = useState(false);
+  const [isSetting, setIsSetting] = useState(false);
 
   return (
     <BillboardHeaderCss className="d-space">
@@ -187,8 +507,29 @@ const BillboardHeader: React.FC<BillboardHeaderProps> = ({ name, member }) => {
         <Popover
           placement="bottomRight"
           arrow={false}
-          title={<PopoverTitle />}
-          content={<PopoverContent />}
+          title={
+            <PopoverTitle
+              isMenu={isMenu}
+              isUser={isUser}
+              isSetting={isSetting}
+              setIsMenu={setIsMenu}
+              setOpenPopover={setOpenPopover}
+              setIsUser={setIsUser}
+              setIsSetting={setIsSetting}
+            />
+          }
+          content={
+            <PopoverContent
+              name={name}
+              member={member}
+              isUser={isUser}
+              isMenu={isMenu}
+              isSetting={isSetting}
+              setIsUser={setIsUser}
+              setIsMenu={setIsMenu}
+              setIsSetting={setIsSetting}
+            />
+          }
           trigger="click"
           open={openPopover}
           onOpenChange={(e) => {
