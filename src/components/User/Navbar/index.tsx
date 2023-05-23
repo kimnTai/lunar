@@ -4,7 +4,6 @@ import { Button } from "antd";
 import {
   VerticalRightOutlined,
   VerticalLeftOutlined,
-  RightOutlined,
   ArrowLeftOutlined,
 } from "@ant-design/icons";
 import { useNavigate, useParams } from "react-router-dom";
