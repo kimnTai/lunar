@@ -26,16 +26,6 @@ const PopoverHeader: React.FC<{ close: Function }> = ({ close }) => {
   );
 };
 
-<<<<<<< HEAD
-const PopoverContent: React.FC<{ close: Function, setShowAddCard:  Function}> = (props) => {
-  const { setShowAddCard, close } = props;
-  const [current, setCurrent] = useState("");
-  const handleClick: MenuProps["onClick"] = (element) => {
-    setCurrent(element.key);
-    console.log(element.key);
-    if (element.key === "newCard") {
-      setShowAddCard(true)
-=======
 const PopoverContent: React.FC<{
   close: Function;
   setShowAddCard: Function;
@@ -46,7 +36,6 @@ const PopoverContent: React.FC<{
 
     if (element.key === "newCard") {
       setShowAddCard(true);
->>>>>>> master
       close();
     }
   };
@@ -85,10 +74,6 @@ const PopoverContent: React.FC<{
 };
 
 const TrelloCardHeader: React.FC<TrelloCardHeaderProps> = (props) => {
-<<<<<<< HEAD
-  const { title, showAddCard, setShowAddCard } = props;
-=======
->>>>>>> master
   const [openPopover, setOpenPopover] = useState(false);
   const closePopover = () => setOpenPopover(false);
   const handleOpenChange = (ele: boolean) => setOpenPopover(ele);
@@ -110,15 +95,6 @@ const TrelloCardHeader: React.FC<TrelloCardHeaderProps> = (props) => {
           className="button-hover"
           type="text"
           icon={<PlusOutlined style={{ color: "white" }} />}
-<<<<<<< HEAD
-          title="新增卡片"
-          onClick={() => setShowAddCard(true)}
-        ></Button>
-        <Popover
-          placement="bottomLeft"
-          content={<PopoverContent setShowAddCard ={setShowAddCard} close={closePopover} />}
-=======
-          className="button-hover"
           title="新增卡片"
           onClick={() => props.setShowAddCard(true)}
         ></Button>
@@ -130,7 +106,6 @@ const TrelloCardHeader: React.FC<TrelloCardHeaderProps> = (props) => {
               close={closePopover}
             />
           }
->>>>>>> master
           title={<PopoverHeader close={closePopover} />}
           trigger="click"
           open={openPopover}
