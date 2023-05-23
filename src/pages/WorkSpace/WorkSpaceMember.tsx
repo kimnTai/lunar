@@ -76,6 +76,18 @@ const WorkSpaceMember: React.FC<{
     setOpenInviteModal(false);
   };
 
+  const [userList, setUserList] = useState(userOrganization?.member);
+  const handleSearchMember = (e: { target: { value: string } }) => {
+    if (e.target.value !== "") {
+      const filteredUser = userList?.filter((user) => {
+        return user.userId.name.includes(e.target.value);
+      });
+      setUserList(filteredUser);
+    } else {
+      setUserList(userOrganization?.member);
+    }
+  };
+
   return (
     <WorkSpaceCss>
       <Row align={"middle"} justify={"space-between"}>
@@ -102,6 +114,7 @@ const WorkSpaceMember: React.FC<{
             setOpen={setOpenInviteModal}
             organizationId={workSpaceId!}
             userOrganization={userOrganization}
+            getOrganization={getOrganization}
           />
         </Col>
       </Row>
@@ -150,15 +163,15 @@ const WorkSpaceMember: React.FC<{
             </div>
             <Divider />
             <Col span={8}>
-              <Input placeholder="依名字篩選" />
+              <Input placeholder="依名字篩選" onChange={handleSearchMember} />
             </Col>
             <Divider />
             {userOrganization?.member && (
               <List
                 style={{ height: "24vh", overflowY: "scroll" }}
                 itemLayout="horizontal"
-                dataSource={userOrganization.member}
-                renderItem={(member: OrganizationMemberProps) => (
+                dataSource={userOrganization?.member}
+                renderItem={(member) => (
                   <List.Item
                     actions={[
                       <Button

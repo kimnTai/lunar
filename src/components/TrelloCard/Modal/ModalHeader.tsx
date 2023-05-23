@@ -44,7 +44,9 @@ const ModalHeader: React.FC<{ listName: string }> = (props) => {
       <ModalHeaderStyled>
         {/* 封面 */}
         <Image
-          src="https://unsplash.it/720/160"
+          src={
+            cardData?.attachment.at(0)?.dirname ?? "https://unsplash.it/720/160"
+          }
           width={"100%"}
           className="coverImg"
         />

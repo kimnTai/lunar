@@ -30,8 +30,13 @@ export const TrelloCard: React.FC<TrelloCardProps> = (props) => {
               isdragging={snapshot.isDragging.toString()}
             >
               <Card.Meta
-                title={<TrelloCardHeader title={listName} showAddCard={showAddCard}
-                setShowAddCard={setShowAddCard} />}
+                title={
+                  <TrelloCardHeader
+                    title={listName}
+                    showAddCard={showAddCard}
+                    setShowAddCard={setShowAddCard}
+                  />
+                }
                 className="cardTitle"
                 {...provided.dragHandleProps}
                 aria-label={`${listName} quote list`}

@@ -4,10 +4,11 @@ import {
   OrganizationProps,
   UpdateOrganizationProps,
 } from "@/interfaces/organization";
-import { EditOutlined, GlobalOutlined, LockOutlined } from "@ant-design/icons";
+import { EditOutlined } from "@ant-design/icons";
 import { Button, Col, Form, Input, Row } from "antd";
 import { useState } from "react";
 import { ColorIcon } from "../Icons";
+import PermissionBtn from "./PermissionBtn";
 
 export const WorkSpaceHeader: React.FC<{
   userOrganization?: OrganizationProps;
@@ -31,7 +32,7 @@ export const WorkSpaceHeader: React.FC<{
     <Row>
       <ColorIcon
         color={"white"}
-        text={userOrganization?.name[0] || ""}
+        text={userOrganization?.name.at(0) || ""}
         fontSize={"32px"}
         size={"72px"}
         background={"var(--blue)"}
@@ -63,45 +64,7 @@ export const WorkSpaceHeader: React.FC<{
             </>
           )}
         </Row>
-        {userOrganization?.permission === "private" ? (
-          <Row align={"middle"} justify={"start"} style={{ marginTop: "8px" }}>
-            <LockOutlined
-              style={{
-                color: "var(--gray9f)",
-                fontSize: "12px",
-              }}
-            />
-            <p
-              style={{
-                fontWeight: "400",
-                fontSize: "12px",
-                lineHeight: "22px",
-                color: "var(--gray9f)",
-              }}
-            >
-              私密
-            </p>
-          </Row>
-        ) : (
-          <Row align={"middle"} justify={"start"} style={{ marginTop: "8px" }}>
-            <GlobalOutlined
-              style={{
-                color: "var(--gray9f)",
-                fontSize: "12px",
-              }}
-            />
-            <p
-              style={{
-                fontWeight: "400",
-                fontSize: "12px",
-                lineHeight: "22px",
-                color: "var(--gray9f)",
-              }}
-            >
-              公開
-            </p>
-          </Row>
-        )}
+        <PermissionBtn permission={userOrganization?.permission!} id={null} />
       </Col>
     </Row>
   );

@@ -1,34 +1,49 @@
-import React from "react";
+import React, { useState } from "react";
 import { InviteMemberCss } from "./style";
 import { useApi } from "@/hooks/useApiHook";
-import { newBoardApi } from "@/api/boards";
-import { NewBoardsProps } from "@/interfaces/boards";
-import { Form, Input, Row } from "antd";
+import { Button, Form, Row } from "antd";
 import { LinkOutlined } from "@ant-design/icons";
-import { OrganizationProps } from "@/interfaces/organization";
+import {
+  OrganizationProps,
+  addOrganizationMemberProps,
+} from "@/interfaces/organization";
 import CopyInviteLinkBtn from "@/components/WorkSpace/CopyInviteLinkBtn";
+import { addOrganizationMemberApi } from "@/api/organization";
+import InviteMemberSelect from "../WorkSpace/InviteMemberSelect";
+import { PropsFromRedux } from "@/router";
 
 const InviteMember: React.FC<{
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
   organizationId: string;
   userOrganization?: OrganizationProps;
-}> = ({ open, setOpen, userOrganization }) => {
-  const [_form] = Form.useForm<NewBoardsProps>();
+  getOrganization: PropsFromRedux["getOrganization"];
+}> = ({ open, setOpen, userOrganization, organizationId, getOrganization }) => {
+  const [_result, loading, callApi] = useApi(addOrganizationMemberApi);
+  const [form] = Form.useForm<addOrganizationMemberProps>();
+  const [selectedUsers, setSelectedUsers] = useState<{ userIdList: string[] }>({
+    userIdList: [],
+  });
+
   const onCancel: () => void = () => {
     setOpen(false);
   };
-  const [_result, _loading, _callApi] = useApi(newBoardApi);
 
-  const onFinish = async (_values: NewBoardsProps) => {
-    // await callApi({
-    //   name: values.name,
-    //   organizationId,
-    //   permission: values.permission,
-    // });
+  const onFinish = async () => {
+    await callApi({
+      organizationId,
+      userIdList: selectedUsers.userIdList,
+    });
+
+    setSelectedUsers({
+      userIdList: [],
+    });
+
+    await getOrganization();
 
     onCancel();
   };
+
   return (
     <InviteMemberCss
       title={<p style={{ textAlign: "center" }}>邀請加入工作區</p>}
@@ -39,15 +54,28 @@ const InviteMember: React.FC<{
       centered
     >
       <Form
-        // form={form}
+        form={form}
         onFinish={onFinish}
         layout="vertical"
         // style={{ marginTop: "16px" }}
       >
-        <Form.Item name="email">
-          <Input style={{ height: "36px" }} />
+        <Form.Item name={"user"}>
+          <Row
+            align={"middle"}
+            justify={"space-between"}
+            style={{ flexWrap: "nowrap", gap: "4px" }}
+          >
+            <InviteMemberSelect
+              organizationId={organizationId}
+              selectedUsers={selectedUsers}
+              setSelectedUsers={setSelectedUsers}
+            />
+            <Button type="primary" htmlType="submit" loading={loading}>
+              邀請加入
+            </Button>
+          </Row>
         </Form.Item>
-        <Form.Item name="inviteLink">
+        <Form.Item>
           <Row align={"middle"} justify={"space-between"}>
             <Row align={"middle"} style={{ gap: "4px" }}>
               <LinkOutlined

@@ -1,7 +1,7 @@
 import {
   updateCardApi,
   updateCheckItemApi,
-  updateChecklist,
+  updateChecklistApi,
 } from "@/api/cards";
 import { updateListApi } from "@/api/lists";
 import { ListsProps } from "@/interfaces/lists";
@@ -9,7 +9,7 @@ import { CardsProps } from "@/interfaces/cards";
 import { DropResult } from "react-beautiful-dnd";
 import { POSITION_GAP } from "./constant";
 import isUndefined from "lodash/isUndefined";
-import { ChecklistProps } from "@/interfaces/checklists";
+import { CheckItemProps, ChecklistProps } from "@/interfaces/checklists";
 
 export const nextPosition = <T extends { _id: string; position: string }>(
   items: T[],
@@ -83,27 +83,38 @@ export const updateCardInColumn = (
   return cardList;
 };
 
-const getColumn = (columns: ListsProps[], id: string) => {
-  return columns.find((ele) => ele.id === id) || { card: [] };
+const getColumn = (
+  columns: (ListsProps | ChecklistProps)[],
+  id: string,
+  type = "Card"
+) => {
+  return type === "Card"
+    ? columns.find((ele) => ele.id === id) || { card: [] }
+    : columns.find((ele) => ele.id === id) || { checkItem: [] };
 };
 
 const getNewColumn = (
-  columns: ListsProps[],
+  columns: (ListsProps | ChecklistProps)[],
   id: string,
-  newArr: CardsProps[]
+  newArr: (CardsProps | CheckItemProps)[],
+  type = "Card"
 ) => {
   const useColumn = [...columns];
   const useIndex = columns.findIndex((ele) => ele.id === id);
   if (useIndex !== -1) {
-    const useArr = { ...useColumn[useIndex], card: newArr };
-    useColumn.splice(useIndex, 1, useArr);
+    const useArr =
+      type === "Card"
+        ? { ...useColumn[useIndex], card: newArr }
+        : { ...useColumn[useIndex], checkItem: newArr };
+    useColumn.splice(useIndex, 1, useArr as any);
   }
   return useColumn;
 };
 
 export const updateCardDiffColumn = (
   result: DropResult,
-  cardList: ListsProps[]
+  cardList: (ListsProps | ChecklistProps)[],
+  type = "Card"
 ) => {
   if (!result.destination) {
     return cardList;
@@ -111,27 +122,89 @@ export const updateCardDiffColumn = (
 
   const source = result.source;
   const destination = result.destination;
-  const current = [...getColumn(cardList, source.droppableId).card];
-  const next = [...getColumn(cardList, destination.droppableId).card];
-  const usePosition = nextPosition(next, destination.index).toString();
+
+  const current =
+    type === "Card"
+      ? [...(getColumn(cardList, source.droppableId) as ListsProps).card]
+      : [
+          ...(
+            getColumn(
+              cardList,
+              source.droppableId,
+              "CheckList"
+            ) as ChecklistProps
+          ).checkItem,
+        ];
+  const next =
+    type === "Card"
+      ? [...(getColumn(cardList, destination.droppableId) as ListsProps).card]
+      : [
+          ...(
+            getColumn(
+              cardList,
+              destination.droppableId,
+              "CheckList"
+            ) as ChecklistProps
+          ).checkItem,
+        ];
+
+  const usePosition =
+    type === "Card"
+      ? nextPosition(next as CardsProps[], destination.index).toString()
+      : nextPosition(next as CheckItemProps[], destination.index).toString();
+
   const target = current[source.index];
   target.position = usePosition;
 
   current.splice(source.index, 1);
-  next.splice(destination.index, 0, target);
+  next.splice(destination.index, 0, target as any);
+  console.log(result);
+  type === "Card"
+    ? updateCardApi({
+        listId: destination.droppableId,
+        cardId: result.draggableId,
+        position: usePosition,
+        closed: false,
+      })
+    : updateCheckItemApi({
+        checkItemId: result.draggableId,
+        cardId: (cardList as ChecklistProps[]).find(
+          (ele) => ele.id === destination.droppableId
+        )!.cardId,
+        checklistId: (cardList as ChecklistProps[]).find(
+          (ele) => ele.id === destination.droppableId
+        )!.id,
+        position: usePosition,
+      });
+  // console.log({
+  //   checkItemId: result.draggableId,
+  //   cardId: (cardList as ChecklistProps[]).find(
+  //     (ele) => ele.id === destination.droppableId
+  //   )!.cardId,
+  //   checklistId: (cardList as ChecklistProps[]).find(
+  //     (ele) => ele.id === destination.droppableId
+  //   )!.id,
+  //   position: usePosition,
+  // });
 
-  updateCardApi({
-    listId: destination.droppableId,
-    cardId: result.draggableId,
-    position: usePosition,
-    closed: false,
-  });
-
-  return getNewColumn(
-    getNewColumn(cardList, source.droppableId, current),
-    destination.droppableId,
-    next
+  console.log("===result.draggableId===", result.draggableId);
+  console.log(
+    (cardList as ChecklistProps[]).find(
+      (ele) => ele.id === destination.droppableId
+    )
   );
+  return type === "Card"
+    ? getNewColumn(
+        getNewColumn(cardList, source.droppableId, current),
+        destination.droppableId,
+        next
+      )
+    : getNewColumn(
+        getNewColumn(cardList, source.droppableId, current, "CheckList"),
+        destination.droppableId,
+        next,
+        "CheckList"
+      );
 };
 
 export const updateColumn = (
@@ -153,15 +226,13 @@ export const updateColumn = (
   if (target) {
     target.position = usePosition;
   }
-  console.log(result);
-  console.log(cardList);
   type === "Card"
     ? updateListApi({
         listId: result.draggableId,
         position: usePosition,
         closed: false,
       })
-    : updateChecklist({
+    : updateChecklistApi({
         cardId: (target as ChecklistProps).cardId,
         checklistId: result.draggableId,
         position: usePosition,

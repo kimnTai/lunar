@@ -1,28 +1,18 @@
 import React, { useState } from "react";
 import { HeaderCss } from "./style";
 import { SearchOutlined, BellOutlined } from "@ant-design/icons";
-import type { MenuProps } from "antd";
 import { Input, Button, Badge, Avatar } from "antd";
 import { useNavigate } from "react-router-dom";
 import { DropdownBtn } from "@/components/DropdownBtn";
 import { UserModal } from "./UserModal";
-import { OrganizationProps } from "@/interfaces/organization";
 import { useAppSelector } from "@/hooks/useAppSelector";
-
-const items: MenuProps["items"] = [
-  {
-    label: "Submit and continue",
-    key: "1",
-  },
-];
 
 export const Header: React.FC<{
   workSpace: boolean;
   setWorkSpace: React.Dispatch<React.SetStateAction<boolean>>;
-  organization: OrganizationProps[];
-}> = (props) => {
-  const { workSpace, organization, setWorkSpace } = props;
+}> = ({ workSpace, setWorkSpace }) => {
   const { avatar, name, email } = useAppSelector((state) => state.user.user);
+  const organization = useAppSelector((state) => state.user.organization);
   const navigate = useNavigate();
   const [userModal, setUserModal] = useState(false);
   const selectOrganizationItem = organization.map((ele) => ({
@@ -38,6 +28,7 @@ export const Header: React.FC<{
     ),
     key: ele._id,
   }));
+
   return (
     <HeaderCss
       className="d-space"
@@ -50,13 +41,27 @@ export const Header: React.FC<{
           }}
         >
           <DropdownBtn items={selectOrganizationItem} title={"工作區"} />
-          <DropdownBtn items={items} title={"最近的"} />
+          <DropdownBtn
+            items={[
+              {
+                label: "Submit and continue",
+                key: "1",
+              },
+            ]}
+            title={"最近的"}
+          />
         </div>
 
         <Input
-          className={workSpace? "search" : "darkSearch"}
+          className={workSpace ? "search" : "darkSearch"}
           placeholder="搜尋所有卡片"
-          prefix={<SearchOutlined style={{color: workSpace ? "var(--black23)" : "white"}}/>}
+          prefix={
+            <SearchOutlined
+              style={{
+                color: workSpace ? "var(--black23)" : "white",
+              }}
+            />
+          }
           style={{}}
         />
       </div>

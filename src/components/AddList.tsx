@@ -88,7 +88,10 @@ const AddList: React.FC<AddListProps> = ({ cardList, boardId, callApi }) => {
             >
               <Col flex="auto">
                 <PlusOutlined
-                  style={{ fontSize: "16px", marginRight: "10px" }}
+                  style={{
+                    fontSize: "16px",
+                    marginRight: "10px",
+                  }}
                 />
                 新增列表
               </Col>

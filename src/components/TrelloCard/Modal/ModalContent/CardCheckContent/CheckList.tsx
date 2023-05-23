@@ -37,7 +37,7 @@ const CheckList: React.FC<{ checkList?: ChecklistProps[] }> = ({
                   // renderClone={useClone ? (provided, snapshot, descriptor) => <QuoteItem quote={quotes[descriptor.source.index]} provided={provided} isDragging={snapshot.isDragging} isClone /> : null}
                   renderClone={undefined}
                 >
-                  {(dropProvided, dropSnapshot) => (
+                  {(dropProvided, _dropSnapshot) => (
                     <div
                       ref={dropProvided.innerRef}
                       style={{ minHeight: "1px" }}

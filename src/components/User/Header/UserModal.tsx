@@ -36,7 +36,7 @@ export const UserModal: React.FC<UserModalProps> = ({
         style={{ width: "100%" }}
         onClick={() => {
           dispatch({ type: "LOGOUT" });
-          navigate("/");
+          navigate("https://lunar-sigma.vercel.app/");
         }}
       >
         登出

@@ -2,13 +2,10 @@ import React from "react";
 import { Row, Col, Button, Skeleton, Popover } from "antd";
 import { WorkSpaceCardCss } from "./style";
 import { WorkSpaceCardProps } from "@/interfaces/workspace";
-import {
-  LockOutlined,
-  EllipsisOutlined,
-  GlobalOutlined,
-} from "@ant-design/icons";
+import { EllipsisOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 import { deleteBoardApi } from "@/api/boards";
+import PermissionBtn from "@/components/WorkSpace/PermissionBtn";
 
 export const WorkSpaceCard: React.FC<WorkSpaceCardProps> = ({
   title,
@@ -63,14 +60,7 @@ export const WorkSpaceCard: React.FC<WorkSpaceCardProps> = ({
       </Row>
       <Row justify={"space-between"} align={"middle"}>
         <Col>
-          <Button
-            icon={privacy === "private" ? <LockOutlined /> : <GlobalOutlined />}
-            style={{ height: "29px", padding: "4px 8px" }}
-            ghost
-            className="d-center"
-          >
-            {privacy === "private" ? "私人" : "公開"}
-          </Button>
+          <PermissionBtn permission={privacy} id={id} />
         </Col>
         <Col>
           <Popover

@@ -3,7 +3,7 @@ import { Sider } from "./style";
 import { Button } from "antd";
 import {
   VerticalRightOutlined,
-  RightOutlined,
+  VerticalLeftOutlined,
   ArrowLeftOutlined,
 } from "@ant-design/icons";
 import { useNavigate, useParams } from "react-router-dom";
@@ -108,22 +108,19 @@ export const Navbar: React.FC<{
         </>
       ) : (
         <Button
-          icon={<RightOutlined />}
+          icon={<VerticalLeftOutlined />}
           onClick={handleOpen}
           style={{
             width: "28px",
             height: "28px",
-            color: "var(--gray9f)",
-            backgroundColor: "darkblue",
+            marginTop: "16px",
+            color: "var(--gray66)",
+            backgroundColor: "var(--grayd4)",
           }}
         />
       )}
       {workSpace ? (
-        <AddWorkSpace
-          open={open}
-          setOpen={setOpen}
-          getOrganization={getOrganization}
-        />
+        <AddWorkSpace open={open} setOpen={setOpen} />
       ) : (
         <AddBoards
           open={open}

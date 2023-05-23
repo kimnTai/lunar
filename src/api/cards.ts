@@ -30,5 +30,5 @@ export const updateCheckItemApi = (data: UpdateCardCheckItem) =>
   );
 
 // 更新checkList
-export const updateChecklist = (data: UpdateCardCheckList) =>
+export const updateChecklistApi = (data: UpdateCardCheckList) =>
   Request.put(`/cards/${data.cardId}/checklist/${data.checklistId}`, data);
