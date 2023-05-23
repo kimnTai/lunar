@@ -27,6 +27,7 @@ import CloneBoardButton from "@/components/CloneBoardButton";
 const BillboardHeader: React.FC<BillboardHeaderProps> = ({ name, member }) => {
   const [openInvite, setOpenInvite] = useState(false);
   const [openPopover, setOpenPopover] = useState(false);
+  const [isAdministrator, setIsAdministrator] = useState(false);
   const PopoverTitle: React.FC = () => (
     <PopoverTitleStyle>
       選單
@@ -45,56 +46,113 @@ const BillboardHeader: React.FC<BillboardHeaderProps> = ({ name, member }) => {
       />
     </PopoverTitleStyle>
   );
-  const PopoverContent: React.FC = () => (
-    <PopoverContentStyle>
-      <div className="top-border listBtn">
-        <ListButton
-          icon={
-            <UserOutlined style={{ fontSize: "20px", marginRight: "12px" }} />
-          }
-          text="查看看板管理員"
-        />
-        <ListButton
-          icon={
-            <SettingOutlined
-              style={{ fontSize: "20px", marginRight: "12px" }}
+  const PopoverContent: React.FC = () => {
+    const click = () => {
+      setIsAdministrator(true);
+      console.log(member);
+    };
+
+    return (
+      <PopoverContentStyle>
+        {!isAdministrator ? (
+          <div>
+            <div className="top-border listBtn">
+              <ListButton
+                icon={
+                  <UserOutlined
+                    style={{ fontSize: "20px", marginRight: "12px" }}
+                  />
+                }
+                text="查看看板管理員"
+                onClick={click}
+              />
+              <ListButton
+                icon={
+                  <SettingOutlined
+                    style={{ fontSize: "20px", marginRight: "12px" }}
+                  />
+                }
+                text="設定"
+              />
+              <ListButton
+                icon={
+                  <TagOutlined
+                    style={{ fontSize: "20px", marginRight: "12px" }}
+                  />
+                }
+                text="標籤"
+              />
+              <ListButton
+                icon={
+                  <InboxOutlined
+                    style={{ fontSize: "20px", marginRight: "12px" }}
+                  />
+                }
+                text="已封存的項目"
+              />
+            </div>
+            <div className="top-border listBtn">
+              <CloneBoardButton />
+              <ListButton
+                icon={
+                  <UploadOutlined
+                    style={{ fontSize: "20px", marginRight: "12px" }}
+                  />
+                }
+                text="分享"
+              />
+            </div>
+            <div className="top-border" style={{ paddingBottom: 0 }}>
+              <ListButton
+                icon={
+                  <LogoutOutlined
+                    style={{ fontSize: "20px", marginRight: "12px" }}
+                  />
+                }
+                text="退出看板"
+                danger={true}
+              />
+            </div>
+          </div>
+        ) : null}
+
+        {isAdministrator ? (
+          <div className="isAdministrator">
+            {member &&
+              member?.map((ele, idx) => (
+                <div style={{ display: "flex", textAlign: "center" }} key={idx}>
+                  <Avatar src={ele.userId.avatar} key={idx} />
+                  <p
+                    style={{
+                      // marginLeft: "8px",
+                      color: "black",
+                    }}
+                  >
+                    {ele.userId.name}
+                  </p>
+                </div>
+              ))}
+            {/* <ListButton
+              icon={
+                <CopyOutlined
+                  style={{ fontSize: "20px", marginRight: "12px" }}
+                />
+              }
+              text="管理員一"
             />
-          }
-          text="設定"
-        />
-        <ListButton
-          icon={
-            <TagOutlined style={{ fontSize: "20px", marginRight: "12px" }} />
-          }
-          text="標籤"
-        />
-        <ListButton
-          icon={
-            <InboxOutlined style={{ fontSize: "20px", marginRight: "12px" }} />
-          }
-          text="已封存的項目"
-        />
-      </div>
-      <div className="top-border listBtn">
-        <CloneBoardButton />
-        <ListButton
-          icon={
-            <UploadOutlined style={{ fontSize: "20px", marginRight: "12px" }} />
-          }
-          text="分享"
-        />
-      </div>
-      <div className="top-border" style={{ paddingBottom: 0 }}>
-        <ListButton
-          icon={
-            <LogoutOutlined style={{ fontSize: "20px", marginRight: "12px" }} />
-          }
-          text="退出看板"
-          danger={true}
-        />
-      </div>
-    </PopoverContentStyle>
-  );
+            <ListButton
+              icon={
+                <UploadOutlined
+                  style={{ fontSize: "20px", marginRight: "12px" }}
+                />
+              }
+              text="管理員一"
+            /> */}
+          </div>
+        ) : null}
+      </PopoverContentStyle>
+    );
+  };
 
   return (
     <BillboardHeaderCss className="d-space">
