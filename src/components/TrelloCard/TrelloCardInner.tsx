@@ -33,9 +33,9 @@ const TrelloCardInner: React.FC<TrelloCardInnerProps> = React.memo((props) => {
                   className="trello-card-inner"
                   cover={
                     <img
-                      src={attachment.at(0)?.dirname}
+                      src={attachment?.length ? attachment[0].dirname : ""}
                       style={{
-                        height: attachment.at(0) ? 133 : 0,
+                        height: attachment?.length ? 133 : 0,
                         objectFit: "cover",
                       }}
                     />
