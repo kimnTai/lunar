@@ -1,11 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import { ConnectedProps } from "react-redux";
-import { Layout } from "antd";
-import { Header } from "@/components/User/Header";
-import { Navbar } from "@/components/User/Navbar";
 import Home from "@/pages/Home";
-import { MainLayoutCss } from "@/pages/Billboard/style";
 import ErrorPage from "@/pages/ErrorPage";
 import Login from "@/pages/Login";
 import WorkSpace from "@/pages/WorkSpace";
@@ -17,6 +13,7 @@ import WorkSpaceMember from "@/pages/WorkSpace/WorkSpaceMember";
 import WorkSpaceSetting from "@/pages/WorkSpace/WorkSpaceSetting";
 import Invitation from "@/pages/InvitationPage";
 import { connector } from "@/redux/connector";
+import LoginLayout from "./LoginLayout";
 
 export type PropsFromRedux = ConnectedProps<typeof connector>;
 
@@ -26,7 +23,6 @@ const AppRouter: React.FC<PropsFromRedux> = (props) => {
     loginAction,
     loginJwt,
     signInAction,
-    showWorkSpace,
     changeWorkSpace,
     organization,
     getOrganization,
@@ -46,28 +42,6 @@ const AppRouter: React.FC<PropsFromRedux> = (props) => {
       setLoad(false);
     }
   }, []);
-
-  const LoginLayout = React.memo<{ children: React.ReactElement }>(
-    ({ children }) => (
-      <Layout>
-        <Navbar
-          workSpace={showWorkSpace}
-          setWorkSpace={changeWorkSpace}
-          getOrganization={getOrganization}
-        />
-        <Layout>
-          <Header
-            workSpace={showWorkSpace}
-            setWorkSpace={changeWorkSpace}
-            organization={organization}
-          />
-          <MainLayoutCss workspace={showWorkSpace.toString()}>
-            {children}
-          </MainLayoutCss>
-        </Layout>
-      </Layout>
-    )
-  );
 
   return (
     <Routes>
@@ -134,6 +108,8 @@ const AppRouter: React.FC<PropsFromRedux> = (props) => {
                 path={`/workspace/:workSpaceId/home`}
                 element={
                   <LoginLayout
+                    getOrganization={getOrganization}
+                    changeWorkSpace={changeWorkSpace}
                     children={
                       <WorkSpace
                         setWorkSpace={changeWorkSpace}
@@ -147,6 +123,8 @@ const AppRouter: React.FC<PropsFromRedux> = (props) => {
                 path={`/workspace/:workSpaceId/members`}
                 element={
                   <LoginLayout
+                    getOrganization={getOrganization}
+                    changeWorkSpace={changeWorkSpace}
                     children={
                       <WorkSpaceMember
                         setWorkSpace={changeWorkSpace}
@@ -160,6 +138,8 @@ const AppRouter: React.FC<PropsFromRedux> = (props) => {
                 path={`/workspace/:workSpaceId/setting`}
                 element={
                   <LoginLayout
+                    getOrganization={getOrganization}
+                    changeWorkSpace={changeWorkSpace}
                     children={
                       <WorkSpaceSetting
                         setWorkSpace={changeWorkSpace}
@@ -173,12 +153,9 @@ const AppRouter: React.FC<PropsFromRedux> = (props) => {
                 path="/board/:boardId"
                 element={
                   <LoginLayout
-                    children={
-                      <Billboard
-                        workSpace={showWorkSpace}
-                        setWorkSpace={changeWorkSpace}
-                      />
-                    }
+                    getOrganization={getOrganization}
+                    changeWorkSpace={changeWorkSpace}
+                    children={<Billboard setWorkSpace={changeWorkSpace} />}
                   />
                 }
               />

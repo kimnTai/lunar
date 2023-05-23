@@ -15,11 +15,12 @@ import {
   updateColumn,
 } from "@/utils/cardFunc";
 import type { PropsFromRedux } from "@/router";
+import { useAppSelector } from "@/hooks/useAppSelector";
 
 const Billboard: React.FC<{
-  workSpace: boolean;
   setWorkSpace: PropsFromRedux["changeWorkSpace"];
-}> = ({ workSpace, setWorkSpace }) => {
+}> = ({ setWorkSpace }) => {
+  const workSpace = useAppSelector((state) => state.screen.showWorkSpace);
   const [cardList, setCardList] = useState<ListsProps[]>([]);
   const { boardId } = useParams();
   const [result, loading, callApi] = useApi(getBoardApi);
