@@ -22,7 +22,7 @@ const NewWorkSpace: React.FC<{
 
   const navigate = useNavigate();
   const onFinish = async (values: FormValues) => {
-    await callApi({ name: values.name, member: selectedUsers });
+    await callApi({ name: values.name, userIdList: selectedUsers.userIdList });
     await getOrganization();
     navigate("/");
   };

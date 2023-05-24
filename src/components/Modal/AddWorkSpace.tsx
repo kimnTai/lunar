@@ -20,8 +20,10 @@ const AddWorkSpace: React.FC<{
 
   const onFinish = async (values: NewOrganizationFormProps) => {
     setButtonLoading(true);
-
-    newOrganizationApi({ name: values.name, member: selectedUsers })
+    newOrganizationApi({
+      name: values.name,
+      userIdList: selectedUsers.userIdList,
+    })
       .then((res) => {
         dispatch({
           type: CONSTANTS.CREATE_NEW_ORGANIZATION,
