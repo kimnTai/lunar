@@ -21,7 +21,6 @@ export const TrelloCardList: React.FC<TrelloCardListProps> = (props) => {
       ignoreContainerClipping={undefined}
       isDropDisabled={undefined}
       isCombineEnabled={isCombineEnabled}
-      // renderClone={useClone ? (provided, snapshot, descriptor) => <QuoteItem quote={quotes[descriptor.source.index]} provided={provided} isDragging={snapshot.isDragging} isClone /> : null}
       renderClone={undefined}
     >
       {(dropProvided, dropSnapshot) => (
