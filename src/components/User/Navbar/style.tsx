@@ -5,7 +5,6 @@ import { media } from "@/assets/constants";
 export const Sider = styled(Layout.Sider)`
   position: fixed;
   overflow: visible;
-  /* right: 0; */
   transition: all 0.2s ease;
   z-index: 5;
   min-height: 100vh;

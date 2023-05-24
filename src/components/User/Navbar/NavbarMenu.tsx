@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useLayoutEffect, useState } from "react";
 import { Menu } from "antd";
 import type { MenuProps } from "antd";
 import { useNavigate } from "react-router-dom";
@@ -66,12 +66,7 @@ const NavBarMenu: React.FC<NavBarMenuProps> = ({
   const defaultItems = [
     { label: "", key: "", type: "divider" },
     getItem(
-      <a
-        target="_blank"
-        rel="noopener noreferrer"
-        // className="ant-menu-submenu-title"
-        // style={{background: workSpace ? "var(--graye9)" : "#e9e9e9"}}
-      >
+      <a target="_blank" rel="noopener noreferrer">
         {workSpace ? "新增工作區" : "新增看板"}
       </a>,
       "addModal",
@@ -79,10 +74,10 @@ const NavBarMenu: React.FC<NavBarMenuProps> = ({
     ),
   ];
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (data) {
-      const useItem = data.map((ele) => {
-        return getItem(
+      const useItem = data.map((ele) =>
+        getItem(
           ele.name,
           ele._id,
           <ColorIcon
@@ -93,8 +88,8 @@ const NavBarMenu: React.FC<NavBarMenuProps> = ({
             background={"var(--blue)"}
           />,
           workSpace ? getSubMenu(ele._id) : undefined
-        );
-      });
+        )
+      );
 
       setItems([...useItem, ...defaultItems]);
     }
