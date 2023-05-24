@@ -82,7 +82,7 @@ const WorkSpace: React.FC<{
           <WorkSpaceCard
             title={ele.name}
             permission={ele.permission}
-            backgroundUrl={""}
+            backgroundImage={ele.image}
             setWorkSpace={setWorkSpace}
             getOrganization={getOrganization}
             boardId={ele._id}

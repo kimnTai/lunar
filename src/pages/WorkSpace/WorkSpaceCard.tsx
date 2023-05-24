@@ -10,7 +10,7 @@ import { WorkSpaceCardCss } from "./style";
 const WorkSpaceCard: React.FC<WorkSpaceCardProps> = ({
   title,
   permission,
-  backgroundUrl,
+  backgroundImage,
   setWorkSpace,
   boardId,
 }) => {
@@ -19,7 +19,7 @@ const WorkSpaceCard: React.FC<WorkSpaceCardProps> = ({
   return (
     <WorkSpaceCardCss
       hoverable
-      backgroundurl={backgroundUrl}
+      background-image={`${backgroundImage}`}
       onClick={() => {
         setWorkSpace();
         navigate(`/board/${boardId}`);

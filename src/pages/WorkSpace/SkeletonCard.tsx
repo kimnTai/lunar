@@ -5,7 +5,7 @@ import { WorkSpaceCardCss } from "./style";
 const SkeletonCard: React.FC = () => {
   return (
     <WorkSpaceCardCss
-      backgroundurl={"none"}
+      background-image={"none"}
       style={{ backgroundColor: "var(--gray9f)" }}
     >
       <Skeleton active />

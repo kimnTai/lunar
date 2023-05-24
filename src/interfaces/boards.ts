@@ -14,6 +14,7 @@ export interface BoardsProps {
   list: ListsProps[];
   label: any[];
   id: string;
+  image?: string;
 }
 
 export interface NewBoardsProps {
