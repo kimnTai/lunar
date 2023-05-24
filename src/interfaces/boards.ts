@@ -51,3 +51,8 @@ export interface PopoverContentProps {
   setIsMenu: React.Dispatch<React.SetStateAction<boolean>>;
   setIsSetting: React.Dispatch<React.SetStateAction<boolean>>;
 }
+
+export interface AddBoardsMembers {
+  boardId: string;
+  userIdList: string[];
+}
