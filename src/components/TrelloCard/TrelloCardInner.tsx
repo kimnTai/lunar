@@ -19,9 +19,7 @@ const TrelloCardInner: React.FC<TrelloCardInnerProps> = React.memo((props) => {
   const [dueDay, setDueDay] = useState<string>();
   const [totalCheckItem, setTotalCheckItem] = useState<number>(0);
   const [finishCheckItem, setFinishCheckItem] = useState<number>(0);
-
   const quote = quotes.card;
-  console.log("===quote===", quote);
 
   useEffect(() => {
     quote.map((ele) => {

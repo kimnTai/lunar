@@ -11,9 +11,7 @@ import { ChecklistProps } from "@/interfaces/checklists";
 
 const CardCheckContent: React.FC = () => {
   const [cardData, setCardData] = useState(useCardModalContext().cardData);
-  console.log("===cardData===", cardData);
   const onDragEnd = (result: DropResult) => {
-    console.log(result);
     const source = result.source;
     const destination = result.destination;
     // 未移動

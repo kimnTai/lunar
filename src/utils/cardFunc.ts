@@ -107,7 +107,6 @@ const getNewColumn = (
       type === "Card"
         ? { ...useColumn[useIndex], card: newArr }
         : { ...useColumn[useIndex], checkItem: newArr };
-    console.log();
     useColumn.splice(useIndex, 1, useArr as any);
   }
   return useColumn;
@@ -160,7 +159,6 @@ export const updateCardDiffColumn = (
 
   current.splice(source.index, 1);
   next.splice(destination.index, 0, target as any);
-  console.log(result);
   type === "Card"
     ? updateCardApi({
         listId: destination.droppableId,

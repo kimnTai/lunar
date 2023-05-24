@@ -73,7 +73,6 @@ const TrelloCardAdd: React.FC<{
               <Button
                 type="primary"
                 onClick={async () => {
-                  console.log("in ");
                   setLoading(true);
 
                   await newCardApi({

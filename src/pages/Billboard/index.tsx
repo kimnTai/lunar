@@ -53,7 +53,6 @@ const Billboard: React.FC<{
   }, [result?.result]);
 
   const onDragEnd = (result: DropResult) => {
-    console.log(result);
     const source = result.source;
     const destination = result.destination;
     // 未移動
