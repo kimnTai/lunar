@@ -168,7 +168,7 @@ const WorkSpaceMember: React.FC<{
             <Divider />
             {userOrganization?.member && (
               <List
-                style={{ height: "24vh", overflowY: "scroll" }}
+                style={{ height: "24vh", overflowY: "auto" }}
                 itemLayout="horizontal"
                 dataSource={userOrganization?.member}
                 renderItem={(member) => (
