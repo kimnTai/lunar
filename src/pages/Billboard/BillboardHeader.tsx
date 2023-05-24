@@ -24,7 +24,7 @@ import {
   LogoutOutlined,
   LeftOutlined,
 } from "@ant-design/icons";
-import { Avatar, Button, Popover, Menu, MenuProps } from "antd";
+import { Avatar, Button, Popover, Form, Select } from "antd";
 import AddMember from "@/components/Modal/AddMember";
 import ListButton from "@/components/ListButton";
 import CloneBoardButton from "@/components/CloneBoardButton";
@@ -151,6 +151,8 @@ const PopoverContent: React.FC<PopoverContentProps> = (props) => {
   const [people, setPeople] = useState("成員");
   const [result, _loading, _callApi] = useApi(getUserOrganizationsApi);
   console.log("--result--", result);
+  const { Option } = Select;
+  const [form] = Form.useForm();
 
   const click = (e: any) => {
     console.log(e.target.innerText);
@@ -185,6 +187,30 @@ const PopoverContent: React.FC<PopoverContentProps> = (props) => {
     let str = e.currentTarget.innerText.split("\n\n")[0];
     setPeople(str);
     setIsShowChangePeople(false);
+  };
+
+  const onGenderChange = (value: any) => {
+    switch (value) {
+      case "male":
+        form.setFieldsValue({
+          note: "Hi, man!",
+        });
+        break;
+      case "female":
+        form.setFieldsValue({
+          note: "Hi, lady!",
+        });
+        break;
+      case "other":
+        form.setFieldsValue({
+          note: "Hi there!",
+        });
+        break;
+      default:
+    }
+  };
+  const onFinish = (values: any) => {
+    console.log(values);
   };
 
   return (
@@ -320,9 +346,9 @@ const PopoverContent: React.FC<PopoverContentProps> = (props) => {
             </Button>
           </div>
           {isShowChangeWorkSpace ? (
-            <div className="peopleView">
+            <div className="changeWorkSpaceView">
               <div className="peopleTitle">
-                <p>更改工作區</p>
+                <p>變更工作區</p>
                 <Button
                   size="small"
                   type="text"
@@ -337,36 +363,55 @@ const PopoverContent: React.FC<PopoverContentProps> = (props) => {
                   onClick={() => setIsShowChangeWorkSpace(false)}
                 />
               </div>
-              <div className="peopleContent">
-                <form action="" method="post">
-                  <label htmlFor="">
-                    <small>該版是...的一部份</small>
-                  </label>
-                </form>
-
-                <Button
-                  type="text"
-                  onClick={PeopleClick}
-                  style={{
-                    width: "100%",
-                    textAlign: "left",
-                    padding: "0 12px",
-                    height: "64px",
-                    lineHeight: "32px",
-                  }}
-                >
-                  工作區成員
-                  <p
+              <div className="">
+                <div style={{ position: "relative" }}>
+                  <Form
+                    form={form}
+                    onFinish={onFinish}
                     style={{
-                      fontSize: "12px",
-                      marginTop: "-10px",
-                      marginLeft: "2px",
-                      color: "gray",
+                      maxWidth: 400,
+                      padding: "0 12px",
+                      width: "310px",
                     }}
                   >
-                    此工作區的所有成員皆可發表評論
-                  </p>
-                </Button>
+                    <Form.Item
+                      name="gender"
+                      label="該看板隸屬於"
+                      style={{ marginTop: "-3px" }}
+                    >
+                      <Select
+                        placeholder="Select a option and change input text above"
+                        onChange={onGenderChange}
+                        allowClear
+                        style={{
+                          position: "absolute",
+                          top: "30px",
+                          left: "-60px",
+                          width: "120%",
+                          marginLeft: "-38px",
+                        }}
+                      >
+                        <Option value="male">male</Option>
+                        <Option value="female">female</Option>
+                        <Option value="other">other</Option>
+                      </Select>
+                    </Form.Item>
+                    <Form.Item>
+                      <Button
+                        type="primary"
+                        htmlType="submit"
+                        style={{
+                          position: "absolute",
+                          width: "80%",
+                          top: "15px",
+                          left: "-2px",
+                        }}
+                      >
+                        Submit
+                      </Button>
+                    </Form.Item>
+                  </Form>
+                </div>
               </div>
             </div>
           ) : null}
@@ -543,7 +588,6 @@ const BillboardHeader: React.FC<BillboardHeaderProps> = ({ name, member }) => {
             <DashOutlined style={{ color: "white", fontSize: "16px" }} />
           </Button>
         </Popover>
-
       </div>
       <AddMember open={openInvite} setOpen={setOpenInvite} member={member} />
     </BillboardHeaderCss>
