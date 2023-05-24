@@ -2,12 +2,13 @@ import React from "react";
 import { AddMemberCss } from "./style";
 import { OrganizationMemberProps } from "@/interfaces/organization";
 import { Avatar, Button, Divider, Form, Input, Select } from "antd";
-import { LinkOutlined, MinusOutlined } from "@ant-design/icons";
-
+import { MinusOutlined } from "@ant-design/icons";
+import CopyInviteLinkBtn from "../WorkSpace/CopyInviteLinkBtn";
 interface AddMemberProps {
   member: OrganizationMemberProps[];
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  boardInviteLink: string;
 }
 
 const UserList: React.FC<OrganizationMemberProps> = (props) => {
@@ -47,7 +48,12 @@ const UserList: React.FC<OrganizationMemberProps> = (props) => {
     </div>
   );
 };
-const AddMember: React.FC<AddMemberProps> = ({ member, open, setOpen }) => {
+const AddMember: React.FC<AddMemberProps> = ({
+  member,
+  open,
+  setOpen,
+  boardInviteLink,
+}) => {
   const handleCancel = () => {
     setOpen(false);
   };
@@ -78,13 +84,11 @@ const AddMember: React.FC<AddMemberProps> = ({ member, open, setOpen }) => {
         style={{ justifyContent: "right", alignItems: "center" }}
       >
         <p>透過連結邀請新成員加入看板</p>
-        <Button
-          type="text"
-          icon={<LinkOutlined />}
+        <CopyInviteLinkBtn
+          setOpen={setOpen}
           style={{ backgroundColor: "var(--graye9)", marginLeft: "16px" }}
-        >
-          建立連結
-        </Button>
+          boardInviteLink={boardInviteLink}
+        />
       </div>
     </AddMemberCss>
   );

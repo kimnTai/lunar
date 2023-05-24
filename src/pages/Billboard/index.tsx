@@ -88,6 +88,7 @@ const Billboard: React.FC<{
       ) : (
         <>
           <BillboardHeader
+            boardInviteLink={result?.result.inviteLink || ""}
             name={result?.result.name || ""}
             member={result?.result.member || []}
           />

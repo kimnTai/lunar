@@ -25,6 +25,7 @@ export interface NewBoardsProps {
 export interface BillboardHeaderProps {
   name: string;
   member: OrganizationMemberProps[];
+  boardInviteLink: string;
 }
 
 export interface SingleBoardProps {}

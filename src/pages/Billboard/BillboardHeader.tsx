@@ -24,7 +24,7 @@ import {
   LogoutOutlined,
   LeftOutlined,
 } from "@ant-design/icons";
-import { Avatar, Button, Popover, Menu, MenuProps } from "antd";
+import { Avatar, Button, Popover } from "antd";
 import AddMember from "@/components/Modal/AddMember";
 import ListButton from "@/components/ListButton";
 import CloneBoardButton from "@/components/CloneBoardButton";
@@ -467,7 +467,11 @@ const PopoverContent: React.FC<PopoverContentProps> = (props) => {
   );
 };
 
-const BillboardHeader: React.FC<BillboardHeaderProps> = ({ name, member }) => {
+const BillboardHeader: React.FC<BillboardHeaderProps> = ({
+  name,
+  member,
+  boardInviteLink,
+}) => {
   const [openInvite, setOpenInvite] = useState(false);
   const [openPopover, setOpenPopover] = useState(false);
   const [isMenu, setIsMenu] = useState(true);
@@ -543,9 +547,13 @@ const BillboardHeader: React.FC<BillboardHeaderProps> = ({ name, member }) => {
             <DashOutlined style={{ color: "white", fontSize: "16px" }} />
           </Button>
         </Popover>
-
       </div>
-      <AddMember open={openInvite} setOpen={setOpenInvite} member={member} />
+      <AddMember
+        open={openInvite}
+        setOpen={setOpenInvite}
+        member={member}
+        boardInviteLink={boardInviteLink}
+      />
     </BillboardHeaderCss>
   );
 };
