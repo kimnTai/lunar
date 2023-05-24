@@ -34,8 +34,8 @@ export const HeaderCss = styled(Layout.Header)`
     }
     input {
       background-color: var(--black);
-      ::placeholder{
-        color: #9F9F9F;
+      ::placeholder {
+        color: #9f9f9f;
         padding-left: 14px;
         font-size: 16px;
       }

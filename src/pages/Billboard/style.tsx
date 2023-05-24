@@ -73,6 +73,6 @@ export const PopoverContentStyle = styled.div`
     justify-content: center;
     margin-bottom: 8px;
     text-align: center;
-    border-bottom: 1px solid var(--ds-border,#091e4221);
+    border-bottom: 1px solid var(--ds-border, #091e4221);
   }
 `;

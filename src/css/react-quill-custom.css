@@ -64,7 +64,7 @@
   list-style-type: disc !important;
 }
 
-:-webkit-any(.descriptionDisplay) ol, 
+:-webkit-any(.descriptionDisplay) ol,
 :-webkit-any(.descriptionDisplay) ul {
   padding-inline-start: 40px !important;
   margin-block-start: 1em !important;
