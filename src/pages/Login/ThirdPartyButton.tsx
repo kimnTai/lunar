@@ -6,11 +6,11 @@ const ThirdPartyButton: React.FC<
     text: string;
     iconSrc: string;
   }
-> = (props) => {
+> = ({ iconSrc, ...props }) => {
   return (
     <ThirdPartyButtonCss
       {...props}
-      icon={<img src={props.iconSrc} alt="" />}
+      icon={<img src={iconSrc} alt="" />}
       className="d-center"
     >
       {props.text}
