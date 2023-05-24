@@ -14,7 +14,7 @@ const AddBoards: React.FC<{
   getOrganization: PropsFromRedux["getOrganization"];
 }> = ({ open, setOpen, organizationId, getOrganization }) => {
   const [_form] = Form.useForm<NewBoardsProps>();
-  const onCancel: () => void = () => {
+  const onCancel = () => {
     setOpen(false);
   };
   const [_result, loading, callApi] = useApi(newBoardApi);

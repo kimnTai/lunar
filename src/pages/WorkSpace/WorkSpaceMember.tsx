@@ -72,7 +72,7 @@ const WorkSpaceMember: React.FC<{
     }
   };
 
-  const onCancel: () => void = () => {
+  const onCancel = () => {
     setOpenInviteModal(false);
   };
 

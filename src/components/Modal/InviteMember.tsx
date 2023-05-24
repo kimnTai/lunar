@@ -25,7 +25,7 @@ const InviteMember: React.FC<{
     userIdList: [],
   });
 
-  const onCancel: () => void = () => {
+  const onCancel = () => {
     setOpen(false);
   };
 
