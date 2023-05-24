@@ -9,7 +9,7 @@ import {
   PaperClipOutlined,
   ClockCircleOutlined,
 } from "@ant-design/icons";
-import { Avatar, Col } from "antd";
+import { Avatar } from "antd";
 
 const TrelloCardInner: React.FC<TrelloCardInnerProps> = React.memo((props) => {
   const { quotes, setOpenModal } = props;
@@ -39,14 +39,13 @@ const TrelloCardInner: React.FC<TrelloCardInnerProps> = React.memo((props) => {
       let totalNum = 0;
       let doneNum = 0;
       ele.checklist.map((ele) => {
-        const total = ele.checkItem.filter((ele)=> ele.completed === false);
+        const total = ele.checkItem.filter((ele) => ele.completed === false);
         totalNum += total.length;
-        const done = ele.checkItem.filter((ele)=> ele.completed === true);
+        const done = ele.checkItem.filter((ele) => ele.completed === true);
         doneNum += done.length;
-      })
+      });
       setTotalCheckItem(totalNum);
       setFinishCheckItem(doneNum);
-      
     });
   }, [quotes]);
 
@@ -55,7 +54,10 @@ const TrelloCardInner: React.FC<TrelloCardInnerProps> = React.memo((props) => {
       {quotes.card
         .sort((a, b) => +a.position - +b.position)
         .map(
-          ({ id, name, attachment, label, checklist, date, member, comment }, index) => (
+          (
+            { id, name, attachment, label, checklist, date, member, comment },
+            index
+          ) => (
             <Draggable key={id} draggableId={id} index={index}>
               {(dragProvided, dragSnapshot) => (
                 <a
@@ -174,19 +176,25 @@ const TrelloCardInner: React.FC<TrelloCardInnerProps> = React.memo((props) => {
                         <div>
                           <MessageOutlined />
                         </div>
-                        <div style={{ marginLeft: "5px" }}>{comment.length}</div>
+                        <div style={{ marginLeft: "5px" }}>
+                          {comment.length}
+                        </div>
                       </div>
                       <div style={{ display: "flex" }}>
                         <div>
                           <PaperClipOutlined />
                         </div>
-                        <div style={{ marginLeft: "5px" }}>{attachment.length}</div>
+                        <div style={{ marginLeft: "5px" }}>
+                          {attachment.length}
+                        </div>
                       </div>
                       <div style={{ display: "flex" }}>
                         <div>
                           <CheckSquareOutlined />
                         </div>
-                        <div style={{ marginLeft: "5px" }}>{finishCheckItem}/{totalCheckItem}</div>
+                        <div style={{ marginLeft: "5px" }}>
+                          {finishCheckItem}/{totalCheckItem}
+                        </div>
                       </div>
                     </div>
                     {date ? (
@@ -219,15 +227,23 @@ const TrelloCardInner: React.FC<TrelloCardInnerProps> = React.memo((props) => {
                         ) : null}
                       </div>
                     ) : null}
-                    {member.length > 0
-                      ? member.map((ele, idx) => (
-                          <>
-                            <Avatar.Group style={{marginTop: "6px", position: "relative"}}>
-                              <Avatar src={ele.userId.avatar} key={idx} style={{marginRight: "-10px", left: "10px"}}/>
-                            </Avatar.Group>
-                          </>
-                        ))
-                      : null}
+                    {member.map((ele) => (
+                      <Avatar.Group
+                        key={ele.userId._id}
+                        style={{
+                          marginTop: "6px",
+                          position: "relative",
+                        }}
+                      >
+                        <Avatar
+                          src={ele.userId.avatar}
+                          style={{
+                            marginRight: "-10px",
+                            left: "10px",
+                          }}
+                        />
+                      </Avatar.Group>
+                    ))}
                   </TrelloCardInnerStyled>
                 </a>
               )}

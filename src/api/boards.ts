@@ -1,5 +1,9 @@
 import Request from "@/api/base/request";
-import type { BoardsProps, NewBoardsProps } from "@/interfaces/boards";
+import type {
+  AddBoardsMembers,
+  BoardsProps,
+  NewBoardsProps,
+} from "@/interfaces/boards";
 
 // 新增boards
 export const newBoardApi = (data: NewBoardsProps) => {
@@ -31,3 +35,11 @@ export const postCloneBoardApi = (data: {
   Request.post<any, PrometheusResponse<BoardsProps>>(`/boards/cloneById`, {
     ...data,
   });
+
+// 新增看板成員
+export const addBoardMembersApi = (data: AddBoardsMembers) => {
+  return Request.post<any, PrometheusResponse<BoardsProps>>(
+    `/boards/${data.boardId}/members`,
+    data
+  );
+};

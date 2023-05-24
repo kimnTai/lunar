@@ -1,73 +1,51 @@
-import React from "react";
-import { Row, Col, Button, Skeleton, Popover } from "antd";
-import { WorkSpaceCardCss } from "./style";
+import PermissionBtn from "@/components/WorkSpace/PermissionBtn";
 import { WorkSpaceCardProps } from "@/interfaces/workspace";
 import { EllipsisOutlined } from "@ant-design/icons";
+import { Button, Col, Popover, Row } from "antd";
+import React from "react";
 import { useNavigate } from "react-router-dom";
-import { deleteBoardApi } from "@/api/boards";
-import PermissionBtn from "@/components/WorkSpace/PermissionBtn";
+import WorkSpaceCardContent from "./WorkSpaceCardContent";
+import { WorkSpaceCardCss } from "./style";
 
-export const WorkSpaceCard: React.FC<WorkSpaceCardProps> = ({
+const WorkSpaceCard: React.FC<WorkSpaceCardProps> = ({
   title,
-  privacy,
-  backgroundUrl,
+  permission,
+  backgroundImage,
   setWorkSpace,
-  getOrganization,
-  id,
+  boardId,
 }) => {
   const navigate = useNavigate();
 
-  const EllipsisAction: React.FC<{ id: string }> = ({ id }) => {
-    return (
-      <>
-        <Button
-          type="text"
-          onClick={(e) => {
-            e.stopPropagation();
-          }}
-        >
-          分享看板
-        </Button>
-        <div></div>
-        <Button
-          danger
-          type="text"
-          onClick={async (e) => {
-            e.stopPropagation();
-            await deleteBoardApi(id);
-            await getOrganization();
-          }}
-        >
-          刪除看板
-        </Button>
-        <div style={{ color: "red" }}></div>
-      </>
-    );
-  };
   return (
     <WorkSpaceCardCss
       hoverable
-      backgroundurl={backgroundUrl}
-      onClick={(_e) => {
+      background-image={`${backgroundImage}`}
+      onClick={() => {
         setWorkSpace();
-        navigate(`/board/${id}`);
+        navigate(`/board/${boardId}`);
       }}
     >
       <Row style={{ marginBottom: "auto" }}>
-        <Col style={{ fontWeight: 700, fontSize: "18px", lineHeight: "150%" }}>
+        <Col
+          style={{
+            fontWeight: 700,
+            fontSize: "18px",
+            lineHeight: "150%",
+          }}
+        >
           {title}
         </Col>
       </Row>
       <Row justify={"space-between"} align={"middle"}>
         <Col>
-          <PermissionBtn permission={privacy} id={id} />
+          <PermissionBtn permission={permission} id={boardId} />
         </Col>
         <Col>
           <Popover
-            content={<EllipsisAction id={id} />}
             trigger="click"
             placement="bottomRight"
             arrow={false}
+            content={<WorkSpaceCardContent boardId={boardId} />}
           >
             <Button
               icon={<EllipsisOutlined />}
@@ -85,13 +63,4 @@ export const WorkSpaceCard: React.FC<WorkSpaceCardProps> = ({
   );
 };
 
-export const SkeletonCard: React.FC = () => {
-  return (
-    <WorkSpaceCardCss
-      backgroundurl={"none"}
-      style={{ backgroundColor: "var(--gray9f)" }}
-    >
-      <Skeleton active />
-    </WorkSpaceCardCss>
-  );
-};
+export default WorkSpaceCard;

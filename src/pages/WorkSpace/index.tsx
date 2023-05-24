@@ -3,7 +3,7 @@ import { WorkSpaceCss } from "./style";
 import { Row, Col, Button, Select } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import { useParams } from "react-router-dom";
-import { WorkSpaceCard } from "./WorkSpaceCard";
+import WorkSpaceCard from "./WorkSpaceCard";
 import AddBoards from "@/components/Modal/AddBoards";
 import type { PropsFromRedux } from "@/router";
 import { WorkSpaceHeader } from "@/components/WorkSpace/WorkSpaceHeader";
@@ -12,8 +12,7 @@ import { useAppSelector } from "@/hooks/useAppSelector";
 const WorkSpace: React.FC<{
   setWorkSpace: PropsFromRedux["changeWorkSpace"];
   getOrganization: PropsFromRedux["getOrganization"];
-}> = (props) => {
-  const { setWorkSpace, getOrganization } = props;
+}> = ({ setWorkSpace, getOrganization }) => {
   const { workSpaceId } = useParams();
   const [openModal, setOpenModal] = useState(false);
 
@@ -30,7 +29,7 @@ const WorkSpace: React.FC<{
       <Row align={"middle"} justify={"space-between"}>
         <WorkSpaceHeader
           userOrganization={userOrganization}
-          organizationId={workSpaceId!}
+          organizationId={workSpaceId || ""}
           getOrganization={getOrganization}
         />
         <Col>
@@ -49,7 +48,7 @@ const WorkSpace: React.FC<{
           <AddBoards
             open={openModal}
             setOpen={setOpenModal}
-            organizationId={workSpaceId!}
+            organizationId={workSpaceId}
             getOrganization={getOrganization}
           />
         </Col>
@@ -79,21 +78,17 @@ const WorkSpace: React.FC<{
         </Col>
       </Row>
       <Row style={{ marginTop: "16px", columnGap: "8px" }}>
-        {userOrganization?.board.length ? (
-          userOrganization.board.map((ele, idx) => (
-            <WorkSpaceCard
-              title={ele.name}
-              privacy={ele.permission}
-              backgroundUrl={""}
-              setWorkSpace={setWorkSpace}
-              getOrganization={getOrganization}
-              id={ele._id}
-              key={idx}
-            />
-          ))
-        ) : (
-          <></>
-        )}
+        {userOrganization?.board.map((ele, idx) => (
+          <WorkSpaceCard
+            title={ele.name}
+            permission={ele.permission}
+            backgroundImage={ele.image}
+            setWorkSpace={setWorkSpace}
+            getOrganization={getOrganization}
+            boardId={ele._id}
+            key={idx}
+          />
+        ))}
       </Row>
     </WorkSpaceCss>
   );

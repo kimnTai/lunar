@@ -512,7 +512,11 @@ const PopoverContent: React.FC<PopoverContentProps> = (props) => {
   );
 };
 
-const BillboardHeader: React.FC<BillboardHeaderProps> = ({ name, member }) => {
+const BillboardHeader: React.FC<BillboardHeaderProps> = ({
+  name,
+  member,
+  boardInviteLink,
+}) => {
   const [openInvite, setOpenInvite] = useState(false);
   const [openPopover, setOpenPopover] = useState(false);
   const [isMenu, setIsMenu] = useState(true);
@@ -589,7 +593,12 @@ const BillboardHeader: React.FC<BillboardHeaderProps> = ({ name, member }) => {
           </Button>
         </Popover>
       </div>
-      <AddMember open={openInvite} setOpen={setOpenInvite} member={member} />
+      <AddMember
+        open={openInvite}
+        setOpen={setOpenInvite}
+        member={member}
+        boardInviteLink={boardInviteLink}
+      />
     </BillboardHeaderCss>
   );
 };

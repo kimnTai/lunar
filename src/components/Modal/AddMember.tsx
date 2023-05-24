@@ -1,13 +1,18 @@
-import React from "react";
+import React, { useState } from "react";
 import { AddMemberCss } from "./style";
 import { OrganizationMemberProps } from "@/interfaces/organization";
-import { Avatar, Button, Divider, Form, Input, Select } from "antd";
-import { LinkOutlined, MinusOutlined } from "@ant-design/icons";
-
+import { Avatar, Button, Divider, Form, Select } from "antd";
+import { MinusOutlined } from "@ant-design/icons";
+import CopyInviteLinkBtn from "../WorkSpace/CopyInviteLinkBtn";
+import InviteMemberSelect from "../WorkSpace/InviteMemberSelect";
+import { useApi } from "@/hooks/useApiHook";
+import { addBoardMembersApi } from "@/api/boards";
+import { useParams } from "react-router";
 interface AddMemberProps {
   member: OrganizationMemberProps[];
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  boardInviteLink: string;
 }
 
 const UserList: React.FC<OrganizationMemberProps> = (props) => {
@@ -47,27 +52,53 @@ const UserList: React.FC<OrganizationMemberProps> = (props) => {
     </div>
   );
 };
-const AddMember: React.FC<AddMemberProps> = ({ member, open, setOpen }) => {
+const AddMember: React.FC<AddMemberProps> = ({
+  member,
+  open,
+  setOpen,
+  boardInviteLink,
+}) => {
+  const [_result, loading, callApi] = useApi(addBoardMembersApi);
+  const [selectedUsers, setSelectedUsers] = useState<{ userIdList: string[] }>({
+    userIdList: [],
+  });
   const handleCancel = () => {
     setOpen(false);
+  };
+  const { boardId } = useParams();
+
+  const onFinish = async () => {
+    await callApi({
+      boardId: boardId!,
+      userIdList: selectedUsers.userIdList,
+    });
+
+    setSelectedUsers({
+      userIdList: [],
+    });
+
+    handleCancel();
   };
 
   return (
     <AddMemberCss open={open} footer={null} onCancel={handleCancel} width={576}>
       <div className="header">邀請看板成員</div>
-      <Form>
-        <Form.Item name="user" className="user">
-          <Input placeholder="電子郵件或用戶名稱" />
+      <Form onFinish={onFinish}>
+        <Form.Item className="user">
+          <InviteMemberSelect
+            selectedUsers={selectedUsers}
+            setSelectedUsers={setSelectedUsers}
+          />
         </Form.Item>
-        <Form.Item name="memberType" initialValue="user" className="select">
+        <Form.Item initialValue="user" className="select">
           <Select>
             <Select.Option value="master">管理員</Select.Option>
             <Select.Option value="user">成員</Select.Option>
           </Select>
         </Form.Item>
         <Form.Item className="btn">
-          <Button type="primary" htmlType="submit">
-            分享
+          <Button type="primary" htmlType="submit" loading={loading}>
+            邀請
           </Button>
         </Form.Item>
       </Form>
@@ -78,13 +109,11 @@ const AddMember: React.FC<AddMemberProps> = ({ member, open, setOpen }) => {
         style={{ justifyContent: "right", alignItems: "center" }}
       >
         <p>透過連結邀請新成員加入看板</p>
-        <Button
-          type="text"
-          icon={<LinkOutlined />}
+        <CopyInviteLinkBtn
+          setOpen={setOpen}
           style={{ backgroundColor: "var(--graye9)", marginLeft: "16px" }}
-        >
-          建立連結
-        </Button>
+          boardInviteLink={boardInviteLink}
+        />
       </div>
     </AddMemberCss>
   );

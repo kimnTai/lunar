@@ -14,6 +14,7 @@ export interface BoardsProps {
   list: ListsProps[];
   label: any[];
   id: string;
+  image?: string;
 }
 
 export interface NewBoardsProps {
@@ -25,6 +26,7 @@ export interface NewBoardsProps {
 export interface BillboardHeaderProps {
   name: string;
   member: OrganizationMemberProps[];
+  boardInviteLink: string;
 }
 
 export interface SingleBoardProps {}
@@ -48,4 +50,9 @@ export interface PopoverContentProps {
   setIsUser: React.Dispatch<React.SetStateAction<boolean>>;
   setIsMenu: React.Dispatch<React.SetStateAction<boolean>>;
   setIsSetting: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+export interface AddBoardsMembers {
+  boardId: string;
+  userIdList: string[];
 }

@@ -2,11 +2,11 @@ import { useEffect, useRef, useState } from "react";
 
 const useWebSocket = (
   boardId: string,
-  onUpdate: (id: string) => Promise<void>
+  _onUpdate: (id: string) => Promise<void>
 ) => {
   const webSocketRef = useRef<WebSocket | null>(null);
   const [connect, setConnect] = useState(false);
-  const [data, setData] = useState<any>({ lists: [] });
+  const [data, _setData] = useState<any>({ lists: [] });
   useEffect(() => {
     // 創建WebSocket連接
     webSocketRef.current = new WebSocket(

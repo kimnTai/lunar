@@ -72,7 +72,7 @@ const WorkSpaceMember: React.FC<{
     }
   };
 
-  const onCancel: () => void = () => {
+  const onCancel = () => {
     setOpenInviteModal(false);
   };
 
@@ -157,7 +157,7 @@ const WorkSpaceMember: React.FC<{
                 </Col>
                 <CopyInviteLinkBtn
                   userOrganization={userOrganization}
-                  onCancel={onCancel}
+                  setOpen={onCancel}
                 />
               </Row>
             </div>
@@ -168,7 +168,7 @@ const WorkSpaceMember: React.FC<{
             <Divider />
             {userOrganization?.member && (
               <List
-                style={{ height: "24vh", overflowY: "scroll" }}
+                style={{ height: "24vh", overflowY: "auto" }}
                 itemLayout="horizontal"
                 dataSource={userOrganization?.member}
                 renderItem={(member) => (

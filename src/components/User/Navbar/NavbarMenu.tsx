@@ -13,7 +13,11 @@ import {
 
 interface NavBarMenuProps {
   workSpace: boolean;
-  data: { name: string; _id: string }[];
+  data: {
+    name: string;
+    _id: string;
+    image?: string;
+  }[];
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
   id?: string;
   workSpaceId?: string;
@@ -82,10 +86,19 @@ const NavBarMenu: React.FC<NavBarMenuProps> = ({
           ele._id,
           <ColorIcon
             color={"white"}
-            text={`${ele.name.at(0)}`}
+            text={workSpace ? `${ele.name.at(0)}` : ""}
             size={"24px"}
             fontSize={"14px"}
-            background={"var(--blue)"}
+            background={
+              workSpace
+                ? "var(--blue)"
+                : `linear-gradient(
+                  112.89deg,
+                  #0083ff 1.48%,
+                  rgba(128, 0, 255, 0.86) 100%
+                )`
+            }
+            background-image={ele.image && `url(${ele.image})`}
           />,
           workSpace ? getSubMenu(ele._id) : undefined
         )

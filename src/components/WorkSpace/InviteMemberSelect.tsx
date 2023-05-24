@@ -1,22 +1,23 @@
 import { searchLunarMemberApi } from "@/api/search";
 import { useApi } from "@/hooks/useApiHook";
 import { Avatar, List, Row, Select, Spin } from "antd";
+import { debounce } from "lodash";
 
 const InviteMemberSelect: React.FC<{
-  organizationId: string;
+  organizationId?: string;
   selectedUsers: { userIdList: string[] };
   setSelectedUsers: Function;
 }> = ({ organizationId, selectedUsers, setSelectedUsers }) => {
   const [result, loading, callApi] = useApi(searchLunarMemberApi);
 
-  const onSearch = async (value: string) => {
+  const onSearch = debounce(async (value: string) => {
     if (value.length >= 1) {
       await callApi({
         query: value,
         organizationId,
       });
     }
-  };
+  }, 800);
 
   const filteredUsers = result?.result.filter(
     (user) => !selectedUsers.userIdList.includes(user._id)

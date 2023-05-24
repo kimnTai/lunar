@@ -16,15 +16,12 @@ const LoginLayout = React.memo<{
   return (
     <Layout>
       <Navbar
-        workSpace={showWorkSpace}
         setWorkSpace={changeWorkSpace}
         getOrganization={getOrganization}
       />
       <Layout>
-        <Header workSpace={showWorkSpace} setWorkSpace={changeWorkSpace} />
-        <MainLayoutCss workspace={showWorkSpace.toString()}>
-          {children}
-        </MainLayoutCss>
+        <Header setWorkSpace={changeWorkSpace} />
+        <MainLayoutCss workspace={`${showWorkSpace}`}>{children}</MainLayoutCss>
       </Layout>
     </Layout>
   );
