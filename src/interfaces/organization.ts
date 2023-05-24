@@ -24,11 +24,12 @@ export interface OrganizationMemberProps {
 
 export interface NewOrganizationFormProps {
   name: string;
+  member?: addOrganizationMemberProps;
 }
 
 export interface addOrganizationMemberProps {
-  organizationId: string;
-  userIdList?: string[];
+  organizationId?: string;
+  userIdList: string[];
 }
 
 export interface DeleteOrganizationMemberProps {

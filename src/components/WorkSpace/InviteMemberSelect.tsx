@@ -4,7 +4,7 @@ import { Avatar, List, Row, Select, Spin } from "antd";
 import { debounce } from "lodash";
 
 const InviteMemberSelect: React.FC<{
-  organizationId: string;
+  organizationId?: string;
   selectedUsers: { userIdList: string[] };
   setSelectedUsers: Function;
 }> = ({ organizationId, selectedUsers, setSelectedUsers }) => {

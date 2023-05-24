@@ -5,6 +5,7 @@ import { NewOrganizationFormProps } from "@/interfaces/organization";
 import { newOrganizationApi } from "@/api/organization";
 import { useAppDispatch } from "@/hooks/useAppDispatch";
 import CONSTANTS from "@/redux/constants";
+import InviteMemberSelect from "../WorkSpace/InviteMemberSelect";
 
 const AddWorkSpace: React.FC<{
   open: boolean;
@@ -12,12 +13,15 @@ const AddWorkSpace: React.FC<{
 }> = ({ open, setOpen }) => {
   const [form] = Form.useForm<NewOrganizationFormProps>();
   const [buttonLoading, setButtonLoading] = useState(false);
+  const [selectedUsers, setSelectedUsers] = useState<{ userIdList: string[] }>({
+    userIdList: [],
+  });
   const dispatch = useAppDispatch();
 
   const onFinish = async (values: NewOrganizationFormProps) => {
     setButtonLoading(true);
 
-    newOrganizationApi({ name: values.name })
+    newOrganizationApi({ name: values.name, member: selectedUsers })
       .then((res) => {
         dispatch({
           type: CONSTANTS.CREATE_NEW_ORGANIZATION,
@@ -39,17 +43,12 @@ const AddWorkSpace: React.FC<{
         <Form.Item label="工作區名稱" name="name">
           <Input />
         </Form.Item>
-        <Form.Item
-          label={
-            <div className="d-space">
-              <h3>邀請你的團隊</h3>
-              <a>以鏈結邀請</a>
-            </div>
-          }
-          name="invite"
-          className="invite"
-        >
-          <Input />
+        <Form.Item label="邀請你的團隊" className="invite">
+          <InviteMemberSelect
+            selectedUsers={selectedUsers}
+            setSelectedUsers={setSelectedUsers}
+          />
+          {/* <Input /> */}
         </Form.Item>
         <Form.Item>
           <Button type="primary" htmlType="submit" loading={buttonLoading}>
