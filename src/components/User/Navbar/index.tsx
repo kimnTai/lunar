@@ -16,10 +16,10 @@ import type { PropsFromRedux } from "@/router";
 import { useAppSelector } from "@/hooks/useAppSelector";
 
 export const Navbar: React.FC<{
-  workSpace: boolean;
   setWorkSpace: PropsFromRedux["changeWorkSpace"];
   getOrganization: PropsFromRedux["getOrganization"];
-}> = ({ workSpace, setWorkSpace, getOrganization }) => {
+}> = ({ setWorkSpace, getOrganization }) => {
+  const showWorkSpace = useAppSelector((state) => state.screen.showWorkSpace);
   const [showNavbar, setShowNavBar] = useState(false);
   const navigate = useNavigate();
   const { boardId, workSpaceId } = useParams();
@@ -37,10 +37,10 @@ export const Navbar: React.FC<{
     board.map(({ _id }) => _id).includes(openKey)
   );
   useEffect(() => {
-    if (!workSpace && boardId) {
+    if (!showWorkSpace && boardId) {
       setOpenKey(boardId);
     }
-  }, [workSpace, boardId]);
+  }, [showWorkSpace, boardId]);
 
   return (
     <Sider
@@ -50,13 +50,13 @@ export const Navbar: React.FC<{
       collapsedWidth={16}
       trigger={null}
       style={{
-        backgroundColor: workSpace ? "white" : "var(--black23)",
+        backgroundColor: showWorkSpace ? "white" : "var(--black23)",
       }}
     >
       {!showNavbar ? (
         <>
           <div className="title d-space">
-            {workSpace ? (
+            {showWorkSpace ? (
               <img src={Logo} className="logo" />
             ) : (
               <div className="logo-div">
@@ -88,17 +88,17 @@ export const Navbar: React.FC<{
               }}
             />
           </div>
-          {workSpace ? (
+          {showWorkSpace ? (
             <NavBarMenu
               workSpaceId={workSpaceId}
-              workSpace={workSpace}
+              workSpace={showWorkSpace}
               data={userOrganization}
               setOpen={setOpen}
             />
           ) : (
             <>
               <NavBarMenu
-                workSpace={workSpace}
+                workSpace={showWorkSpace}
                 data={currentOrganization?.board || []}
                 setOpen={setOpen}
                 id={openKey}
@@ -119,7 +119,7 @@ export const Navbar: React.FC<{
           }}
         />
       )}
-      {workSpace ? (
+      {showWorkSpace ? (
         <AddWorkSpace open={open} setOpen={setOpen} />
       ) : (
         <AddBoards

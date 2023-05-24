@@ -8,9 +8,9 @@ import { UserModal } from "./UserModal";
 import { useAppSelector } from "@/hooks/useAppSelector";
 
 export const Header: React.FC<{
-  workSpace: boolean;
   setWorkSpace: React.Dispatch<React.SetStateAction<boolean>>;
-}> = ({ workSpace, setWorkSpace }) => {
+}> = ({ setWorkSpace }) => {
+  const showWorkSpace = useAppSelector((state) => state.screen.showWorkSpace);
   const { avatar, name, email } = useAppSelector((state) => state.user.user);
   const organization = useAppSelector((state) => state.user.organization);
   const navigate = useNavigate();
@@ -32,12 +32,12 @@ export const Header: React.FC<{
   return (
     <HeaderCss
       className="d-space"
-      style={{ backgroundColor: workSpace ? "white" : "var(--black23)" }}
+      style={{ backgroundColor: showWorkSpace ? "white" : "var(--black23)" }}
     >
       <div className="d-center">
         <div
           style={{
-            display: workSpace ? "none" : "flex",
+            display: showWorkSpace ? "none" : "flex",
           }}
         >
           <DropdownBtn items={selectOrganizationItem} title={"工作區"} />
@@ -53,12 +53,12 @@ export const Header: React.FC<{
         </div>
 
         <Input
-          className={workSpace ? "search" : "darkSearch"}
+          className={showWorkSpace ? "search" : "darkSearch"}
           placeholder="搜尋所有卡片"
           prefix={
             <SearchOutlined
               style={{
-                color: workSpace ? "var(--black23)" : "white",
+                color: showWorkSpace ? "var(--black23)" : "white",
               }}
             />
           }
@@ -93,7 +93,10 @@ export const Header: React.FC<{
         >
           <Avatar src={avatar} />
           <p
-            style={{ marginLeft: "8px", color: workSpace ? "black" : "white" }}
+            style={{
+              marginLeft: "8px",
+              color: showWorkSpace ? "black" : "white",
+            }}
           >
             {name}
           </p>

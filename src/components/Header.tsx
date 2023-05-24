@@ -10,11 +10,13 @@ const HeaderCss = styled.div`
   color: white;
 `;
 
-export default function Header() {
+const Header: React.FC = () => {
   return (
     <HeaderCss>
       <img src={HeaderLogo} alt="" />
       <span>註冊頁</span>
     </HeaderCss>
   );
-}
+};
+
+export default Header;

@@ -25,7 +25,7 @@ const InviteMember: React.FC<{
     userIdList: [],
   });
 
-  const onCancel: () => void = () => {
+  const onCancel = () => {
     setOpen(false);
   };
 
@@ -97,7 +97,13 @@ const InviteMember: React.FC<{
             </Row>
             <CopyInviteLinkBtn
               userOrganization={userOrganization}
-              onCancel={onCancel}
+              setOpen={setOpen}
+              style={{
+                backgroundColor: "white",
+                color: "var(--black23)",
+                width: "130px",
+                height: "32px",
+              }}
             />
           </Row>
         </Form.Item>

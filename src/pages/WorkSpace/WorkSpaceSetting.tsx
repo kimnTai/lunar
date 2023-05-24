@@ -40,7 +40,7 @@ const WorkSpaceSetting: React.FC<{
       <Row align={"middle"} justify={"space-between"}>
         <WorkSpaceHeader
           userOrganization={userOrganization}
-          organizationId={workSpaceId!}
+          organizationId={workSpaceId || ""}
           getOrganization={getOrganization}
         />
 
@@ -128,7 +128,7 @@ const WorkSpaceSetting: React.FC<{
         <DeleteOrganization
           open={openDeleteModal}
           setOpen={setOpenDeleteModal}
-          organizationId={workSpaceId!}
+          organizationId={workSpaceId}
           getOrganization={getOrganization}
           userOrganization={userOrganization}
         />

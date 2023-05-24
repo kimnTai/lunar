@@ -51,14 +51,22 @@ export const WorkSpaceMemberCss = styled.div`
   }
 `;
 
-export const WorkSpaceCardCss = styled(Card)<{ backgroundurl: string }>`
-  background-color: var(--dark); // 暫時使用
-
+export const WorkSpaceCardCss = styled(Card)<{ "background-image": string }>`
   color: white;
   width: 284px;
   height: 160px;
   padding: 16px;
-  background-image: url(${(props) => props.backgroundurl});
+  background: linear-gradient(
+    112.89deg,
+    #0083ff 1.48%,
+    rgba(128, 0, 255, 0.86) 100%
+  );
+  background-image: ${(props) => {
+    if (!!props["background-image"]) {
+      return `url(${props["background-image"]})`;
+    }
+  }};
+  background-size: 284px 160px;
   .ant-card-body {
     padding: 0;
     display: flex;

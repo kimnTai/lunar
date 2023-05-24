@@ -15,7 +15,7 @@ const RemoveMember: React.FC<{
 }> = ({ open, setOpen, organizationId, getOrganization, selectedMember }) => {
   const userId = selectedMember?.userId._id;
 
-  const onCancel: () => void = () => {
+  const onCancel = () => {
     setOpen(false);
   };
 

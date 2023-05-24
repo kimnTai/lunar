@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { DeleteOrgModalCss } from "./style";
 import { Button, Form, Input } from "antd";
 import { deleteOrganizationApi } from "@/api/organization";
-import { useApi } from "@/hooks/useApiHook";
 import { OrganizationProps } from "@/interfaces/organization";
 import { useNavigate } from "react-router-dom";
 import { PropsFromRedux } from "@/router";
@@ -10,12 +9,12 @@ import { PropsFromRedux } from "@/router";
 const DeleteOrganization: React.FC<{
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  organizationId: string;
+  organizationId?: string;
   getOrganization: PropsFromRedux["getOrganization"];
   userOrganization?: OrganizationProps;
 }> = ({ open, setOpen, organizationId, getOrganization, userOrganization }) => {
   const navigate = useNavigate();
-  const [isButtonDisabled, setIsButtonDisabled] = useState<boolean>(true);
+  const [isButtonDisabled, setIsButtonDisabled] = useState(true);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -27,15 +26,22 @@ const DeleteOrganization: React.FC<{
     setOpen(false);
   };
 
-  const [_result, loading, callApi] = useApi(deleteOrganizationApi);
-
+  const [buttonLoading, setButtonLoading] = useState(false);
   const onFinish = async () => {
-    await callApi({
-      organizationId,
-    });
-    await getOrganization();
-    navigate(`/`);
-    onCancel();
+    if (!organizationId) {
+      return;
+    }
+    setButtonLoading(true);
+
+    deleteOrganizationApi({
+      organizationId: organizationId,
+    })
+      .then(() => getOrganization())
+      .finally(() => {
+        navigate(`/`);
+        onCancel();
+        setButtonLoading(false);
+      });
   };
   return (
     <DeleteOrgModalCss
@@ -45,11 +51,7 @@ const DeleteOrganization: React.FC<{
       onCancel={onCancel}
       footer={null}
     >
-      <Form
-        // form={form}
-        layout="vertical"
-        onFinish={onFinish}
-      >
+      <Form layout="vertical" onFinish={onFinish}>
         <p
           style={{
             fontWeight: "700",
@@ -83,7 +85,7 @@ const DeleteOrganization: React.FC<{
         <Button
           type="primary"
           htmlType="submit"
-          loading={loading}
+          loading={buttonLoading}
           style={{
             width: "100%",
             height: "34px",
@@ -100,4 +102,5 @@ const DeleteOrganization: React.FC<{
     </DeleteOrgModalCss>
   );
 };
+
 export default DeleteOrganization;

@@ -34,7 +34,6 @@ const CheckList: React.FC<{ checkList?: ChecklistProps[] }> = ({
                   ignoreContainerClipping={undefined}
                   isDropDisabled={undefined}
                   isCombineEnabled={false}
-                  // renderClone={useClone ? (provided, snapshot, descriptor) => <QuoteItem quote={quotes[descriptor.source.index]} provided={provided} isDragging={snapshot.isDragging} isClone /> : null}
                   renderClone={undefined}
                 >
                   {(dropProvided, _dropSnapshot) => (
