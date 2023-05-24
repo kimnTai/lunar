@@ -1,6 +1,9 @@
 import { useEffect, useRef, useState } from "react";
 
-const useWebSocket = (boardId: string) => {
+const useWebSocket = (
+  boardId: string,
+  onUpdate: (id: string) => Promise<void>
+) => {
   const webSocketRef = useRef<WebSocket | null>(null);
   const [connect, setConnect] = useState(false);
   const [data, setData] = useState<any>({ lists: [] });

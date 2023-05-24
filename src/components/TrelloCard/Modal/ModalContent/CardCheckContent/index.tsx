@@ -2,11 +2,15 @@ import { DragDropContext, DropResult, Droppable } from "react-beautiful-dnd";
 import CheckList from "./CheckList";
 import { useCardModalContext } from "@/context/CardModalContext";
 import { useState } from "react";
-import { updateCardDiffColumn, updateCardInColumn, updateColumn } from "@/utils/cardFunc";
+import {
+  updateCardDiffColumn,
+  updateCardInColumn,
+  updateColumn,
+} from "@/utils/cardFunc";
 import { ChecklistProps } from "@/interfaces/checklists";
 
 const CardCheckContent: React.FC = () => {
-  const [cardData, _setCardData] = useState(useCardModalContext().cardData);
+  const [cardData, setCardData] = useState(useCardModalContext().cardData);
   console.log("===cardData===", cardData);
   const onDragEnd = (result: DropResult) => {
     console.log(result);
@@ -41,11 +45,12 @@ const CardCheckContent: React.FC = () => {
       return;
     }
 
-    updateCardDiffColumn(
+    const data = updateCardDiffColumn(
       result,
       cardData?.checklist! as ChecklistProps[],
       "CheckList"
-    );
+    ) as ChecklistProps[];
+    setCardData({ ...cardData, checklist: data } as any);
   };
 
   return (

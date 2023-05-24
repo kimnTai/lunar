@@ -33,6 +33,7 @@
 - [styled-component](https://styled-components.com/)
 - [vitest](https://cn.vitest.dev/api/)
 - [swiper](https://swiperjs.com/react)
+- [WebSocket](https://developer.mozilla.org/en-US/docs/Web/API/WebSocket/send)
 
 ## 環境變數說明
 

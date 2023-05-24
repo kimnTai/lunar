@@ -57,4 +57,5 @@ export interface UpdateCardCheckList {
   checklistId: string;
   name?: string;
   position: string;
+  checklistIdOld?: string;
 }

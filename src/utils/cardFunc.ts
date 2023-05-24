@@ -101,11 +101,13 @@ const getNewColumn = (
 ) => {
   const useColumn = [...columns];
   const useIndex = columns.findIndex((ele) => ele.id === id);
+
   if (useIndex !== -1) {
     const useArr =
       type === "Card"
         ? { ...useColumn[useIndex], card: newArr }
         : { ...useColumn[useIndex], checkItem: newArr };
+    console.log();
     useColumn.splice(useIndex, 1, useArr as any);
   }
   return useColumn;
@@ -174,25 +176,12 @@ export const updateCardDiffColumn = (
         checklistId: (cardList as ChecklistProps[]).find(
           (ele) => ele.id === destination.droppableId
         )!.id,
+        checklistIdOld: (cardList as ChecklistProps[]).find(
+          (ele) => ele.id === source.droppableId
+        )!.id,
         position: usePosition,
       });
-  // console.log({
-  //   checkItemId: result.draggableId,
-  //   cardId: (cardList as ChecklistProps[]).find(
-  //     (ele) => ele.id === destination.droppableId
-  //   )!.cardId,
-  //   checklistId: (cardList as ChecklistProps[]).find(
-  //     (ele) => ele.id === destination.droppableId
-  //   )!.id,
-  //   position: usePosition,
-  // });
 
-  console.log("===result.draggableId===", result.draggableId);
-  console.log(
-    (cardList as ChecklistProps[]).find(
-      (ele) => ele.id === destination.droppableId
-    )
-  );
   return type === "Card"
     ? getNewColumn(
         getNewColumn(cardList, source.droppableId, current),

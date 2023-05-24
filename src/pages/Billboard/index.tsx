@@ -26,11 +26,12 @@ const Billboard: React.FC<{
   const [cardList, setCardList] = useState<ListsProps[]>([]);
   const { boardId } = useParams();
   const [result, loading, callApi] = useApi(getBoardApi);
-  const { data, sendMessage } = useWebSocket(boardId!);
+  const { data, sendMessage } = useWebSocket(boardId!, callApi);
 
   // socket
   useEffect(() => {
-    sendMessage({ type: "subscribe", boardId: boardId });
+    sendMessage({ type: "subscribe", boardId });
+    return () => sendMessage({ type: "unsubscribe", boardId });
   });
 
   useEffect(() => {

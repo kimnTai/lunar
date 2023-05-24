@@ -24,10 +24,15 @@ export const updateCardApi = (data: UpdateCardProps) =>
 
 // 更新checkItem
 export const updateCheckItemApi = (data: UpdateCardCheckItem) =>
-  Request.put(
-    `/cards/${data.cardId}/checklist/${data.checklistId}/checkItem/${data.checkItemId}`,
-    data
-  );
+  data.checklistIdOld
+    ? Request.put(
+        `/cards/${data.cardId}/checklist/${data.checklistIdOld}/checkItem/${data.checkItemId}`,
+        data
+      )
+    : Request.put(
+        `/cards/${data.cardId}/checklist/${data.checklistId}/checkItem/${data.checkItemId}`,
+        data
+      );
 
 // 更新checkList
 export const updateChecklistApi = (data: UpdateCardCheckList) =>
