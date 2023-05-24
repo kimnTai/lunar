@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button, Col, Form, Input, Layout, Row } from "antd";
 import { NewOrganizationFormProps as FormValues } from "@/interfaces/organization";
@@ -9,16 +9,20 @@ import Logo from "@/assets/images/img_logo.png";
 import Bg from "@/assets/images/newWorkSpace_bg.png";
 import CreateWork from "@/assets/images/img_createWork.png";
 import type { PropsFromRedux } from "@/router";
+import InviteMemberSelect from "@/components/WorkSpace/InviteMemberSelect";
 
 const NewWorkSpace: React.FC<{
   getOrganization: PropsFromRedux["getOrganization"];
 }> = ({ getOrganization }) => {
   const [form] = Form.useForm<FormValues>();
   const [_result, loading, callApi] = useApi(newOrganizationApi);
+  const [selectedUsers, setSelectedUsers] = useState<{ userIdList: string[] }>({
+    userIdList: [],
+  });
 
   const navigate = useNavigate();
   const onFinish = async (values: FormValues) => {
-    await callApi({ name: values.name });
+    await callApi({ name: values.name, member: selectedUsers });
     await getOrganization();
     navigate("/");
   };
@@ -75,7 +79,10 @@ const NewWorkSpace: React.FC<{
                 name="invite"
                 extra="邀請您的團隊成員，便於他們看到你正在處理的工作。"
               >
-                <Input />
+                <InviteMemberSelect
+                  selectedUsers={selectedUsers}
+                  setSelectedUsers={setSelectedUsers}
+                />
               </Form.Item>
               <Form.Item>
                 <Button

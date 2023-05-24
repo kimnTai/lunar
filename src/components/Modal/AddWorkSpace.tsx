@@ -48,7 +48,6 @@ const AddWorkSpace: React.FC<{
             selectedUsers={selectedUsers}
             setSelectedUsers={setSelectedUsers}
           />
-          {/* <Input /> */}
         </Form.Item>
         <Form.Item>
           <Button type="primary" htmlType="submit" loading={buttonLoading}>
