@@ -128,7 +128,7 @@ const WorkSpaceSetting: React.FC<{
         <DeleteOrganization
           open={openDeleteModal}
           setOpen={setOpenDeleteModal}
-          organizationId={workSpaceId!}
+          organizationId={workSpaceId}
           getOrganization={getOrganization}
           userOrganization={userOrganization}
         />
