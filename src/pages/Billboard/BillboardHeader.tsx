@@ -24,7 +24,7 @@ import {
   LogoutOutlined,
   LeftOutlined,
 } from "@ant-design/icons";
-import { Avatar, Button, Popover } from "antd";
+import { Avatar, Button, Popover, Menu, MenuProps } from "antd";
 import AddMember from "@/components/Modal/AddMember";
 import ListButton from "@/components/ListButton";
 import CloneBoardButton from "@/components/CloneBoardButton";
@@ -543,6 +543,7 @@ const BillboardHeader: React.FC<BillboardHeaderProps> = ({ name, member }) => {
             <DashOutlined style={{ color: "white", fontSize: "16px" }} />
           </Button>
         </Popover>
+
       </div>
       <AddMember open={openInvite} setOpen={setOpenInvite} member={member} />
     </BillboardHeaderCss>

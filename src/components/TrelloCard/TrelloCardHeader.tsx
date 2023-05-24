@@ -92,9 +92,9 @@ const TrelloCardHeader: React.FC<TrelloCardHeaderProps> = (props) => {
       </div>
       <div className="d-flex">
         <Button
+          className="button-hover"
           type="text"
           icon={<PlusOutlined style={{ color: "white" }} />}
-          className="button-hover"
           title="新增卡片"
           onClick={() => props.setShowAddCard(true)}
         ></Button>

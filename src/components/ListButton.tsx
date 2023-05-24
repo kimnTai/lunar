@@ -11,7 +11,7 @@ const ListButtonStyled = styled(Button)`
   align-items: center;
 `;
 
-const ListButton: React.FC<ButtonProps & { text: string }> = (props) => {
+const ListButton: React.FC<ButtonProps & { text: string; onClick?: ((event: React.MouseEvent<HTMLElement, MouseEvent>) => void) }> = (props) => {
   return (
     <ListButtonStyled {...props} type="text" style={{ padding: 0 }}>
       {props.text}
