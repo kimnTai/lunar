@@ -1,6 +1,5 @@
-import React from "react";
+import React, { useState } from "react";
 import { AddBoardsCss } from "./style";
-import { useApi } from "@/hooks/useApiHook";
 import { newBoardApi } from "@/api/boards";
 import { NewBoardsProps } from "@/interfaces/boards";
 import { Button, Form, Input, Select } from "antd";
@@ -10,23 +9,30 @@ import { PropsFromRedux } from "@/router";
 const AddBoards: React.FC<{
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  organizationId: string;
+  organizationId?: string;
   getOrganization: PropsFromRedux["getOrganization"];
 }> = ({ open, setOpen, organizationId, getOrganization }) => {
-  const [_form] = Form.useForm<NewBoardsProps>();
+  const [buttonLoading, setButtonLoading] = useState(false);
   const onCancel = () => {
     setOpen(false);
   };
-  const [_result, loading, callApi] = useApi(newBoardApi);
 
   const onFinish = async (values: NewBoardsProps) => {
-    await callApi({
+    if (!organizationId) {
+      return;
+    }
+    setButtonLoading(true);
+
+    newBoardApi({
       name: values.name,
       organizationId,
       permission: values.permission,
-    });
-    await getOrganization();
-    onCancel();
+    })
+      .then(() => getOrganization())
+      .finally(() => {
+        onCancel();
+        setButtonLoading(false);
+      });
   };
   return (
     <AddBoardsCss
@@ -37,12 +43,7 @@ const AddBoards: React.FC<{
       footer={null}
     >
       <img src={Cover} alt="" className="head-img" />
-      <Form
-        // form={form}
-        onFinish={onFinish}
-        layout="vertical"
-        // style={{ marginTop: "16px" }}
-      >
+      <Form onFinish={onFinish} layout="vertical">
         <Form.Item label="看板名稱" name="name">
           <Input style={{ height: "48px" }} />
         </Form.Item>
@@ -56,7 +57,7 @@ const AddBoards: React.FC<{
           <Button
             type="primary"
             htmlType="submit"
-            loading={loading}
+            loading={buttonLoading}
             style={{ width: "100%", height: "48px" }}
           >
             建立
@@ -66,4 +67,5 @@ const AddBoards: React.FC<{
     </AddBoardsCss>
   );
 };
+
 export default AddBoards;
