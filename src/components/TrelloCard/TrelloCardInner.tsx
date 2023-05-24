@@ -227,21 +227,23 @@ const TrelloCardInner: React.FC<TrelloCardInnerProps> = React.memo((props) => {
                         ) : null}
                       </div>
                     ) : null}
-                    {member.length > 0
-                      ? member.map((ele, idx) => (
-                          <>
-                            <Avatar.Group
-                              style={{ marginTop: "6px", position: "relative" }}
-                            >
-                              <Avatar
-                                src={ele.userId.avatar}
-                                key={idx}
-                                style={{ marginRight: "-10px", left: "10px" }}
-                              />
-                            </Avatar.Group>
-                          </>
-                        ))
-                      : null}
+                    {member.map((ele) => (
+                      <Avatar.Group
+                        key={ele.userId._id}
+                        style={{
+                          marginTop: "6px",
+                          position: "relative",
+                        }}
+                      >
+                        <Avatar
+                          src={ele.userId.avatar}
+                          style={{
+                            marginRight: "-10px",
+                            left: "10px",
+                          }}
+                        />
+                      </Avatar.Group>
+                    ))}
                   </TrelloCardInnerStyled>
                 </a>
               )}
