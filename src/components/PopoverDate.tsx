@@ -16,7 +16,7 @@ import {
 import isBetween from "dayjs/plugin/isBetween";
 dayjs.extend(isBetween);
 
-const PopoverDate: React.FC = ({ close }) => {
+const PopoverDate: React.FC = ({ close, position = null }) => {
   const { cardData, setCardData } = useCardModalContext();
   const { id = "", date = {} as DateProps } = cardData ?? {};
   const { startDate = "", dueDate = "" } = date ?? {}; // 2023-05-22T00:00:00.000Z
@@ -176,7 +176,7 @@ const PopoverDate: React.FC = ({ close }) => {
   };
 
   return (
-    <PopoverDateStyled>
+    <PopoverDateStyled style={position}>
       <Space direction="vertical" size={16}>
         <Card
           title={"日期"}
