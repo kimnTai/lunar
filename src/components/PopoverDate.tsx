@@ -12,8 +12,9 @@ import {
   PopoverSectionTitleStyled,
   DateSelectorStyled,
 } from "./PopverDateStyle";
-// import 'dayjs/locale/zh-tw';
-// dayjs.locale('zh-tw');
+
+import isBetween from "dayjs/plugin/isBetween";
+dayjs.extend(isBetween);
 
 const PopoverDate: React.FC = ({ close }) => {
   const { cardData, setCardData } = useCardModalContext();
@@ -159,6 +160,21 @@ const PopoverDate: React.FC = ({ close }) => {
     }
   }, []);
 
+  // 顯示連續日期區間
+  const dateCellRender = (date: dayjs.Dayjs) => {
+    if (!startDateField || !endDateField) {
+      return null;
+    }
+
+    const isInRange = date?.isBetween(
+      startDateField,
+      endDateField,
+      "day",
+      "[]"
+    );
+    return isInRange ? <div className="range-marker" /> : null;
+  };
+
   return (
     <PopoverDateStyled>
       <Space direction="vertical" size={16}>
@@ -175,6 +191,7 @@ const PopoverDate: React.FC = ({ close }) => {
             fullscreen={false}
             onChange={handleSelectDate}
             onSelect={handleSelectDate}
+            cellRender={dateCellRender}
           />
           <DateSelectorStyled>
             <Space size={0} direction="vertical" className="dayPickerForm">

@@ -31,6 +31,18 @@ export const AntCalendarStyled = styled(Calendar)`
     display: none;
     margin-bottom: 16px;
   }
+
+  .range-marker {
+    height: calc(100% + 10px);
+    width: calc(100% + 10px);
+    background-color: #d6f3ff8c;
+    border-radius: 4px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: -1;
+  }
 `;
 
 export const DateSelectorStyled = styled.div`
