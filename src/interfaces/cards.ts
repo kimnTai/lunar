@@ -59,3 +59,16 @@ export interface UpdateCardCheckList {
   position: string;
   checklistIdOld?: string;
 }
+
+export interface NewCardDateProps {
+  startDate?: string;
+  dueDate?: string;
+  dueReminder?: number;
+}
+
+export interface UpdateCardDateProps {
+  startDate?: string;
+  dueDate?: string;
+  dueComplete?: boolean;
+  dueReminder?: number;
+}
