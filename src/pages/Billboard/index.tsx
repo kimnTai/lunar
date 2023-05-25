@@ -27,6 +27,7 @@ const Billboard: React.FC<{
   const { boardId } = useParams();
   const [result, loading, callApi] = useApi(getBoardApi);
   const { sendMessage } = useWebSocket(boardId!, callApi);
+  // console.log("==cardList==", cardList);
 
   // socket
   useEffect(() => {
@@ -91,6 +92,8 @@ const Billboard: React.FC<{
             boardInviteLink={result?.result.inviteLink || ""}
             name={result?.result.name || ""}
             member={result?.result.member || []}
+            orgId={result?.result.organizationId || ""}
+            cardList={cardList}
           />
           <DragDropContext onDragEnd={onDragEnd}>
             <Droppable

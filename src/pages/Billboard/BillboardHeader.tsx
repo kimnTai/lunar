@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   BillboardHeaderProps,
   PopoverTitleProps,
@@ -23,34 +23,39 @@ import {
   UploadOutlined,
   LogoutOutlined,
   LeftOutlined,
+  EditOutlined,
 } from "@ant-design/icons";
-import { Avatar, Button, Popover, Form, Select } from "antd";
+import { Avatar, Button, Popover, Form, Select, Input, Space } from "antd";
 import AddMember from "@/components/Modal/AddMember";
 import ListButton from "@/components/ListButton";
 import CloneBoardButton from "@/components/CloneBoardButton";
-import { useApi } from "@/hooks/useApiHook";
-import { getUserOrganizationsApi } from "@/api/organization";
+import { useAppSelector } from "@/hooks/useAppSelector";
+
 
 const PopoverTitle: React.FC<PopoverTitleProps> = (props) => {
   const {
     isMenu,
     isUser,
     isSetting,
+    isLabel,
     setIsMenu,
     setOpenPopover,
     setIsUser,
     setIsSetting,
+    setIsLabel,
   } = props;
   const handleClick = () => {
     setOpenPopover(false);
     setIsUser(false);
     setIsSetting(false);
+    setIsLabel(false);
     setIsMenu(true);
   };
   const previousClick = () => {
     setIsMenu(true);
     setIsUser(false);
     setIsSetting(false);
+    setIsLabel(false);
   };
 
   return (
@@ -131,6 +136,35 @@ const PopoverTitle: React.FC<PopoverTitleProps> = (props) => {
           />
         </>
       ) : null}
+      {isLabel ? (
+        <>
+          標籤
+          <Button
+            size="small"
+            type="text"
+            icon={
+              <CloseOutlined
+                style={{
+                  color: "var(--gray66)",
+                }}
+              />
+            }
+            style={{ position: "absolute", right: 3 }}
+            onClick={handleClick}
+          />
+          <Button
+            size="small"
+            type="text"
+            style={{ position: "absolute", left: -2, top: 2 }}
+            icon={
+              <LeftOutlined
+                style={{ color: "var(--gray66)", fontSize: "16px" }}
+              />
+            }
+            onClick={previousClick}
+          />
+        </>
+      ) : null}
     </PopoverTitleStyle>
   );
 };
@@ -139,28 +173,49 @@ const PopoverContent: React.FC<PopoverContentProps> = (props) => {
   const {
     name,
     member,
+    orgId,
+    cardList,
     isUser,
     isMenu,
     isSetting,
+    isLabel,
     setIsUser,
     setIsMenu,
     setIsSetting,
+    setIsLabel,
   } = props;
   const [isShowChangeWorkSpace, setIsShowChangeWorkSpace] = useState(false);
   const [isShowChangePeople, setIsShowChangePeople] = useState(false);
   const [people, setPeople] = useState("成員");
-  const [result, _loading, _callApi] = useApi(getUserOrganizationsApi);
-  console.log("--result--", result);
   const { Option } = Select;
   const [form] = Form.useForm();
+  const userOrganization = useAppSelector((state) => state.user.organization);
+  const orgName = userOrganization.find((ele) => ele._id === orgId);
+  const boardManager = member?.filter((ele) => ele.role === "manager");
+  const [labelList, setLabelList] = useState<string[]>([]);
+  const list: string[] = [];
+
+  useEffect(() => {
+    cardList?.map((ele) => {
+      ele.card.map((ele) => {
+        ele.label.map((ele) => {
+          list.push(ele.color);
+        });
+      });
+    });
+    const diffList = list.filter((ele, idx) => list.indexOf(ele) === idx);
+    setLabelList(diffList);
+  }, [cardList]);
+
+
+
 
   const click = (e: any) => {
     console.log(e.target.innerText);
     switch (e.target.innerText) {
       case "查看看板管理員":
-        console.log(member);
-        setIsUser(true);
         setIsMenu(false);
+        setIsUser(true);
         break;
       case "設定":
         setIsMenu(false);
@@ -168,6 +223,7 @@ const PopoverContent: React.FC<PopoverContentProps> = (props) => {
         break;
       case "標籤":
         setIsMenu(false);
+        setIsLabel(true);
         break;
 
       default:
@@ -189,26 +245,6 @@ const PopoverContent: React.FC<PopoverContentProps> = (props) => {
     setIsShowChangePeople(false);
   };
 
-  const onGenderChange = (value: any) => {
-    switch (value) {
-      case "male":
-        form.setFieldsValue({
-          note: "Hi, man!",
-        });
-        break;
-      case "female":
-        form.setFieldsValue({
-          note: "Hi, lady!",
-        });
-        break;
-      case "other":
-        form.setFieldsValue({
-          note: "Hi there!",
-        });
-        break;
-      default:
-    }
-  };
   const onFinish = (values: any) => {
     console.log(values);
   };
@@ -282,15 +318,15 @@ const PopoverContent: React.FC<PopoverContentProps> = (props) => {
       ) : null}
       {isUser ? (
         <div className="top-border" style={{ paddingBottom: 0 }}>
-          {member &&
-            member?.map((ele, idx) => (
-              <div style={{ display: "flex" }} key={idx}>
-                <Avatar src={ele.userId.avatar} key={idx} />
-                <p style={{ marginTop: "5px", marginLeft: "5px" }}>
-                  {ele.userId.name}
-                </p>
-              </div>
-            ))}
+          {boardManager?.map((ele, idx) => (
+
+            <div style={{ display: "flex" }} key={idx}>
+              <Avatar src={ele.userId.avatar} key={idx} />
+              <p style={{ marginTop: "5px", marginLeft: "5px" }}>
+                {ele.userId.name}
+              </p>
+            </div>
+          ))}
         </div>
       ) : null}
       {isSetting ? (
@@ -316,7 +352,7 @@ const PopoverContent: React.FC<PopoverContentProps> = (props) => {
                   color: "gray",
                 }}
               >
-                {name}
+                {orgName?.name}
               </p>
             </Button>
           </div>
@@ -375,13 +411,12 @@ const PopoverContent: React.FC<PopoverContentProps> = (props) => {
                     }}
                   >
                     <Form.Item
-                      name="gender"
+                      name="orgID"
                       label="該看板隸屬於"
                       style={{ marginTop: "-3px" }}
                     >
                       <Select
-                        placeholder="Select a option and change input text above"
-                        onChange={onGenderChange}
+                        placeholder={orgName?.name}
                         allowClear
                         style={{
                           position: "absolute",
@@ -391,9 +426,11 @@ const PopoverContent: React.FC<PopoverContentProps> = (props) => {
                           marginLeft: "-38px",
                         }}
                       >
-                        <Option value="male">male</Option>
-                        <Option value="female">female</Option>
-                        <Option value="other">other</Option>
+                        {userOrganization && userOrganization?.map((ele, idx) => (
+                          <Option value={ele._id} key={idx}>
+                            {ele.name}
+                          </Option>
+                        ))}
                       </Select>
                     </Form.Item>
                     <Form.Item>
@@ -508,6 +545,55 @@ const PopoverContent: React.FC<PopoverContentProps> = (props) => {
           ) : null}
         </>
       ) : null}
+      {isLabel ? (
+        <div className="top-border">
+          <Input placeholder="搜尋標籤..." />
+          <Space style={{ display: "flex" }}>
+            <Space.Compact direction="vertical" style={{ width: 200 }}>
+              {labelList?.map((ele, idx) => (
+                <div style={{ display: "flex", justifyContent: "center" }}>
+                  <Button
+                    type="text"
+                    style={{
+                      color: "white",
+                      backgroundColor: ele,
+                      border: "1px solid white",
+                      borderRadius: "4px",
+                      width: "100%",
+                      height: "34px",
+                      padding: "0 12px",
+                      marginTop: "10px",
+                    }}
+                    key={idx}
+                  >
+                    {ele}
+                  </Button>
+                  <Button
+                    type="text"
+                    icon={
+                      <EditOutlined />
+                    }
+                    style={{ width: "32px", height: "32px", padding: 0, marginTop: "10px", color: "var(--gray66)" }}
+                  />
+                </div>
+              ))}
+            </Space.Compact>
+          </Space>
+          <Button
+            type="primary"
+            style={{
+              color: "#666666",
+              width: "100%",
+              height: "32px",
+              marginTop: "13px",
+              borderRadius: "4px",
+              marginBottom: "-5px",
+            }}
+          >
+            建立新標籤
+          </Button>
+        </div>
+      ) : null}
     </PopoverContentStyle>
   );
 };
@@ -516,12 +602,15 @@ const BillboardHeader: React.FC<BillboardHeaderProps> = ({
   name,
   member,
   boardInviteLink,
+  orgId,
+  cardList,
 }) => {
   const [openInvite, setOpenInvite] = useState(false);
   const [openPopover, setOpenPopover] = useState(false);
   const [isMenu, setIsMenu] = useState(true);
   const [isUser, setIsUser] = useState(false);
   const [isSetting, setIsSetting] = useState(false);
+  const [isLabel, setIsLabel] = useState(false);
 
   return (
     <BillboardHeaderCss className="d-space">
@@ -561,22 +650,28 @@ const BillboardHeader: React.FC<BillboardHeaderProps> = ({
               isMenu={isMenu}
               isUser={isUser}
               isSetting={isSetting}
+              isLabel={isLabel}
               setIsMenu={setIsMenu}
               setOpenPopover={setOpenPopover}
               setIsUser={setIsUser}
               setIsSetting={setIsSetting}
+              setIsLabel={setIsLabel}
             />
           }
           content={
             <PopoverContent
               name={name}
               member={member}
+              orgId={orgId}
+              cardList={cardList}
               isUser={isUser}
               isMenu={isMenu}
               isSetting={isSetting}
+              isLabel={isLabel}
               setIsUser={setIsUser}
               setIsMenu={setIsMenu}
               setIsSetting={setIsSetting}
+              setIsLabel={setIsLabel}
             />
           }
           trigger="click"

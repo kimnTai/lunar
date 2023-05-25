@@ -27,6 +27,8 @@ export interface BillboardHeaderProps {
   name: string;
   member: OrganizationMemberProps[];
   boardInviteLink: string;
+  orgId: string;
+  cardList: ListsProps[];
 }
 
 export interface SingleBoardProps {}
@@ -35,21 +37,27 @@ export interface PopoverTitleProps {
   isMenu: boolean;
   isUser: boolean;
   isSetting: boolean;
+  isLabel: boolean;
   setIsMenu: React.Dispatch<React.SetStateAction<boolean>>;
   setOpenPopover: React.Dispatch<React.SetStateAction<boolean>>;
   setIsUser: React.Dispatch<React.SetStateAction<boolean>>;
   setIsSetting: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsLabel: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export interface PopoverContentProps {
   name: string;
   member: OrganizationMemberProps[];
+  orgId: string;
+  cardList: ListsProps[];
   isUser: boolean;
   isMenu: boolean;
   isSetting: boolean;
+  isLabel: boolean;
   setIsUser: React.Dispatch<React.SetStateAction<boolean>>;
   setIsMenu: React.Dispatch<React.SetStateAction<boolean>>;
   setIsSetting: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsLabel: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export interface AddBoardsMembers {
