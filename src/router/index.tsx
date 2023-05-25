@@ -124,10 +124,7 @@ const AppRouter: React.FC<PropsFromRedux> = (props) => {
                   <LoginLayout
                     changeWorkSpace={changeWorkSpace}
                     children={
-                      <WorkSpaceMember
-                        setWorkSpace={changeWorkSpace}
-                        getOrganization={getOrganization}
-                      />
+                      <WorkSpaceMember getOrganization={getOrganization} />
                     }
                   />
                 }
@@ -138,10 +135,7 @@ const AppRouter: React.FC<PropsFromRedux> = (props) => {
                   <LoginLayout
                     changeWorkSpace={changeWorkSpace}
                     children={
-                      <WorkSpaceSetting
-                        setWorkSpace={changeWorkSpace}
-                        getOrganization={getOrganization}
-                      />
+                      <WorkSpaceSetting getOrganization={getOrganization} />
                     }
                   />
                 }
