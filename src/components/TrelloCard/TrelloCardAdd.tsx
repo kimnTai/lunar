@@ -72,10 +72,13 @@ const TrelloCardAdd: React.FC<{
             <div className="bottom-func">
               <Button
                 type="primary"
-                onClick={async () => {
+                onClick={() => {
+                  if (text.length < 2) {
+                    return;
+                  }
                   setLoading(true);
 
-                  await newCardApi({
+                  newCardApi({
                     name: text,
                     position: nextPosition(list.card).toString(),
                     listId: list.id,
@@ -86,12 +89,11 @@ const TrelloCardAdd: React.FC<{
                         list.card.push(res.result);
                       }
                     })
-                    .catch(() => {
+                    .finally(() => {
                       setLoading(false);
+                      setShowAddCard(false);
+                      setText("");
                     });
-
-                  setLoading(false);
-                  setShowAddCard(false);
                 }}
                 style={{ backgroundColor: "var(--black23)", width: "100%" }}
               >
