@@ -49,7 +49,6 @@ const WorkSpace: React.FC<{
             open={openModal}
             setOpen={setOpenModal}
             organizationId={workSpaceId}
-            getOrganization={getOrganization}
           />
         </Col>
       </Row>

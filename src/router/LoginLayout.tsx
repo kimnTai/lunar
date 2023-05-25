@@ -8,17 +8,13 @@ import { PropsFromRedux } from ".";
 
 const LoginLayout = React.memo<{
   children: ReactNode;
-  getOrganization: PropsFromRedux["getOrganization"];
   changeWorkSpace: PropsFromRedux["changeWorkSpace"];
-}>(({ children, getOrganization, changeWorkSpace }) => {
+}>(({ children, changeWorkSpace }) => {
   const showWorkSpace = useAppSelector((state) => state.screen.showWorkSpace);
 
   return (
     <Layout>
-      <Navbar
-        setWorkSpace={changeWorkSpace}
-        getOrganization={getOrganization}
-      />
+      <Navbar setWorkSpace={changeWorkSpace} />
       <Layout>
         <Header setWorkSpace={changeWorkSpace} />
         <MainLayoutCss workspace={`${showWorkSpace}`}>{children}</MainLayoutCss>
