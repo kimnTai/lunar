@@ -34,6 +34,11 @@ export const AntCalendarStyled = styled(Calendar)`
 `;
 
 export const DateSelectorStyled = styled.div`
+  .dayPickerForm {
+    display: flex;
+    margin-bottom: 16px;
+  }
+
   .dateDisplay {
     background-color: #e9e9e9;
     padding: 4px 8px;
@@ -48,5 +53,3 @@ export const DateSelectorStyled = styled.div`
     display: none;
   }
 `;
-
-
