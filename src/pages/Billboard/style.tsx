@@ -91,11 +91,15 @@ export const PopoverContentStyle = styled.div`
     background-color: var(--graye9);
   }
 
-  .ant-btn-primary {
+  .ant-btn-primary.labelBtn: hover {
+    background-color: red;
+  }
+
+  .ant-btn-primary.createLabelBtn {
     background-color: #D4D4D4;
   }
 
-  .ant-btn-primary: hover {
+  .ant-btn-primary.createLabelBtn: hover {
     background-color: #BEBEBE;
   }
 `;

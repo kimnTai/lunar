@@ -31,6 +31,11 @@ import ListButton from "@/components/ListButton";
 import CloneBoardButton from "@/components/CloneBoardButton";
 import { useAppSelector } from "@/hooks/useAppSelector";
 
+interface Label {
+  labelName: string;
+  color: string;
+}
+
 
 const PopoverTitle: React.FC<PopoverTitleProps> = (props) => {
   const {
@@ -192,22 +197,26 @@ const PopoverContent: React.FC<PopoverContentProps> = (props) => {
   const userOrganization = useAppSelector((state) => state.user.organization);
   const orgName = userOrganization.find((ele) => ele._id === orgId);
   const boardManager = member?.filter((ele) => ele.role === "manager");
-  const [labelList, setLabelList] = useState<string[]>([]);
-  const list: string[] = [];
+  const [labelList, setLabelList] = useState<Label[]>([]);
+  const list: Label[] = [];
 
   useEffect(() => {
     cardList?.map((ele) => {
       ele.card.map((ele) => {
         ele.label.map((ele) => {
-          list.push(ele.color);
+          const newData: Label = {
+            labelName: ele.name,
+            color: ele.color,
+          };
+          list.push(newData);
         });
       });
     });
-    const diffList = list.filter((ele, idx) => list.indexOf(ele) === idx);
-    setLabelList(diffList);
+    const filteredList = list.filter((item, index, self) =>
+      index === self.findIndex((t) => t.labelName === item.labelName && t.color === item.color)
+    );
+    setLabelList(filteredList);
   }, [cardList]);
-
-
 
 
   const click = (e: any) => {
@@ -248,6 +257,10 @@ const PopoverContent: React.FC<PopoverContentProps> = (props) => {
   const onFinish = (values: any) => {
     console.log(values);
   };
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    console.log(e.target.value);
+  }
 
   return (
     <PopoverContentStyle>
@@ -547,16 +560,17 @@ const PopoverContent: React.FC<PopoverContentProps> = (props) => {
       ) : null}
       {isLabel ? (
         <div className="top-border">
-          <Input placeholder="搜尋標籤..." />
+          <Input placeholder="搜尋標籤..." onChange={handleInputChange}/>
           <Space style={{ display: "flex" }}>
             <Space.Compact direction="vertical" style={{ width: 200 }}>
               {labelList?.map((ele, idx) => (
-                <div style={{ display: "flex", justifyContent: "center" }}>
+                <div style={{ display: "flex", justifyContent: "center" }} key={idx}>
                   <Button
-                    type="text"
+                    className="labelBtn"
+                    type="primary"
                     style={{
                       color: "white",
-                      backgroundColor: ele,
+                      backgroundColor: ele.color,
                       border: "1px solid white",
                       borderRadius: "4px",
                       width: "100%",
@@ -566,7 +580,7 @@ const PopoverContent: React.FC<PopoverContentProps> = (props) => {
                     }}
                     key={idx}
                   >
-                    {ele}
+                    {ele.labelName}
                   </Button>
                   <Button
                     type="text"
@@ -580,18 +594,19 @@ const PopoverContent: React.FC<PopoverContentProps> = (props) => {
             </Space.Compact>
           </Space>
           <Button
-            type="primary"
-            style={{
-              color: "#666666",
-              width: "100%",
-              height: "32px",
-              marginTop: "13px",
-              borderRadius: "4px",
-              marginBottom: "-5px",
-            }}
-          >
-            建立新標籤
-          </Button>
+              className="createLabelBtn"
+              type="primary"
+              style={{
+                // color: "#666666",
+                width: "100%",
+                height: "32px",
+                marginTop: "13px",
+                borderRadius: "4px",
+                marginBottom: "-5px",
+              }}
+            >
+              建立新標籤
+            </Button>
         </div>
       ) : null}
     </PopoverContentStyle>
