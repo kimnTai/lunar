@@ -4,15 +4,17 @@ import { newBoardApi } from "@/api/boards";
 import { NewBoardsProps } from "@/interfaces/boards";
 import { Button, Form, Input, Select } from "antd";
 import Cover from "@/assets/images/img_cover.png";
-import { PropsFromRedux } from "@/router";
+import { useAppDispatch } from "@/hooks/useAppDispatch";
+import { getOrganizationsAction } from "@/redux/actions/OrganizationAction";
 
 const AddBoards: React.FC<{
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
   organizationId?: string;
-  getOrganization: PropsFromRedux["getOrganization"];
-}> = ({ open, setOpen, organizationId, getOrganization }) => {
+}> = ({ open, setOpen, organizationId }) => {
   const [buttonLoading, setButtonLoading] = useState(false);
+  const dispatch = useAppDispatch();
+
   const onCancel = () => {
     setOpen(false);
   };
@@ -28,7 +30,7 @@ const AddBoards: React.FC<{
       organizationId,
       permission: values.permission,
     })
-      .then(() => getOrganization())
+      .then(() => getOrganizationsAction()(dispatch))
       .finally(() => {
         onCancel();
         setButtonLoading(false);

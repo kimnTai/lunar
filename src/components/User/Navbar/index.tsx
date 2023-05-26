@@ -17,8 +17,7 @@ import { useAppSelector } from "@/hooks/useAppSelector";
 
 export const Navbar: React.FC<{
   setWorkSpace: PropsFromRedux["changeWorkSpace"];
-  getOrganization: PropsFromRedux["getOrganization"];
-}> = ({ setWorkSpace, getOrganization }) => {
+}> = ({ setWorkSpace }) => {
   const showWorkSpace = useAppSelector((state) => state.screen.showWorkSpace);
   const [showNavbar, setShowNavBar] = useState(false);
   const navigate = useNavigate();
@@ -126,7 +125,6 @@ export const Navbar: React.FC<{
           open={open}
           setOpen={setOpen}
           organizationId={currentOrganization?._id || ""}
-          getOrganization={getOrganization}
         />
       )}
     </Sider>

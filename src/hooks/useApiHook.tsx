@@ -14,7 +14,9 @@ export function useApi<T, Args extends any[]>(apiFunc: ApiFunction<T, Args>) {
     } catch (error) {
       console.error(error);
     } finally {
-      setLoading(false);
+      setTimeout(() => {
+        setLoading(false);
+      });
     }
   }
 

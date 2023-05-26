@@ -104,7 +104,9 @@ const NavBarMenu: React.FC<NavBarMenuProps> = ({
         )
       );
 
-      setItems([...useItem, ...defaultItems]);
+      setTimeout(() => {
+        setItems([...useItem, ...defaultItems]);
+      });
     }
   }, [data?.length]);
 

@@ -15,10 +15,8 @@ import { WorkSpaceHeader } from "@/components/WorkSpace/WorkSpaceHeader";
 import { useAppSelector } from "@/hooks/useAppSelector";
 
 const WorkSpaceSetting: React.FC<{
-  setWorkSpace: PropsFromRedux["changeWorkSpace"];
   getOrganization: PropsFromRedux["getOrganization"];
-}> = (props) => {
-  const { getOrganization } = props;
+}> = ({ getOrganization }) => {
   const { workSpaceId } = useParams();
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
   const [openInviteModal, setOpenInviteModal] = useState(false);

@@ -108,7 +108,6 @@ const AppRouter: React.FC<PropsFromRedux> = (props) => {
                 path={`/workspace/:workSpaceId/home`}
                 element={
                   <LoginLayout
-                    getOrganization={getOrganization}
                     changeWorkSpace={changeWorkSpace}
                     children={
                       <WorkSpace
@@ -123,13 +122,9 @@ const AppRouter: React.FC<PropsFromRedux> = (props) => {
                 path={`/workspace/:workSpaceId/members`}
                 element={
                   <LoginLayout
-                    getOrganization={getOrganization}
                     changeWorkSpace={changeWorkSpace}
                     children={
-                      <WorkSpaceMember
-                        setWorkSpace={changeWorkSpace}
-                        getOrganization={getOrganization}
-                      />
+                      <WorkSpaceMember getOrganization={getOrganization} />
                     }
                   />
                 }
@@ -138,13 +133,9 @@ const AppRouter: React.FC<PropsFromRedux> = (props) => {
                 path={`/workspace/:workSpaceId/setting`}
                 element={
                   <LoginLayout
-                    getOrganization={getOrganization}
                     changeWorkSpace={changeWorkSpace}
                     children={
-                      <WorkSpaceSetting
-                        setWorkSpace={changeWorkSpace}
-                        getOrganization={getOrganization}
-                      />
+                      <WorkSpaceSetting getOrganization={getOrganization} />
                     }
                   />
                 }
@@ -153,7 +144,6 @@ const AppRouter: React.FC<PropsFromRedux> = (props) => {
                 path="/board/:boardId"
                 element={
                   <LoginLayout
-                    getOrganization={getOrganization}
                     changeWorkSpace={changeWorkSpace}
                     children={<Billboard setWorkSpace={changeWorkSpace} />}
                   />
