@@ -31,7 +31,6 @@ const useWebSocket = (
     };
     // 在接收到消息時執行的邏輯
     webSocketRef.current.onmessage = (event :MessageEvent) => {
-      console.log("===websocket event===", event);
         const evenData = JSON.parse(event.data)  ;
         if (evenData.type === "update") {
           setData(evenData.result as SocketResultProps);

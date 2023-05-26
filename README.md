@@ -17,9 +17,7 @@
 
 ### 開始
 
-- `yarn dev`  or  `npm run dev`
-
-
+- `yarn dev` or `npm run dev`
 
 ## 使用技術
 
@@ -39,11 +37,21 @@
 
 ```env
 VITE_REACT_API = API網域
-VITE_SOCKET_SERVER = socket server 
+VITE_SOCKET_SERVER = socket server
 ```
 
 ## 頁面對應資料夾 (src/pages)
-- Home 使用者未登入首頁
+
+- Home 使用者未登入首頁 ( 主要使用 [tailwind首頁](https://lunar-sigma.vercel.app/) )
 - Login 登入頁面
 - WorkSpace 工作區頁面
 - Billboard 卡片頁面
+
+## 後端 git
+
+- [Git](https://github.com/kimnTai/prometheus)
+
+## 首頁 git 與網址
+
+- [Git](https://github.com/Hsinny/lunar-landing-page)
+- [首頁](https://lunar-sigma.vercel.app/)
