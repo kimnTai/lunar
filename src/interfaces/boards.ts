@@ -1,5 +1,6 @@
 import { OrganizationMemberProps } from "./organization";
 import { ListsProps } from "./lists";
+import { LabelsProps } from "./labels";
 
 export interface BoardsProps {
   _id: string;
@@ -28,7 +29,7 @@ export interface BillboardHeaderProps {
   member: OrganizationMemberProps[];
   boardInviteLink: string;
   orgId: string;
-  cardList: ListsProps[];
+  labelData: LabelsProps[];
 }
 
 export interface SingleBoardProps {}
@@ -49,7 +50,7 @@ export interface PopoverContentProps {
   name: string;
   member: OrganizationMemberProps[];
   orgId: string;
-  cardList: ListsProps[];
+  labelData: LabelsProps[];
   isUser: boolean;
   isMenu: boolean;
   isSetting: boolean;

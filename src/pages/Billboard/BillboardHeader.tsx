@@ -30,11 +30,7 @@ import AddMember from "@/components/Modal/AddMember";
 import ListButton from "@/components/ListButton";
 import CloneBoardButton from "@/components/CloneBoardButton";
 import { useAppSelector } from "@/hooks/useAppSelector";
-
-interface Label {
-  labelName: string;
-  color: string;
-}
+import { LabelsProps } from "@/interfaces/labels";
 
 
 const PopoverTitle: React.FC<PopoverTitleProps> = (props) => {
@@ -179,7 +175,7 @@ const PopoverContent: React.FC<PopoverContentProps> = (props) => {
     name,
     member,
     orgId,
-    cardList,
+    labelData,
     isUser,
     isMenu,
     isSetting,
@@ -197,26 +193,9 @@ const PopoverContent: React.FC<PopoverContentProps> = (props) => {
   const userOrganization = useAppSelector((state) => state.user.organization);
   const orgName = userOrganization.find((ele) => ele._id === orgId);
   const boardManager = member?.filter((ele) => ele.role === "manager");
-  const [labelList, setLabelList] = useState<Label[]>([]);
-  const list: Label[] = [];
-
-  useEffect(() => {
-    cardList?.map((ele) => {
-      ele.card.map((ele) => {
-        ele.label.map((ele) => {
-          const newData: Label = {
-            labelName: ele.name,
-            color: ele.color,
-          };
-          list.push(newData);
-        });
-      });
-    });
-    const filteredList = list.filter((item, index, self) =>
-      index === self.findIndex((t) => t.labelName === item.labelName && t.color === item.color)
-    );
-    setLabelList(filteredList);
-  }, [cardList]);
+  const [labelList, setLabelList] = useState<LabelsProps[]>(labelData);
+  
+  console.log("==labelData==", labelData);
 
 
   const click = (e: any) => {
@@ -259,8 +238,20 @@ const PopoverContent: React.FC<PopoverContentProps> = (props) => {
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    console.log(e.target.value);
+    if (e.target.value !== '') {
+      // const found = labelList.find((item) => item.labelName === e.target.value);
+      const found = labelData.filter((item) => item.name.includes(e.target.value));
+      console.log("==found==", found);
+      if (found.length > 0) {
+        setLabelList(found);
+      }else if (found.length === 0) {
+        setLabelList([]);
+      }
+    }else if (e.target.value === '') {
+      setLabelList(labelData);
+    }
   }
+
 
   return (
     <PopoverContentStyle>
@@ -560,7 +551,11 @@ const PopoverContent: React.FC<PopoverContentProps> = (props) => {
       ) : null}
       {isLabel ? (
         <div className="top-border">
-          <Input placeholder="搜尋標籤..." onChange={handleInputChange}/>
+          <Input 
+            allowClear 
+            placeholder="搜尋標籤..." 
+            onChange={handleInputChange}
+            />
           <Space style={{ display: "flex" }}>
             <Space.Compact direction="vertical" style={{ width: 200 }}>
               {labelList?.map((ele, idx) => (
@@ -580,7 +575,7 @@ const PopoverContent: React.FC<PopoverContentProps> = (props) => {
                     }}
                     key={idx}
                   >
-                    {ele.labelName}
+                    {ele.name}
                   </Button>
                   <Button
                     type="text"
@@ -594,19 +589,19 @@ const PopoverContent: React.FC<PopoverContentProps> = (props) => {
             </Space.Compact>
           </Space>
           <Button
-              className="createLabelBtn"
-              type="primary"
-              style={{
-                // color: "#666666",
-                width: "100%",
-                height: "32px",
-                marginTop: "13px",
-                borderRadius: "4px",
-                marginBottom: "-5px",
-              }}
-            >
-              建立新標籤
-            </Button>
+            className="createLabelBtn"
+            type="primary"
+            style={{
+              // color: "#666666",
+              width: "100%",
+              height: "32px",
+              marginTop: "13px",
+              borderRadius: "4px",
+              marginBottom: "-5px",
+            }}
+          >
+            建立新標籤
+          </Button>
         </div>
       ) : null}
     </PopoverContentStyle>
@@ -618,7 +613,7 @@ const BillboardHeader: React.FC<BillboardHeaderProps> = ({
   member,
   boardInviteLink,
   orgId,
-  cardList,
+  labelData,
 }) => {
   const [openInvite, setOpenInvite] = useState(false);
   const [openPopover, setOpenPopover] = useState(false);
@@ -678,7 +673,7 @@ const BillboardHeader: React.FC<BillboardHeaderProps> = ({
               name={name}
               member={member}
               orgId={orgId}
-              cardList={cardList}
+              labelData={labelData}
               isUser={isUser}
               isMenu={isMenu}
               isSetting={isSetting}

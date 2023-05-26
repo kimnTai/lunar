@@ -17,6 +17,8 @@ import {
 import type { PropsFromRedux } from "@/router";
 import { useAppSelector } from "@/hooks/useAppSelector";
 import useWebSocket from "@/hooks/useWebSocket";
+import { getLabelApi } from "@/api/label";
+import { LabelsProps } from "@/interfaces/labels";
 
 const Billboard: React.FC<{
   setWorkSpace: PropsFromRedux["changeWorkSpace"];
@@ -28,6 +30,8 @@ const Billboard: React.FC<{
   const [result, loading, callApi] = useApi(getBoardApi);
   const { sendMessage } = useWebSocket(boardId!, callApi);
   // console.log("==cardList==", cardList);
+  const [labelResult, labelLoading, labelCallApi] = useApi(getLabelApi);
+  const [labelData, setLabelData] = useState<LabelsProps[]>([]);
 
   // socket
   useEffect(() => {
@@ -40,6 +44,9 @@ const Billboard: React.FC<{
       (async () => {
         await callApi(boardId);
       })();
+      (async () => {
+        await labelCallApi(boardId);
+      })();
     }
   }, [boardId]);
   useEffect(() => {
@@ -50,6 +57,9 @@ const Billboard: React.FC<{
   useEffect(() => {
     if (result?.result) {
       setCardList(result.result.list);
+    }
+    if (labelResult?.result) {
+      setLabelData(labelResult?.result);
     }
   }, [result?.result]);
 
@@ -93,7 +103,7 @@ const Billboard: React.FC<{
             name={result?.result.name || ""}
             member={result?.result.member || []}
             orgId={result?.result.organizationId || ""}
-            cardList={cardList}
+            labelData={labelData}
           />
           <DragDropContext onDragEnd={onDragEnd}>
             <Droppable

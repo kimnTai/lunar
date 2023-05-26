@@ -87,14 +87,6 @@ export const PopoverContentStyle = styled.div`
     border-radius: 8px;
   }
   
-  .labelBtn: hover {
-    background-color: var(--graye9);
-  }
-
-  .ant-btn-primary.labelBtn: hover {
-    background-color: red;
-  }
-
   .ant-btn-primary.createLabelBtn {
     background-color: #D4D4D4;
   }
