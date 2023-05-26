@@ -35,10 +35,8 @@ const items: MenuProps["items"] = [
 ];
 
 const WorkSpaceMember: React.FC<{
-  setWorkSpace: PropsFromRedux["changeWorkSpace"];
   getOrganization: PropsFromRedux["getOrganization"];
-}> = (props) => {
-  const { getOrganization } = props;
+}> = ({ getOrganization }) => {
   const { workSpaceId } = useParams();
   const [openRemoveModal, setOpenRemoveModal] = useState(false);
   const [openManageRoleModal, setOpenManageRoleModal] = useState(false);

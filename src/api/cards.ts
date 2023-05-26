@@ -6,6 +6,7 @@ import type {
   UpdateCardCheckItem,
   UpdateCardCheckList,
 } from "@/interfaces/cards";
+import { CommentProps, NewCommentProps } from "@/interfaces/comments";
 
 // 取得單張卡片
 export const getCardApi = (cardId: string) =>
@@ -37,3 +38,10 @@ export const updateCheckItemApi = (data: UpdateCardCheckItem) =>
 // 更新checkList
 export const updateChecklistApi = (data: UpdateCardCheckList) =>
   Request.put(`/cards/${data.cardId}/checklist/${data.checklistId}`, data);
+
+// 新增卡片評論
+export const newCardCommentApi = (data: NewCommentProps) =>
+  Request.post<any, PrometheusResponse<CommentProps>>(
+    `/cards/${data.cardId}/comments`,
+    data
+  );

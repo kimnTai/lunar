@@ -13,6 +13,8 @@ import {
   updateCardInColumn,
   updateCardDiffColumn,
   updateColumn,
+  getColumn,
+  getSocketChange,
 } from "@/utils/cardFunc";
 import type { PropsFromRedux } from "@/router";
 import { useAppSelector } from "@/hooks/useAppSelector";
@@ -23,21 +25,21 @@ import { LabelsProps } from "@/interfaces/labels";
 const Billboard: React.FC<{
   setWorkSpace: PropsFromRedux["changeWorkSpace"];
 }> = ({ setWorkSpace }) => {
-  const workSpace = useAppSelector((state) => state.screen.showWorkSpace);
+  const workSpace = useAppSelector((state: any) => state.screen.showWorkSpace);
 
   const [cardList, setCardList] = useState<ListsProps[]>([]);
   const { boardId } = useParams();
   const [result, loading, callApi] = useApi(getBoardApi);
-  const { sendMessage } = useWebSocket(boardId!, callApi);
-  // console.log("==cardList==", cardList);
   const [labelResult, labelLoading, labelCallApi] = useApi(getLabelApi);
   const [labelData, setLabelData] = useState<LabelsProps[]>([]);
+  const { data, sendMessage } = useWebSocket(boardId!, callApi);
 
-  // socket
   useEffect(() => {
-    sendMessage({ type: "subscribe", boardId });
-    return () => sendMessage({ type: "unsubscribe", boardId });
-  });
+    if (data) {
+      setCardList(getSocketChange(cardList, data)!);
+      console.log(getSocketChange(cardList, data)!);
+    }
+  }, [data]);
 
   useEffect(() => {
     if (boardId) {
@@ -57,10 +59,12 @@ const Billboard: React.FC<{
   useEffect(() => {
     if (result?.result) {
       setCardList(result.result.list);
+      sendMessage({ type: "subscribe", boardId }); // socket
     }
     if (labelResult?.result) {
       setLabelData(labelResult?.result);
     }
+    return () => sendMessage({ type: "unsubscribe", boardId });
   }, [result?.result]);
 
   const onDragEnd = (result: DropResult) => {

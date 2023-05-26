@@ -2,6 +2,7 @@ import React from "react";
 import { Avatar, Col, List } from "antd";
 import { useCardModalContext } from "@/context/CardModalContext";
 import { SectionHeaderStyled } from "./style";
+import CardCommentForm from "./CardCommentForm";
 
 const CardComment: React.FC = () => {
   const { cardData } = useCardModalContext();
@@ -38,6 +39,7 @@ const CardComment: React.FC = () => {
           </List.Item>
         )}
       />
+      <CardCommentForm />
     </>
   );
 };

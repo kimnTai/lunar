@@ -135,6 +135,7 @@ const AddList: React.FC<AddListProps> = ({ cardList, boardId, callApi }) => {
                   htmlType="submit"
                   type="primary"
                   style={{ padding: "4px 12px" }}
+                  disabled={text.length < 2}
                 >
                   新增
                 </Button>
