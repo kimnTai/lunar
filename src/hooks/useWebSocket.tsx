@@ -1,3 +1,4 @@
+import { SocketResultProps } from "@/interfaces/socket";
 import { useEffect, useRef, useState } from "react";
 
 const useWebSocket = (
@@ -6,7 +7,7 @@ const useWebSocket = (
 ) => {
   const webSocketRef = useRef<WebSocket | null>(null);
   const [connect, setConnect] = useState(false);
-  const [data, _setData] = useState<any>({ lists: [] });
+  const [data, setData] = useState<any>();
   useEffect(() => {
     // 創建WebSocket連接
     webSocketRef.current = new WebSocket(
@@ -29,14 +30,12 @@ const useWebSocket = (
       console.log("websocket 關閉");
     };
     // 在接收到消息時執行的邏輯
-    webSocketRef.current.onmessage = (event) => {
+    webSocketRef.current.onmessage = (event :MessageEvent) => {
       console.log("===websocket event===", event);
-      //   const message = JSON.parse(event.data);
-      //   if (message.type === "update") {
-      //     const newData = message.data;
-      //     setData(newData);
-      //     onUpdate(newData);
-      //   }
+        const evenData = JSON.parse(event.data)  ;
+        if (evenData.type === "update") {
+          setData(evenData.result as SocketResultProps);
+        }
     };
 
     // 在組件卸載時關閉WebSocket連接
