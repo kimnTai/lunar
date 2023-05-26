@@ -5,14 +5,13 @@ import {
   CopyOutlined,
   ShareAltOutlined,
   ArrowRightOutlined,
-  WalletOutlined,
-  PaperClipOutlined,
   ClockCircleOutlined,
   CheckSquareOutlined,
   TagOutlined,
 } from "@ant-design/icons";
 import { Divider } from "antd";
 import { ModalStyle, ModalSidebarStyled } from "./style";
+import AttachmentBox from "./AttachmentBox";
 
 const ModalSidebar: React.FC = () => {
   const SidebarBox: React.FC<{
@@ -49,10 +48,9 @@ const ModalSidebar: React.FC = () => {
           { label: "標籤", value: "member", icon: <TagOutlined /> },
           { label: "代辦清單", value: "member", icon: <CheckSquareOutlined /> },
           { label: "日期", value: "member", icon: <ClockCircleOutlined /> },
-          { label: "附件", value: "member", icon: <PaperClipOutlined /> },
-          { label: "封面", value: "member", icon: <WalletOutlined /> },
         ]}
       />
+      <AttachmentBox />
       <SidebarBox
         className={"mid"}
         title={"動作"}
