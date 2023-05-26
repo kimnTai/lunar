@@ -11,3 +11,8 @@ export interface CommentProps {
   createdAt: string;
   updatedAt: string;
 }
+
+export interface NewCommentProps {
+  cardId: string;
+  comment: string;
+}
