@@ -14,7 +14,7 @@ export const getLabelApi = (boardId: string) => {
 };
 
 // 新增標籤
-export const newCardApi = (data: NewLabelsProps) =>
+export const newLabelApi = (data: NewLabelsProps) =>
   Request.post<any, PrometheusResponse<LabelsProps>>(`/boards/${data.boardId}/labels`, data);
 
 // 更新標籤

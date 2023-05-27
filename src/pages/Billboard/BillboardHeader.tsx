@@ -30,8 +30,12 @@ import AddMember from "@/components/Modal/AddMember";
 import ListButton from "@/components/ListButton";
 import CloneBoardButton from "@/components/CloneBoardButton";
 import { useAppSelector } from "@/hooks/useAppSelector";
-import { LabelsProps } from "@/interfaces/labels";
+import { LabelsProps, NewLabelsProps } from "@/interfaces/labels";
+import { newLabelApi } from "@/api/label";
 
+interface Label {
+  color: string;
+}
 
 const PopoverTitle: React.FC<PopoverTitleProps> = (props) => {
   const {
@@ -172,7 +176,6 @@ const PopoverTitle: React.FC<PopoverTitleProps> = (props) => {
 
 const PopoverContent: React.FC<PopoverContentProps> = (props) => {
   const {
-    name,
     member,
     orgId,
     labelData,
@@ -184,6 +187,8 @@ const PopoverContent: React.FC<PopoverContentProps> = (props) => {
     setIsMenu,
     setIsSetting,
     setIsLabel,
+    callApi,
+    boardId,
   } = props;
   const [isShowChangeWorkSpace, setIsShowChangeWorkSpace] = useState(false);
   const [isShowChangePeople, setIsShowChangePeople] = useState(false);
@@ -194,9 +199,26 @@ const PopoverContent: React.FC<PopoverContentProps> = (props) => {
   const orgName = userOrganization.find((ele) => ele._id === orgId);
   const boardManager = member?.filter((ele) => ele.role === "manager");
   const [labelList, setLabelList] = useState<LabelsProps[]>(labelData);
+  const [isCreateLabel, setIsCreateLabel] = useState(false);
+  const [inputColor, setInputColor] = useState("#ffb6c1");
+  const [inputName, setInputName] = useState("");
+  const [loading, setLoading] = useState(false);
   
-  console.log("==labelData==", labelData);
+  const colorList: Label[] = [
+    { color: '#ffb6c1' },
+    { color: '#4682b4' },
+    { color: '#f4a460' },
+    { color: '#8fbc8f' },
+    { color: '#d2b48c' },
+    { color: '#ffd700' },
+    { color: '#48d1cc' },
+    { color: '#cd5c5c' },
+    { color: '#9370db' },
+  ];
 
+  useEffect(() => {
+    setLabelList(labelData)
+  }, [labelData]);
 
   const click = (e: any) => {
     console.log(e.target.innerText);
@@ -239,9 +261,7 @@ const PopoverContent: React.FC<PopoverContentProps> = (props) => {
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.value !== '') {
-      // const found = labelList.find((item) => item.labelName === e.target.value);
       const found = labelData.filter((item) => item.name.includes(e.target.value));
-      console.log("==found==", found);
       if (found.length > 0) {
         setLabelList(found);
       }else if (found.length === 0) {
@@ -252,6 +272,32 @@ const PopoverContent: React.FC<PopoverContentProps> = (props) => {
     }
   }
 
+  const checkColorHandler = (color: any) => {
+    setInputColor(color);
+  }
+
+  const clearColorHandler = () => {
+    if (inputColor !== '#DFE1E6') {
+      setInputColor('#DFE1E6');
+    }
+  }
+
+  const onCreateLabelFinish = async () => {
+    setLoading(true);
+    await newLabelApi({
+      name: inputName,
+      color: inputColor,
+      boardId: boardId,
+    })
+      .then((res) => {
+        console.log("==res==", res);
+        if (res.status === "success") {
+          callApi(boardId);
+        }
+      })
+      .catch(() => setLoading(false));
+    setLoading(false);
+  }
 
   return (
     <PopoverContentStyle>
@@ -550,59 +596,188 @@ const PopoverContent: React.FC<PopoverContentProps> = (props) => {
         </>
       ) : null}
       {isLabel ? (
-        <div className="top-border">
-          <Input 
-            allowClear 
-            placeholder="搜尋標籤..." 
-            onChange={handleInputChange}
-            />
-          <Space style={{ display: "flex" }}>
-            <Space.Compact direction="vertical" style={{ width: 200 }}>
-              {labelList?.map((ele, idx) => (
-                <div style={{ display: "flex", justifyContent: "center" }} key={idx}>
+        <>
+          <div className="top-border">
+            <Input 
+              allowClear 
+              placeholder="搜尋標籤..." 
+              onChange={handleInputChange}
+              />
+            <Space style={{ display: "flex" }}>
+              <Space.Compact direction="vertical" style={{ width: 200 }}>
+                {labelList?.map((ele, idx) => (
+                  <div style={{ display: "flex", justifyContent: "center" }} key={idx}>
+                    <Button
+                      className="labelBtn"
+                      type="primary"
+                      style={{
+                        color: "white",
+                        backgroundColor: ele.color,
+                        border: "1px solid white",
+                        borderRadius: "4px",
+                        width: "100%",
+                        height: "34px",
+                        padding: "0 12px",
+                        marginTop: "10px",
+                      }}
+                      key={idx}
+                    >
+                      {ele.name}
+                    </Button>
+                    <Button
+                      type="text"
+                      icon={
+                        <EditOutlined />
+                      }
+                      style={{ width: "32px", height: "32px", padding: 0, marginTop: "10px", color: "var(--gray66)" }}
+                    />
+                  </div>
+                ))}
+              </Space.Compact>
+            </Space>
+            <Button
+              className="createLabelBtn"
+              type="primary"
+              style={{
+                width: "100%",
+                height: "32px",
+                marginTop: "13px",
+                borderRadius: "4px",
+                marginBottom: "-5px",
+              }}
+              onClick={() => setIsCreateLabel(true)}
+            >
+              建立新標籤
+            </Button>
+            {isCreateLabel ? (
+              <div className="createLabelView">
+                <div className="peopleTitle">
+                  <p>標籤</p>
                   <Button
-                    className="labelBtn"
-                    type="primary"
-                    style={{
-                      color: "white",
-                      backgroundColor: ele.color,
-                      border: "1px solid white",
-                      borderRadius: "4px",
-                      width: "100%",
-                      height: "34px",
-                      padding: "0 12px",
-                      marginTop: "10px",
-                    }}
-                    key={idx}
-                  >
-                    {ele.name}
-                  </Button>
-                  <Button
+                    size="small"
                     type="text"
                     icon={
-                      <EditOutlined />
+                      <CloseOutlined
+                        style={{
+                          color: "var(--gray66)",
+                        }}
+                      />
                     }
-                    style={{ width: "32px", height: "32px", padding: 0, marginTop: "10px", color: "var(--gray66)" }}
+                    style={{ position: "absolute", right: 3 }}
+                    onClick={() => setIsCreateLabel(false)}
                   />
                 </div>
-              ))}
-            </Space.Compact>
-          </Space>
-          <Button
-            className="createLabelBtn"
-            type="primary"
-            style={{
-              // color: "#666666",
-              width: "100%",
-              height: "32px",
-              marginTop: "13px",
-              borderRadius: "4px",
-              marginBottom: "-5px",
-            }}
-          >
-            建立新標籤
-          </Button>
-        </div>
+                <Form onFinish={onCreateLabelFinish}>
+                  <div
+                    style={{
+                      position: "relative",
+                      width: "100%",
+                      height: "101px",
+                      backgroundColor: "var(--ds-surface-sunken, #F4F5F7)",
+                    }}
+                  >
+                    <div
+                      style={{
+                        position: "absolute",
+                        width: "80%",
+                        height: "40%",
+                        backgroundColor: `${inputColor}`,
+                        left: "10%",
+                        top: "30%",
+                        textAlign: "center",
+                        lineHeight: "40px",
+                        fontSize: "16px",
+                        borderRadius: "4px",
+                      }}
+                    >
+                      {inputName}
+                    </div>
+                  </div>
+                  <div style={{padding: "0 12px"}}>
+                    <p style={{ fontSize: "14px", lineHeight: "16px", marginTop: "12px"}}>標題</p>
+                    <Form.Item
+                      name="labelName"
+                      rules={[{ required: true, message: '請輸入標籤名稱!'}]}>
+                      <Input
+                        placeholder="輸入標籤名稱"
+                        style={{ width: "100%", height: "32px", borderRadius: "4px", marginTop: "8px" }}
+                        onChange={(e) => setInputName(e.target.value)}
+                      />
+                    </Form.Item>
+                    <p style={{ fontSize: "14px", lineHeight: "16px", marginTop: "-12px"}}>選一個顏色</p>
+                    <div>
+                      <Form.Item name="labelColor">
+                        {colorList?.map((ele, idx) => (
+                          <Button
+                            type="text"
+                            style={{
+                              color: "white",
+                              backgroundColor: ele.color,
+                              border: "1px solid white",
+                              borderRadius: "4px",
+                              width: "31%",
+                              height: "36px",
+                              marginTop: "8px",
+                              marginRight: "5.2px",
+                            }}
+                            key={idx}
+                            onClick={() =>checkColorHandler(ele.color)}
+                          >
+                            <div 
+                              className="hoverBtn" 
+                              style={{
+                                width: "100%",
+                                height: "100%",
+                                position: "absolute",
+                                borderRadius: "4px",
+                                left: 0,
+                                top: 0,
+                              }}
+                            />
+                          </Button>
+                        ))}
+                      </Form.Item>
+                      <Button
+                        className="createLabelBtn"
+                        type="primary"
+                        style={{
+                          fontWeight: "bold",
+                          color: "white",
+                          border: "1px solid white",
+                          borderRadius: "4px",
+                          width: "100%",
+                          height: "38px",
+                          marginTop: "-15px",
+                        }}
+                        icon={<CloseOutlined />}
+                        disabled={inputColor === "#DFE1E6"}
+                        onClick={clearColorHandler}
+                      >
+                        移除顏色
+                      </Button>
+                    </div>
+                    <div className="top-border" style={{marginTop: "10px"}}>
+                      <Button
+                        htmlType="submit"
+                        type="primary"
+                        style={{
+                          width: "50%",
+                          height: "32px",
+                          marginTop: "5px",
+                          borderRadius: "4px",
+                        }}
+                        loading={loading}
+                      >
+                        建立
+                      </Button>
+                    </div>
+                  </div>
+                </Form>
+              </div>
+            ) : null}
+          </div>
+          
+        </>
       ) : null}
     </PopoverContentStyle>
   );
@@ -614,6 +789,8 @@ const BillboardHeader: React.FC<BillboardHeaderProps> = ({
   boardInviteLink,
   orgId,
   labelData,
+  callApi,
+  boardId,
 }) => {
   const [openInvite, setOpenInvite] = useState(false);
   const [openPopover, setOpenPopover] = useState(false);
@@ -682,6 +859,8 @@ const BillboardHeader: React.FC<BillboardHeaderProps> = ({
               setIsMenu={setIsMenu}
               setIsSetting={setIsSetting}
               setIsLabel={setIsLabel}
+              callApi={callApi}
+              boardId={boardId || ""}
             />
           }
           trigger="click"

@@ -41,7 +41,7 @@ export const BillboardHeaderBtn = styled(Button)`
 
 export const PopoverTitleStyle = styled.div`
   display: flex;
-  align-items: cetner;
+  align-items: center;
   justify-content: center;
   position: relative;
 `;
@@ -93,5 +93,21 @@ export const PopoverContentStyle = styled.div`
 
   .ant-btn-primary.createLabelBtn: hover {
     background-color: #BEBEBE;
+  }
+
+  .createLabelView {
+    position: absolute;
+    width: 250px;
+    height: 105%;
+    background: #ffffff;
+    box-shadow: 0px -1px 16px rgba(0, 0, 0, 0.16);
+    right: -15px;
+    top: 55px;
+    border-radius: 8px;
+  }
+
+  .hoverBtn:hover {
+    background-color: black;
+    opacity: 0.3;
   }
 `;
