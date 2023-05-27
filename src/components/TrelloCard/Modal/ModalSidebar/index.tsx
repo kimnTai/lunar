@@ -99,7 +99,10 @@ const ModalSidebar: React.FC = () => {
         </Button>
       </ModalSidebarStyled>
       {isOpenPopoverDate && (
-        <PopoverDate close={() => setIsOpenPopoverDate(false)} />
+        <PopoverDate
+          close={() => setIsOpenPopoverDate(false)}
+          position={{ top: 100, right: 20 }}
+        />
       )}
     </>
   );

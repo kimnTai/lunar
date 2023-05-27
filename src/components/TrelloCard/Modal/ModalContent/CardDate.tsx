@@ -87,7 +87,7 @@ const CardDate: React.FC = () => {
       {isOpenPopoverDate && (
         <PopoverDate
           close={() => setIsOpenPopoverDate(false)}
-          position={{ top: "100px", left: "100px", right: "unset" }}
+          position={{ top: 100, left: 100 }}
         />
       )}
     </>

@@ -1,11 +1,21 @@
 import styled from "styled-components";
 import { Calendar } from "antd";
+interface PopoverDateStyledProps {
+  position: {
+    top: number;
+    left?: number;
+    right?: number;
+  };
+}
 
-export const PopoverDateStyled = styled.div`
+export const PopoverDateStyled = styled.div<PopoverDateStyledProps>`
   box-shadow: 0px 4px 24px rgba(0, 0, 0, 0.1);
   position: absolute;
-  top: 50px;
-  right: 20px;
+  top: ${(props) => props.position.top}px;
+  left: ${(props) =>
+    props?.position?.left ? `${props.position.left}px` : "auto"};
+  right: ${(props) =>
+    props?.position?.right ? `${props.position.right}px` : "auto"};
   z-index: 1010;
 `;
 
