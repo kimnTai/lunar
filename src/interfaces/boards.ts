@@ -29,7 +29,6 @@ export interface BillboardHeaderProps {
   member: OrganizationMemberProps[];
   boardInviteLink: string;
   orgId: string;
-  labelData: LabelsProps[];
   callApi: (id: string) => Promise<void>;
   boardId: string;
 }
@@ -52,7 +51,6 @@ export interface PopoverContentProps {
   name: string;
   member: OrganizationMemberProps[];
   orgId: string;
-  labelData: LabelsProps[];
   isUser: boolean;
   isMenu: boolean;
   isSetting: boolean;

@@ -98,11 +98,10 @@ export const PopoverContentStyle = styled.div`
   .createLabelView {
     position: absolute;
     width: 250px;
-    height: 105%;
     background: #ffffff;
     box-shadow: 0px -1px 16px rgba(0, 0, 0, 0.16);
     right: -15px;
-    top: 55px;
+    top: 19px;
     border-radius: 8px;
   }
 
