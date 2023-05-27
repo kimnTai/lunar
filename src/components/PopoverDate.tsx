@@ -94,18 +94,23 @@ const PopoverDate: React.FC = ({ close, position = null }) => {
     }
 
     try {
-      const { result } = await newCardDateApi(id, {
+      const {
+        result: { _id, cardId, dueComplete, startDate, dueDate },
+      } = await newCardDateApi(id, {
         startDate: startDateField?.format() ?? "",
         dueDate: endDateField?.format() ?? "",
       });
 
       // 更新卡片畫面資料
       setCardData({
-        ...cardData,
+        ...cardData!,
         date: {
-          ...cardData?.date,
-          startDate: result.startDate,
-          dueDate: result.dueDate,
+          _id: _id,
+          cardId: cardId,
+          dueComplete: dueComplete,
+          dueReminder: 0,
+          startDate: startDate,
+          dueDate: dueDate,
         },
       });
       close();
@@ -125,7 +130,7 @@ const PopoverDate: React.FC = ({ close, position = null }) => {
 
       // 更新卡片畫面資料
       setCardData({
-        ...cardData,
+        ...cardData!,
         date: null,
       });
 
