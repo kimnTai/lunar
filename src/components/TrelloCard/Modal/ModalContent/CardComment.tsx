@@ -3,6 +3,7 @@ import { Avatar, Col, List } from "antd";
 import { useCardModalContext } from "@/context/CardModalContext";
 import { SectionHeaderStyled } from "./style";
 import CardCommentForm from "./CardCommentForm";
+import { CardCommentListStyled } from "./style";
 
 const CardComment: React.FC = () => {
   const { cardData } = useCardModalContext();
@@ -25,20 +26,22 @@ const CardComment: React.FC = () => {
           <h3>評論</h3>
         </Col>
       </SectionHeaderStyled>
-
-      <List
-        itemLayout="horizontal"
-        dataSource={cardData?.comment}
-        renderItem={(item) => (
-          <List.Item>
-            <List.Item.Meta
-              avatar={<Avatar src={item.userId.avatar} />}
-              title={`${item.userId.name} --- ${getTimeText(item.updatedAt)}`}
-              description={item.comment}
-            />
-          </List.Item>
-        )}
-      />
+      <CardCommentListStyled>
+        <List
+          itemLayout="horizontal"
+          dataSource={cardData?.comment}
+          renderItem={(item) => (
+            <List.Item>
+              <List.Item.Meta
+                avatar={<Avatar src={item.userId.avatar} />}
+                title={`${item.userId.name}`}
+                description={getTimeText(item.updatedAt)}
+              />
+              <p className="ant-list-item-comment">{item.comment}</p>
+            </List.Item>
+          )}
+        />
+      </CardCommentListStyled>
       <CardCommentForm />
     </>
   );
