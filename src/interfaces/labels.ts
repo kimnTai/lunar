@@ -15,12 +15,12 @@ export interface NewLabelsProps {
 
 export interface UpdateLabelsProps {
   boardId: string;
-  labelId : string;
+  labelId: string;
   name: string;
   color: string;
 }
 
 export interface DateLabelsProps {
   boardId: string;
-  labelId : string;
+  labelId: string;
 }

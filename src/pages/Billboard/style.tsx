@@ -7,7 +7,7 @@ export const BillboardStyled = styled.div`
   column-gap: 10px;
 `;
 
-export const MainLayoutCss = styled(Layout.Content) <{ workspace: string }>`
+export const MainLayoutCss = styled(Layout.Content)<{ workspace: string }>`
   transition: all 0.2s ease;
   // height: calc(100vh - 56px);
   background-color: ${(props) =>
@@ -86,13 +86,13 @@ export const PopoverContentStyle = styled.div`
     top: 19px;
     border-radius: 8px;
   }
-  
+
   .ant-btn-primary.createLabelBtn {
-    background-color: #D4D4D4;
+    background-color: #d4d4d4;
   }
 
-  .ant-btn-primary.createLabelBtn: hover {
-    background-color: #BEBEBE;
+  .ant-btn-primary.createlabelbtn: hover {
+    background-color: #bebebe;
   }
 
   .createLabelView {

@@ -31,7 +31,12 @@ import ListButton from "@/components/ListButton";
 import CloneBoardButton from "@/components/CloneBoardButton";
 import { useAppSelector } from "@/hooks/useAppSelector";
 import { LabelsProps } from "@/interfaces/labels";
-import { newLabelApi, updateLabelApi, deleteLabelApi, getLabelApi } from "@/api/label";
+import {
+  newLabelApi,
+  updateLabelApi,
+  deleteLabelApi,
+  getLabelApi,
+} from "@/api/label";
 import type { InputRef } from "antd";
 import { useApi } from "@/hooks/useApiHook";
 
@@ -210,19 +215,19 @@ const PopoverContent: React.FC<PopoverContentProps> = (props) => {
   const [storeLoading, setStoreLoading] = useState(false);
   const [deleteLoading, setDeleteLoading] = useState(false);
   const inputRef = useRef<InputRef>(null);
-  const [labelID, setLabelID] = useState('')
+  const [labelID, setLabelID] = useState("");
   const [labelResult, _labelLoading, labelCallApi] = useApi(getLabelApi);
 
   const colorList: Label[] = [
-    { color: '#ffb6c1' },
-    { color: '#4682b4' },
-    { color: '#f4a460' },
-    { color: '#8fbc8f' },
-    { color: '#d2b48c' },
-    { color: '#ffd700' },
-    { color: '#48d1cc' },
-    { color: '#cd5c5c' },
-    { color: '#9370db' },
+    { color: "#ffb6c1" },
+    { color: "#4682b4" },
+    { color: "#f4a460" },
+    { color: "#8fbc8f" },
+    { color: "#d2b48c" },
+    { color: "#ffd700" },
+    { color: "#48d1cc" },
+    { color: "#cd5c5c" },
+    { color: "#9370db" },
   ];
 
   useEffect(() => {
@@ -235,8 +240,10 @@ const PopoverContent: React.FC<PopoverContentProps> = (props) => {
 
   useEffect(() => {
     if (labelResult?.result) {
-      const filteredList = labelResult?.result.filter((item, index, self) =>
-        index === self.findIndex((t) => t.name === item.name && t.color === item.color)
+      const filteredList = labelResult?.result.filter(
+        (item, index, self) =>
+          index ===
+          self.findIndex((t) => t.name === item.name && t.color === item.color)
       );
       setLabelList(filteredList);
     }
@@ -281,27 +288,29 @@ const PopoverContent: React.FC<PopoverContentProps> = (props) => {
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.value !== '') {
-      const found = labelList.filter((item) => item.name.includes(e.target.value));
+    if (e.target.value !== "") {
+      const found = labelList.filter((item) =>
+        item.name.includes(e.target.value)
+      );
       if (found.length > 0) {
         setLabelList(found);
-      }else if (found.length === 0) {
+      } else if (found.length === 0) {
         setLabelList([]);
       }
-    }else if (e.target.value === '') {
+    } else if (e.target.value === "") {
       setLabelList(labelList);
     }
-  }
+  };
 
   const checkColorHandler = (color: any) => {
     setInputColor(color);
-  }
+  };
 
   const clearColorHandler = () => {
-    if (inputColor !== '#DFE1E6') {
-      setInputColor('#DFE1E6');
+    if (inputColor !== "#DFE1E6") {
+      setInputColor("#DFE1E6");
     }
-  }
+  };
 
   // 建立標籤
   const onCreateLabelFinish = async () => {
@@ -318,22 +327,21 @@ const PopoverContent: React.FC<PopoverContentProps> = (props) => {
         }
       })
       .finally(() => setLoading(false));
-  }
+  };
 
   const editLabelHandler = (name: any, color: any, id: any) => {
     setIsEditLabel(true);
     setInputName(name);
     setInputColor(color);
-    setLabelID(id)
+    setLabelID(id);
     form.setFieldsValue({ editLabelName: name });
-  }
+  };
 
   useEffect(() => {
     if (isEditLabel) {
       inputRef.current!.focus();
     }
   }, [isEditLabel]);
-
 
   // 編輯標籤
   const onEditLabelFinish = async () => {
@@ -375,7 +383,7 @@ const PopoverContent: React.FC<PopoverContentProps> = (props) => {
           setIsEditLabel(false);
         });
     }
-  }
+  };
 
   return (
     <PopoverContentStyle>
@@ -447,7 +455,6 @@ const PopoverContent: React.FC<PopoverContentProps> = (props) => {
       {isUser ? (
         <div className="top-border" style={{ paddingBottom: 0 }}>
           {boardManager?.map((ele, idx) => (
-
             <div style={{ display: "flex" }} key={idx}>
               <Avatar src={ele.userId.avatar} key={idx} />
               <p style={{ marginTop: "5px", marginLeft: "5px" }}>
@@ -554,11 +561,12 @@ const PopoverContent: React.FC<PopoverContentProps> = (props) => {
                           marginLeft: "-38px",
                         }}
                       >
-                        {userOrganization && userOrganization?.map((ele, idx) => (
-                          <Option value={ele._id} key={idx}>
-                            {ele.name}
-                          </Option>
-                        ))}
+                        {userOrganization &&
+                          userOrganization?.map((ele, idx) => (
+                            <Option value={ele._id} key={idx}>
+                              {ele.name}
+                            </Option>
+                          ))}
                       </Select>
                     </Form.Item>
                     <Form.Item name="boardOrgName">
@@ -676,15 +684,18 @@ const PopoverContent: React.FC<PopoverContentProps> = (props) => {
       {isLabel ? (
         <>
           <div className="top-border">
-            <Input 
-              allowClear 
-              placeholder="搜尋標籤..." 
+            <Input
+              allowClear
+              placeholder="搜尋標籤..."
               onChange={handleInputChange}
-              />
+            />
             <Space style={{ display: "flex" }}>
               <Space.Compact direction="vertical" style={{ width: 200 }}>
                 {labelList?.map((ele, idx) => (
-                  <div style={{ display: "flex", justifyContent: "center" }} key={idx}>
+                  <div
+                    style={{ display: "flex", justifyContent: "center" }}
+                    key={idx}
+                  >
                     <Button
                       className="labelBtn"
                       type="primary"
@@ -704,17 +715,17 @@ const PopoverContent: React.FC<PopoverContentProps> = (props) => {
                     </Button>
                     <Button
                       type="text"
-                      icon={
-                        <EditOutlined />
-                      }
-                      style={{ 
-                        width: "32px", 
-                        height: "32px", 
-                        padding: 0, 
-                        marginTop: "10px", 
-                        color: "var(--gray66)" 
+                      icon={<EditOutlined />}
+                      style={{
+                        width: "32px",
+                        height: "32px",
+                        padding: 0,
+                        marginTop: "10px",
+                        color: "var(--gray66)",
                       }}
-                      onClick={() => editLabelHandler(ele.name, ele.color, ele._id)}
+                      onClick={() =>
+                        editLabelHandler(ele.name, ele.color, ele._id)
+                      }
                     />
                   </div>
                 ))}
@@ -778,18 +789,40 @@ const PopoverContent: React.FC<PopoverContentProps> = (props) => {
                       {inputName}
                     </div>
                   </div>
-                  <div style={{padding: "0 12px"}}>
-                    <p style={{ fontSize: "14px", lineHeight: "16px", marginTop: "12px"}}>標題</p>
+                  <div style={{ padding: "0 12px" }}>
+                    <p
+                      style={{
+                        fontSize: "14px",
+                        lineHeight: "16px",
+                        marginTop: "12px",
+                      }}
+                    >
+                      標題
+                    </p>
                     <Form.Item
                       name="labelName"
-                      rules={[{ required: true, message: '請輸入標籤名稱!'}]}>
+                      rules={[{ required: true, message: "請輸入標籤名稱!" }]}
+                    >
                       <Input
                         placeholder="輸入標籤名稱"
-                        style={{ width: "100%", height: "32px", borderRadius: "4px", marginTop: "8px" }}
+                        style={{
+                          width: "100%",
+                          height: "32px",
+                          borderRadius: "4px",
+                          marginTop: "8px",
+                        }}
                         onChange={(e) => setInputName(e.target.value)}
                       />
                     </Form.Item>
-                    <p style={{ fontSize: "14px", lineHeight: "16px", marginTop: "-12px"}}>選一個顏色</p>
+                    <p
+                      style={{
+                        fontSize: "14px",
+                        lineHeight: "16px",
+                        marginTop: "-12px",
+                      }}
+                    >
+                      選一個顏色
+                    </p>
                     <div>
                       <Form.Item name="labelColor">
                         {colorList?.map((ele, idx) => (
@@ -806,10 +839,10 @@ const PopoverContent: React.FC<PopoverContentProps> = (props) => {
                               marginRight: "5.2px",
                             }}
                             key={idx}
-                            onClick={() =>checkColorHandler(ele.color)}
+                            onClick={() => checkColorHandler(ele.color)}
                           >
-                            <div 
-                              className="hoverBtn" 
+                            <div
+                              className="hoverBtn"
                               style={{
                                 width: "100%",
                                 height: "100%",
@@ -841,7 +874,7 @@ const PopoverContent: React.FC<PopoverContentProps> = (props) => {
                         移除顏色
                       </Button>
                     </div>
-                    <div className="top-border" style={{marginTop: "10px"}}>
+                    <div className="top-border" style={{ marginTop: "10px" }}>
                       <Button
                         htmlType="submit"
                         type="primary"
@@ -904,20 +937,42 @@ const PopoverContent: React.FC<PopoverContentProps> = (props) => {
                       {inputName}
                     </div>
                   </div>
-                  <div style={{padding: "0 12px"}}>
-                    <p style={{ fontSize: "14px", lineHeight: "16px", marginTop: "12px"}}>標題</p>
+                  <div style={{ padding: "0 12px" }}>
+                    <p
+                      style={{
+                        fontSize: "14px",
+                        lineHeight: "16px",
+                        marginTop: "12px",
+                      }}
+                    >
+                      標題
+                    </p>
                     <Form.Item
                       name="editLabelName"
-                      rules={[{ required: true, message: '請輸入標籤名稱!'}]}>
+                      rules={[{ required: true, message: "請輸入標籤名稱!" }]}
+                    >
                       <Input
                         placeholder="輸入標籤名稱"
-                        style={{ width: "100%", height: "32px", borderRadius: "4px", marginTop: "8px" }}
+                        style={{
+                          width: "100%",
+                          height: "32px",
+                          borderRadius: "4px",
+                          marginTop: "8px",
+                        }}
                         onChange={(e) => setInputName(e.target.value)}
                         ref={inputRef}
                         // defaultValue={inputName}
                       />
                     </Form.Item>
-                    <p style={{ fontSize: "14px", lineHeight: "16px", marginTop: "-12px"}}>選一個顏色</p>
+                    <p
+                      style={{
+                        fontSize: "14px",
+                        lineHeight: "16px",
+                        marginTop: "-12px",
+                      }}
+                    >
+                      選一個顏色
+                    </p>
                     <div>
                       <Form.Item name="labelColor">
                         {colorList?.map((ele, idx) => (
@@ -934,10 +989,10 @@ const PopoverContent: React.FC<PopoverContentProps> = (props) => {
                               marginRight: "5.2px",
                             }}
                             key={idx}
-                            onClick={() =>checkColorHandler(ele.color)}
+                            onClick={() => checkColorHandler(ele.color)}
                           >
-                            <div 
-                              className="hoverBtn" 
+                            <div
+                              className="hoverBtn"
                               style={{
                                 width: "100%",
                                 height: "100%",
@@ -969,7 +1024,14 @@ const PopoverContent: React.FC<PopoverContentProps> = (props) => {
                         移除顏色
                       </Button>
                     </div>
-                    <div className="top-border" style={{marginTop: "10px", display: "flex", justifyContent: "space-between"}}>
+                    <div
+                      className="top-border"
+                      style={{
+                        marginTop: "10px",
+                        display: "flex",
+                        justifyContent: "space-between",
+                      }}
+                    >
                       <Button
                         htmlType="submit"
                         type="primary"
@@ -1005,7 +1067,6 @@ const PopoverContent: React.FC<PopoverContentProps> = (props) => {
               </div>
             ) : null}
           </div>
-          
         </>
       ) : null}
     </PopoverContentStyle>
