@@ -27,11 +27,7 @@ const WorkSpace: React.FC<{
   return (
     <WorkSpaceCss>
       <Row align={"middle"} justify={"space-between"}>
-        <WorkSpaceHeader
-          userOrganization={userOrganization}
-          organizationId={workSpaceId || ""}
-          getOrganization={getOrganization}
-        />
+        <WorkSpaceHeader />
         <Col>
           <Button
             icon={<PlusOutlined />}
