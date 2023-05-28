@@ -13,7 +13,6 @@ import {
   updateCardInColumn,
   updateCardDiffColumn,
   updateColumn,
-  getColumn,
   getSocketChange,
 } from "@/utils/cardFunc";
 import type { PropsFromRedux } from "@/router";
