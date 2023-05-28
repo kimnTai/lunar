@@ -46,7 +46,7 @@ const CardDate: React.FC = () => {
   }, [dueDate, isCompleted]);
 
   // 沒有設定日期不顯示日期區塊
-  if (!date) {
+  if (!cardData || !date) {
     return null;
   }
 
