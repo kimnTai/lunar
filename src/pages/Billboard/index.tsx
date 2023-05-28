@@ -13,7 +13,6 @@ import {
   updateCardInColumn,
   updateCardDiffColumn,
   updateColumn,
-  getColumn,
   getSocketChange,
 } from "@/utils/cardFunc";
 import type { PropsFromRedux } from "@/router";
@@ -44,6 +43,7 @@ const Billboard: React.FC<{
       })();
     }
   }, [boardId]);
+
   useEffect(() => {
     if (workSpace) {
       setWorkSpace();
@@ -96,6 +96,10 @@ const Billboard: React.FC<{
             boardInviteLink={result?.result.inviteLink || ""}
             name={result?.result.name || ""}
             member={result?.result.member || []}
+            orgId={result?.result.organizationId || ""}
+            // labelData={labelData}
+            callApi={callApi}
+            boardId={boardId || ""}
           />
           <DragDropContext onDragEnd={onDragEnd}>
             <Droppable
