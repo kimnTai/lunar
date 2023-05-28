@@ -39,17 +39,15 @@ const ModalHeader: React.FC<{ listName: string }> = (props) => {
     setIsEdit(false);
   };
 
+  const coverUrl = cardData?.attachment.at(0)?.dirname;
+
   return (
     <>
       <ModalHeaderStyled>
         {/* 封面 */}
-        <Image
-          src={
-            cardData?.attachment.at(0)?.dirname ?? "https://unsplash.it/720/160"
-          }
-          width={"100%"}
-          className="coverImg"
-        />
+        {coverUrl && (
+          <Image src={coverUrl} width={"100%"} className="coverImg" />
+        )}
         {/* 列表名稱 */}
         <CardHeaderToolbarStyled>
           <Row align="middle" gutter={24}>
