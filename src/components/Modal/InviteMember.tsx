@@ -1,14 +1,17 @@
 import React, { useState } from "react";
 import { InviteMemberCss } from "./style";
 import { useApi } from "@/hooks/useApiHook";
-import { Button, Form, Row } from "antd";
+import { Button, Col, Form, Row } from "antd";
 import { LinkOutlined } from "@ant-design/icons";
 import {
   OrganizationProps,
   addOrganizationMemberProps,
 } from "@/interfaces/organization";
 import CopyInviteLinkBtn from "@/components/WorkSpace/CopyInviteLinkBtn";
-import { addOrganizationMemberApi } from "@/api/organization";
+import {
+  addOrganizationMemberApi,
+  generateInviteLinkApi,
+} from "@/api/organization";
 import InviteMemberSelect from "../WorkSpace/InviteMemberSelect";
 import { PropsFromRedux } from "@/router";
 
@@ -24,6 +27,7 @@ const InviteMember: React.FC<{
   const [selectedUsers, setSelectedUsers] = useState<{ userIdList: string[] }>({
     userIdList: [],
   });
+  const [loadingLink, setLoadingLink] = useState(false);
 
   const onCancel = () => {
     setOpen(false);
@@ -42,6 +46,14 @@ const InviteMember: React.FC<{
     await getOrganization();
 
     onCancel();
+  };
+
+  const handleGenerateInviteLink = async () => {
+    setLoadingLink(true);
+    await generateInviteLinkApi(organizationId);
+
+    await getOrganization();
+    setLoadingLink(false);
   };
 
   return (
@@ -81,30 +93,50 @@ const InviteMember: React.FC<{
               <LinkOutlined
                 style={{
                   padding: "12px",
-                  backgroundColor: "var(--grayd5)",
+                  backgroundColor: "var(--link-background)",
                   borderRadius: "2px",
                 }}
               />
-              <p
-                style={{
-                  fontWeight: "400",
-                  fontSize: "14px",
-                  lineHeight: "22px",
-                }}
-              >
-                使用連結邀請某人加入此工作區
-              </p>
+              <Col>
+                <p
+                  style={{
+                    fontWeight: "400",
+                    fontSize: "14px",
+                    lineHeight: "22px",
+                  }}
+                >
+                  使用連結邀請某人加入此工作區
+                </p>
+                <Button
+                  type="link"
+                  style={{
+                    fontWeight: 400,
+                    fontSize: "12px",
+                    lineHeight: "22px",
+                    color: "var(--gray9)",
+                    textDecorationLine: "underline",
+                    padding: 0,
+                    height: "auto",
+                  }}
+                  onClick={handleGenerateInviteLink}
+                  loading={loadingLink}
+                >
+                  {userOrganization?.inviteLink ? "停用連結" : "建立連結"}
+                </Button>
+              </Col>
             </Row>
-            <CopyInviteLinkBtn
-              userOrganization={userOrganization}
-              setOpen={setOpen}
-              style={{
-                backgroundColor: "white",
-                color: "var(--black23)",
-                width: "130px",
-                height: "32px",
-              }}
-            />
+            {userOrganization?.inviteLink && (
+              <CopyInviteLinkBtn
+                userOrganization={userOrganization}
+                setOpen={setOpen}
+                style={{
+                  backgroundColor: "white",
+                  color: "var(--black23)",
+                  width: "130px",
+                  height: "32px",
+                }}
+              />
+            )}
           </Row>
         </Form.Item>
       </Form>

@@ -42,7 +42,11 @@ export const WorkSpaceHeader: React.FC = () => {
         background={"var(--blue)"}
       />
       <Col className="workSpace" style={{ marginLeft: "16px" }}>
-        <Row align={"middle"} justify={"center"}>
+        <Row
+          align={"middle"}
+          justify={"center"}
+          style={{ marginBottom: "8px" }}
+        >
           {isEdit ? (
             <Spin spinning={spinning}>
               <Form
