@@ -16,6 +16,13 @@ export const getUserOrganizationsApi = () => {
   );
 };
 
+// 取得單一組織
+export const getOrganizationByIdApi = (data: { organizationId: string }) => {
+  return Request.get<any, PrometheusResponse<OrganizationProps>>(
+    `/organizations/${data.organizationId}`
+  );
+};
+
 // 新增組織
 export const newOrganizationApi = (data: NewOrganizationFormProps) => {
   return Request.post<any, PrometheusResponse<OrganizationProps>>(
@@ -73,5 +80,12 @@ export const deleteOrganizationApi = (data: DeleteOrganizationProps) => {
 
   return Request.delete<any, PrometheusResponse<OrganizationProps>>(
     `/organizations/${organizationId}`
+  );
+};
+
+// 產生邀請連結
+export const generateInviteLinkApi = (organizationId: string) => {
+  return Request.post<any, PrometheusResponse<OrganizationProps>>(
+    `/organizations/${organizationId}/invitationSecret`
   );
 };

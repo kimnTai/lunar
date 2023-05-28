@@ -41,7 +41,7 @@ export const BillboardHeaderBtn = styled(Button)`
 
 export const PopoverTitleStyle = styled.div`
   display: flex;
-  align-items: cetner;
+  align-items: center;
   justify-content: center;
   position: relative;
 `;
@@ -74,5 +74,39 @@ export const PopoverContentStyle = styled.div`
     margin-bottom: 8px;
     text-align: center;
     border-bottom: 1px solid var(--ds-border, #091e4221);
+  }
+
+  .changeWorkSpaceView {
+    position: absolute;
+    width: 250px;
+    height: 160px;
+    background: #ffffff;
+    box-shadow: 0px -1px 16px rgba(0, 0, 0, 0.16);
+    right: -25px;
+    top: 19px;
+    border-radius: 8px;
+  }
+
+  .ant-btn-primary.createLabelBtn {
+    background-color: #d4d4d4;
+  }
+
+  .ant-btn-primary.createlabelbtn: hover {
+    background-color: #bebebe;
+  }
+
+  .createLabelView {
+    position: absolute;
+    width: 250px;
+    background: #ffffff;
+    box-shadow: 0px -1px 16px rgba(0, 0, 0, 0.16);
+    right: -15px;
+    top: 19px;
+    border-radius: 8px;
+  }
+
+  .hoverBtn:hover {
+    background-color: black;
+    opacity: 0.3;
   }
 `;

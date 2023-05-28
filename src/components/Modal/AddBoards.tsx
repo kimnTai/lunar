@@ -5,7 +5,7 @@ import { NewBoardsProps } from "@/interfaces/boards";
 import { Button, Form, Input, Select } from "antd";
 import Cover from "@/assets/images/img_cover.png";
 import { useAppDispatch } from "@/hooks/useAppDispatch";
-import { getOrganizationsAction } from "@/redux/actions/OrganizationAction";
+import { getOrganizationByIdAction } from "@/redux/actions/OrganizationAction";
 
 const AddBoards: React.FC<{
   open: boolean;
@@ -14,10 +14,6 @@ const AddBoards: React.FC<{
 }> = ({ open, setOpen, organizationId }) => {
   const [buttonLoading, setButtonLoading] = useState(false);
   const dispatch = useAppDispatch();
-
-  const onCancel = () => {
-    setOpen(false);
-  };
 
   const onFinish = async (values: NewBoardsProps) => {
     if (!organizationId) {
@@ -30,9 +26,9 @@ const AddBoards: React.FC<{
       organizationId,
       permission: values.permission,
     })
-      .then(() => getOrganizationsAction()(dispatch))
+      .then(() => getOrganizationByIdAction(organizationId)(dispatch))
       .finally(() => {
-        onCancel();
+        setOpen(false);
         setButtonLoading(false);
       });
   };
@@ -41,7 +37,7 @@ const AddBoards: React.FC<{
       title={<p style={{ textAlign: "center" }}>建立看板</p>}
       width={351}
       open={open}
-      onCancel={onCancel}
+      onCancel={() => setOpen(false)}
       footer={null}
     >
       <img src={Cover} alt="" className="head-img" />

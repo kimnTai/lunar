@@ -69,3 +69,49 @@ export const CardDateStyled = styled.div`
     margin-left: 12px;
   }
 `;
+
+export const CardCommentFormStyled = styled.div`
+  background-color: var(--comment-form-background);
+  border-radius: 6px;
+  padding: 16px;
+  position: relative;
+  .ant-form-item-label ::after {
+    display: none;
+  }
+  .ant-form-item {
+    margin-bottom: 0;
+  }
+  .ant-btn {
+    position: absolute;
+    right: 16px;
+    bottom: 16px;
+  }
+`;
+
+export const CardCommentListStyled = styled.div`
+  .ant-list {
+    .ant-list-item {
+      display: block;
+      .ant-list-item-meta-content {
+        display: flex;
+        gap: 12px;
+        .ant-list-item-meta-title {
+          font-weight: 600;
+          font-size: 14px;
+          line-height: 150%;
+          color: var(--black23);
+        }
+        .ant-list-item-meta-description {
+          font-weight: 400;
+          font-size: 14px;
+          line-height: 150%;
+          letter-spacing: 0.02em;
+          color: var(--gray9f);
+        }
+      }
+      .ant-list-item-comment {
+        margin-left: 48px;
+      }
+    }
+  }
+`;

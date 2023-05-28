@@ -30,11 +30,11 @@ const useWebSocket = (
       console.log("websocket 關閉");
     };
     // 在接收到消息時執行的邏輯
-    webSocketRef.current.onmessage = (event :MessageEvent) => {
-        const evenData = JSON.parse(event.data)  ;
-        if (evenData.type === "update") {
-          setData(evenData.result as SocketResultProps);
-        }
+    webSocketRef.current.onmessage = (event: MessageEvent) => {
+      const evenData = JSON.parse(event.data);
+      if (evenData.type === "update") {
+        setData(evenData.result as SocketResultProps);
+      }
     };
 
     // 在組件卸載時關閉WebSocket連接

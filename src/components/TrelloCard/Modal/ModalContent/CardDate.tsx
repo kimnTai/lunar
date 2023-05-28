@@ -18,11 +18,6 @@ const CardDate: React.FC = () => {
   const { id = "", date = {} as DateProps } = cardData ?? {};
   const { startDate = "", dueDate = "", dueComplete = false } = date ?? {}; // 2023-05-22T00:00:00.000Z
 
-  // 沒有設定日期不顯示日期區塊
-  if (!date) {
-    return null;
-  }
-
   const [isOpenPopoverDate, setIsOpenPopoverDate] =
     React.useState<boolean>(false);
   const [isCompleted, setIsCompleted] = React.useState<boolean>(dueComplete);
@@ -49,6 +44,11 @@ const CardDate: React.FC = () => {
       setIsExpired(false);
     }
   }, [dueDate, isCompleted]);
+
+  // 沒有設定日期不顯示日期區塊
+  if (!date) {
+    return null;
+  }
 
   return (
     <>

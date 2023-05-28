@@ -7,35 +7,18 @@ import {
   AlignLeftOutlined,
   MessageOutlined,
   PaperClipOutlined,
-  ClockCircleOutlined,
 } from "@ant-design/icons";
 import { Avatar } from "antd";
+import CardInnerDate from "./CardInnerDate";
 
 const TrelloCardInner: React.FC<TrelloCardInnerProps> = React.memo((props) => {
   const { quotes, setOpenModal } = props;
-  const [startMonth, setStartMonth] = useState<string>();
-  const [startDay, setStartDay] = useState<string>();
-  const [dueMonth, setDueMonth] = useState<string>();
-  const [dueDay, setDueDay] = useState<string>();
   const [totalCheckItem, setTotalCheckItem] = useState<number>(0);
   const [finishCheckItem, setFinishCheckItem] = useState<number>(0);
   const quote = quotes.card;
 
   useEffect(() => {
     quote.map((ele) => {
-      const startDate = ele.date?.startDate.split("T")[0];
-      const dueDate = ele.date?.dueDate.split("T")[0];
-      // 月份
-      const startMonth = startDate?.split("-")[1];
-      const dueMonth = dueDate?.split("-")[1];
-      setStartMonth(startMonth);
-      setDueMonth(dueMonth);
-      // 日期
-      const startDay = startDate?.split("-")[2];
-      const dueDay = dueDate?.split("-")[2];
-      setStartDay(startDay);
-      setDueDay(dueDay);
-
       let totalNum = 0;
       let doneNum = 0;
       ele.checklist.map((ele) => {
@@ -197,36 +180,7 @@ const TrelloCardInner: React.FC<TrelloCardInnerProps> = React.memo((props) => {
                         </div>
                       </div>
                     </div>
-                    {date ? (
-                      <div
-                        style={{
-                          display: "flex",
-                          padding: "0 12px",
-                          marginTop: "6px",
-                        }}
-                      >
-                        <div>
-                          <ClockCircleOutlined />
-                        </div>
-                        {date?.startDate !== "" && date?.dueDate !== "" ? (
-                          <div
-                            style={{ marginLeft: "8px", letterSpacing: "2px" }}
-                          >
-                            {startMonth}月{startDay}日-{dueMonth}月{dueDay}日
-                          </div>
-                        ) : null}
-                        {date?.startDate !== "" && date?.dueDate === "" ? (
-                          <div>
-                            {startMonth}月{startDay}日
-                          </div>
-                        ) : null}
-                        {date?.startDate === "" && date?.dueDate !== "" ? (
-                          <div>
-                            {dueMonth}月{dueDay}日
-                          </div>
-                        ) : null}
-                      </div>
-                    ) : null}
+                    <CardInnerDate date={date} />
                     {member.map((ele) => (
                       <Avatar.Group
                         key={ele.userId._id}

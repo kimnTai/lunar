@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Button, Form, Input, Popover, Select } from "antd";
+import { Button, Form, Input, Popover, Select, Spin } from "antd";
 import ListButton from "./ListButton";
 import { CopyOutlined } from "@ant-design/icons";
 import { useAppSelector } from "@/hooks/useAppSelector";
@@ -69,58 +69,56 @@ const CloneBoardButton: React.FC = () => {
         </div>
       }
       content={
-        <Form
-          layout="vertical"
-          form={form}
-          onFinish={onFinish}
-          initialValues={{
-            organizationId: organization.find(({ board }) =>
-              board.map(({ id }) => id).includes(`${boardId}`)
-            )?.id,
-          }}
-        >
-          <Form.Item
-            name="name"
-            label="看板名稱"
-            rules={[
-              {
-                required: true,
-                message: "請輸入看板名稱!",
-              },
-            ]}
+        <Spin spinning={componentState.isLoading}>
+          <Form
+            layout="vertical"
+            form={form}
+            onFinish={onFinish}
+            initialValues={{
+              organizationId: organization.find(({ board }) =>
+                board.map(({ id }) => id).includes(`${boardId}`)
+              )?.id,
+            }}
           >
-            <Input />
-          </Form.Item>
-          <Form.Item
-            name="organizationId"
-            label="工作區"
-            rules={[
-              {
-                required: true,
-                message: "請選擇工作區!",
-              },
-            ]}
-          >
-            <Select
-              onChange={(value) => {
-                form.setFieldsValue({ organizationId: value });
-              }}
-              options={organization.map(({ _id, name }) => ({
-                value: _id,
-                label: name,
-              }))}
-            />
-          </Form.Item>
-          <Form.Item>
-            <Button
-              htmlType="submit"
-              type="primary"
-              loading={componentState.isLoading}
+            <Form.Item
+              name="name"
+              label="看板名稱"
+              rules={[
+                {
+                  required: true,
+                  message: "請輸入看板名稱!",
+                },
+              ]}
             >
-              新建
-            </Button>
-          </Form.Item>
-        </Form>
+              <Input />
+            </Form.Item>
+            <Form.Item
+              name="organizationId"
+              label="工作區"
+              rules={[
+                {
+                  required: true,
+                  message: "請選擇工作區!",
+                },
+              ]}
+            >
+              <Select
+                onChange={(value) => {
+                  form.setFieldsValue({ organizationId: value });
+                }}
+                options={organization.map(({ _id, name }) => ({
+                  value: _id,
+                  label: name,
+                }))}
+              />
+            </Form.Item>
+            <Form.Item>
+              <Button htmlType="submit" type="primary">
+                新建
+              </Button>
+            </Form.Item>
+          </Form>
+        </Spin>
       }
     >
       <ListButton
