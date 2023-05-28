@@ -4,8 +4,8 @@ import { Layout } from "antd";
 const { Sider } = Layout;
 
 export const ModalStyle: React.CSSProperties = {
-  backgroundColor: "var(--modal-background-color)",
   color: "var(--modal-color)",
+  backgroundColor: "#ffffff",
 };
 
 export const ModalSidebarStyled = styled(Sider)`
@@ -20,9 +20,9 @@ export const ModalSidebarStyled = styled(Sider)`
     max-width: 300px;
     overflow: hidden;
     padding: 6px 12px;
-    :hover {
-      background-color: var(--modal-button-neutral-hover);
-    }
+    border: 0;
+    text-align: left;
+    width: 100%;
   }
   .mid {
     margin-top: 8px;

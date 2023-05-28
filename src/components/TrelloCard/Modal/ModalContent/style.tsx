@@ -47,3 +47,25 @@ export const SectionContentStyled = styled.div`
     padding: 8px 12px;
   }
 `;
+
+export const CardDateStyled = styled.div`
+  display: flex;
+  item-align: center;
+  line-height: 1;
+
+  .cardDate {
+    min-height: 34px;
+    background-color: #e9e9e980;
+    border-radius: 4px;
+    padding: 6px 12px;
+    cursor: pointer;
+
+    &:hover {
+      background-color: #e9e9e9;
+    }
+  }
+
+  .checkFinish {
+    margin-left: 12px;
+  }
+`;

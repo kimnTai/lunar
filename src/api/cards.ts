@@ -5,6 +5,9 @@ import type {
   CardsProps,
   UpdateCardCheckItem,
   UpdateCardCheckList,
+  DateProps,
+  NewCardDateProps,
+  UpdateCardDateProps,
 } from "@/interfaces/cards";
 import { CommentProps, NewCommentProps } from "@/interfaces/comments";
 
@@ -45,3 +48,23 @@ export const newCardCommentApi = (data: NewCommentProps) =>
     `/cards/${data.cardId}/comments`,
     data
   );
+// 新增卡片日期
+export const newCardDateApi = (cardId: string, data: NewCardDateProps) =>
+  Request.post<any, PrometheusResponse<DateProps>>(
+    `/cards/${cardId}/date`,
+    data
+  );
+
+// 修改卡片日期
+export const updateCardDateApi = (cardId: string, data: UpdateCardDateProps) =>
+  Request.put<any, PrometheusResponse<DateProps>>(
+    `/cards/${cardId}/date`,
+    data
+  );
+
+// 移除卡片日期
+export const deleteCardDateApi = (cardId: string) => {
+  return Request.delete<any, PrometheusResponse<DateProps>>(
+    `/cards/${cardId}/date`
+  );
+};
