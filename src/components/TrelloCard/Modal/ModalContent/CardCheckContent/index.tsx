@@ -1,7 +1,6 @@
 import { DragDropContext, DropResult, Droppable } from "react-beautiful-dnd";
 import CheckList from "./CheckList";
 import { useCardModalContext } from "@/context/CardModalContext";
-import { useState } from "react";
 import {
   updateCardDiffColumn,
   updateCardInColumn,
@@ -10,8 +9,11 @@ import {
 import { ChecklistProps } from "@/interfaces/checklists";
 
 const CardCheckContent: React.FC = () => {
-  const [cardData, setCardData] = useState(useCardModalContext().cardData);
+  const { cardData, setCardData } = useCardModalContext();
   const onDragEnd = (result: DropResult) => {
+    if (!cardData) {
+      return;
+    }
     const source = result.source;
     const destination = result.destination;
     // 未移動
@@ -48,7 +50,7 @@ const CardCheckContent: React.FC = () => {
       cardData?.checklist! as ChecklistProps[],
       "CheckList"
     ) as ChecklistProps[];
-    setCardData({ ...cardData, checklist: data } as any);
+    setCardData({ ...cardData, checklist: data });
   };
 
   return (
