@@ -75,3 +75,10 @@ export const deleteOrganizationApi = (data: DeleteOrganizationProps) => {
     `/organizations/${organizationId}`
   );
 };
+
+// 產生邀請連結
+export const generateInviteLinkApi = (organizationId: string) => {
+  return Request.post<any, PrometheusResponse<OrganizationProps>>(
+    `/organizations/${organizationId}/invitationSecret`
+  );
+};
