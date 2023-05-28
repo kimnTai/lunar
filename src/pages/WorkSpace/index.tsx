@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { WorkSpaceCss } from "./style";
 import { Row, Col, Button, Select } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
@@ -20,8 +20,44 @@ const WorkSpace: React.FC<{
     (state) => state.user.organization
   ).find((ele) => ele._id === workSpaceId);
 
+  const [filteredBoards, setFilteredBoard] = useState(userOrganization?.board);
+
+  useEffect(() => {
+    setFilteredBoard(userOrganization?.board);
+  }, [userOrganization]);
+
   const handleChange = (value: string) => {
-    console.log(`selected ${value}`);
+    switch (value) {
+      case "A-Z字母排序":
+        return setFilteredBoard(
+          [...filteredBoards!].sort((a, b) => a.name.localeCompare(b.name))
+        );
+      case "Z-A字母排序":
+        return setFilteredBoard(
+          [...filteredBoards!].sort((a, b) => b.name.localeCompare(a.name))
+        );
+      case "最近預覽":
+        return setFilteredBoard(
+          [...filteredBoards!].sort(
+            (a, b) =>
+              new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
+          )
+        );
+      case "最新":
+        return setFilteredBoard(
+          [...filteredBoards!].sort(
+            (a, b) =>
+              new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+          )
+        );
+      case "最舊":
+        return setFilteredBoard(
+          [...filteredBoards!].sort(
+            (a, b) =>
+              new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+          )
+        );
+    }
   };
 
   return (
@@ -68,16 +104,17 @@ const WorkSpace: React.FC<{
             onChange={handleChange}
             bordered={false}
             options={[
-              { value: "jack", label: "Jack" },
-              { value: "lucy", label: "Lucy" },
-              { value: "Yiminghe", label: "yiminghe" },
-              { value: "disabled", label: "Disabled", disabled: true },
+              { value: "最近預覽", label: "最近預覽" },
+              { value: "最新", label: "最新" },
+              { value: "最舊", label: "最舊" },
+              { value: "A-Z字母排序", label: "A-Z字母排序" },
+              { value: "Z-A字母排序", label: "Z-A字母排序" },
             ]}
           />
         </Col>
       </Row>
       <Row style={{ marginTop: "16px", columnGap: "8px" }}>
-        {userOrganization?.board.map((ele, idx) => (
+        {filteredBoards?.map((ele, idx) => (
           <WorkSpaceCard
             title={ele.name}
             permission={ele.permission}
