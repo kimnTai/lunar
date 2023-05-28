@@ -2,11 +2,8 @@ import React from "react";
 import {
   UserOutlined,
   ContainerOutlined,
-  CopyOutlined,
   ShareAltOutlined,
   ArrowRightOutlined,
-  WalletOutlined,
-  PaperClipOutlined,
   ClockCircleOutlined,
   CheckSquareOutlined,
   TagOutlined,
@@ -15,6 +12,7 @@ import { Button, Divider } from "antd";
 import PopoverDate from "@/components/PopoverDate";
 import { ModalStyle, ModalSidebarStyled } from "./style";
 import AttachmentBox from "./AttachmentBox";
+import CloneCardBox from "./CloneCardBox";
 
 const ModalSidebar: React.FC = () => {
   const [isOpenPopoverDate, setIsOpenPopoverDate] =
@@ -71,8 +69,6 @@ const ModalSidebar: React.FC = () => {
                 setIsOpenPopoverDate(true);
               },
             },
-            { label: "附件", value: "member", icon: <PaperClipOutlined /> },
-            { label: "封面", value: "member", icon: <WalletOutlined /> },
           ]}
         />
         <AttachmentBox />
@@ -81,9 +77,9 @@ const ModalSidebar: React.FC = () => {
           title={"動作"}
           data={[
             { label: "移動", value: "move", icon: <ArrowRightOutlined /> },
-            { label: "複製", value: "copy", icon: <CopyOutlined /> },
           ]}
         />
+        <CloneCardBox />
         <Divider style={{ margin: "8px 0" }} />
         <Button className="button-link">
           <span style={{ marginRight: "6px" }}>
