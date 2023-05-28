@@ -1,7 +1,7 @@
 import { TrelloCardListProps } from "@/interfaces/trelloCard";
 import { Droppable } from "react-beautiful-dnd";
 import TrelloCardAdd from "./TrelloCardAdd";
-import TrelloCardInner from "./TrelloCardInner";
+import CardInner from "./CardInner";
 import { ScrollContainer } from "./style";
 
 export const TrelloCardList: React.FC<TrelloCardListProps> = (props) => {
@@ -35,8 +35,8 @@ export const TrelloCardList: React.FC<TrelloCardListProps> = (props) => {
                 rowGap: "8px",
               }}
             >
-              <TrelloCardInner
-                quotes={quotes}
+              <CardInner
+                lists={quotes}
                 dropProvided={dropProvided}
                 isDrag={dropSnapshot.isDraggingOver}
                 setOpenModal={setOpenModal}
