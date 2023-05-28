@@ -113,7 +113,7 @@ const WorkSpace: React.FC<{
           />
         </Col>
       </Row>
-      <Row style={{ marginTop: "16px", columnGap: "8px" }}>
+      <Row style={{ marginTop: "16px", columnGap: "8px", rowGap: "24px" }}>
         {filteredBoards?.map((ele, idx) => (
           <WorkSpaceCard
             title={ele.name}
