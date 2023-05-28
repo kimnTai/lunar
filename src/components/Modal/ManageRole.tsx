@@ -33,8 +33,6 @@ const ManageRole: React.FC<{
       role: values.role,
     });
     dispatch({ type: CONSTANTS.UPDATE_ONE_ORGANIZATION, payload: res.result });
-
-    alert("更新完成");
   };
 
   return (

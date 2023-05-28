@@ -1,6 +1,5 @@
 import { OrganizationMemberProps } from "./organization";
 import { ListsProps } from "./lists";
-import { LabelsProps } from "./labels";
 
 export interface BoardsProps {
   _id: string;
