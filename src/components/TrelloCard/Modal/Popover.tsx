@@ -2,6 +2,7 @@ import React from "react";
 import { Button, Card, Space } from "antd";
 import { CloseOutlined } from "@ant-design/icons";
 import { useCardModalContext } from "@/context/CardModalContext";
+import PopoverDate from "@/components/TrelloCard/Modal/PopoverContent/PopoverDate";
 import { PopoverStyled } from "./PopoverSytle";
 
 const Popover: React.FC = () => {
@@ -12,7 +13,7 @@ const Popover: React.FC = () => {
   const renderPopoverContent = () => {
     switch (type) {
       case PopoverType.DATE:
-        return <div>DATE</div>;
+        return <PopoverDate />;
       case PopoverType.CHECKLIST:
         return <div>CHECKLIST</div>;
       default:

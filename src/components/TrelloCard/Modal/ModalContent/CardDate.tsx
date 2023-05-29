@@ -4,7 +4,6 @@ import type { CheckboxChangeEvent } from "antd/es/checkbox";
 import dayjs from "dayjs";
 import { DateProps } from "@/interfaces/cards";
 import { useCardModalContext } from "@/context/CardModalContext";
-import PopoverDate from "@/components/PopoverDate";
 import {
   CardDateStyled,
   SectionContentStyled,
@@ -14,12 +13,10 @@ import { EditOutlined } from "@ant-design/icons";
 import { updateCardDateApi } from "@/api/cards";
 
 const CardDate: React.FC = () => {
-  const { cardData } = useCardModalContext();
+  const { cardData, setOpenPopover, PopoverType } = useCardModalContext();
   const { id = "", date = {} as DateProps } = cardData ?? {};
   const { startDate = "", dueDate = "", dueComplete = false } = date ?? {}; // 2023-05-22T00:00:00.000Z
 
-  const [isOpenPopoverDate, setIsOpenPopoverDate] =
-    React.useState<boolean>(false);
   const [isCompleted, setIsCompleted] = React.useState<boolean>(dueComplete);
   const [isExpired, setIsExpired] = React.useState<boolean>(false);
 
@@ -63,7 +60,14 @@ const CardDate: React.FC = () => {
             <Space
               className="cardDate"
               onClick={() => {
-                setIsOpenPopoverDate(true);
+                setOpenPopover({
+                  isShow: true,
+                  type: PopoverType.DATE,
+                  position: {
+                    top: 100,
+                    left: 100,
+                  },
+                });
               }}
             >
               {startDate ? dayjs(startDate).format("MM月DD日") : null}
@@ -84,12 +88,6 @@ const CardDate: React.FC = () => {
           </CardDateStyled>
         )}
       </SectionContentStyled>
-      {isOpenPopoverDate && (
-        <PopoverDate
-          close={() => setIsOpenPopoverDate(false)}
-          position={{ top: 100, left: 100 }}
-        />
-      )}
     </>
   );
 };
