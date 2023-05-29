@@ -27,6 +27,13 @@ export const TrelloCardModalStyled = styled(Modal)`
     padding-left: 24px;
     padding-right: 24px;
   }
+
+  .spin {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
 `;
 
 export const ModalHeaderStyled = styled.div`
