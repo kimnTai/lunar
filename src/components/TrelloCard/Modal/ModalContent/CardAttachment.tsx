@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { PlusOutlined } from "@ant-design/icons";
 import { Col, Modal, Upload } from "antd";
 import type { RcFile } from "antd/es/upload";
@@ -12,15 +12,17 @@ const CardAttachment: React.FC = () => {
   const [previewImage, setPreviewImage] = useState("");
   const [previewTitle, setPreviewTitle] = useState("");
   const { cardData } = useCardModalContext();
-  const [fileList, setFileList] = useState<UploadFile[]>(
-    cardData?.attachment.map(({ _id, filename, dirname }) => {
-      return {
+  const [fileList, setFileList] = useState<UploadFile[]>([]);
+
+  useEffect(() => {
+    setFileList(
+      cardData?.attachment?.map(({ _id, filename, dirname }) => ({
         uid: _id,
         name: filename,
         url: dirname,
-      };
-    }) || []
-  );
+      })) || []
+    );
+  }, [cardData]);
 
   const handlePreview = async (file: UploadFile<RcFile>) => {
     if (!file.url && !file.preview && file.originFileObj) {

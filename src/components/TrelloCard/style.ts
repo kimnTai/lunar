@@ -30,12 +30,6 @@ export const ScrollContainer = styled.div<{ internalScroll: boolean }>`
   max-height: calc(100vh - 106px);
 `;
 
-export const TrelloCardInnerStyled = styled(Card)`
-  display: flex;
-  flex-direction: column;
-  row-gap: 5px;
-`;
-
 export const TrelloCardBottomFuncStyled = styled.div<{ show: string }>`
   display: ${(props) => (props.show === "true" ? "none" : "block")};
   height: 37px;

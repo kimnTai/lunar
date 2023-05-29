@@ -18,6 +18,7 @@ import {
 import type { PropsFromRedux } from "@/router";
 import { useAppSelector } from "@/hooks/useAppSelector";
 import useWebSocket from "@/hooks/useWebSocket";
+import { LoadingOutlined } from "@ant-design/icons";
 
 const Billboard: React.FC<{
   setWorkSpace: PropsFromRedux["changeWorkSpace"];
@@ -89,7 +90,10 @@ const Billboard: React.FC<{
   return (
     <>
       {loading ? (
-        <Spin />
+        <Spin
+          className="d-center"
+          indicator={<LoadingOutlined spin style={{ fontSize: 96 }} />}
+        />
       ) : (
         <>
           <BillboardHeader

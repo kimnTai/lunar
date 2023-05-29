@@ -30,6 +30,7 @@ const CardComment: React.FC = () => {
         <List
           itemLayout="horizontal"
           dataSource={cardData?.comment}
+          locale={{ emptyText: " " }}
           renderItem={(item) => (
             <List.Item>
               <List.Item.Meta
