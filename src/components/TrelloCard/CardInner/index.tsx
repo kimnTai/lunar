@@ -24,45 +24,50 @@ const TrelloCardInner: React.FC<TrelloCardInnerProps> = ({
           ) => (
             <Draggable key={id} draggableId={id} index={index}>
               {(dragProvided, dragSnapshot) => (
-                <Card
+                <div
                   {...dragProvided.draggableProps}
                   {...dragProvided.dragHandleProps}
                   ref={dragProvided.innerRef}
                   data-is-dragging={dragSnapshot.isDragging}
-                  size="small"
-                  className="trello-card-inner"
-                  style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    rowGap: "5px",
-                  }}
-                  cover={
-                    <img
-                      src={attachment?.length ? attachment[0].dirname : ""}
-                      style={{
-                        height: attachment?.length ? 133 : 0,
-                        objectFit: "cover",
-                      }}
-                    />
-                  }
-                  onClick={() =>
-                    setOpenModal({
-                      id: id,
-                      open: true,
-                    })
-                  }
+                  data-index={index}
+                  aria-label={`${name} quote`}
                 >
-                  <CardInnerTitle name={name} />
-                  <CardInnerLabel label={label} />
-                  <CardInnerChecklist checklist={checklist} />
-                  <CardInnerIcon
-                    commentLength={comment.length}
-                    attachmentLength={attachment.length}
-                    checklist={checklist}
-                  />
-                  <CardInnerDate date={date} />
-                  <CardInnerMember member={member} />
-                </Card>
+                  <Card
+                    size="small"
+                    className="trello-card-inner"
+                    style={{
+                      display: "flex",
+                      flexDirection: "column",
+                      rowGap: "5px",
+                    }}
+                    cover={
+                      <img
+                        src={attachment?.length ? attachment[0].dirname : ""}
+                        style={{
+                          height: attachment?.length ? 133 : 0,
+                          objectFit: "cover",
+                        }}
+                      />
+                    }
+                    onClick={() =>
+                      setOpenModal({
+                        id: id,
+                        open: true,
+                      })
+                    }
+                  >
+                    <CardInnerTitle name={name} />
+                    <CardInnerLabel label={label} />
+                    <CardInnerChecklist checklist={checklist} />
+                    <CardInnerIcon
+                      commentLength={comment.length}
+                      attachmentLength={attachment.length}
+                      checklist={checklist}
+                    />
+                    <CardInnerDate date={date} />
+                    <CardInnerMember member={member} />
+                  </Card>
+                </div>
               )}
             </Draggable>
           )
