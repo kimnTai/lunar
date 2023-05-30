@@ -5,6 +5,7 @@ import { getCardApi } from "@/api/cards";
 import ModalHeader from "./ModalHeader";
 import ModalLayout from "./ModalLayout";
 import { useCardModalContext } from "@/context/CardModalContext";
+import Popover from "@/components/TrelloCard/Modal/Popover";
 import { Spin } from "antd";
 import { LoadingOutlined } from "@ant-design/icons";
 
@@ -50,9 +51,10 @@ const TrelloCardModal: React.FC<TrelloCardModalProps> = ({
       <Spin
         spinning={!cardData}
         indicator={<LoadingOutlined spin={true} style={{ fontSize: 60 }} />}
-      >
-        <ModalLayout />
-      </Spin>
+        className="spin"
+      ></Spin>
+      <ModalLayout />
+      <Popover />
     </TrelloCardModalStyled>
   );
 };

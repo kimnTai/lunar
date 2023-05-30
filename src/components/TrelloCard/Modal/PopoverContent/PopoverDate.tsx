@@ -1,32 +1,21 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Button, Space, Checkbox, Input, Card, InputRef } from "antd";
-import { CloseOutlined } from "@ant-design/icons";
+import { Button, Space, Checkbox, Input, InputRef } from "antd";
 import dayjs from "dayjs";
 import type { Dayjs } from "dayjs";
 import { DateProps } from "@/interfaces/cards";
 import { useCardModalContext } from "@/context/CardModalContext";
 import { newCardDateApi, deleteCardDateApi } from "@/api/cards";
 import {
-  PopoverDateStyled,
   AntCalendarStyled,
   PopoverSectionTitleStyled,
   DateSelectorStyled,
-} from "./PopverDateStyle";
+} from "./PopoverDateStyle";
 
 import isBetween from "dayjs/plugin/isBetween";
 dayjs.extend(isBetween);
 
-interface PopoverDateProps {
-  close: () => void;
-  position: {
-    top: number;
-    left?: number;
-    right?: number;
-  };
-}
-
-const PopoverDate: React.FC<PopoverDateProps> = ({ close, position }) => {
-  const { cardData, setCardData } = useCardModalContext();
+const PopoverDate: React.FC = () => {
+  const { cardData, setCardData, handleClosePopover } = useCardModalContext();
   const { id = "", date = {} as DateProps } = cardData ?? {};
   const { startDate = "", dueDate = "" } = date ?? {}; // 2023-05-22T00:00:00.000Z
 
@@ -129,7 +118,7 @@ const PopoverDate: React.FC<PopoverDateProps> = ({ close, position }) => {
           dueDate: dueDate,
         },
       });
-      close();
+      handleClosePopover();
     } catch (error) {
       console.error(error);
     }
@@ -150,7 +139,7 @@ const PopoverDate: React.FC<PopoverDateProps> = ({ close, position }) => {
         date: null,
       });
 
-      close();
+      handleClosePopover();
     } catch (error) {
       console.error(error);
     }
@@ -197,83 +186,72 @@ const PopoverDate: React.FC<PopoverDateProps> = ({ close, position }) => {
   };
 
   return (
-    <PopoverDateStyled position={position}>
-      <Space direction="vertical" size={16}>
-        <Card
-          title={"日期"}
-          extra={
-            <Button type="link" icon={<CloseOutlined />} onClick={close} />
-          }
-          size="small"
-          style={{ width: 326 }}
-        >
-          <AntCalendarStyled
-            value={handleCalendarValue()}
-            fullscreen={false}
-            onChange={handleSelectDate}
-            onSelect={handleSelectDate}
-            cellRender={dateCellRender}
-          />
-          <DateSelectorStyled>
-            <Space size={0} direction="vertical" className="dayPickerForm">
-              <PopoverSectionTitleStyled>起始日</PopoverSectionTitleStyled>
-              <Space size={4}>
-                <Checkbox
-                  checked={isCheckStartField}
-                  onChange={(e) => handleDateCheckboxChange(e, "start")}
-                />
-                <Input
-                  type="text"
-                  value={startDateField?.format("YYYY年MM月DD日") || ""}
-                  onFocus={() => setEditDateType("start")}
-                  className={isCheckStartField ? "isShow" : "isHidden"}
-                  placeholder="年月日"
-                  ref={startDateFieldRef}
-                />
-                {!isCheckStartField && (
-                  <span className="dateDisplay">
-                    {startDateField?.format("YYYY年MM月DD日") || "年月日"}
-                  </span>
-                )}
-              </Space>
-            </Space>
-            <Space size={0} direction="vertical" className="dayPickerForm">
-              <PopoverSectionTitleStyled>截止日</PopoverSectionTitleStyled>
-              <Space size={4}>
-                <Checkbox
-                  checked={isCheckEndField}
-                  onChange={(e) => handleDateCheckboxChange(e, "end")}
-                />
-                <Input
-                  type="text"
-                  value={endDateField?.format("YYYY年MM月DD日") || ""}
-                  onFocus={() => setEditDateType("end")}
-                  className={isCheckEndField ? "isShow" : "isHidden"}
-                  placeholder="年月日"
-                  ref={endDateFieldRef}
-                />
-                {!isCheckEndField && (
-                  <span className="dateDisplay">
-                    {endDateField?.format("YYYY年MM月DD日") || "年月日"}
-                  </span>
-                )}
-              </Space>
-            </Space>
-          </DateSelectorStyled>
-          <Button
-            type="primary"
-            block
-            onClick={handleSaveDate}
-            style={{ marginBlock: "8px" }}
-          >
-            儲存
-          </Button>
-          <Button block onClick={handleRemoveDate}>
-            移除
-          </Button>
-        </Card>
-      </Space>
-    </PopoverDateStyled>
+    <>
+      <AntCalendarStyled
+        value={handleCalendarValue()}
+        fullscreen={false}
+        onChange={handleSelectDate}
+        onSelect={handleSelectDate}
+        cellRender={dateCellRender}
+      />
+      <DateSelectorStyled>
+        <Space size={0} direction="vertical" className="dayPickerForm">
+          <PopoverSectionTitleStyled>起始日</PopoverSectionTitleStyled>
+          <Space size={4}>
+            <Checkbox
+              checked={isCheckStartField}
+              onChange={(e) => handleDateCheckboxChange(e, "start")}
+            />
+            <Input
+              type="text"
+              value={startDateField?.format("YYYY年MM月DD日") || ""}
+              onFocus={() => setEditDateType("start")}
+              className={isCheckStartField ? "isShow" : "isHidden"}
+              placeholder="年月日"
+              ref={startDateFieldRef}
+            />
+            {!isCheckStartField && (
+              <span className="dateDisplay">
+                {startDateField?.format("YYYY年MM月DD日") || "年月日"}
+              </span>
+            )}
+          </Space>
+        </Space>
+        <Space size={0} direction="vertical" className="dayPickerForm">
+          <PopoverSectionTitleStyled>截止日</PopoverSectionTitleStyled>
+          <Space size={4}>
+            <Checkbox
+              checked={isCheckEndField}
+              onChange={(e) => handleDateCheckboxChange(e, "end")}
+            />
+            <Input
+              type="text"
+              value={endDateField?.format("YYYY年MM月DD日") || ""}
+              onFocus={() => setEditDateType("end")}
+              className={isCheckEndField ? "isShow" : "isHidden"}
+              placeholder="年月日"
+              ref={endDateFieldRef}
+            />
+            {!isCheckEndField && (
+              <span className="dateDisplay">
+                {endDateField?.format("YYYY年MM月DD日") || "年月日"}
+              </span>
+            )}
+          </Space>
+        </Space>
+      </DateSelectorStyled>
+      <Button
+        type="primary"
+        block
+        onClick={handleSaveDate}
+        style={{ marginBlock: "8px" }}
+      >
+        儲存
+      </Button>
+      <Button block onClick={handleRemoveDate}>
+        移除
+      </Button>
+    </>
   );
 };
 

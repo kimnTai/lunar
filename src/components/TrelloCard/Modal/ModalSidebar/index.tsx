@@ -9,14 +9,13 @@ import {
   TagOutlined,
 } from "@ant-design/icons";
 import { Button, Divider } from "antd";
-import PopoverDate from "@/components/PopoverDate";
 import { ModalStyle, ModalSidebarStyled } from "./style";
 import AttachmentBox from "./AttachmentBox";
 import CloneCardBox from "./CloneCardBox";
+import { useCardModalContext } from "@/context/CardModalContext";
 
 const ModalSidebar: React.FC = () => {
-  const [isOpenPopoverDate, setIsOpenPopoverDate] =
-    React.useState<boolean>(false);
+  const { setOpenPopover, PopoverType } = useCardModalContext();
 
   const SidebarBox: React.FC<{
     title: string;
@@ -66,7 +65,11 @@ const ModalSidebar: React.FC = () => {
               value: "member",
               icon: <ClockCircleOutlined />,
               onClickEvent: () => {
-                setIsOpenPopoverDate(true);
+                setOpenPopover({
+                  isShow: true,
+                  type: PopoverType.DATE,
+                  position: { top: 100, right: 20 },
+                });
               },
             },
           ]}
@@ -94,12 +97,6 @@ const ModalSidebar: React.FC = () => {
           <span>分享</span>
         </Button>
       </ModalSidebarStyled>
-      {isOpenPopoverDate && (
-        <PopoverDate
-          close={() => setIsOpenPopoverDate(false)}
-          position={{ top: 100, right: 20 }}
-        />
-      )}
     </>
   );
 };
