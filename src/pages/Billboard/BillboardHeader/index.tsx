@@ -2,7 +2,7 @@ import { BillboardHeaderProps } from "@/interfaces/boards";
 import { useState } from "react";
 import { BillboardHeaderBtn, BillboardHeaderCss } from "./style";
 import { ColorIcon } from "@/components/Icons";
-import { Avatar, Button, Popover } from "antd";
+import { Avatar, Button, Popover, Tooltip } from "antd";
 import {
   DashOutlined,
   FilterOutlined,
@@ -47,10 +47,11 @@ const BillboardHeader: React.FC<BillboardHeaderProps> = ({
       </div>
       <div className="right-head">
         <Avatar.Group>
-          {member &&
-            member?.map((ele, idx) => (
-              <Avatar src={ele.userId.avatar} key={idx} />
-            ))}
+          {member?.map(({ userId: { avatar, name, _id } }) => (
+            <Tooltip placement="top" title={name} key={_id}>
+              <Avatar src={avatar} />
+            </Tooltip>
+          ))}
         </Avatar.Group>
         <BillboardHeaderBtn
           icon={<FilterOutlined style={{ fontSize: "16px" }} />}
