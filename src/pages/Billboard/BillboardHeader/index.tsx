@@ -3,7 +3,11 @@ import { useState } from "react";
 import { BillboardHeaderBtn, BillboardHeaderCss } from "./style";
 import { ColorIcon } from "@/components/Icons";
 import { Avatar, Button, Popover } from "antd";
-import { DashOutlined, FilterOutlined, TeamOutlined } from "@ant-design/icons/lib/icons";
+import {
+  DashOutlined,
+  FilterOutlined,
+  TeamOutlined,
+} from "@ant-design/icons/lib/icons";
 import PopoverTitle from "./PopoverTitle";
 import PopoverContent from "./PopoverContent";
 import AddMember from "@/components/Modal/AddMember";
@@ -15,6 +19,7 @@ const BillboardHeader: React.FC<BillboardHeaderProps> = ({
   orgId,
   callApi,
   boardId,
+  image,
 }) => {
   const [openInvite, setOpenInvite] = useState(false);
   const [openPopover, setOpenPopover] = useState(false);
@@ -27,11 +32,16 @@ const BillboardHeader: React.FC<BillboardHeaderProps> = ({
     <BillboardHeaderCss className="d-space">
       <div className="left-head">
         <ColorIcon
-          color={"white"}
-          text={name.at(0) || ""}
+          color={"#A0D7FF"}
+          text={""}
           size={"24px"}
           fontSize={"14px"}
-          background={""}
+          background={`linear-gradient(
+                  112.89deg,
+                  #0083ff 1.48%,
+                  rgba(128, 0, 255, 0.86) 100%
+                )`}
+          background-image={image && `url(${image})`}
         />
         <p style={{ marginLeft: "16px" }}>{name}</p>
       </div>

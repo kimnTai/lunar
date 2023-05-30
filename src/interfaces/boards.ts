@@ -30,6 +30,7 @@ export interface BillboardHeaderProps {
   orgId: string;
   callApi: (id: string) => Promise<void>;
   boardId: string;
+  image?: string;
 }
 
 export interface SingleBoardProps {}

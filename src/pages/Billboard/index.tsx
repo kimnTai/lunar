@@ -104,6 +104,7 @@ const Billboard: React.FC<{
             // labelData={labelData}
             callApi={callApi}
             boardId={boardId || ""}
+            image={result?.result?.image}
           />
           <DragDropContext onDragEnd={onDragEnd}>
             <Droppable
