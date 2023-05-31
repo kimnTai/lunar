@@ -3,12 +3,19 @@ import type {
   UpdateCardProps,
   NewCardProps,
   CardsProps,
-  UpdateCardCheckItem,
-  UpdateCardCheckList,
   DateProps,
   NewCardDateProps,
   UpdateCardDateProps,
 } from "@/interfaces/cards";
+import {
+  ChecklistProps,
+  CheckItemProps,
+  NewCardCheckListProps,
+  UpdateCardCheckListProps,
+  DeleteCardCheckListProps,
+  UpdateCardCheckItemProps,
+  NewCheckItemProps,
+} from "@/interfaces/checklists";
 import { CommentProps, NewCommentProps } from "@/interfaces/comments";
 
 // 取得單張卡片
@@ -26,21 +33,50 @@ export const updateCardApi = (data: UpdateCardProps) =>
     data
   );
 
+// 新增checkList
+export const newChecklistApi = (data: NewCardCheckListProps) =>
+  Request.post<any, PrometheusResponse<ChecklistProps>>(
+    `/cards/${data.cardId}/checklist`,
+    data
+  );
+
+// 更新checkList
+export const updateChecklistApi = (data: UpdateCardCheckListProps) =>
+  Request.put<any, PrometheusResponse<ChecklistProps>>(
+    `/cards/${data.cardId}/checklist/${data.checklistId}`,
+    data
+  );
+
+// 刪除checkList
+export const deleteChecklistApi = (data: DeleteCardCheckListProps) =>
+  Request.delete<any, PrometheusResponse<ChecklistProps>>(
+    `/cards/${data.cardId}/checklist/${data.checklistId}`
+  );
+
+// 新增checkItem
+export const newCheckItemApi = (data: NewCheckItemProps) =>
+  Request.post<any, PrometheusResponse<CheckItemProps>>(
+    `/cards/${data.cardId}/checklist/${data.checklistId}/checkItem`,
+    data
+  );
+
 // 更新checkItem
-export const updateCheckItemApi = (data: UpdateCardCheckItem) =>
+export const updateCheckItemApi = (data: UpdateCardCheckItemProps) =>
   data.checklistIdOld
-    ? Request.put(
+    ? Request.put<any, PrometheusResponse<CheckItemProps>>(
         `/cards/${data.cardId}/checklist/${data.checklistIdOld}/checkItem/${data.checkItemId}`,
         data
       )
-    : Request.put(
+    : Request.put<any, PrometheusResponse<CheckItemProps>>(
         `/cards/${data.cardId}/checklist/${data.checklistId}/checkItem/${data.checkItemId}`,
         data
       );
 
-// 更新checkList
-export const updateChecklistApi = (data: UpdateCardCheckList) =>
-  Request.put(`/cards/${data.cardId}/checklist/${data.checklistId}`, data);
+// 刪除checkItem
+export const deleteCheckItemApi = (data: UpdateCardCheckItemProps) =>
+  Request.delete<any, PrometheusResponse<CheckItemProps>>(
+    `/cards/${data.cardId}/checklist/${data.checklistId}/checkItem/${data.checkItemId}`
+  );
 
 // 新增卡片評論
 export const newCardCommentApi = (data: NewCommentProps) =>

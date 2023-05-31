@@ -48,19 +48,6 @@ export interface DateProps {
   startDate: string;
 }
 
-export interface UpdateCardCheckItem extends UpdateCardCheckList {
-  checkItemId: string;
-  completed?: boolean;
-}
-
-export interface UpdateCardCheckList {
-  cardId: string;
-  checklistId: string;
-  name?: string;
-  position: string;
-  checklistIdOld?: string;
-}
-
 export interface NewCardDateProps {
   startDate?: string;
   dueDate?: string;
