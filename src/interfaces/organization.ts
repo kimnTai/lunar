@@ -1,4 +1,5 @@
 import { BoardsProps } from "./boards";
+import { UserProps } from "./user";
 
 export interface OrganizationProps {
   _id: string;
@@ -7,19 +8,14 @@ export interface OrganizationProps {
   member: OrganizationMemberProps[];
   createdAt: string;
   updatedAt: string;
-  board: BoardsProps[];
+  board: Omit<BoardsProps, "list">[];
   id: string;
   inviteLink?: string;
 }
 
 export interface OrganizationMemberProps {
   role: string;
-  userId: {
-    _id: string;
-    name: string;
-    avatar: string;
-    email: string;
-  };
+  userId: Pick<UserProps, "_id" | "name" | "avatar" | "email">;
 }
 
 export interface NewOrganizationFormProps {

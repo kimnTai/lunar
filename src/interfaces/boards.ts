@@ -1,5 +1,6 @@
 import { OrganizationMemberProps } from "./organization";
 import { ListsProps } from "./lists";
+import { LabelsProps } from "./labels";
 
 export interface BoardsProps {
   _id: string;
@@ -12,7 +13,7 @@ export interface BoardsProps {
   createdAt: string;
   updatedAt: string;
   list: ListsProps[];
-  label: any[];
+  label: LabelsProps[];
   id: string;
   image?: string;
 }
