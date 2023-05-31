@@ -59,6 +59,13 @@ const ModalSidebar: React.FC = () => {
               label: "代辦清單",
               value: "member",
               icon: <CheckSquareOutlined />,
+              onClickEvent: () => {
+                setOpenPopover({
+                  isShow: true,
+                  type: PopoverType.CHECKLIST,
+                  position: { top: 230, right: 20 },
+                });
+              },
             },
             {
               label: "日期",
