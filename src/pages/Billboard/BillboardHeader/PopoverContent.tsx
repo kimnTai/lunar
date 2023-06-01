@@ -37,7 +37,7 @@ const PopoverContent: React.FC<PopoverContentProps> = (props) => {
     setIsMenu,
     setIsSetting,
     setIsLabel,
-    callApi,
+    callGetBoardApi,
     boardId,
   } = props;
   const [isShowChangeWorkSpace, setIsShowChangeWorkSpace] = useState(false);
@@ -153,9 +153,8 @@ const PopoverContent: React.FC<PopoverContentProps> = (props) => {
       boardId: boardId,
     })
       .then((res) => {
-        console.log("==res==", res);
         if (res.status === "success") {
-          callApi(boardId);
+          callGetBoardApi(boardId);
         }
       })
       .finally(() => setLoading(false));
@@ -189,7 +188,7 @@ const PopoverContent: React.FC<PopoverContentProps> = (props) => {
           console.log("==res==", res);
           if (res.status === "success") {
             labelCallApi(boardId);
-            callApi(boardId);
+            callGetBoardApi(boardId);
           }
         })
         .finally(() => {
@@ -207,7 +206,7 @@ const PopoverContent: React.FC<PopoverContentProps> = (props) => {
           console.log("==res==", res);
           if (res.status === "success") {
             labelCallApi(boardId);
-            callApi(boardId);
+            callGetBoardApi(boardId);
           }
         })
         .finally(() => {

@@ -17,7 +17,7 @@ const BillboardHeader: React.FC<BillboardHeaderProps> = ({
   member,
   boardInviteLink,
   orgId,
-  callApi,
+  callGetBoardApi,
   boardId,
   image,
 }) => {
@@ -93,7 +93,7 @@ const BillboardHeader: React.FC<BillboardHeaderProps> = ({
               setIsMenu={setIsMenu}
               setIsSetting={setIsSetting}
               setIsLabel={setIsLabel}
-              callApi={callApi}
+              callGetBoardApi={callGetBoardApi}
               boardId={boardId || ""}
             />
           }

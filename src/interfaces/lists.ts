@@ -20,7 +20,7 @@ export interface UpdateListProps {
 export interface AddListProps {
   cardList: ListsProps[];
   boardId: string;
-  callApi: (id: string) => Promise<void>;
+  callGetBoardApi: (id: string) => Promise<void>;
 }
 
 export interface NewListProps {

@@ -5,20 +5,14 @@ import { Draggable } from "react-beautiful-dnd";
 import TrelloCardBottomFunc from "./TrelloCardBottomFunc";
 import TrelloCardHeader from "./TrelloCardHeader";
 import { TrelloCardStyled } from "./style";
-import TrelloCardModal from "./Modal";
-import { CardModalProvider } from "@/context/CardModalContext";
 import { TrelloCardList } from "./TrelloCardList";
 
 export const TrelloCard: React.FC<TrelloCardProps> = (props) => {
   const index = props.index;
   const listId = props.quotes.id;
   const listName = props.quotes.name;
-
   const [showAddCard, setShowAddCard] = useState(false);
-  const [openModal, setOpenModal] = useState({
-    id: "",
-    open: false,
-  });
+  const { openModal, setOpenModal } = props;
 
   return (
     <>
@@ -53,6 +47,7 @@ export const TrelloCard: React.FC<TrelloCardProps> = (props) => {
                 useClone={props.useClone}
                 showAddCard={showAddCard}
                 setShowAddCard={setShowAddCard}
+                openModal={openModal}
                 setOpenModal={setOpenModal}
               />
               <TrelloCardBottomFunc
@@ -63,13 +58,6 @@ export const TrelloCard: React.FC<TrelloCardProps> = (props) => {
           </div>
         )}
       </Draggable>
-      <CardModalProvider>
-        <TrelloCardModal
-          listName={listName}
-          openModal={openModal}
-          setOpenModal={setOpenModal}
-        />
-      </CardModalProvider>
     </>
   );
 };

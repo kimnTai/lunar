@@ -31,7 +31,7 @@ const AddListCss = styled(Form)<{ useadd: string }>`
   }
 `;
 
-const AddList: React.FC<AddListProps> = ({ cardList, boardId, callApi }) => {
+const AddList: React.FC<AddListProps> = ({ cardList, boardId, callGetBoardApi }) => {
   const [add, setAdd] = useState(false);
   const [loading, setLoading] = useState(false);
   const [text, setText] = useState("");
@@ -53,7 +53,7 @@ const AddList: React.FC<AddListProps> = ({ cardList, boardId, callApi }) => {
     })
       .then((res) => {
         if (res.status === "success") {
-          callApi(boardId);
+          callGetBoardApi(boardId);
         }
       })
       .catch(() => setLoading(false));

@@ -11,6 +11,7 @@ export const TrelloCardList: React.FC<TrelloCardListProps> = (props) => {
     internalScroll,
     quotes,
     showAddCard,
+    openModal,
     setShowAddCard,
     setOpenModal,
   } = props;

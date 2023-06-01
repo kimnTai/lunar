@@ -20,6 +20,7 @@ export interface CardsProps {
   comment: CommentProps[];
   attachment: AttachmentProps[];
   date: DateProps | null;
+  boardId?: string;
 }
 
 export interface UpdateCardProps {

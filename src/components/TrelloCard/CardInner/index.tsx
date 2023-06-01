@@ -8,11 +8,14 @@ import CardInnerIcon from "./CardInnerIcon";
 import CardInnerLabel from "./CardInnerLabel";
 import CardInnerMember from "./CardInnerMember";
 import CardInnerTitle from "./CardInnerTitle";
+import { useNavigate } from "react-router";
 
 const TrelloCardInner: React.FC<TrelloCardInnerProps> = ({
   lists,
   setOpenModal,
 }) => {
+  const navigate = useNavigate();
+
   return (
     <>
       {lists.card
@@ -49,12 +52,13 @@ const TrelloCardInner: React.FC<TrelloCardInnerProps> = ({
                         }}
                       />
                     }
-                    onClick={() =>
+                    onClick={() => {
                       setOpenModal({
-                        id: id,
+                        cardId: id,
                         open: true,
-                      })
-                    }
+                      });
+                      navigate(`/cards/${id}`);
+                    }}
                   >
                     <CardInnerTitle name={name} />
                     <CardInnerLabel label={label} />

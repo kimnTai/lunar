@@ -29,7 +29,7 @@ export interface BillboardHeaderProps {
   member: OrganizationMemberProps[];
   boardInviteLink: string;
   orgId: string;
-  callApi: (id: string) => Promise<void>;
+  callGetBoardApi: (id: string) => Promise<void>;
   boardId: string;
   image?: string;
 }
@@ -60,7 +60,7 @@ export interface PopoverContentProps {
   setIsMenu: React.Dispatch<React.SetStateAction<boolean>>;
   setIsSetting: React.Dispatch<React.SetStateAction<boolean>>;
   setIsLabel: React.Dispatch<React.SetStateAction<boolean>>;
-  callApi: (id: string) => Promise<void>;
+  callGetBoardApi: (id: string) => Promise<void>;
   boardId: string;
 }
 

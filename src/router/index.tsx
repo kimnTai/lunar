@@ -149,6 +149,15 @@ const AppRouter: React.FC<PropsFromRedux> = (props) => {
                   />
                 }
               />
+              <Route
+                path="/cards/:cardId"
+                element={
+                  <LoginLayout
+                    changeWorkSpace={changeWorkSpace}
+                    children={<Billboard setWorkSpace={changeWorkSpace} />}
+                  />
+                }
+              />
             </>
           )}
         </>

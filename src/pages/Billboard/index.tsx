@@ -4,7 +4,7 @@ import { TrelloCard } from "@/components/TrelloCard";
 import { DragDropContext, DropResult, Droppable } from "react-beautiful-dnd";
 import { BillboardStyled } from "./style";
 import BillboardHeader from "./BillboardHeader";
-import { useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import { useApi } from "@/hooks/useApiHook";
 import { getBoardApi } from "@/api/boards";
 import { Spin } from "antd";
@@ -19,28 +19,40 @@ import type { PropsFromRedux } from "@/router";
 import { useAppSelector } from "@/hooks/useAppSelector";
 import useWebSocket from "@/hooks/useWebSocket";
 import { LoadingOutlined } from "@ant-design/icons";
+import { getCardApi } from "@/api/cards";
+import { UrlCardShareProps } from "@/interfaces/trelloCard";
+import { CardModalProvider } from "@/context/CardModalContext";
+import TrelloCardModal from "@/components/TrelloCard/Modal";
 
 const Billboard: React.FC<{
   setWorkSpace: PropsFromRedux["changeWorkSpace"];
 }> = ({ setWorkSpace }) => {
-  const workSpace = useAppSelector((state: any) => state.screen.showWorkSpace);
-
+  const workSpace = useAppSelector((state) => state.screen.showWorkSpace);
+  const navigate = useNavigate();
   const [cardList, setCardList] = useState<ListsProps[]>([]);
-  const { boardId } = useParams();
-  const [result, loading, callApi] = useApi(getBoardApi);
-  const { data, sendMessage } = useWebSocket(boardId!, callApi);
+  const { boardId, cardId } = useParams();
+  const [boardResult, getBoardloading, callGetBoardApi] = useApi(getBoardApi);
+  const { data: socketEvent, sendMessage } = useWebSocket(
+    boardId!,
+    callGetBoardApi
+  );
+  const [openModal, setOpenModal] = useState<UrlCardShareProps>({
+    listId: "",
+    cardId: "",
+    open: false,
+  });
 
   useEffect(() => {
-    if (data) {
-      setCardList(getSocketChange(cardList, data)!);
-      console.log(getSocketChange(cardList, data)!);
+    if (socketEvent) {
+      setCardList(getSocketChange(cardList, socketEvent)!);
+      console.log(getSocketChange(cardList, socketEvent)!);
     }
-  }, [data]);
+  }, [socketEvent]);
 
   useEffect(() => {
     if (boardId) {
       (async () => {
-        await callApi(boardId);
+        await callGetBoardApi(boardId);
       })();
     }
   }, [boardId]);
@@ -51,13 +63,28 @@ const Billboard: React.FC<{
     }
   }, [workSpace]);
   useEffect(() => {
-    if (result?.result) {
-      setCardList(result.result.list);
+    if (boardResult?.result) {
+      setCardList(boardResult.result.list);
       sendMessage({ type: "subscribe", boardId }); // socket
     }
     return () => sendMessage({ type: "unsubscribe", boardId });
-  }, [result?.result]);
+  }, [boardResult?.result]);
 
+  useEffect(() => {
+    if (cardId && !openModal.open) {
+      (async () =>
+        await getCardApi(cardId).then((res) => {
+          if (res.status === "success") {
+            navigate(`/board/${res.result.boardId}`);
+            setOpenModal({
+              listId: res.result.listId,
+              cardId,
+              open: true,
+            });
+          }
+        }))();
+    }
+  }, [cardId]);
   const onDragEnd = (result: DropResult) => {
     const source = result.source;
     const destination = result.destination;
@@ -89,7 +116,7 @@ const Billboard: React.FC<{
 
   return (
     <>
-      {loading ? (
+      {getBoardloading ? (
         <Spin
           className="d-center"
           indicator={<LoadingOutlined spin style={{ fontSize: 96 }} />}
@@ -97,14 +124,14 @@ const Billboard: React.FC<{
       ) : (
         <>
           <BillboardHeader
-            boardInviteLink={result?.result.inviteLink || ""}
-            name={result?.result.name || ""}
-            member={result?.result.member || []}
-            orgId={result?.result.organizationId || ""}
+            boardInviteLink={boardResult?.result.inviteLink || ""}
+            name={boardResult?.result.name || ""}
+            member={boardResult?.result.member || []}
+            orgId={boardResult?.result.organizationId || ""}
             // labelData={labelData}
-            callApi={callApi}
+            callGetBoardApi={callGetBoardApi}
             boardId={boardId || ""}
-            image={result?.result?.image}
+            image={boardResult?.result?.image}
           />
           <DragDropContext onDragEnd={onDragEnd}>
             <Droppable
@@ -129,18 +156,26 @@ const Billboard: React.FC<{
                         isScrollable={true}
                         isCombineEnabled={false}
                         useClone={undefined}
+                        openModal={openModal}
+                        setOpenModal={setOpenModal}
                       />
                     ))}
                   {provided.placeholder}
                   <AddList
                     cardList={cardList}
                     boardId={boardId || ""}
-                    callApi={callApi}
+                    callGetBoardApi={callGetBoardApi}
                   />
                 </BillboardStyled>
               )}
             </Droppable>
           </DragDropContext>
+          <CardModalProvider>
+            <TrelloCardModal
+              openModal={openModal}
+              setOpenModal={setOpenModal}
+            />
+          </CardModalProvider>
         </>
       )}
     </>

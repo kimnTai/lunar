@@ -8,21 +8,21 @@ import { useCardModalContext } from "@/context/CardModalContext";
 import Popover from "@/components/TrelloCard/Modal/Popover";
 import { Spin } from "antd";
 import { LoadingOutlined } from "@ant-design/icons";
+import { useNavigate } from "react-router";
 
 const TrelloCardModal: React.FC<TrelloCardModalProps> = ({
   openModal,
   setOpenModal,
-  listName,
 }) => {
   const { cardData, setCardData } = useCardModalContext();
-
+  const navigate = useNavigate();
   const handleOk = () => {
-    setOpenModal({ id: "", open: false });
+    setOpenModal({ cardId: "", open: false });
   };
   const handleCancel = () => {
-    setOpenModal({ id: "", open: false });
+    setOpenModal({ cardId: "", open: false });
+    navigate(`/board/${cardData?.boardId}`);
   };
-
   // 打開卡片 Modal 時，取得卡片資料
   useEffect(() => {
     if (!openModal.open) {
@@ -30,7 +30,7 @@ const TrelloCardModal: React.FC<TrelloCardModalProps> = ({
     } else {
       (async function () {
         try {
-          const { result } = await getCardApi(openModal.id);
+          const { result } = await getCardApi(openModal.cardId);
           setCardData(result);
         } catch (error) {
           console.error(error);
@@ -38,14 +38,18 @@ const TrelloCardModal: React.FC<TrelloCardModalProps> = ({
       })();
     }
   }, [openModal.open]);
-
+  useEffect(() => {
+    if (cardData) {
+      navigate(`/cards/${cardData.id}`);
+    }
+  }, [cardData]);
   return (
     <TrelloCardModalStyled
       open={openModal.open}
       onOk={handleOk}
       onCancel={handleCancel}
       width={768}
-      title={<ModalHeader listName={listName} />}
+      title={<ModalHeader listName={cardData?.name || ""} />}
       footer={null}
     >
       <Spin
