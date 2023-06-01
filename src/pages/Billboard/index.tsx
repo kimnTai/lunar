@@ -23,12 +23,16 @@ import { getCardApi } from "@/api/cards";
 import { UrlCardShareProps } from "@/interfaces/trelloCard";
 import { CardModalProvider } from "@/context/CardModalContext";
 import TrelloCardModal from "@/components/TrelloCard/Modal";
+import { useLocation } from "react-router-dom";
 
 const Billboard: React.FC<{
   setWorkSpace: PropsFromRedux["changeWorkSpace"];
 }> = ({ setWorkSpace }) => {
+  const location = useLocation();
+  console.log(location);
   const workSpace = useAppSelector((state) => state.screen.showWorkSpace);
   const navigate = useNavigate();
+  const [hasLoadBoard, setHasLoadBoard] = useState(false);
   const [cardList, setCardList] = useState<ListsProps[]>([]);
   const { boardId, cardId } = useParams();
   const [boardResult, getBoardloading, callGetBoardApi] = useApi(getBoardApi);
@@ -50,8 +54,9 @@ const Billboard: React.FC<{
   }, [socketEvent]);
 
   useEffect(() => {
-    if (boardId) {
+    if (boardId && !hasLoadBoard) {
       (async () => {
+        setHasLoadBoard(true);
         await callGetBoardApi(boardId);
       })();
     }
