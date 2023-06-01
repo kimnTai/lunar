@@ -23,10 +23,15 @@ import {
 } from "@ant-design/icons";
 import CloneBoardButton from "@/components/CloneBoardButton";
 import { useApi } from "@/hooks/useApiHook";
-import { colorList} from './constant'
+import { colorList} from './constant';
+import { getOrganizationByIdAction } from "@/redux/actions/OrganizationAction";
+import { useAppDispatch } from "@/hooks/useAppDispatch";
+import { updateBoardApi } from "@/api/boards";
+import { useNavigate } from "react-router";
 
 const PopoverContent: React.FC<PopoverContentProps> = (props) => {
   const {
+    name,
     member,
     orgId,
     isUser,
@@ -39,6 +44,9 @@ const PopoverContent: React.FC<PopoverContentProps> = (props) => {
     setIsLabel,
     callGetBoardApi,
     boardId,
+    permission,
+    closed,
+    image,
   } = props;
   const [isShowChangeWorkSpace, setIsShowChangeWorkSpace] = useState(false);
   const [isShowChangePeople, setIsShowChangePeople] = useState(false);
@@ -61,6 +69,8 @@ const PopoverContent: React.FC<PopoverContentProps> = (props) => {
   const inputRef = useRef<InputRef>(null);
   const [labelID, setLabelID] = useState("");
   const [labelResult, _labelLoading, labelCallApi] = useApi(getLabelApi);
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (boardId) {
@@ -115,8 +125,30 @@ const PopoverContent: React.FC<PopoverContentProps> = (props) => {
     setIsShowChangePeople(false);
   };
 
-  const onFinish = (values: any) => {
-    console.log(values);
+  const onFinish = async (values: any) => {
+    const changeData = {
+      name: name,
+      organizationId: values.orgID,
+      permission: permission,
+      closed: closed,
+      image: image,
+      boardId: boardId,
+    }
+    console.log(changeData);
+    await updateBoardApi({
+      name: name,
+      organizationId: values.orgID,
+      permission: permission,
+      closed: closed,
+      image: image,
+      boardId: boardId,
+    })
+    .then((res) => {
+      console.log(res);
+      getOrganizationByIdAction(values.orgID)(dispatch);
+      navigate(`/workspace/${values.orgID}/home`);
+      
+    })
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -130,7 +162,19 @@ const PopoverContent: React.FC<PopoverContentProps> = (props) => {
         setLabelList([]);
       }
     } else if (e.target.value === "") {
-      setLabelList(labelList);
+      if (boardId) {
+        (async () => {
+          await labelCallApi(boardId);
+        })();
+      }
+      if (labelResult?.result) {
+        const filteredList = labelResult?.result.filter(
+          (item, index, self) =>
+            index ===
+            self.findIndex((t) => t.name === item.name && t.color === item.color)
+        );
+        setLabelList(filteredList);
+      }
     }
   };
 

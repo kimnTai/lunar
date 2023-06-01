@@ -133,10 +133,11 @@ const Billboard: React.FC<{
             name={boardResult?.result.name || ""}
             member={boardResult?.result.member || []}
             orgId={boardResult?.result.organizationId || ""}
-            // labelData={labelData}
             callGetBoardApi={callGetBoardApi}
             boardId={boardId || ""}
-            image={boardResult?.result?.image}
+            image={boardResult?.result?.image || ""}
+            permission={boardResult?.result?.permission || ""}
+            closed={boardResult?.result?.closed || false}
           />
           <DragDropContext onDragEnd={onDragEnd}>
             <Droppable

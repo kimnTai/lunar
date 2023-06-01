@@ -20,6 +20,8 @@ const BillboardHeader: React.FC<BillboardHeaderProps> = ({
   callGetBoardApi,
   boardId,
   image,
+  permission,
+  closed,
 }) => {
   const [openInvite, setOpenInvite] = useState(false);
   const [openPopover, setOpenPopover] = useState(false);
@@ -95,6 +97,9 @@ const BillboardHeader: React.FC<BillboardHeaderProps> = ({
               setIsLabel={setIsLabel}
               callGetBoardApi={callGetBoardApi}
               boardId={boardId || ""}
+              permission={permission || ""}
+              closed={closed}
+              image={image || ""}
             />
           }
           trigger="click"

@@ -43,3 +43,18 @@ export const addBoardMembersApi = (data: AddBoardsMembers) => {
     data
   );
 };
+
+// 更新看板
+export const updateBoardApi = (data: {
+  boardId: string;
+  name: string;
+  organizationId: string;
+  permission: string;
+  closed: boolean;
+  image?: string;
+}) => {
+  return Request.put<any, PrometheusResponse<BoardsProps>>(
+    `/boards/${data.boardId}`,
+    data
+  );
+}

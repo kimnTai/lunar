@@ -32,6 +32,8 @@ export interface BillboardHeaderProps {
   callGetBoardApi: (id: string) => Promise<void>;
   boardId: string;
   image?: string;
+  permission: string;
+  closed: boolean;
 }
 
 export interface SingleBoardProps {}
@@ -62,6 +64,9 @@ export interface PopoverContentProps {
   setIsLabel: React.Dispatch<React.SetStateAction<boolean>>;
   callGetBoardApi: (id: string) => Promise<void>;
   boardId: string;
+  permission: string;
+  closed: boolean;
+  image?: string;
 }
 
 export interface AddBoardsMembers {
