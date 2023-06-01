@@ -80,6 +80,13 @@ export const LabelModalStyled = styled.div`
     border: 0;
     box-shadow: none;
   }
+  .ant-back {
+    position: absolute;
+    left: 4px;
+    top: 2px;
+    border: 0;
+    box-shadow: none;
+  }
   .ant-card-head-title {
     text-align: center;
     font-size: 12px;
@@ -92,5 +99,39 @@ export const LabelModalStyled = styled.div`
     padding: "0 12px";
     flex-grow: 1;
     box-shadow: none;
+  }
+  .label-card-header {
+    position: relative;
+    width: 100%;
+    height: 101px;
+    background-color: var(--ds-surface-sunken, #f4f5f7);
+    margin-bottom: 8px;
+    .label-card-label {
+      position: absolute;
+      width: 80%;
+      height: 40%;
+      left: 10%;
+      top: 30%;
+      text-align: center;
+      line-height: 40px;
+      font-size: 16px;
+      border-radius: 4px;
+    }
+  }
+  .colored-label-list {
+    .ant-form-item-control-input-content {
+      gap: 4px;
+      display: flex;
+      flex-wrap: wrap;
+    }
+    .colored-label {
+      border: 1px solid white;
+      border-radius: 4px;
+      width: 31%;
+      height: 36px;
+      &:hover {
+        opacity: 0.8;
+      }
+    }
   }
 `;

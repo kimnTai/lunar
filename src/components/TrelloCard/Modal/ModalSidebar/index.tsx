@@ -8,12 +8,7 @@ import {
   CheckSquareOutlined,
   TagOutlined,
 } from "@ant-design/icons";
-<<<<<<< HEAD
-import { Button, Col, Divider } from "antd";
-=======
 import { Button, Col, Divider, message } from "antd";
-import PopoverDate from "@/components/PopoverDate";
->>>>>>> 4716c2d ([ fix ] 新增卡片成員後的更新)
 import { ModalStyle, ModalSidebarStyled } from "./style";
 import AttachmentBox from "./AttachmentBox";
 import CloneCardBox from "./CloneCardBox";
