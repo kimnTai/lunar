@@ -41,7 +41,12 @@ const TrelloCardModal: React.FC<TrelloCardModalProps> = ({
   useEffect(() => {
     if (cardData) {
       navigate(`/cards/${cardData.id}`);
+      // 上一頁事件
+      window.addEventListener("popstate", handleCancel);
     }
+    return () => {
+      window.removeEventListener("popstate", handleCancel);
+    };
   }, [cardData]);
   return (
     <TrelloCardModalStyled

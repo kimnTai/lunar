@@ -26,6 +26,9 @@ const WorkSpace: React.FC<{
     setFilteredBoard(userOrganization?.board);
   }, [userOrganization]);
 
+  useEffect(() => {
+    setWorkSpace(true);
+  });
   const handleChange = (value: string) => {
     switch (value) {
       case "A-Z字母排序":
