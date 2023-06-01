@@ -23,11 +23,15 @@ import {
 } from "@ant-design/icons";
 import CloneBoardButton from "@/components/CloneBoardButton";
 import { useApi } from "@/hooks/useApiHook";
-import { colorList} from './constant';
-import { getOrganizationByIdAction } from "@/redux/actions/OrganizationAction";
+import { colorList } from "./constant";
+
 import { useAppDispatch } from "@/hooks/useAppDispatch";
 import { updateBoardApi } from "@/api/boards";
 import { useNavigate } from "react-router";
+import {
+  getOrganizationByIdAction,
+  selectOrganization,
+} from "@/redux/organizationSlice";
 
 const PopoverContent: React.FC<PopoverContentProps> = (props) => {
   const {
@@ -53,7 +57,7 @@ const PopoverContent: React.FC<PopoverContentProps> = (props) => {
   const [people, setPeople] = useState("成員");
   const { Option } = Select;
   const [form] = Form.useForm();
-  const userOrganization = useAppSelector((state) => state.user.organization);
+  const userOrganization = useAppSelector(selectOrganization);
   const orgName = userOrganization.find((ele) => ele._id === orgId);
   const boardManager = member?.filter((ele) => ele.role === "manager");
   const [labelList, setLabelList] = useState<LabelsProps[]>([]);
@@ -133,7 +137,7 @@ const PopoverContent: React.FC<PopoverContentProps> = (props) => {
       closed: closed,
       image: image,
       boardId: boardId,
-    }
+    };
     console.log(changeData);
     await updateBoardApi({
       name: name,
@@ -142,13 +146,11 @@ const PopoverContent: React.FC<PopoverContentProps> = (props) => {
       closed: closed,
       image: image,
       boardId: boardId,
-    })
-    .then((res) => {
+    }).then((res) => {
       console.log(res);
-      getOrganizationByIdAction(values.orgID)(dispatch);
+      dispatch(getOrganizationByIdAction(values.orgID));
       navigate(`/workspace/${values.orgID}/home`);
-      
-    })
+    });
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -171,7 +173,9 @@ const PopoverContent: React.FC<PopoverContentProps> = (props) => {
         const filteredList = labelResult?.result.filter(
           (item, index, self) =>
             index ===
-            self.findIndex((t) => t.name === item.name && t.color === item.color)
+            self.findIndex(
+              (t) => t.name === item.name && t.color === item.color
+            )
         );
         setLabelList(filteredList);
       }

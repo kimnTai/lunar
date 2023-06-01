@@ -4,17 +4,15 @@ import { MainLayoutCss } from "@/pages/Billboard/style";
 import { Layout } from "antd";
 import { Header } from "@/components/User/Header";
 import React, { ReactNode } from "react";
-import { PropsFromRedux } from ".";
 
 const LoginLayout = React.memo<{
   children: ReactNode;
-  changeWorkSpace: PropsFromRedux["changeWorkSpace"];
-}>(({ children, changeWorkSpace }) => {
+}>(({ children }) => {
   const showWorkSpace = useAppSelector((state) => state.screen.showWorkSpace);
 
   return (
     <Layout>
-      <Navbar setWorkSpace={changeWorkSpace} />
+      <Navbar />
       <Layout>
         <Header />
         <MainLayoutCss workspace={`${showWorkSpace}`}>{children}</MainLayoutCss>

@@ -6,22 +6,25 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import WorkSpaceCardContent from "./WorkSpaceCardContent";
 import { WorkSpaceCardCss } from "./style";
+import { changeWorkSpace } from "@/redux/screenSlice";
+import { useAppDispatch } from "@/hooks/useAppDispatch";
 
 const WorkSpaceCard: React.FC<WorkSpaceCardProps> = ({
   title,
   permission,
   backgroundImage,
-  setWorkSpace,
   boardId,
 }) => {
   const navigate = useNavigate();
+
+  const dispatch = useAppDispatch();
 
   return (
     <WorkSpaceCardCss
       hoverable
       background-image={`${backgroundImage}`}
       onClick={() => {
-        setWorkSpace();
+        dispatch(changeWorkSpace());
         navigate(`/board/${boardId}`);
       }}
     >

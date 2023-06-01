@@ -6,25 +6,25 @@ import GitHubIcon from "@/assets/images/GitHub.png";
 import { LoginCss } from "./style";
 import { useNavigate } from "react-router-dom";
 import type { LoginProps } from "@/interfaces/user";
-import type { PropsFromRedux } from "@/router";
 import ThirdPartyButton from "./ThirdPartyButton";
 import { useAppSelector } from "@/hooks/useAppSelector";
+import { useAppDispatch } from "@/hooks/useAppDispatch";
+import { loginAction, selectAuth, signInAction } from "@/redux/userSlice";
+import { getOrganizationsAction } from "@/redux/organizationSlice";
 
 const Login: React.FC<{
-  signInAction: PropsFromRedux["signInAction"];
-  loginAction: PropsFromRedux["loginAction"];
-  getOrganization: PropsFromRedux["getOrganization"];
   isSignUpPage: boolean;
-}> = ({ signInAction, loginAction, getOrganization, isSignUpPage }) => {
-  const isUserLogin = useAppSelector((state) => state.auth.login);
+}> = ({ isSignUpPage }) => {
+  const isUserLogin = useAppSelector(selectAuth);
   const [buttonLoading, setButtonLoading] = useState(false);
+  const dispatch = useAppDispatch();
 
   const navigate = useNavigate();
 
   useEffect(() => {
     if (isUserLogin) {
       (async () => {
-        await getOrganization();
+        await dispatch(getOrganizationsAction());
         navigate(`/`);
       })();
     }
@@ -34,7 +34,9 @@ const Login: React.FC<{
     setButtonLoading(true);
 
     try {
-      isSignUpPage ? await signInAction(values) : await loginAction(values);
+      isSignUpPage
+        ? await dispatch(signInAction(values))
+        : await dispatch(loginAction(values));
     } catch (error) {}
 
     setButtonLoading(false);

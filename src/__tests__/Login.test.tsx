@@ -9,14 +9,7 @@ afterEach(() => {
 
 describe("登入頁面測試", () => {
   test("讀取頁面", async () => {
-    render(
-      <Login
-        loginAction={vi.fn()}
-        signInAction={async () => {}}
-        getOrganization={async () => {}}
-        isSignUpPage={false}
-      />
-    );
+    render(<Login isSignUpPage={false} />);
     expect(screen.getByText("讓工作，更有序")).toBeInTheDocument();
   });
 });

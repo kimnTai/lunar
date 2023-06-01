@@ -12,12 +12,13 @@ import Logo2 from "@/assets/images/img_logo2.png";
 import AddWorkSpace from "@/components/Modal/AddWorkSpace";
 import NavBarMenu from "./NavbarMenu";
 import AddBoards from "@/components/Modal/AddBoards";
-import type { PropsFromRedux } from "@/router";
 import { useAppSelector } from "@/hooks/useAppSelector";
+import { selectOrganization } from "@/redux/organizationSlice";
+import { useAppDispatch } from "@/hooks/useAppDispatch";
+import { changeWorkSpace } from "@/redux/screenSlice";
 
-export const Navbar: React.FC<{
-  setWorkSpace: PropsFromRedux["changeWorkSpace"];
-}> = ({ setWorkSpace }) => {
+export const Navbar: React.FC = () => {
+  const dispatch = useAppDispatch();
   const showWorkSpace = useAppSelector((state) => state.screen.showWorkSpace);
   const [showNavbar, setShowNavBar] = useState(false);
   const navigate = useNavigate();
@@ -30,7 +31,7 @@ export const Navbar: React.FC<{
   };
   const [open, setOpen] = useState(false);
   const [openKey, setOpenKey] = useState("");
-  const userOrganization = useAppSelector((state) => state.user.organization);
+  const userOrganization = useAppSelector(selectOrganization);
 
   const currentOrganization = userOrganization.find(({ board }) =>
     board.map(({ _id }) => _id).includes(openKey)
@@ -69,7 +70,7 @@ export const Navbar: React.FC<{
                   }}
                   className="d-center"
                   onClick={() => {
-                    setWorkSpace();
+                    dispatch(changeWorkSpace());
                     navigate("/");
                   }}
                 />

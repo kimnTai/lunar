@@ -1,6 +1,6 @@
 import { deleteBoardApi } from "@/api/boards";
 import { useAppDispatch } from "@/hooks/useAppDispatch";
-import { getOrganizationsAction } from "@/redux/actions/OrganizationAction";
+import { getOrganizationsAction } from "@/redux/organizationSlice";
 import { Button, ButtonProps } from "antd";
 import { useState } from "react";
 
@@ -31,7 +31,7 @@ const WorkSpaceCardContent: React.FC<
           setLoading(true);
 
           await deleteBoardApi(boardId);
-          await getOrganizationsAction()(dispatch);
+          await dispatch(getOrganizationsAction());
 
           setLoading(false);
         }}

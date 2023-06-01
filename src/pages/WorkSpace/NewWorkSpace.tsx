@@ -2,29 +2,35 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button, Col, Form, Input, Layout, Row } from "antd";
 import { NewOrganizationFormProps as FormValues } from "@/interfaces/organization";
-import { useApi } from "@/hooks/useApiHook";
-import { newOrganizationApi } from "@/api/organization";
 import { NewWorkSpaceCss } from "./style";
 import Logo from "@/assets/images/img_logo.png";
 import Bg from "@/assets/images/newWorkSpace_bg.png";
 import CreateWork from "@/assets/images/img_createWork.png";
-import type { PropsFromRedux } from "@/router";
 import InviteMemberSelect from "@/components/WorkSpace/InviteMemberSelect";
+import { useAppDispatch } from "@/hooks/useAppDispatch";
+import { newOrganizationAction } from "@/redux/organizationSlice";
 
-const NewWorkSpace: React.FC<{
-  getOrganization: PropsFromRedux["getOrganization"];
-}> = ({ getOrganization }) => {
+const NewWorkSpace: React.FC = () => {
   const [form] = Form.useForm<FormValues>();
-  const [_result, loading, callApi] = useApi(newOrganizationApi);
+  const [loading, setLoading] = useState(false);
   const [selectedUsers, setSelectedUsers] = useState<{ userIdList: string[] }>({
     userIdList: [],
   });
 
+  const dispatch = useAppDispatch();
+
   const navigate = useNavigate();
   const onFinish = async (values: FormValues) => {
-    await callApi({ name: values.name, userIdList: selectedUsers.userIdList });
-    await getOrganization();
-    navigate("/");
+    setLoading(true);
+    dispatch(
+      newOrganizationAction({
+        name: values.name,
+        userIdList: selectedUsers.userIdList,
+      })
+    ).finally(() => {
+      setLoading(false);
+      navigate("/");
+    });
   };
 
   return (

@@ -15,7 +15,6 @@ import {
   updateColumn,
   getSocketChange,
 } from "@/utils/cardFunc";
-import type { PropsFromRedux } from "@/router";
 import { useAppSelector } from "@/hooks/useAppSelector";
 import useWebSocket from "@/hooks/useWebSocket";
 import { LoadingOutlined } from "@ant-design/icons";
@@ -24,10 +23,11 @@ import { UrlCardShareProps } from "@/interfaces/trelloCard";
 import { CardModalProvider } from "@/context/CardModalContext";
 import TrelloCardModal from "@/components/TrelloCard/Modal";
 import { useLocation } from "react-router-dom";
+import { changeWorkSpace } from "@/redux/screenSlice";
+import { useAppDispatch } from "@/hooks/useAppDispatch";
 
-const Billboard: React.FC<{
-  setWorkSpace: PropsFromRedux["changeWorkSpace"];
-}> = ({ setWorkSpace }) => {
+const Billboard: React.FC = () => {
+  const dispatch = useAppDispatch();
   const location = useLocation();
   console.log(location);
   const workSpace = useAppSelector((state) => state.screen.showWorkSpace);
@@ -64,7 +64,7 @@ const Billboard: React.FC<{
 
   useEffect(() => {
     if (workSpace) {
-      setWorkSpace();
+      dispatch(changeWorkSpace());
     }
   }, [workSpace]);
   useEffect(() => {

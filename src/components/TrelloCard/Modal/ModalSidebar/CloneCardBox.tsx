@@ -4,8 +4,7 @@ import { Button, Cascader, Form, Input, Popover, Spin } from "antd";
 import { postCloneCardApi } from "@/api/cards";
 import { useCardModalContext } from "@/context/CardModalContext";
 import { useAppDispatch } from "@/hooks/useAppDispatch";
-import { getOrganizationsAction } from "@/redux/actions/OrganizationAction";
-
+import { getOrganizationsAction } from "@/redux/organizationSlice";
 
 const CloneCardBox: React.FC = () => {
   const { cardData } = useCardModalContext();
@@ -96,7 +95,7 @@ const CloneCardBox: React.FC = () => {
               })
                 .then(() => {
                   // 異步執行
-                  getOrganizationsAction()(dispatch);
+                  dispatch(getOrganizationsAction());
                 })
                 .finally(() => {
                   setComponentState({

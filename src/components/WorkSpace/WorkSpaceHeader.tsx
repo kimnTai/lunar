@@ -3,7 +3,7 @@ import { EditOutlined } from "@ant-design/icons";
 import { Button, Col, Form, Input, Row, Spin } from "antd";
 import { ColorIcon } from "../Icons";
 import PermissionBtn from "./PermissionBtn";
-import { updateOrganizationAction } from "@/redux/actions/OrganizationAction";
+import { updateOrganizationAction } from "@/redux/organizationSlice";
 import { useAppDispatch } from "@/hooks/useAppDispatch";
 import { useParamOrganization } from "@/hooks/useParamOrganization";
 
@@ -23,10 +23,12 @@ export const WorkSpaceHeader: React.FC = () => {
 
     setSpinning(true);
 
-    updateOrganizationAction({
-      organizationId: paramOrganization._id,
-      name: values.name,
-    })(dispatch).finally(() => {
+    dispatch(
+      updateOrganizationAction({
+        organizationId: paramOrganization._id,
+        name: values.name,
+      })
+    ).finally(() => {
       setIsEdit(false);
       setSpinning(false);
     });

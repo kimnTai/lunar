@@ -4,16 +4,18 @@ import { Button, Form } from "antd";
 import { OrganizationMemberProps } from "@/interfaces/organization";
 import { deleteOrganizationMemberApi } from "@/api/organization";
 import { useApi } from "@/hooks/useApiHook";
-import { PropsFromRedux } from "@/router";
+import { useAppDispatch } from "@/hooks/useAppDispatch";
+import { getOrganizationsAction } from "@/redux/organizationSlice";
 
 const RemoveMember: React.FC<{
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
   organizationId: string;
-  getOrganization: PropsFromRedux["getOrganization"];
   selectedMember: OrganizationMemberProps | null;
-}> = ({ open, setOpen, organizationId, getOrganization, selectedMember }) => {
+}> = ({ open, setOpen, organizationId, selectedMember }) => {
   const userId = selectedMember?.userId._id;
+
+  const dispatch = useAppDispatch();
 
   const onCancel = () => {
     setOpen(false);
@@ -26,7 +28,7 @@ const RemoveMember: React.FC<{
       organizationId,
       memberId: userId || "",
     });
-    await getOrganization();
+    await dispatch(getOrganizationsAction());
 
     onCancel();
   };

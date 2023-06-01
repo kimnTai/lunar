@@ -13,15 +13,16 @@ import {
   generateInviteLinkApi,
 } from "@/api/organization";
 import InviteMemberSelect from "../WorkSpace/InviteMemberSelect";
-import { PropsFromRedux } from "@/router";
+import { getOrganizationsAction } from "@/redux/organizationSlice";
+import { useAppDispatch } from "@/hooks/useAppDispatch";
 
 const InviteMember: React.FC<{
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
   organizationId: string;
   userOrganization?: OrganizationProps;
-  getOrganization: PropsFromRedux["getOrganization"];
-}> = ({ open, setOpen, userOrganization, organizationId, getOrganization }) => {
+}> = ({ open, setOpen, userOrganization, organizationId }) => {
+  const dispatch = useAppDispatch();
   const [_result, loading, callApi] = useApi(addOrganizationMemberApi);
   const [form] = Form.useForm<addOrganizationMemberProps>();
   const [selectedUsers, setSelectedUsers] = useState<{ userIdList: string[] }>({
@@ -43,7 +44,7 @@ const InviteMember: React.FC<{
       userIdList: [],
     });
 
-    await getOrganization();
+    dispatch(getOrganizationsAction());
 
     onCancel();
   };
@@ -52,7 +53,7 @@ const InviteMember: React.FC<{
     setLoadingLink(true);
     await generateInviteLinkApi(organizationId);
 
-    await getOrganization();
+    dispatch(getOrganizationsAction());
     setLoadingLink(false);
   };
 
