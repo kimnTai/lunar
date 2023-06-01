@@ -8,6 +8,7 @@ import type {
   DateProps,
   NewCardDateProps,
   UpdateCardDateProps,
+  addCardMemberProps,
 } from "@/interfaces/cards";
 import { CommentProps, NewCommentProps } from "@/interfaces/comments";
 
@@ -48,6 +49,7 @@ export const newCardCommentApi = (data: NewCommentProps) =>
     `/cards/${data.cardId}/comments`,
     data
   );
+
 // 新增卡片日期
 export const newCardDateApi = (cardId: string, data: NewCardDateProps) =>
   Request.post<any, PrometheusResponse<DateProps>>(
@@ -80,3 +82,11 @@ export const postCloneCardApi = (data: {
   Request.post<any, PrometheusResponse<CardsProps>>(`/cards/cloneById`, {
     ...data,
   });
+
+// 新增多位卡片成員
+export const addCardMemberApi = (data: addCardMemberProps) => {
+  return Request.post<any, PrometheusResponse<CardsProps>>(
+    `/cards/${data.cardId}/members`,
+    data
+  );
+};

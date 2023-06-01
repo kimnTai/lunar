@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   UserOutlined,
   ContainerOutlined,
@@ -8,14 +8,21 @@ import {
   CheckSquareOutlined,
   TagOutlined,
 } from "@ant-design/icons";
-import { Button, Divider } from "antd";
+import { Button, Col, Divider } from "antd";
 import { ModalStyle, ModalSidebarStyled } from "./style";
 import AttachmentBox from "./AttachmentBox";
 import CloneCardBox from "./CloneCardBox";
+import { useAppSelector } from "@/hooks/useAppSelector";
 import { useCardModalContext } from "@/context/CardModalContext";
+import { addCardMemberApi } from "@/api/cards";
 
 const ModalSidebar: React.FC = () => {
   const { setOpenPopover, PopoverType } = useCardModalContext();
+
+  const [isLoading, setIsLoading] = useState(false);
+
+  const userId = useAppSelector((state) => state.user.user._id);
+  const { cardData } = useCardModalContext();
 
   const SidebarBox: React.FC<{
     title: string;
@@ -42,13 +49,32 @@ const ModalSidebar: React.FC = () => {
     );
   };
 
+  const handleJoinCard = async () => {
+    const cardId = cardData?._id;
+    setIsLoading(true);
+    if (cardId) {
+      await addCardMemberApi({ cardId, userIdList: [userId] });
+    }
+    setIsLoading(false);
+  };
+
   return (
     <>
       <ModalSidebarStyled style={ModalStyle}>
-        <SidebarBox
-          title={"建議"}
-          data={[{ label: "加入", value: "add", icon: <UserOutlined /> }]}
-        />
+        {!cardData?.member.some((user) => user.userId._id === userId) && (
+          <Col>
+            <h4>建議</h4>
+            <Button
+              className="button-link"
+              onClick={handleJoinCard}
+              icon={<UserOutlined />}
+              loading={isLoading}
+            >
+              加入
+            </Button>
+          </Col>
+        )}
+
         <SidebarBox
           className={"mid"}
           title={"新增至卡片"}

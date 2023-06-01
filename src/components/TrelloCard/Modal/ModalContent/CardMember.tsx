@@ -15,6 +15,10 @@ const CardMember: React.FC = () => {
     )
   );
 
+  const handleAddMember = () => {
+    console.log("clicked");
+  };
+
   return (
     <Col span={12}>
       <SectionHeaderStyled align="middle" gutter={8}>
@@ -24,7 +28,11 @@ const CardMember: React.FC = () => {
       </SectionHeaderStyled>
       <Avatar.Group>
         {memberAvatarGroup}
-        <Button shape="circle" icon={<PlusOutlined />} />
+        <Button
+          shape="circle"
+          icon={<PlusOutlined />}
+          onClick={handleAddMember}
+        />
       </Avatar.Group>
     </Col>
   );
