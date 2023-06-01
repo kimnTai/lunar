@@ -68,3 +68,29 @@ export const AddMemberModalStyled = styled.div`
     }
   }
 `;
+
+export const LabelModalStyled = styled.div`
+  position: absolute;
+  z-index: 1000;
+  width: 250px;
+  .ant-close {
+    position: absolute;
+    right: 4px;
+    top: 2px;
+    border: 0;
+    box-shadow: none;
+  }
+  .ant-card-head-title {
+    text-align: center;
+    font-size: 12px;
+  }
+  .labelBtn {
+    color: "white";
+    border-radius: "4px";
+    width: "100%";
+    height: "34px";
+    padding: "0 12px";
+    flex-grow: 1;
+    box-shadow: none;
+  }
+`;
