@@ -16,7 +16,7 @@ const CardMember: React.FC = () => {
   );
 
   return (
-    <>
+    <Col span={12}>
       <SectionHeaderStyled align="middle" gutter={8}>
         <Col flex="none">
           <h3>成員</h3>
@@ -26,7 +26,7 @@ const CardMember: React.FC = () => {
         {memberAvatarGroup}
         <Button shape="circle" icon={<PlusOutlined />} />
       </Avatar.Group>
-    </>
+    </Col>
   );
 };
 

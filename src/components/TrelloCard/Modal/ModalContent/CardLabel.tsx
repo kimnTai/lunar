@@ -14,7 +14,7 @@ const CardLabel: React.FC = () => {
   ));
 
   return (
-    <>
+    <Col span={12}>
       <SectionHeaderStyled align="middle" gutter={8}>
         <Col flex="none">
           <h3>標籤</h3>
@@ -24,7 +24,7 @@ const CardLabel: React.FC = () => {
         {labelAvatarGroup}
         <Button shape="circle" icon={<PlusOutlined />} />
       </Avatar.Group>
-    </>
+    </Col>
   );
 };
 
