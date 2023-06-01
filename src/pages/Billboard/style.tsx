@@ -9,7 +9,7 @@ export const BillboardStyled = styled.div`
 
 export const MainLayoutCss = styled(Layout.Content)<{ workspace: string }>`
   transition: all 0.2s ease;
-  // height: calc(100vh - 56px);
+  height: calc(100vh - 72px);
   background-color: ${(props) =>
     props.workspace === "true" ? "white" : "var(--black23)"};
   padding: 24px 48px;
