@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import Logo from "@/assets/images/img_logo.png";
 import { Card, Button, Divider, Form, Input } from "antd";
 import GoogleIcon from "@/assets/images/google.png";
-import AppleIcon from "@/assets/images/apple.png";
+import GitHubIcon from "@/assets/images/GitHub.png";
 import { LoginCss } from "./style";
 import { useNavigate } from "react-router-dom";
 import type { LoginProps } from "@/interfaces/user";
@@ -139,7 +139,7 @@ const Login: React.FC<{
           }}
         />
         <ThirdPartyButton
-          iconSrc={AppleIcon}
+          iconSrc={GitHubIcon}
           text={isSignUpPage ? "使用 GitHub 註冊" : "使用 GitHub 登入"}
           onClick={() => {
             window.location.href = `${

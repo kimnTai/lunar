@@ -1,8 +1,5 @@
 import { DroppableProvided } from "react-beautiful-dnd";
 import { ListsProps } from "./lists";
-export interface CardReducerProps {
-  cardList: any[];
-}
 
 export interface TrelloCardProps {
   index: number;

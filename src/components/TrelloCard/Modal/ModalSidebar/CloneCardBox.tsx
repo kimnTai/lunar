@@ -4,9 +4,8 @@ import { Button, Cascader, Form, Input, Popover, Spin } from "antd";
 import { postCloneCardApi } from "@/api/cards";
 import { useCardModalContext } from "@/context/CardModalContext";
 import { useAppDispatch } from "@/hooks/useAppDispatch";
-import { useAppSelector } from "@/hooks/useAppSelector";
 import { getOrganizationsAction } from "@/redux/actions/OrganizationAction";
-import { nextPosition } from "@/utils/cardFunc";
+
 
 const CloneCardBox: React.FC = () => {
   const { cardData } = useCardModalContext();
@@ -21,34 +20,35 @@ const CloneCardBox: React.FC = () => {
 
   const dispatch = useAppDispatch();
 
-  const options = useAppSelector((state) => state.user.organization)
-    .filter(({ board }) => {
-      return board.length && board.flatMap(({ list }) => list).length;
-    })
-    .map(({ id, name, board }) => ({
-      value: id,
-      label: name,
-      children: board
-        .filter(({ list }) => list.length)
-        .map(({ id, name, list }) => ({
-          value: id,
-          label: name,
-          children: list.map(({ id, name, card }) => ({
-            value: id,
-            label: name,
-            children: [
-              ...card.map((_, index, array) => ({
-                value: nextPosition(array, index),
-                label: index,
-              })),
-              {
-                value: nextPosition(card, card.length),
-                label: card.length,
-              },
-            ],
-          })),
-        })),
-    }));
+  // TODO:待重新製作
+  // const options = useAppSelector((state) => state.user.organization)
+  //   .filter(({ board }) => {
+  //     return board.length && board.flatMap(({ list }) => list).length;
+  //   })
+  //   .map(({ id, name, board }) => ({
+  //     value: id,
+  //     label: name,
+  //     children: board
+  //       .filter(({ list }) => list.length)
+  //       .map(({ id, name, list }) => ({
+  //         value: id,
+  //         label: name,
+  //         children: list.map(({ id, name, card }) => ({
+  //           value: id,
+  //           label: name,
+  //           children: [
+  //             ...card.map((_, index, array) => ({
+  //               value: nextPosition(array, index),
+  //               label: index,
+  //             })),
+  //             {
+  //               value: nextPosition(card, card.length),
+  //               label: card.length,
+  //             },
+  //           ],
+  //         })),
+  //       })),
+  //   }));
 
   return (
     <Popover
@@ -128,7 +128,7 @@ const CloneCardBox: React.FC = () => {
                 },
               ]}
             >
-              <Cascader options={options} placement={"bottomRight"} />
+              <Cascader options={[]} placement={"bottomRight"} />
             </Form.Item>
             <Form.Item>
               <Button type="primary" htmlType="submit">

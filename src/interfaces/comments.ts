@@ -1,13 +1,10 @@
+import { UserProps } from "./user";
+
 export interface CommentProps {
   _id: string;
   comment: string;
   cardId: string;
-  userId: {
-    _id: string;
-    name: string;
-    email: string;
-    avatar: string;
-  };
+  userId: Pick<UserProps, "_id" | "name" | "avatar" | "email">;
   createdAt: string;
   updatedAt: string;
 }

@@ -1,4 +1,5 @@
 import Request from "@/api/base/request";
+import type { NotificationProps } from "@/interfaces/notification";
 import type { UserProps } from "@/interfaces/user";
 
 // 註冊
@@ -34,3 +35,30 @@ export const loginJwtApi = () =>
 
 // 登出
 export const logoutApi = () => Request.get<any, any>("/user/logout");
+
+// 取得使用者通知
+export const getNotificationApi = () => {
+  return Request.get<any, PrometheusResponse<NotificationProps[]>>(
+    "/user/notification"
+  );
+};
+
+// 修改使用者通知
+export const updateNotificationApi = (data: {
+  notificationId: string;
+  isRead: boolean;
+}) => {
+  return Request.put<any, PrometheusResponse<NotificationProps>>(
+    `/user/notification/${data.notificationId}`,
+    {
+      isRead: data.isRead,
+    }
+  );
+};
+
+// 刪除使用者通知
+export const deleteNotificationApi = (data: { notificationId: string }) => {
+  return Request.delete<any, PrometheusResponse<NotificationProps>>(
+    `/user/notification/${data.notificationId}`
+  );
+};
