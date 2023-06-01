@@ -8,7 +8,12 @@ import {
   CheckSquareOutlined,
   TagOutlined,
 } from "@ant-design/icons";
+<<<<<<< HEAD
 import { Button, Col, Divider } from "antd";
+=======
+import { Button, Col, Divider, message } from "antd";
+import PopoverDate from "@/components/PopoverDate";
+>>>>>>> 4716c2d ([ fix ] 新增卡片成員後的更新)
 import { ModalStyle, ModalSidebarStyled } from "./style";
 import AttachmentBox from "./AttachmentBox";
 import CloneCardBox from "./CloneCardBox";
@@ -24,7 +29,7 @@ const ModalSidebar: React.FC = () => {
   const [isOpenAddMember, setIsOpenAddMember] = useState(false);
 
   const userId = useAppSelector((state) => state.user.user._id);
-  const { cardData } = useCardModalContext();
+  const { cardData, setCardData } = useCardModalContext();
 
   const SidebarBox: React.FC<{
     title: string;
@@ -56,7 +61,14 @@ const ModalSidebar: React.FC = () => {
     const cardId = cardData?._id;
     setIsLoading(true);
     if (cardId) {
-      await addCardMemberApi({ cardId, userIdList: [userId] });
+      await addCardMemberApi({ cardId, userIdList: [userId] }).then(
+        (result) => {
+          if (result.status === "success") {
+            message.success(`加入成功`);
+            setCardData(result.result);
+          }
+        }
+      );
     }
     setIsLoading(false);
   };

@@ -21,9 +21,9 @@ const AddMemberModal: React.FC<{
     if (e.target.value.length > 1) {
       await searchLunarMemberApi({ query: e.target.value }).then((res) => {
         setResultMember(res.result);
-        setIsLoading(false);
       });
     }
+    setIsLoading(false);
   }, 800);
 
   const handleAddCardMember = async (member: UserProps) => {
@@ -38,6 +38,7 @@ const AddMemberModal: React.FC<{
         }
       );
     }
+    setIsOpenAddMember(false);
   };
 
   return (
