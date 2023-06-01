@@ -37,7 +37,7 @@ const TrelloCardModal: React.FC<TrelloCardModalProps> = ({
         }
       })();
     }
-  }, [openModal.open, cardData]);
+  }, [openModal.open]);
 
   return (
     <TrelloCardModalStyled
