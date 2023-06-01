@@ -31,8 +31,6 @@ export const ModalSidebarStyled = styled(Sider)`
 
 export const AddMemberModalStyled = styled.div`
   position: absolute;
-  top: 32px;
-  left: 0;
   z-index: 1000;
   width: 300px;
   .ant-close {

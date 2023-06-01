@@ -86,7 +86,10 @@ const ModalSidebar: React.FC = () => {
           </Button>
 
           {isOpenAddMember && (
-            <AddMemberModal setIsOpenAddMember={setIsOpenAddMember} />
+            <AddMemberModal
+              setIsOpenAddMember={setIsOpenAddMember}
+              style={{ top: " 32px", left: 0 }}
+            />
           )}
         </Col>
 

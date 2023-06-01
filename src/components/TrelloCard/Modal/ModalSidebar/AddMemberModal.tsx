@@ -1,6 +1,6 @@
 import { searchLunarMemberApi } from "@/api/search";
 import { CloseOutlined, SearchOutlined } from "@ant-design/icons";
-import { Avatar, Button, Card, Col, Input, List } from "antd";
+import { Avatar, Button, Card, Col, Input, List, message } from "antd";
 import { debounce } from "lodash";
 import { ChangeEvent, useState } from "react";
 import { AddMemberModalStyled } from "./style";
@@ -10,8 +10,9 @@ import { addCardMemberApi } from "@/api/cards";
 
 const AddMemberModal: React.FC<{
   setIsOpenAddMember: Function;
-}> = ({ setIsOpenAddMember }) => {
-  const { cardData } = useCardModalContext();
+  style?: any;
+}> = ({ setIsOpenAddMember, style }) => {
+  const { cardData, setCardData } = useCardModalContext();
   const [resultMember, setResultMember] = useState<UserProps[] | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -28,12 +29,19 @@ const AddMemberModal: React.FC<{
   const handleAddCardMember = async (member: UserProps) => {
     const cardId = cardData?._id;
     if (cardId) {
-      await addCardMemberApi({ cardId, userIdList: [member._id] });
+      await addCardMemberApi({ cardId, userIdList: [member._id] }).then(
+        (result) => {
+          if (result.status === "success") {
+            message.success(`加入成功`);
+            setCardData(result.result);
+          }
+        }
+      );
     }
   };
 
   return (
-    <AddMemberModalStyled>
+    <AddMemberModalStyled style={{ ...style }}>
       <Card
         title="成員"
         extra={

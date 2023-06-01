@@ -1,11 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
 import { Avatar, Button, Col, Tooltip } from "antd";
 import { useCardModalContext } from "@/context/CardModalContext";
 import { SectionHeaderStyled } from "./style";
 import { PlusOutlined } from "@ant-design/icons";
+import AddMemberModal from "../ModalSidebar/AddMemberModal";
 
 const CardMember: React.FC = () => {
   const { cardData } = useCardModalContext();
+  const [isOpenAddMember, setIsOpenAddMember] = useState(false);
 
   const memberAvatarGroup = cardData?.member.map(
     ({ userId: { _id, name, avatar } }) => (
@@ -14,10 +16,6 @@ const CardMember: React.FC = () => {
       </Tooltip>
     )
   );
-
-  const handleAddMember = () => {
-    console.log("clicked");
-  };
 
   return (
     <Col span={12}>
@@ -31,8 +29,14 @@ const CardMember: React.FC = () => {
         <Button
           shape="circle"
           icon={<PlusOutlined />}
-          onClick={handleAddMember}
+          onClick={() => setIsOpenAddMember(true)}
         />
+        {isOpenAddMember && (
+          <AddMemberModal
+            setIsOpenAddMember={setIsOpenAddMember}
+            style={{ top: "64px", left: 0 }}
+          />
+        )}
       </Avatar.Group>
     </Col>
   );
