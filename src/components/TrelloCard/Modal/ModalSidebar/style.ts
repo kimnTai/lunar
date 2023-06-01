@@ -28,3 +28,45 @@ export const ModalSidebarStyled = styled(Sider)`
     margin-top: 8px;
   }
 `;
+
+export const AddMemberModalStyled = styled.div`
+  position: absolute;
+  top: 32px;
+  left: 0;
+  z-index: 1000;
+  width: 300px;
+  .ant-close {
+    position: absolute;
+    right: 4px;
+    top: 2px;
+    border: 0;
+    box-shadow: none;
+  }
+  .ant-space {
+    width: 300px;
+  }
+  .ant-card-head-title {
+    text-align: center;
+    font-size: 12px;
+  }
+  .board-member-list {
+    font-size: 8px;
+    line-height: 22px;
+    margin: 12px 0 0;
+    color: var(--gray66);
+  }
+
+  .ant-list-split {
+    .ant-list-item {
+      border: 0;
+      padding: 6px 0;
+    }
+    .search-list-item {
+      cursor: pointer;
+      padding: 8px 4px;
+    }
+    .search-list-item:hover {
+      background-color: var(--link-background);
+    }
+  }
+`;

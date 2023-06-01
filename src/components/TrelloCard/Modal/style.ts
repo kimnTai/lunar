@@ -20,7 +20,6 @@ export const TrelloCardModalStyled = styled(Modal)`
     padding-top: 0;
     padding-left: 0;
     padding-right: 0;
-    overflow: hidden;
   }
 
   .ant-modal-body {

@@ -15,11 +15,13 @@ import CloneCardBox from "./CloneCardBox";
 import { useAppSelector } from "@/hooks/useAppSelector";
 import { useCardModalContext } from "@/context/CardModalContext";
 import { addCardMemberApi } from "@/api/cards";
+import AddMemberModal from "./AddMemberModal";
 
 const ModalSidebar: React.FC = () => {
   const { setOpenPopover, PopoverType } = useCardModalContext();
 
   const [isLoading, setIsLoading] = useState(false);
+  const [isOpenAddMember, setIsOpenAddMember] = useState(false);
 
   const userId = useAppSelector((state) => state.user.user._id);
   const { cardData } = useCardModalContext();
@@ -39,6 +41,7 @@ const ModalSidebar: React.FC = () => {
               key={idx}
               className="button-link"
               onClick={ele.onClickEvent}
+              loading={ele.loading}
             >
               <span style={{ marginRight: "6px" }}>{ele.icon}</span>
               <span>{ele.label}</span>
@@ -57,7 +60,6 @@ const ModalSidebar: React.FC = () => {
     }
     setIsLoading(false);
   };
-
   return (
     <>
       <ModalSidebarStyled style={ModalStyle}>
@@ -74,12 +76,24 @@ const ModalSidebar: React.FC = () => {
             </Button>
           </Col>
         )}
+        <Col style={{ position: "relative" }}>
+          <Button
+            className="button-link"
+            onClick={() => setIsOpenAddMember(true)}
+            icon={<UserOutlined />}
+          >
+            成員
+          </Button>
+
+          {isOpenAddMember && (
+            <AddMemberModal setIsOpenAddMember={setIsOpenAddMember} />
+          )}
+        </Col>
 
         <SidebarBox
           className={"mid"}
           title={"新增至卡片"}
           data={[
-            { label: "成員", value: "member", icon: <UserOutlined /> },
             { label: "標籤", value: "member", icon: <TagOutlined /> },
             {
               label: "代辦清單",
@@ -100,6 +114,7 @@ const ModalSidebar: React.FC = () => {
             },
           ]}
         />
+
         <AttachmentBox />
         <SidebarBox
           className={"mid"}
