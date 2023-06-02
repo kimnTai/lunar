@@ -252,7 +252,7 @@ export const getSocketChange = (
     }
   }
   // column 內互換 與 column外互換
-  const orgianColumn = cardList.filter(
+  const originColumn = cardList.filter(
     (ele) => ele.card.filter((cardEle) => cardEle.id === result.id)[0]
   )[0];
   const newData = {
@@ -272,23 +272,23 @@ export const getSocketChange = (
     attachment: result.attachment,
     date: result.date,
   };
-  if (!orgianColumn) {
+  if (!originColumn) {
     // 新增
     cardList.filter((ele) => ele.id === result.listId)[0].card.push(newData);
     return JSON.parse(JSON.stringify(cardList));
   }
-  if (orgianColumn.id === result.listId) {
+  if (originColumn.id === result.listId) {
     // 同column 互換
-    const useData = orgianColumn.card.filter((ele) => ele.id === result.id)[0];
+    const useData = originColumn.card.filter((ele) => ele.id === result.id)[0];
     if (useData.position !== result.position) {
       useData.position = result.position;
       return JSON.parse(JSON.stringify(cardList));
     }
   }
-  if (orgianColumn.id !== result.listId) {
+  if (originColumn.id !== result.listId) {
     // 跨Column 互換
     const newColumn = cardList.filter((ele) => ele.id === result.listId)[0];
-    orgianColumn.card = orgianColumn.card.filter((ele) => ele.id !== result.id);
+    originColumn.card = originColumn.card.filter((ele) => ele.id !== result.id);
     newColumn.card.push(newData);
     return JSON.parse(JSON.stringify(cardList));
   }

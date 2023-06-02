@@ -35,7 +35,7 @@ const Billboard: React.FC = () => {
   const [hasLoadBoard, setHasLoadBoard] = useState(false);
   const [cardList, setCardList] = useState<ListsProps[]>([]);
   const { boardId, cardId } = useParams();
-  const [boardResult, getBoardloading, callGetBoardApi] = useApi(getBoardApi);
+  const [boardResult, isBoardLoading, callGetBoardApi] = useApi(getBoardApi);
   const { data: socketEvent, sendMessage } = useWebSocket(
     boardId!,
     callGetBoardApi
@@ -121,7 +121,7 @@ const Billboard: React.FC = () => {
 
   return (
     <>
-      {getBoardloading ? (
+      {isBoardLoading ? (
         <Spin
           className="d-center"
           indicator={<LoadingOutlined spin style={{ fontSize: 96 }} />}
