@@ -4,7 +4,7 @@ import { CloseOutlined } from "@ant-design/icons";
 import { useCardModalContext } from "@/context/CardModalContext";
 import PopoverDate from "@/components/TrelloCard/Modal/PopoverContent/PopoverDate";
 import PopoverCheckList from "./PopoverContent/PopoverCheckList";
-import { PopoverStyled } from "./PopoverSytle";
+import { PopoverStyled } from "./PopoverStyle";
 
 const Popover: React.FC = () => {
   const { openPopover, handleClosePopover, PopoverType } =

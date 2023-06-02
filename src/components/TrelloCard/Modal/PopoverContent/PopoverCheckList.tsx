@@ -3,7 +3,7 @@ import { Button, Col, Input, Row } from "antd";
 import { useCardModalContext } from "@/context/CardModalContext";
 import { newChecklistApi } from "@/api/cards";
 import { nextPosition } from "@/utils/cardFunc";
-import { PopoverSectionTitleStyled } from "../PopoverSytle";
+import { PopoverSectionTitleStyled } from "../PopoverStyle";
 
 const PopoverCheckList: React.FC = () => {
   const { cardData, setCardData, handleClosePopover } = useCardModalContext();
