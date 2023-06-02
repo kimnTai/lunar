@@ -7,7 +7,7 @@ import { ChecklistProps } from "@/interfaces/checklists";
 import { useCardModalContext } from "@/context/CardModalContext";
 import { newCheckItemApi } from "@/api/cards";
 import { nextPosition } from "@/utils/cardFunc";
-import CheckItem from "./CheckItem";
+import CheckItems from "./CheckItems";
 import { SectionHeaderStyled } from "../style";
 import { CheckListStyled } from "./CheckListStyle";
 
@@ -106,7 +106,7 @@ const CheckList: React.FC<{ checkList?: ChecklistProps[] }> = ({
                       style={{ minHeight: "1px" }}
                     >
                       <CheckListStyled>
-                        <CheckItem checkItem={checkItem} />
+                        <CheckItems checkItem={checkItem} />
                         <>
                           <Row
                             gutter={[16, 8]}
