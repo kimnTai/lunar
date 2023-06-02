@@ -4,6 +4,7 @@ import { Avatar, Button, Divider } from "antd";
 import { useAppDispatch } from "@/hooks/useAppDispatch";
 import { useAppSelector } from "@/hooks/useAppSelector";
 import { UserModalCss } from "./style";
+import { logout } from "@/redux/userSlice";
 
 const UserModalButton: React.FC = () => {
   const showWorkSpace = useAppSelector((state) => state.screen.showWorkSpace);
@@ -50,7 +51,7 @@ const UserModalButton: React.FC = () => {
           danger
           style={{ width: "100%" }}
           onClick={() => {
-            dispatch({ type: "LOGOUT" });
+            dispatch(logout());
             navigate("https://lunar-sigma.vercel.app/");
           }}
         >
