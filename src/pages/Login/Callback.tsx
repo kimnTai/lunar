@@ -15,12 +15,14 @@ const Callback: React.FC = () => {
   useEffect(() => {
     if (token) {
       localStorage.setItem("token", token);
-      (async () => {
-        await dispatch(loginJwtAction());
-        await dispatch(getOrganizationsAction());
-      })();
+
+      Promise.all([
+        dispatch(loginJwtAction()),
+        dispatch(getOrganizationsAction()),
+      ]).finally(() => {
+        navigate("/login");
+      });
     }
-    navigate("/login");
   }, [token]);
 
   return <div></div>;

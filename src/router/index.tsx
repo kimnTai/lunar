@@ -23,27 +23,27 @@ const AppRouter: React.FC = () => {
   const organization = useAppSelector(selectOrganization);
 
   const login = useAppSelector(selectAuth);
-  const [load, setLoad] = useState(true);
+  const [spinning, setSpinning] = useState(true);
 
   const dispatch = useAppDispatch();
 
   useEffect(() => {
     if (localStorage.getItem("token")) {
-      setLoad(true);
-      (async () => {
-        await dispatch(loginJwtAction()).catch(() => setLoad(false));
-        await dispatch(getOrganizationsAction()).catch(() => setLoad(false));
-        setLoad(false);
-      })();
+      Promise.all([
+        dispatch(loginJwtAction()),
+        dispatch(getOrganizationsAction()),
+      ]).finally(() => {
+        setSpinning(false);
+      });
     } else {
-      setLoad(false);
+      setSpinning(false);
     }
   }, []);
 
   return (
     <Routes>
-      {load && <Route path="*" element={<SpinPage />} />}
-      {!load && (
+      {spinning && <Route path="*" element={<SpinPage />} />}
+      {!spinning && (
         <>
           {!login && <Route path="/" element={<Home />}></Route>}
           <Route
@@ -51,26 +51,24 @@ const AppRouter: React.FC = () => {
             element={<Invitation />}
           ></Route>
           <Route path="/login/:callback" element={<Callback />}></Route>
-          <Route path="/login" element={<Login isSignUpPage={false} />} />
-          <Route path="/signup" element={<Login isSignUpPage={true} />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Login />} />
           <Route path="*" element={<ErrorPage />} />
           {login && (
             <>
-              {organization?.length ? (
-                <Route
-                  path={"/"}
-                  element={
-                    <Navigate
-                      to={`/workspace/${organization.at(0)?._id}/home`}
-                    />
-                  }
-                />
-              ) : (
-                <Route
-                  path={"/"}
-                  element={<Navigate to={"/workspace/new"} />}
-                />
-              )}
+              <Route
+                path={"/"}
+                element={
+                  <Navigate
+                    to={(() => {
+                      if (organization?.length) {
+                        return `/workspace/${organization.at(0)?._id}/home`;
+                      }
+                      return "/workspace/new";
+                    })()}
+                  />
+                }
+              />
               <Route path={"/workspace/new"} element={<NewWorkSpace />} />
               <Route
                 index
