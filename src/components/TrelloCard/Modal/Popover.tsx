@@ -3,7 +3,8 @@ import { Button, Card, Space } from "antd";
 import { CloseOutlined } from "@ant-design/icons";
 import { useCardModalContext } from "@/context/CardModalContext";
 import PopoverDate from "@/components/TrelloCard/Modal/PopoverContent/PopoverDate";
-import { PopoverStyled } from "./PopoverSytle";
+import PopoverCheckList from "./PopoverContent/PopoverCheckList";
+import { PopoverStyled } from "./PopoverStyle";
 
 const Popover: React.FC = () => {
   const { openPopover, handleClosePopover, PopoverType } =
@@ -15,7 +16,7 @@ const Popover: React.FC = () => {
       case PopoverType.DATE:
         return <PopoverDate />;
       case PopoverType.CHECKLIST:
-        return <div>CHECKLIST</div>;
+        return <PopoverCheckList />;
       default:
         return null;
     }
@@ -26,7 +27,7 @@ const Popover: React.FC = () => {
       case PopoverType.DATE:
         return "日期";
       case PopoverType.CHECKLIST:
-        return "待辦清單";
+        return "新增待辦清單";
       default:
         return "";
     }

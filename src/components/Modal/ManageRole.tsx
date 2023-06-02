@@ -1,6 +1,5 @@
 import React from "react";
 import { MemberModalCss } from "./style";
-import { updateOrganizationMemberApi } from "@/api/organization";
 import { Form, Radio } from "antd";
 import { CheckOutlined } from "@ant-design/icons";
 import {
@@ -8,8 +7,8 @@ import {
   UpdateOrganizationMemberProps,
 } from "@/interfaces/organization";
 import { useForm } from "antd/lib/form/Form";
-import { useAppDispatch } from "@/hooks/useAppDispatch";
-import CONSTANTS from "@/redux/constants";
+import { useAppDispatch } from "@/hooks";
+import { updateOrganizationMemberAction } from "@/redux/organizationSlice";
 
 const ManageRole: React.FC<{
   open: boolean;
@@ -27,12 +26,13 @@ const ManageRole: React.FC<{
   const onFinish = async (values: UpdateOrganizationMemberProps) => {
     onCancel();
 
-    const res = await updateOrganizationMemberApi({
-      organizationId,
-      memberId: userId || "",
-      role: values.role,
-    });
-    dispatch({ type: CONSTANTS.UPDATE_ONE_ORGANIZATION, payload: res.result });
+    dispatch(
+      updateOrganizationMemberAction({
+        organizationId,
+        memberId: userId || "",
+        role: values.role,
+      })
+    );
   };
 
   return (

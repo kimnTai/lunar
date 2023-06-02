@@ -19,10 +19,10 @@ import RemoveMember from "@/components/Modal/RemoveMember";
 import { OrganizationMemberProps } from "@/interfaces/organization";
 import ManageRole from "@/components/Modal/ManageRole";
 import InviteMember from "@/components/Modal/InviteMember";
-import type { PropsFromRedux } from "@/router";
 import { WorkSpaceHeader } from "@/components/WorkSpace/WorkSpaceHeader";
-import { useAppSelector } from "@/hooks/useAppSelector";
+import { useAppSelector } from "@/hooks";
 import CopyInviteLinkBtn from "@/components/WorkSpace/CopyInviteLinkBtn";
+import { selectOrganization } from "@/redux/organizationSlice";
 
 const items: MenuProps["items"] = [
   getItem(
@@ -34,9 +34,7 @@ const items: MenuProps["items"] = [
   ),
 ];
 
-const WorkSpaceMember: React.FC<{
-  getOrganization: PropsFromRedux["getOrganization"];
-}> = ({ getOrganization }) => {
+const WorkSpaceMember: React.FC = () => {
   const { workSpaceId } = useParams();
   const [openRemoveModal, setOpenRemoveModal] = useState(false);
   const [openManageRoleModal, setOpenManageRoleModal] = useState(false);
@@ -46,9 +44,9 @@ const WorkSpaceMember: React.FC<{
 
   const currentUser = useAppSelector((state) => state.user.user);
 
-  const userOrganization = useAppSelector(
-    (state) => state.user.organization
-  ).find((ele) => ele._id === workSpaceId);
+  const userOrganization = useAppSelector(selectOrganization).find(
+    (ele) => ele._id === workSpaceId
+  );
 
   const orgUser = userOrganization?.member.find(
     (user) => user.userId._id === currentUser._id
@@ -108,7 +106,6 @@ const WorkSpaceMember: React.FC<{
             setOpen={setOpenInviteModal}
             organizationId={workSpaceId!}
             userOrganization={userOrganization}
-            getOrganization={getOrganization}
           />
         </Col>
       </Row>
@@ -214,7 +211,6 @@ const WorkSpaceMember: React.FC<{
               open={openRemoveModal}
               setOpen={setOpenRemoveModal}
               organizationId={workSpaceId!}
-              getOrganization={getOrganization}
               selectedMember={selectedMember}
             />
           </Col>

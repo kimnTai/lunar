@@ -24,3 +24,10 @@ export const PopoverStyled = styled.div<PopoverDateStyledProps>`
     right: 0;
   }
 `;
+
+export const PopoverSectionTitleStyled = styled.div`
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 150%;
+  margin-bottom: 8px;
+`;

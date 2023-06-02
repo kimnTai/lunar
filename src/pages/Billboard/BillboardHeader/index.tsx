@@ -1,4 +1,4 @@
-import { BillboardHeaderProps } from "@/interfaces/boards";
+import { BillboardHeaderProps, HeaderState } from "@/interfaces/boards";
 import { useState } from "react";
 import { BillboardHeaderBtn, BillboardHeaderCss } from "./style";
 import { ColorIcon } from "@/components/Icons";
@@ -13,22 +13,13 @@ import PopoverContent from "./PopoverContent";
 import AddMember from "@/components/Modal/AddMember";
 
 const BillboardHeader: React.FC<BillboardHeaderProps> = ({
-  name,
-  member,
-  boardInviteLink,
-  orgId,
+  board,
+
   callGetBoardApi,
-  boardId,
-  image,
-  permission,
-  closed,
 }) => {
   const [openInvite, setOpenInvite] = useState(false);
   const [openPopover, setOpenPopover] = useState(false);
-  const [isMenu, setIsMenu] = useState(true);
-  const [isUser, setIsUser] = useState(false);
-  const [isSetting, setIsSetting] = useState(false);
-  const [isLabel, setIsLabel] = useState(false);
+  const [headerState, setHeaderState] = useState<HeaderState>("MENU");
 
   return (
     <BillboardHeaderCss className="d-space">
@@ -43,13 +34,13 @@ const BillboardHeader: React.FC<BillboardHeaderProps> = ({
                   #0083ff 1.48%,
                   rgba(128, 0, 255, 0.86) 100%
                 )`}
-          background-image={image && `url(${image})`}
+          background-image={board?.image && `url(${board.image})`}
         />
-        <p style={{ marginLeft: "16px" }}>{name}</p>
+        <p style={{ marginLeft: "16px" }}>{board?.name}</p>
       </div>
       <div className="right-head">
         <Avatar.Group>
-          {member?.map(({ userId: { avatar, name, _id } }) => (
+          {board?.member?.map(({ userId: { avatar, name, _id } }) => (
             <Tooltip placement="top" title={name} key={_id}>
               <Avatar src={avatar} />
             </Tooltip>
@@ -71,35 +62,17 @@ const BillboardHeader: React.FC<BillboardHeaderProps> = ({
           arrow={false}
           title={
             <PopoverTitle
-              isMenu={isMenu}
-              isUser={isUser}
-              isSetting={isSetting}
-              isLabel={isLabel}
-              setIsMenu={setIsMenu}
+              headerState={headerState}
+              setHeaderState={setHeaderState}
               setOpenPopover={setOpenPopover}
-              setIsUser={setIsUser}
-              setIsSetting={setIsSetting}
-              setIsLabel={setIsLabel}
             />
           }
           content={
             <PopoverContent
-              name={name}
-              member={member}
-              orgId={orgId}
-              isUser={isUser}
-              isMenu={isMenu}
-              isSetting={isSetting}
-              isLabel={isLabel}
-              setIsUser={setIsUser}
-              setIsMenu={setIsMenu}
-              setIsSetting={setIsSetting}
-              setIsLabel={setIsLabel}
+              headerState={headerState}
+              setHeaderState={setHeaderState}
+              board={board}
               callGetBoardApi={callGetBoardApi}
-              boardId={boardId || ""}
-              permission={permission || ""}
-              closed={closed}
-              image={image || ""}
             />
           }
           trigger="click"
@@ -119,8 +92,8 @@ const BillboardHeader: React.FC<BillboardHeaderProps> = ({
       <AddMember
         open={openInvite}
         setOpen={setOpenInvite}
-        member={member}
-        boardInviteLink={boardInviteLink}
+        member={board?.member || []}
+        boardInviteLink={board?.inviteLink || ""}
       />
     </BillboardHeaderCss>
   );

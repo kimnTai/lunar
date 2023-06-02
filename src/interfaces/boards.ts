@@ -25,48 +25,25 @@ export interface NewBoardsProps {
 }
 
 export interface BillboardHeaderProps {
-  name: string;
-  member: OrganizationMemberProps[];
-  boardInviteLink: string;
-  orgId: string;
+  board?: BoardsProps;
   callGetBoardApi: (id: string) => Promise<void>;
-  boardId: string;
-  image?: string;
-  permission: string;
-  closed: boolean;
 }
 
 export interface SingleBoardProps {}
 
+export type HeaderState = "MENU" | "USER" | "SETTING" | "LABEL";
+
 export interface PopoverTitleProps {
-  isMenu: boolean;
-  isUser: boolean;
-  isSetting: boolean;
-  isLabel: boolean;
-  setIsMenu: React.Dispatch<React.SetStateAction<boolean>>;
+  headerState: HeaderState;
+  setHeaderState: React.Dispatch<React.SetStateAction<HeaderState>>;
   setOpenPopover: React.Dispatch<React.SetStateAction<boolean>>;
-  setIsUser: React.Dispatch<React.SetStateAction<boolean>>;
-  setIsSetting: React.Dispatch<React.SetStateAction<boolean>>;
-  setIsLabel: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export interface PopoverContentProps {
-  name: string;
-  member: OrganizationMemberProps[];
-  orgId: string;
-  isUser: boolean;
-  isMenu: boolean;
-  isSetting: boolean;
-  isLabel: boolean;
-  setIsUser: React.Dispatch<React.SetStateAction<boolean>>;
-  setIsMenu: React.Dispatch<React.SetStateAction<boolean>>;
-  setIsSetting: React.Dispatch<React.SetStateAction<boolean>>;
-  setIsLabel: React.Dispatch<React.SetStateAction<boolean>>;
+  headerState: HeaderState;
+  setHeaderState: React.Dispatch<React.SetStateAction<HeaderState>>;
+  board?: BoardsProps;
   callGetBoardApi: (id: string) => Promise<void>;
-  boardId: string;
-  permission: string;
-  closed: boolean;
-  image?: string;
 }
 
 export interface AddBoardsMembers {

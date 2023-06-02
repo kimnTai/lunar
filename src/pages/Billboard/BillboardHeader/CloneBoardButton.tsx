@@ -1,10 +1,11 @@
 import React, { useState } from "react";
 import { Button, Form, Input, Popover, Select, Spin } from "antd";
-import ListButton from "./ListButton";
+import ListButton from "@/components/ListButton";
 import { CopyOutlined } from "@ant-design/icons";
-import { useAppSelector } from "@/hooks/useAppSelector";
+import { useAppSelector } from "@/hooks";
 import { useNavigate, useParams } from "react-router";
 import { postCloneBoardApi } from "@/api/boards";
+import { selectOrganization } from "@/redux/organizationSlice";
 
 type FormValues = {
   name: string;
@@ -18,7 +19,7 @@ const CloneBoardButton: React.FC = () => {
   });
   const [form] = Form.useForm<FormValues>();
   const { boardId } = useParams();
-  const organization = useAppSelector((state) => state.user.organization);
+  const organization = useAppSelector(selectOrganization);
 
   const navigate = useNavigate();
 

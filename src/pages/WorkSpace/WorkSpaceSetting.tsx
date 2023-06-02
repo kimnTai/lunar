@@ -9,14 +9,12 @@ import {
 import { useParams } from "react-router-dom";
 import InviteMember from "@/components/Modal/InviteMember";
 import DeleteOrganization from "@/components/Modal/DeleteOrganization";
-import type { PropsFromRedux } from "@/router";
 import ManagePermission from "@/components/Modal/ManagePermission";
 import { WorkSpaceHeader } from "@/components/WorkSpace/WorkSpaceHeader";
-import { useAppSelector } from "@/hooks/useAppSelector";
+import { useAppSelector } from "@/hooks";
+import { selectOrganization } from "@/redux/organizationSlice";
 
-const WorkSpaceSetting: React.FC<{
-  getOrganization: PropsFromRedux["getOrganization"];
-}> = ({ getOrganization }) => {
+const WorkSpaceSetting: React.FC = () => {
   const { workSpaceId } = useParams();
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
   const [openInviteModal, setOpenInviteModal] = useState(false);
@@ -25,9 +23,9 @@ const WorkSpaceSetting: React.FC<{
 
   const currentUser = useAppSelector((state) => state.user.user);
 
-  const userOrganization = useAppSelector(
-    (state) => state.user.organization
-  ).find((ele) => ele._id === workSpaceId);
+  const userOrganization = useAppSelector(selectOrganization).find(
+    (ele) => ele._id === workSpaceId
+  );
 
   const orgUser = userOrganization?.member.find(
     (user) => user.userId._id === currentUser._id
@@ -55,7 +53,6 @@ const WorkSpaceSetting: React.FC<{
             open={openInviteModal}
             setOpen={setOpenInviteModal}
             organizationId={workSpaceId!}
-            getOrganization={getOrganization}
           />
         </Col>
       </Row>
@@ -123,14 +120,12 @@ const WorkSpaceSetting: React.FC<{
           open={openDeleteModal}
           setOpen={setOpenDeleteModal}
           organizationId={workSpaceId}
-          getOrganization={getOrganization}
           userOrganization={userOrganization}
         />
         <ManagePermission
           open={openManagePermissionModal}
           setOpen={setOpenManagePermissionModal}
           organizationId={workSpaceId!}
-          getOrganization={getOrganization}
           userOrganization={userOrganization}
         />
       </WorkSpaceMemberCss>

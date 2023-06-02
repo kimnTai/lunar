@@ -3,13 +3,22 @@ import type {
   UpdateCardProps,
   NewCardProps,
   CardsProps,
-  UpdateCardCheckItem,
-  UpdateCardCheckList,
   DateProps,
   NewCardDateProps,
   UpdateCardDateProps,
+  addCardMemberProps,
 } from "@/interfaces/cards";
+import {
+  ChecklistProps,
+  CheckItemProps,
+  NewCardCheckListProps,
+  UpdateCardCheckListProps,
+  DeleteCardCheckListProps,
+  UpdateCardCheckItemProps,
+  NewCheckItemProps,
+} from "@/interfaces/checklists";
 import { CommentProps, NewCommentProps } from "@/interfaces/comments";
+import { CardLabelsProps } from "@/interfaces/labels";
 
 // 取得單張卡片
 export const getCardApi = (cardId: string) =>
@@ -26,21 +35,50 @@ export const updateCardApi = (data: UpdateCardProps) =>
     data
   );
 
+// 新增checkList
+export const newChecklistApi = (data: NewCardCheckListProps) =>
+  Request.post<any, PrometheusResponse<ChecklistProps>>(
+    `/cards/${data.cardId}/checklist`,
+    data
+  );
+
+// 更新checkList
+export const updateChecklistApi = (data: UpdateCardCheckListProps) =>
+  Request.put<any, PrometheusResponse<ChecklistProps>>(
+    `/cards/${data.cardId}/checklist/${data.checklistId}`,
+    data
+  );
+
+// 刪除checkList
+export const deleteChecklistApi = (data: DeleteCardCheckListProps) =>
+  Request.delete<any, PrometheusResponse<ChecklistProps>>(
+    `/cards/${data.cardId}/checklist/${data.checklistId}`
+  );
+
+// 新增checkItem
+export const newCheckItemApi = (data: NewCheckItemProps) =>
+  Request.post<any, PrometheusResponse<CheckItemProps>>(
+    `/cards/${data.cardId}/checklist/${data.checklistId}/checkItem`,
+    data
+  );
+
 // 更新checkItem
-export const updateCheckItemApi = (data: UpdateCardCheckItem) =>
+export const updateCheckItemApi = (data: UpdateCardCheckItemProps) =>
   data.checklistIdOld
-    ? Request.put(
+    ? Request.put<any, PrometheusResponse<CheckItemProps>>(
         `/cards/${data.cardId}/checklist/${data.checklistIdOld}/checkItem/${data.checkItemId}`,
         data
       )
-    : Request.put(
+    : Request.put<any, PrometheusResponse<CheckItemProps>>(
         `/cards/${data.cardId}/checklist/${data.checklistId}/checkItem/${data.checkItemId}`,
         data
       );
 
-// 更新checkList
-export const updateChecklistApi = (data: UpdateCardCheckList) =>
-  Request.put(`/cards/${data.cardId}/checklist/${data.checklistId}`, data);
+// 刪除checkItem
+export const deleteCheckItemApi = (data: UpdateCardCheckItemProps) =>
+  Request.delete<any, PrometheusResponse<CheckItemProps>>(
+    `/cards/${data.cardId}/checklist/${data.checklistId}/checkItem/${data.checkItemId}`
+  );
 
 // 新增卡片評論
 export const newCardCommentApi = (data: NewCommentProps) =>
@@ -48,6 +86,7 @@ export const newCardCommentApi = (data: NewCommentProps) =>
     `/cards/${data.cardId}/comments`,
     data
   );
+
 // 新增卡片日期
 export const newCardDateApi = (cardId: string, data: NewCardDateProps) =>
   Request.post<any, PrometheusResponse<DateProps>>(
@@ -80,3 +119,26 @@ export const postCloneCardApi = (data: {
   Request.post<any, PrometheusResponse<CardsProps>>(`/cards/cloneById`, {
     ...data,
   });
+
+// 新增多位卡片成員
+export const addCardMemberApi = (data: addCardMemberProps) => {
+  return Request.post<any, PrometheusResponse<CardsProps>>(
+    `/cards/${data.cardId}/members`,
+    data
+  );
+};
+
+// 增加卡片標籤
+export const AddCardLabelApi = (data: CardLabelsProps) => {
+  return Request.post<any, PrometheusResponse<CardsProps>>(
+    `/cards/${data.cardId}/labels`,
+    data
+  );
+};
+
+// 移除卡片標籤
+export const DeleteCardLabelApi = (data: CardLabelsProps) => {
+  return Request.delete<any, PrometheusResponse<CardsProps>>(
+    `/cards/${data.cardId}/labels/${data.labelId}`
+  );
+};

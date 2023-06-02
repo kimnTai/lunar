@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
-import { ConnectedProps } from "react-redux";
 import Home from "@/pages/Home";
 import ErrorPage from "@/pages/ErrorPage";
 import Login from "@/pages/Login";
@@ -12,151 +11,86 @@ import Callback from "@/pages/Login/Callback";
 import WorkSpaceMember from "@/pages/WorkSpace/WorkSpaceMember";
 import WorkSpaceSetting from "@/pages/WorkSpace/WorkSpaceSetting";
 import Invitation from "@/pages/InvitationPage";
-import { connector } from "@/redux/connector";
 import LoginLayout from "./LoginLayout";
+import { useAppDispatch, useAppSelector } from "@/hooks";
+import { loginJwtAction, selectAuth } from "@/redux/userSlice";
+import {
+  getOrganizationsAction,
+  selectOrganization,
+} from "@/redux/organizationSlice";
+import Cookie from "@/utils/cookie";
 
-export type PropsFromRedux = ConnectedProps<typeof connector>;
+const AppRouter: React.FC = () => {
+  const organization = useAppSelector(selectOrganization);
 
-const AppRouter: React.FC<PropsFromRedux> = (props) => {
-  const {
-    login,
-    loginAction,
-    loginJwt,
-    signInAction,
-    changeWorkSpace,
-    organization,
-    getOrganization,
-  } = props;
+  const login = useAppSelector(selectAuth);
+  const [spinning, setSpinning] = useState(true);
 
-  const [load, setLoad] = useState(true);
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
-    if (localStorage.getItem("token")) {
-      setLoad(true);
-      (async () => {
-        await loginJwt().catch(() => setLoad(false));
-        await getOrganization().catch(() => setLoad(false));
-        setLoad(false);
-      })();
+    if (Cookie.get("lunar-token")) {
+      Promise.all([
+        dispatch(loginJwtAction()),
+        dispatch(getOrganizationsAction()),
+      ]).finally(() => {
+        setSpinning(false);
+      });
     } else {
-      setLoad(false);
+      setSpinning(false);
     }
   }, []);
 
   return (
     <Routes>
-      {load && <Route path="*" element={<SpinPage />} />}
-      {!load && (
+      {spinning && <Route path="*" element={<SpinPage />} />}
+      {!spinning && (
         <>
           {!login && <Route path="/" element={<Home />}></Route>}
           <Route
             path="/invitation/:type/:invitationToken"
             element={<Invitation />}
           ></Route>
-          <Route
-            path="/login/:callback"
-            element={
-              <Callback loginJwt={loginJwt} getOrganization={getOrganization} />
-            }
-          ></Route>
-          <Route
-            path="/login"
-            element={
-              <Login
-                signInAction={signInAction}
-                loginAction={loginAction}
-                isSignUpPage={false}
-                getOrganization={getOrganization}
-              />
-            }
-          />
-          <Route
-            path="/signup"
-            element={
-              <Login
-                signInAction={signInAction}
-                loginAction={loginAction}
-                isSignUpPage={true}
-                getOrganization={getOrganization}
-              />
-            }
-          />
+          <Route path="/login/:callback" element={<Callback />}></Route>
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Login />} />
           <Route path="*" element={<ErrorPage />} />
           {login && (
             <>
-              {organization?.length ? (
-                <Route
-                  path={"/"}
-                  element={
-                    <Navigate
-                      to={`/workspace/${organization.at(0)?._id}/home`}
-                    />
-                  }
-                />
-              ) : (
-                <Route
-                  path={"/"}
-                  element={<Navigate to={"/workspace/new"} />}
-                />
-              )}
               <Route
-                path={"/workspace/new"}
-                element={<NewWorkSpace getOrganization={getOrganization} />}
+                path={"/"}
+                element={
+                  <Navigate
+                    to={(() => {
+                      if (organization?.length) {
+                        return `/workspace/${organization.at(0)?._id}/home`;
+                      }
+                      return "/workspace/new";
+                    })()}
+                  />
+                }
               />
+              <Route path={"/workspace/new"} element={<NewWorkSpace />} />
               <Route
                 index
                 path={`/workspace/:workSpaceId/home`}
-                element={
-                  <LoginLayout
-                    changeWorkSpace={changeWorkSpace}
-                    children={
-                      <WorkSpace
-                        setWorkSpace={changeWorkSpace}
-                        getOrganization={getOrganization}
-                      />
-                    }
-                  />
-                }
+                element={<LoginLayout children={<WorkSpace />} />}
               />
               <Route
                 path={`/workspace/:workSpaceId/members`}
-                element={
-                  <LoginLayout
-                    changeWorkSpace={changeWorkSpace}
-                    children={
-                      <WorkSpaceMember getOrganization={getOrganization} />
-                    }
-                  />
-                }
+                element={<LoginLayout children={<WorkSpaceMember />} />}
               />
               <Route
                 path={`/workspace/:workSpaceId/setting`}
-                element={
-                  <LoginLayout
-                    changeWorkSpace={changeWorkSpace}
-                    children={
-                      <WorkSpaceSetting getOrganization={getOrganization} />
-                    }
-                  />
-                }
+                element={<LoginLayout children={<WorkSpaceSetting />} />}
               />
               <Route
                 path="/board/:boardId"
-                element={
-                  <LoginLayout
-                    changeWorkSpace={changeWorkSpace}
-                    children={<Billboard setWorkSpace={changeWorkSpace} />}
-                  />
-                }
+                element={<LoginLayout children={<Billboard />} />}
               />
               <Route
                 path="/cards/:cardId"
-                element={
-                  <LoginLayout
-                    changeWorkSpace={changeWorkSpace}
-                    children={<Billboard setWorkSpace={changeWorkSpace} />}
-                  />
-                }
+                element={<LoginLayout children={<Billboard />} />}
               />
             </>
           )}
@@ -166,4 +100,4 @@ const AppRouter: React.FC<PropsFromRedux> = (props) => {
   );
 };
 
-export default connector(React.memo(AppRouter));
+export default React.memo(AppRouter);

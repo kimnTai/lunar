@@ -57,4 +57,4 @@ export const updateBoardApi = (data: {
     `/boards/${data.boardId}`,
     data
   );
-}
+};

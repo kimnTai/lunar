@@ -15,8 +15,7 @@ import {
   updateColumn,
   getSocketChange,
 } from "@/utils/cardFunc";
-import type { PropsFromRedux } from "@/router";
-import { useAppSelector } from "@/hooks/useAppSelector";
+import { useAppSelector, useAppDispatch } from "@/hooks";
 import useWebSocket from "@/hooks/useWebSocket";
 import { LoadingOutlined } from "@ant-design/icons";
 import { getCardApi } from "@/api/cards";
@@ -24,10 +23,10 @@ import { UrlCardShareProps } from "@/interfaces/trelloCard";
 import { CardModalProvider } from "@/context/CardModalContext";
 import TrelloCardModal from "@/components/TrelloCard/Modal";
 import { useLocation } from "react-router-dom";
+import { changeWorkSpace } from "@/redux/screenSlice";
 
-const Billboard: React.FC<{
-  setWorkSpace: PropsFromRedux["changeWorkSpace"];
-}> = ({ setWorkSpace }) => {
+const Billboard: React.FC = () => {
+  const dispatch = useAppDispatch();
   const location = useLocation();
   console.log(location);
   const workSpace = useAppSelector((state) => state.screen.showWorkSpace);
@@ -35,7 +34,7 @@ const Billboard: React.FC<{
   const [hasLoadBoard, setHasLoadBoard] = useState(false);
   const [cardList, setCardList] = useState<ListsProps[]>([]);
   const { boardId, cardId } = useParams();
-  const [boardResult, getBoardloading, callGetBoardApi] = useApi(getBoardApi);
+  const [boardResult, isBoardLoading, callGetBoardApi] = useApi(getBoardApi);
   const { data: socketEvent, sendMessage } = useWebSocket(
     boardId!,
     callGetBoardApi
@@ -64,7 +63,7 @@ const Billboard: React.FC<{
 
   useEffect(() => {
     if (workSpace) {
-      setWorkSpace();
+      dispatch(changeWorkSpace());
     }
   }, [workSpace]);
   useEffect(() => {
@@ -121,7 +120,7 @@ const Billboard: React.FC<{
 
   return (
     <>
-      {getBoardloading ? (
+      {isBoardLoading ? (
         <Spin
           className="d-center"
           indicator={<LoadingOutlined spin style={{ fontSize: 96 }} />}
@@ -129,15 +128,8 @@ const Billboard: React.FC<{
       ) : (
         <>
           <BillboardHeader
-            boardInviteLink={boardResult?.result.inviteLink || ""}
-            name={boardResult?.result.name || ""}
-            member={boardResult?.result.member || []}
-            orgId={boardResult?.result.organizationId || ""}
+            board={boardResult?.result}
             callGetBoardApi={callGetBoardApi}
-            boardId={boardId || ""}
-            image={boardResult?.result?.image || ""}
-            permission={boardResult?.result?.permission || ""}
-            closed={boardResult?.result?.closed || false}
           />
           <DragDropContext onDragEnd={onDragEnd}>
             <Droppable

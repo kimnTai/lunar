@@ -1,25 +1,29 @@
 import { useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import type { PropsFromRedux } from "@/router";
+import { useAppDispatch } from "@/hooks";
+import { loginJwtAction } from "@/redux/userSlice";
+import { getOrganizationsAction } from "@/redux/organizationSlice";
+import Cookie from "@/utils/cookie";
 
-const Callback: React.FC<{
-  loginJwt: PropsFromRedux["loginJwt"];
-  getOrganization: PropsFromRedux["getOrganization"];
-}> = ({ loginJwt, getOrganization }) => {
+const Callback: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
   const token = searchParams.get("token");
 
+  const dispatch = useAppDispatch();
+
   useEffect(() => {
     if (token) {
-      localStorage.setItem("token", token);
-      (async () => {
-        await loginJwt();
-        await getOrganization();
-      })();
+      Cookie.set("lunar-token", token);
+
+      Promise.all([
+        dispatch(loginJwtAction()),
+        dispatch(getOrganizationsAction()),
+      ]).finally(() => {
+        navigate("/login");
+      });
     }
-    navigate("/login");
   }, [token]);
 
   return <div></div>;

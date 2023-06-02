@@ -50,7 +50,7 @@ export const SectionContentStyled = styled.div`
 
 export const CardDateStyled = styled.div`
   display: flex;
-  item-align: center;
+  align-items: center;
   line-height: 1;
 
   .cardDate {

@@ -5,20 +5,19 @@ import { PlusOutlined } from "@ant-design/icons";
 import { useParams } from "react-router-dom";
 import WorkSpaceCard from "./WorkSpaceCard";
 import AddBoards from "@/components/Modal/AddBoards";
-import type { PropsFromRedux } from "@/router";
 import { WorkSpaceHeader } from "@/components/WorkSpace/WorkSpaceHeader";
-import { useAppSelector } from "@/hooks/useAppSelector";
+import { useAppSelector, useAppDispatch } from "@/hooks";
+import { selectOrganization } from "@/redux/organizationSlice";
+import { changeWorkSpace } from "@/redux/screenSlice";
 
-const WorkSpace: React.FC<{
-  setWorkSpace: PropsFromRedux["changeWorkSpace"];
-  getOrganization: PropsFromRedux["getOrganization"];
-}> = ({ setWorkSpace, getOrganization }) => {
+const WorkSpace: React.FC = () => {
+  const dispatch = useAppDispatch();
   const { workSpaceId } = useParams();
   const [openModal, setOpenModal] = useState(false);
 
-  const userOrganization = useAppSelector(
-    (state) => state.user.organization
-  ).find((ele) => ele._id === workSpaceId);
+  const userOrganization = useAppSelector(selectOrganization).find(
+    (ele) => ele._id === workSpaceId
+  );
 
   const [filteredBoards, setFilteredBoard] = useState(userOrganization?.board);
 
@@ -27,7 +26,7 @@ const WorkSpace: React.FC<{
   }, [userOrganization]);
 
   useEffect(() => {
-    setWorkSpace(true);
+    dispatch(changeWorkSpace(true));
   });
   const handleChange = (value: string) => {
     switch (value) {
@@ -118,8 +117,6 @@ const WorkSpace: React.FC<{
             title={ele.name}
             permission={ele.permission}
             backgroundImage={ele.image}
-            setWorkSpace={setWorkSpace}
-            getOrganization={getOrganization}
             boardId={ele._id}
             key={idx}
           />

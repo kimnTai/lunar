@@ -1,5 +1,7 @@
 import axios, { AxiosHeaders } from "axios";
 import { openNotification } from "@/utils/openNotification";
+import Cookies from "@/utils/cookie";
+
 
 // 顯示axios 返回的資料
 interface BaseResponse {
@@ -28,7 +30,7 @@ instance.interceptors.request.use(
   (config) => {
     // cookie 設定
     config.headers = new AxiosHeaders({
-      Authorization: `Bearer ${localStorage.getItem("token")}`,
+      Authorization: `Bearer ${Cookies.get("lunar-token")}`,
     });
     return config;
   },

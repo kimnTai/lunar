@@ -1,6 +1,6 @@
 import { SearchOutlined } from "@ant-design/icons";
 import { Input } from "antd";
-import { useAppSelector } from "@/hooks/useAppSelector";
+import { useAppSelector } from "@/hooks";
 
 const SearchCardInput: React.FC = () => {
   const showWorkSpace = useAppSelector((state) => state.screen.showWorkSpace);
