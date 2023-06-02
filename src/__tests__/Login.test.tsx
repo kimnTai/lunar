@@ -9,7 +9,7 @@ afterEach(() => {
 
 describe("登入頁面測試", () => {
   test("讀取頁面", async () => {
-    render(<Login isSignUpPage={false} />);
+    render(<Login />);
     expect(screen.getByText("讓工作，更有序")).toBeInTheDocument();
   });
 });

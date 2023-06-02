@@ -12,7 +12,7 @@ import { Button, Col, Divider, message } from "antd";
 import { ModalStyle, ModalSidebarStyled } from "./style";
 import AttachmentBox from "./AttachmentBox";
 import CloneCardBox from "./CloneCardBox";
-import { useAppSelector } from "@/hooks/useAppSelector";
+import { useAppSelector } from "@/hooks";
 import { useCardModalContext } from "@/context/CardModalContext";
 import { addCardMemberApi } from "@/api/cards";
 import AddMemberModal from "./AddMemberModal";

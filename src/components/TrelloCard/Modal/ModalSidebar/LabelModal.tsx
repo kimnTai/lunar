@@ -1,7 +1,7 @@
 import { AddCardLabelApi, DeleteCardLabelApi } from "@/api/cards";
 import { newLabelApi } from "@/api/label";
 import { useCardModalContext } from "@/context/CardModalContext";
-import { useAppSelector } from "@/hooks/useAppSelector";
+import { useAppSelector } from "@/hooks";
 import { colorList } from "@/pages/Billboard/BillboardHeader/constant";
 import { CloseOutlined, EditOutlined, LeftOutlined } from "@ant-design/icons";
 import { Button, Card, Checkbox, Col, Form, Input, Row } from "antd";
@@ -16,7 +16,7 @@ const LabelModal: React.FC<{
 }> = ({ style, setIsOpenLabel }) => {
   const { boardId } = useParams();
   const currentBoard = useAppSelector((state) =>
-    state.user.organization
+    state.organization.organization
       .flatMap(({ board }) => board)
       .find(({ id }) => id === boardId)
   );
