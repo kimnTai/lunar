@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Button, Form, Input, Popover, Select, Spin } from "antd";
-import ListButton from "./ListButton";
+import ListButton from "@/components/ListButton";
 import { CopyOutlined } from "@ant-design/icons";
 import { useAppSelector } from "@/hooks";
 import { useNavigate, useParams } from "react-router";

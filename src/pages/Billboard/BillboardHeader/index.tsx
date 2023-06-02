@@ -1,4 +1,4 @@
-import { BillboardHeaderProps } from "@/interfaces/boards";
+import { BillboardHeaderProps, HeaderState } from "@/interfaces/boards";
 import { useState } from "react";
 import { BillboardHeaderBtn, BillboardHeaderCss } from "./style";
 import { ColorIcon } from "@/components/Icons";
@@ -25,10 +25,7 @@ const BillboardHeader: React.FC<BillboardHeaderProps> = ({
 }) => {
   const [openInvite, setOpenInvite] = useState(false);
   const [openPopover, setOpenPopover] = useState(false);
-  const [isMenu, setIsMenu] = useState(true);
-  const [isUser, setIsUser] = useState(false);
-  const [isSetting, setIsSetting] = useState(false);
-  const [isLabel, setIsLabel] = useState(false);
+  const [headerState, setHeaderState] = useState<HeaderState>("MENU");
 
   return (
     <BillboardHeaderCss className="d-space">
@@ -71,30 +68,18 @@ const BillboardHeader: React.FC<BillboardHeaderProps> = ({
           arrow={false}
           title={
             <PopoverTitle
-              isMenu={isMenu}
-              isUser={isUser}
-              isSetting={isSetting}
-              isLabel={isLabel}
-              setIsMenu={setIsMenu}
+              headerState={headerState}
+              setHeaderState={setHeaderState}
               setOpenPopover={setOpenPopover}
-              setIsUser={setIsUser}
-              setIsSetting={setIsSetting}
-              setIsLabel={setIsLabel}
             />
           }
           content={
             <PopoverContent
+              headerState={headerState}
+              setHeaderState={setHeaderState}
               name={name}
               member={member}
               orgId={orgId}
-              isUser={isUser}
-              isMenu={isMenu}
-              isSetting={isSetting}
-              isLabel={isLabel}
-              setIsUser={setIsUser}
-              setIsMenu={setIsMenu}
-              setIsSetting={setIsSetting}
-              setIsLabel={setIsLabel}
               callGetBoardApi={callGetBoardApi}
               boardId={boardId || ""}
               permission={permission || ""}

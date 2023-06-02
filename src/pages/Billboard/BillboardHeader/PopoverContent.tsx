@@ -21,7 +21,7 @@ import {
   UploadOutlined,
   UserOutlined,
 } from "@ant-design/icons";
-import CloneBoardButton from "@/components/CloneBoardButton";
+import CloneBoardButton from "./CloneBoardButton";
 import { useApi } from "@/hooks/useApiHook";
 import { colorList } from "./constant";
 import { updateBoardApi } from "@/api/boards";
@@ -31,25 +31,18 @@ import {
   selectOrganization,
 } from "@/redux/organizationSlice";
 
-const PopoverContent: React.FC<PopoverContentProps> = (props) => {
-  const {
-    name,
-    member,
-    orgId,
-    isUser,
-    isMenu,
-    isSetting,
-    isLabel,
-    setIsUser,
-    setIsMenu,
-    setIsSetting,
-    setIsLabel,
-    callGetBoardApi,
-    boardId,
-    permission,
-    closed,
-    image,
-  } = props;
+const PopoverContent: React.FC<PopoverContentProps> = ({
+  name,
+  member,
+  orgId,
+  callGetBoardApi,
+  boardId,
+  permission,
+  closed,
+  image,
+  headerState,
+  setHeaderState,
+}) => {
   const [isShowChangeWorkSpace, setIsShowChangeWorkSpace] = useState(false);
   const [isShowChangePeople, setIsShowChangePeople] = useState(false);
   const [people, setPeople] = useState("成員");
@@ -96,18 +89,14 @@ const PopoverContent: React.FC<PopoverContentProps> = (props) => {
   const click = (e: any) => {
     switch (e.target.innerText) {
       case "查看看板管理員":
-        setIsMenu(false);
-        setIsUser(true);
+        setHeaderState("USER");
         break;
       case "設定":
-        setIsMenu(false);
-        setIsSetting(true);
+        setHeaderState("SETTING");
         break;
       case "標籤":
-        setIsMenu(false);
-        setIsLabel(true);
+        setHeaderState("LABEL");
         break;
-
       default:
         break;
     }
@@ -264,7 +253,7 @@ const PopoverContent: React.FC<PopoverContentProps> = (props) => {
 
   return (
     <PopoverContentStyle>
-      {isMenu ? (
+      {headerState === "MENU" && (
         <>
           <div className="top-border listBtn">
             <ListButton
@@ -328,8 +317,8 @@ const PopoverContent: React.FC<PopoverContentProps> = (props) => {
             />
           </div>
         </>
-      ) : null}
-      {isUser ? (
+      )}
+      {headerState === "USER" && (
         <div className="top-border" style={{ paddingBottom: 0 }}>
           {boardManager?.map((ele, idx) => (
             <div style={{ display: "flex" }} key={idx}>
@@ -340,8 +329,8 @@ const PopoverContent: React.FC<PopoverContentProps> = (props) => {
             </div>
           ))}
         </div>
-      ) : null}
-      {isSetting ? (
+      )}
+      {headerState === "SETTING" && (
         <>
           <div className="top-border">
             <Button
@@ -557,8 +546,8 @@ const PopoverContent: React.FC<PopoverContentProps> = (props) => {
             </div>
           ) : null}
         </>
-      ) : null}
-      {isLabel ? (
+      )}
+      {headerState === "LABEL" && (
         <div className="top-border">
           <Input
             allowClear
@@ -943,7 +932,7 @@ const PopoverContent: React.FC<PopoverContentProps> = (props) => {
             </div>
           ) : null}
         </div>
-      ) : null}
+      )}
     </PopoverContentStyle>
   );
 };

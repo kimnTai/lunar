@@ -3,35 +3,22 @@ import { PopoverTitleStyle } from "./style";
 import { Button } from "antd";
 import { CloseOutlined, LeftOutlined } from "@ant-design/icons";
 
-const PopoverTitle: React.FC<PopoverTitleProps> = (props) => {
-  const {
-    isMenu,
-    isUser,
-    isSetting,
-    isLabel,
-    setIsMenu,
-    setOpenPopover,
-    setIsUser,
-    setIsSetting,
-    setIsLabel,
-  } = props;
+const PopoverTitle: React.FC<PopoverTitleProps> = ({
+  headerState,
+  setHeaderState,
+  setOpenPopover,
+}) => {
   const handleClick = () => {
     setOpenPopover(false);
-    setIsUser(false);
-    setIsSetting(false);
-    setIsLabel(false);
-    setIsMenu(true);
+    setHeaderState("MENU");
   };
   const previousClick = () => {
-    setIsMenu(true);
-    setIsUser(false);
-    setIsSetting(false);
-    setIsLabel(false);
+    setHeaderState("MENU");
   };
 
   return (
     <PopoverTitleStyle>
-      {isMenu ? (
+      {headerState === "MENU" && (
         <>
           選單
           <Button
@@ -48,8 +35,8 @@ const PopoverTitle: React.FC<PopoverTitleProps> = (props) => {
             onClick={handleClick}
           />
         </>
-      ) : null}
-      {isUser ? (
+      )}
+      {headerState === "USER" && (
         <>
           查看看板管理員
           <Button
@@ -77,8 +64,8 @@ const PopoverTitle: React.FC<PopoverTitleProps> = (props) => {
             onClick={previousClick}
           />
         </>
-      ) : null}
-      {isSetting ? (
+      )}
+      {headerState === "SETTING" && (
         <>
           設定
           <Button
@@ -106,8 +93,8 @@ const PopoverTitle: React.FC<PopoverTitleProps> = (props) => {
             onClick={previousClick}
           />
         </>
-      ) : null}
-      {isLabel ? (
+      )}
+      {headerState === "LABEL" && (
         <>
           標籤
           <Button
@@ -135,7 +122,7 @@ const PopoverTitle: React.FC<PopoverTitleProps> = (props) => {
             onClick={previousClick}
           />
         </>
-      ) : null}
+      )}
     </PopoverTitleStyle>
   );
 };
