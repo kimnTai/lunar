@@ -25,15 +25,8 @@ export interface NewBoardsProps {
 }
 
 export interface BillboardHeaderProps {
-  name: string;
-  member: OrganizationMemberProps[];
-  boardInviteLink: string;
-  orgId: string;
+  board?: BoardsProps;
   callGetBoardApi: (id: string) => Promise<void>;
-  boardId: string;
-  image?: string;
-  permission: string;
-  closed: boolean;
 }
 
 export interface SingleBoardProps {}
@@ -49,15 +42,8 @@ export interface PopoverTitleProps {
 export interface PopoverContentProps {
   headerState: HeaderState;
   setHeaderState: React.Dispatch<React.SetStateAction<HeaderState>>;
-  name: string;
-  member: OrganizationMemberProps[];
-  orgId: string;
-
+  board?: BoardsProps;
   callGetBoardApi: (id: string) => Promise<void>;
-  boardId: string;
-  permission: string;
-  closed: boolean;
-  image?: string;
 }
 
 export interface AddBoardsMembers {

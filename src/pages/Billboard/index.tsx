@@ -128,15 +128,8 @@ const Billboard: React.FC = () => {
       ) : (
         <>
           <BillboardHeader
-            boardInviteLink={boardResult?.result.inviteLink || ""}
-            name={boardResult?.result.name || ""}
-            member={boardResult?.result.member || []}
-            orgId={boardResult?.result.organizationId || ""}
+            board={boardResult?.result}
             callGetBoardApi={callGetBoardApi}
-            boardId={boardId || ""}
-            image={boardResult?.result?.image || ""}
-            permission={boardResult?.result?.permission || ""}
-            closed={boardResult?.result?.closed || false}
           />
           <DragDropContext onDragEnd={onDragEnd}>
             <Droppable

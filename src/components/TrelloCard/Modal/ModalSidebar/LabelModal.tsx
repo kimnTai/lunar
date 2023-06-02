@@ -2,7 +2,7 @@ import { AddCardLabelApi, DeleteCardLabelApi } from "@/api/cards";
 import { newLabelApi } from "@/api/label";
 import { useCardModalContext } from "@/context/CardModalContext";
 import { useAppSelector } from "@/hooks";
-import { colorList } from "@/pages/Billboard/BillboardHeader/constant";
+import { colorList } from "@/utils/constant";
 import { CloseOutlined, EditOutlined, LeftOutlined } from "@ant-design/icons";
 import { Button, Card, Checkbox, Col, Form, Input, Row } from "antd";
 import { CheckboxChangeEvent } from "antd/es/checkbox";
