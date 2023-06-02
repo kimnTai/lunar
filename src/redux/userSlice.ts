@@ -64,4 +64,6 @@ export const { logout } = userSlice.actions;
 
 export const selectAuth = (state: RootState) => Boolean(state.user.token);
 
+export const selectUser = (state: RootState) => state.user.user;
+
 export default userSlice.reducer;

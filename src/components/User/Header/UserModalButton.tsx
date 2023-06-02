@@ -4,11 +4,11 @@ import { Avatar, Button, Divider } from "antd";
 import { useAppDispatch } from "@/hooks/useAppDispatch";
 import { useAppSelector } from "@/hooks/useAppSelector";
 import { UserModalCss } from "./style";
-import { logout } from "@/redux/userSlice";
+import { logout, selectUser } from "@/redux/userSlice";
 
 const UserModalButton: React.FC = () => {
   const showWorkSpace = useAppSelector((state) => state.screen.showWorkSpace);
-  const { avatar, name, email } = useAppSelector((state) => state.user.user);
+  const { avatar, name, email } = useAppSelector(selectUser);
   const [open, setOpen] = useState(false);
 
   const dispatch = useAppDispatch();
