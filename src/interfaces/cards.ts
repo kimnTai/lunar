@@ -73,3 +73,8 @@ export interface UpdateCardDateProps {
   dueComplete?: boolean;
   dueReminder?: number;
 }
+
+export interface addCardMemberProps {
+  cardId: string;
+  userIdList: string[];
+}

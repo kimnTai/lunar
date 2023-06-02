@@ -7,12 +7,19 @@ import CardLabel from "./CardLabel";
 import CardDate from "./CardDate";
 import CardAttachment from "./CardAttachment";
 import CardCheckContent from "./CardCheckContent";
+import { Row } from "antd";
 
 const ModalContent: React.FC = () => {
   return (
     <ModalContentStyled style={ModalStyle}>
-      <CardMember />
-      <CardLabel />
+      <Row
+        justify={"space-between"}
+        align={"top"}
+        style={{ marginBottom: "16px" }}
+      >
+        <CardMember />
+        <CardLabel />
+      </Row>
       <CardDate />
       <CardAttachment />
       <CardCheckContent />
