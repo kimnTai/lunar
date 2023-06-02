@@ -14,3 +14,42 @@ export interface ChecklistProps {
   checkItem: CheckItemProps[];
   id: string;
 }
+
+export interface NewCardCheckListProps {
+  cardId: string;
+  name: string;
+  position: number;
+}
+
+export interface UpdateCardCheckListProps {
+  cardId: string;
+  checklistId: string;
+  name?: string;
+  position: string;
+  checklistIdOld?: string;
+}
+
+export interface DeleteCardCheckListProps {
+  cardId: string;
+  checklistId: string;
+}
+
+export interface UpdateCardCheckItemProps extends UpdateCardCheckListProps {
+  checkItemId: string;
+  completed?: boolean;
+}
+
+export interface NewCheckItemProps {
+  cardId: string;
+  checklistId: string;
+  checkItemId: string;
+  name: string;
+  position: string;
+  completed: boolean;
+}
+
+export interface DeleteChecklistItemProps {
+  cardId: string;
+  checklistId: string;
+  checkItemId: string;
+}
