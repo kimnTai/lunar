@@ -3,12 +3,12 @@ import { Checkbox } from "antd";
 import { CheckItemProps } from "@/interfaces/checklists";
 import { Draggable } from "react-beautiful-dnd";
 
-const CheckItem: React.FC<{ checkItem?: CheckItemProps[] }> = ({
-  checkItem = [],
+const CheckItems: React.FC<{ checkItems?: CheckItemProps[] }> = ({
+  checkItems = [],
 }) => {
   return (
     <>
-      {checkItem
+      {checkItems
         .sort((a, b) => +a.position - +b.position)
         .map(({ _id, completed, name }, index) => (
           <Draggable key={_id} draggableId={_id} index={index}>
@@ -41,4 +41,4 @@ const CheckItem: React.FC<{ checkItem?: CheckItemProps[] }> = ({
   );
 };
 
-export default CheckItem;
+export default CheckItems;

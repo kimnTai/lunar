@@ -106,7 +106,7 @@ const CheckList: React.FC<{ checkList?: ChecklistProps[] }> = ({
                       style={{ minHeight: "1px" }}
                     >
                       <CheckListStyled>
-                        <CheckItems checkItem={checkItem} />
+                        <CheckItems checkItems={checkItem} />
                         <>
                           <Row
                             gutter={[16, 8]}
