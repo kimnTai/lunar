@@ -15,11 +15,11 @@ import AddBoards from "@/components/Modal/AddBoards";
 import { useAppSelector } from "@/hooks/useAppSelector";
 import { selectOrganization } from "@/redux/organizationSlice";
 import { useAppDispatch } from "@/hooks/useAppDispatch";
-import { changeWorkSpace } from "@/redux/screenSlice";
+import { changeWorkSpace, selectShowWorkSpace } from "@/redux/screenSlice";
 
 export const Navbar: React.FC = () => {
   const dispatch = useAppDispatch();
-  const showWorkSpace = useAppSelector((state) => state.screen.showWorkSpace);
+  const showWorkSpace = useAppSelector(selectShowWorkSpace);
   const [showNavbar, setShowNavBar] = useState(false);
   const navigate = useNavigate();
   const { boardId, workSpaceId } = useParams();

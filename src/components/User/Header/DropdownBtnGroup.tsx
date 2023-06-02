@@ -3,10 +3,10 @@ import { DropdownBtn } from "@/components/DropdownBtn";
 import { useAppDispatch } from "@/hooks/useAppDispatch";
 import { useAppSelector } from "@/hooks/useAppSelector";
 import { selectOrganization } from "@/redux/organizationSlice";
-import { changeWorkSpace } from "@/redux/screenSlice";
+import { changeWorkSpace, selectShowWorkSpace } from "@/redux/screenSlice";
 
 const DropdownBtnGroup: React.FC = () => {
-  const showWorkSpace = useAppSelector((state) => state.screen.showWorkSpace);
+  const showWorkSpace = useAppSelector(selectShowWorkSpace);
   const organization = useAppSelector(selectOrganization);
 
   const navigate = useNavigate();

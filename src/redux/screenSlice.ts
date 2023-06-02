@@ -1,4 +1,5 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
+import { RootState } from "./store";
 
 const initialState = {
   showWorkSpace: true,
@@ -17,5 +18,8 @@ export const screenSlice = createSlice({
 });
 
 export const { changeWorkSpace } = screenSlice.actions;
+
+export const selectShowWorkSpace = (state: RootState) =>
+  state.screen.showWorkSpace;
 
 export default screenSlice.reducer;
