@@ -11,11 +11,6 @@ const PopoverCheckList: React.FC = () => {
 
   const [checkListTitle, setCheckListTitle] = useState<string>("待辦清單");
 
-  // 取得 checklist 最後一個元素的 position
-  const handleNewCheckListPosition = () => {
-    return nextPosition(checklist, checklist.length);
-  };
-
   const handleAddCheckList = async () => {
     if (checkListTitle.trim() === "") {
       return;
@@ -26,7 +21,7 @@ const PopoverCheckList: React.FC = () => {
       const { result } = await newChecklistApi({
         cardId: id,
         name: checkListTitle,
-        position: handleNewCheckListPosition(),
+        position: nextPosition(checklist),
       });
       setCardData({
         ...cardData!,
