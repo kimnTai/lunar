@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Button, Col, Input, Row } from "antd";
 import { useCardModalContext } from "@/context/CardModalContext";
 import { newChecklistApi } from "@/api/cards";
+import { nextPosition } from "@/utils/cardFunc";
 import { PopoverSectionTitleStyled } from "../PopoverSytle";
 
 const PopoverCheckList: React.FC = () => {
@@ -12,11 +13,7 @@ const PopoverCheckList: React.FC = () => {
 
   // 取得 checklist 最後一個元素的 position
   const handleNewCheckListPosition = () => {
-    if (checklist.length === 0) {
-      return 10;
-    } else {
-      return Number(checklist[checklist.length - 1].position) + 10;
-    }
+    return nextPosition(checklist, checklist.length);
   };
 
   const handleAddCheckList = async () => {
