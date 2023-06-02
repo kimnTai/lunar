@@ -1,12 +1,12 @@
 import { useNavigate } from "react-router";
 import { DropdownBtn } from "@/components/DropdownBtn";
-import { useAppDispatch } from "@/hooks/useAppDispatch";
-import { useAppSelector } from "@/hooks/useAppSelector";
-import { changeWorkSpaceAction } from "@/redux/actions/ScreenAction";
+import { useAppDispatch, useAppSelector } from "@/hooks";
+import { selectOrganization } from "@/redux/organizationSlice";
+import { changeWorkSpace, selectShowWorkSpace } from "@/redux/screenSlice";
 
 const DropdownBtnGroup: React.FC = () => {
-  const showWorkSpace = useAppSelector((state) => state.screen.showWorkSpace);
-  const organization = useAppSelector((state) => state.user.organization);
+  const showWorkSpace = useAppSelector(selectShowWorkSpace);
+  const organization = useAppSelector(selectOrganization);
 
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
@@ -24,7 +24,7 @@ const DropdownBtnGroup: React.FC = () => {
             <a
               onClick={() => {
                 navigate(`/workspace/${_id}/home`);
-                changeWorkSpaceAction()(dispatch);
+                dispatch(changeWorkSpace());
               }}
             >
               {name}

@@ -1,5 +1,5 @@
 import { Button, Form, Input } from "antd";
-import { useAppSelector } from "@/hooks/useAppSelector";
+import { useAppSelector } from "@/hooks";
 import { SendOutlined } from "@ant-design/icons";
 import { useCardModalContext } from "@/context/CardModalContext";
 import { getCardApi, newCardCommentApi } from "@/api/cards";

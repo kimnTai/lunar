@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Avatar, Button, Divider } from "antd";
-import { useAppDispatch } from "@/hooks/useAppDispatch";
-import { useAppSelector } from "@/hooks/useAppSelector";
+import { useAppDispatch, useAppSelector } from "@/hooks";
 import { UserModalCss } from "./style";
+import { logout, selectUser } from "@/redux/userSlice";
 
 const UserModalButton: React.FC = () => {
   const showWorkSpace = useAppSelector((state) => state.screen.showWorkSpace);
-  const { avatar, name, email } = useAppSelector((state) => state.user.user);
+  const { avatar, name, email } = useAppSelector(selectUser);
   const [open, setOpen] = useState(false);
 
   const dispatch = useAppDispatch();
@@ -50,7 +50,7 @@ const UserModalButton: React.FC = () => {
           danger
           style={{ width: "100%" }}
           onClick={() => {
-            dispatch({ type: "LOGOUT" });
+            dispatch(logout());
             navigate("https://lunar-sigma.vercel.app/");
           }}
         >

@@ -4,8 +4,8 @@ import { newBoardApi } from "@/api/boards";
 import { NewBoardsProps } from "@/interfaces/boards";
 import { Button, Form, Input, Select } from "antd";
 import Cover from "@/assets/images/img_cover.png";
-import { useAppDispatch } from "@/hooks/useAppDispatch";
-import { getOrganizationByIdAction } from "@/redux/actions/OrganizationAction";
+import { useAppDispatch } from "@/hooks";
+import { getOrganizationByIdAction } from "@/redux/organizationSlice";
 
 const AddBoards: React.FC<{
   open: boolean;
@@ -26,7 +26,7 @@ const AddBoards: React.FC<{
       organizationId,
       permission: values.permission,
     })
-      .then(() => getOrganizationByIdAction(organizationId)(dispatch))
+      .then(() => dispatch(getOrganizationByIdAction(organizationId)))
       .finally(() => {
         setOpen(false);
         setButtonLoading(false);

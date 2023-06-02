@@ -4,40 +4,39 @@ import { Card, Button, Divider, Form, Input } from "antd";
 import GoogleIcon from "@/assets/images/google.png";
 import GitHubIcon from "@/assets/images/GitHub.png";
 import { LoginCss } from "./style";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import type { LoginProps } from "@/interfaces/user";
-import type { PropsFromRedux } from "@/router";
 import ThirdPartyButton from "./ThirdPartyButton";
-import { useAppSelector } from "@/hooks/useAppSelector";
+import { useAppSelector, useAppDispatch } from "@/hooks";
+import { loginAction, selectAuth, signInAction } from "@/redux/userSlice";
+import { getOrganizationsAction } from "@/redux/organizationSlice";
 
-const Login: React.FC<{
-  signInAction: PropsFromRedux["signInAction"];
-  loginAction: PropsFromRedux["loginAction"];
-  getOrganization: PropsFromRedux["getOrganization"];
-  isSignUpPage: boolean;
-}> = ({ signInAction, loginAction, getOrganization, isSignUpPage }) => {
-  const isUserLogin = useAppSelector((state) => state.auth.login);
+const Login: React.FC = () => {
+  const isSignUpPage = useLocation().pathname === "/signup";
+
+  const isUserLogin = useAppSelector(selectAuth);
   const [buttonLoading, setButtonLoading] = useState(false);
+  const dispatch = useAppDispatch();
 
   const navigate = useNavigate();
 
   useEffect(() => {
     if (isUserLogin) {
       (async () => {
-        await getOrganization();
+        await dispatch(getOrganizationsAction());
         navigate(`/`);
       })();
     }
   }, [isUserLogin]);
 
-  const onFinish = async (values: LoginProps) => {
+  const onFinish = (values: LoginProps) => {
     setButtonLoading(true);
 
-    try {
-      isSignUpPage ? await signInAction(values) : await loginAction(values);
-    } catch (error) {}
+    const action = isSignUpPage ? signInAction : loginAction;
 
-    setButtonLoading(false);
+    dispatch(action(values)).finally(() => {
+      setButtonLoading(false);
+    });
   };
 
   return (
@@ -45,15 +44,7 @@ const Login: React.FC<{
       <img className="header" src={Logo} alt="" />
       <Card>
         <h1 className="cardHeader">{isSignUpPage ? "免費註冊" : "登入"}</h1>
-        <Form
-          name="login-form"
-          wrapperCol={{ span: 24 }}
-          onFinish={onFinish}
-          onFinishFailed={(errorInfo) => {
-            console.log("Failed:", errorInfo);
-          }}
-          autoComplete="off"
-        >
+        <Form name="login-form" wrapperCol={{ span: 24 }} onFinish={onFinish}>
           <Form.Item
             name="email"
             rules={[
@@ -79,7 +70,6 @@ const Login: React.FC<{
               <Input placeholder="帳號" />
             </Form.Item>
           )}
-
           <Form.Item
             name="password"
             rules={[
@@ -91,7 +81,6 @@ const Login: React.FC<{
           >
             <Input placeholder="密碼" type="password" />
           </Form.Item>
-
           <Form.Item>
             <Button
               loading={buttonLoading}
@@ -128,7 +117,6 @@ const Login: React.FC<{
         >
           或
         </Divider>
-
         <ThirdPartyButton
           iconSrc={GoogleIcon}
           text={isSignUpPage ? "使用 Google 註冊" : "使用 Google 登入"}

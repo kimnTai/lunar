@@ -9,19 +9,21 @@ import {
   UpdateOrganizationProps,
 } from "@/interfaces/organization";
 import { useForm } from "antd/lib/form/Form";
-import { PropsFromRedux } from "@/router";
+import { useAppDispatch } from "@/hooks";
+import { getOrganizationsAction } from "@/redux/organizationSlice";
 
 const ManagePermission: React.FC<{
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
   organizationId: string;
-  getOrganization: PropsFromRedux["getOrganization"];
   userOrganization?: OrganizationProps;
-}> = ({ open, setOpen, organizationId, getOrganization, userOrganization }) => {
+}> = ({ open, setOpen, organizationId, userOrganization }) => {
   const onCancel = () => {
     setOpen(false);
   };
   const [form] = useForm();
+
+  const dispatch = useAppDispatch();
 
   const [_result, _loading, callApi] = useApi(updateOrganizationApi);
   const onFinish = async (values: UpdateOrganizationProps) => {
@@ -29,7 +31,7 @@ const ManagePermission: React.FC<{
       organizationId,
       permission: values.permission,
     });
-    await getOrganization();
+    await dispatch(getOrganizationsAction());
     onCancel();
   };
 

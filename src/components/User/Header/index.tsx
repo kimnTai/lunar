@@ -1,5 +1,5 @@
 import React from "react";
-import { useAppSelector } from "@/hooks/useAppSelector";
+import { useAppSelector } from "@/hooks";
 import DropdownBtnGroup from "./DropdownBtnGroup";
 import SearchCardInput from "./SearchCardInput";
 import UserModalButton from "./UserModalButton";

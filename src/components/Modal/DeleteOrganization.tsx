@@ -4,16 +4,17 @@ import { Button, Form, Input } from "antd";
 import { deleteOrganizationApi } from "@/api/organization";
 import { OrganizationProps } from "@/interfaces/organization";
 import { useNavigate } from "react-router-dom";
-import { PropsFromRedux } from "@/router";
+import { getOrganizationsAction } from "@/redux/organizationSlice";
+import { useAppDispatch } from "@/hooks";
 
 const DeleteOrganization: React.FC<{
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
   organizationId?: string;
-  getOrganization: PropsFromRedux["getOrganization"];
   userOrganization?: OrganizationProps;
-}> = ({ open, setOpen, organizationId, getOrganization, userOrganization }) => {
+}> = ({ open, setOpen, organizationId, userOrganization }) => {
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
   const [isButtonDisabled, setIsButtonDisabled] = useState(true);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -36,7 +37,7 @@ const DeleteOrganization: React.FC<{
     deleteOrganizationApi({
       organizationId: organizationId,
     })
-      .then(() => getOrganization())
+      .then(() => dispatch(getOrganizationsAction()))
       .finally(() => {
         navigate(`/`);
         onCancel();

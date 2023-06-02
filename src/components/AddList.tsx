@@ -31,7 +31,11 @@ const AddListCss = styled(Form)<{ useadd: string }>`
   }
 `;
 
-const AddList: React.FC<AddListProps> = ({ cardList, boardId, callGetBoardApi }) => {
+const AddList: React.FC<AddListProps> = ({
+  cardList,
+  boardId,
+  callGetBoardApi,
+}) => {
   const [add, setAdd] = useState(false);
   const [loading, setLoading] = useState(false);
   const [text, setText] = useState("");

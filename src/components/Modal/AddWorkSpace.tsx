@@ -2,9 +2,8 @@ import React, { useState } from "react";
 import { AddWorkSpaceCss } from "./style";
 import { Button, Form, Input } from "antd";
 import { NewOrganizationFormProps } from "@/interfaces/organization";
-import { newOrganizationApi } from "@/api/organization";
-import { useAppDispatch } from "@/hooks/useAppDispatch";
-import CONSTANTS from "@/redux/constants";
+import { newOrganizationAction } from "@/redux/organizationSlice";
+import { useAppDispatch } from "@/hooks";
 import InviteMemberSelect from "../WorkSpace/InviteMemberSelect";
 
 const AddWorkSpace: React.FC<{
@@ -20,20 +19,16 @@ const AddWorkSpace: React.FC<{
 
   const onFinish = async (values: NewOrganizationFormProps) => {
     setButtonLoading(true);
-    newOrganizationApi({
-      name: values.name,
-      userIdList: selectedUsers.userIdList,
-    })
-      .then((res) => {
-        dispatch({
-          type: CONSTANTS.CREATE_NEW_ORGANIZATION,
-          payload: res.result,
-        });
+
+    dispatch(
+      newOrganizationAction({
+        name: values.name,
+        userIdList: selectedUsers.userIdList,
       })
-      .finally(() => {
-        setButtonLoading(false);
-        setOpen(false);
-      });
+    ).finally(() => {
+      setButtonLoading(false);
+      setOpen(false);
+    });
   };
   return (
     <AddWorkSpaceCss open={open} onCancel={() => setOpen(false)} footer={null}>

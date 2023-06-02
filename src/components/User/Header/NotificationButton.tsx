@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Badge, Button, Checkbox, Popover, Spin } from "antd";
 import { BellOutlined } from "@ant-design/icons";
-import { useAppSelector } from "@/hooks/useAppSelector";
+import { useAppSelector } from "@/hooks";
 import {
   deleteNotificationApi,
   getNotificationApi,
