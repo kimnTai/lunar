@@ -5,7 +5,7 @@ import { deleteOrganizationApi } from "@/api/organization";
 import { OrganizationProps } from "@/interfaces/organization";
 import { useNavigate } from "react-router-dom";
 import { getOrganizationsAction } from "@/redux/organizationSlice";
-import { useAppDispatch } from "@/hooks/useAppDispatch";
+import { useAppDispatch } from "@/hooks";
 
 const DeleteOrganization: React.FC<{
   open: boolean;

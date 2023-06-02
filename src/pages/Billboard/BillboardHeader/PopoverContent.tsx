@@ -1,7 +1,7 @@
 import { PopoverContentProps } from "@/interfaces/boards";
 import { useEffect, useRef, useState } from "react";
 import { Avatar, Button, Form, Select, Input, Space, InputRef } from "antd";
-import { useAppSelector } from "@/hooks/useAppSelector";
+import { useAppSelector, useAppDispatch } from "@/hooks";
 import { LabelsProps } from "@/interfaces/labels";
 import {
   newLabelApi,
@@ -24,8 +24,6 @@ import {
 import CloneBoardButton from "@/components/CloneBoardButton";
 import { useApi } from "@/hooks/useApiHook";
 import { colorList } from "./constant";
-
-import { useAppDispatch } from "@/hooks/useAppDispatch";
 import { updateBoardApi } from "@/api/boards";
 import { useNavigate } from "react-router";
 import {

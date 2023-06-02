@@ -7,8 +7,7 @@ import { LoginCss } from "./style";
 import { useNavigate } from "react-router-dom";
 import type { LoginProps } from "@/interfaces/user";
 import ThirdPartyButton from "./ThirdPartyButton";
-import { useAppSelector } from "@/hooks/useAppSelector";
-import { useAppDispatch } from "@/hooks/useAppDispatch";
+import { useAppSelector, useAppDispatch } from "@/hooks";
 import { loginAction, selectAuth, signInAction } from "@/redux/userSlice";
 import { getOrganizationsAction } from "@/redux/organizationSlice";
 

@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Avatar, Button, Divider } from "antd";
-import { useAppDispatch } from "@/hooks/useAppDispatch";
-import { useAppSelector } from "@/hooks/useAppSelector";
+import { useAppDispatch, useAppSelector } from "@/hooks";
 import { UserModalCss } from "./style";
 import { logout, selectUser } from "@/redux/userSlice";
 

@@ -1,7 +1,6 @@
 import { useNavigate } from "react-router";
 import { DropdownBtn } from "@/components/DropdownBtn";
-import { useAppDispatch } from "@/hooks/useAppDispatch";
-import { useAppSelector } from "@/hooks/useAppSelector";
+import { useAppDispatch, useAppSelector } from "@/hooks";
 import { selectOrganization } from "@/redux/organizationSlice";
 import { changeWorkSpace, selectShowWorkSpace } from "@/redux/screenSlice";
 

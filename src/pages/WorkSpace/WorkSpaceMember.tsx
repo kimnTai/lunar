@@ -20,7 +20,7 @@ import { OrganizationMemberProps } from "@/interfaces/organization";
 import ManageRole from "@/components/Modal/ManageRole";
 import InviteMember from "@/components/Modal/InviteMember";
 import { WorkSpaceHeader } from "@/components/WorkSpace/WorkSpaceHeader";
-import { useAppSelector } from "@/hooks/useAppSelector";
+import { useAppSelector } from "@/hooks";
 import CopyInviteLinkBtn from "@/components/WorkSpace/CopyInviteLinkBtn";
 import { selectOrganization } from "@/redux/organizationSlice";
 

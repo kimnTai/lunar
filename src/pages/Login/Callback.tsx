@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { useAppDispatch } from "@/hooks/useAppDispatch";
+import { useAppDispatch } from "@/hooks";
 import { loginJwtAction } from "@/redux/userSlice";
 import { getOrganizationsAction } from "@/redux/organizationSlice";
 

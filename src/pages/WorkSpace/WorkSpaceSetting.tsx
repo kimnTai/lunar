@@ -11,7 +11,7 @@ import InviteMember from "@/components/Modal/InviteMember";
 import DeleteOrganization from "@/components/Modal/DeleteOrganization";
 import ManagePermission from "@/components/Modal/ManagePermission";
 import { WorkSpaceHeader } from "@/components/WorkSpace/WorkSpaceHeader";
-import { useAppSelector } from "@/hooks/useAppSelector";
+import { useAppSelector } from "@/hooks";
 import { selectOrganization } from "@/redux/organizationSlice";
 
 const WorkSpaceSetting: React.FC = () => {

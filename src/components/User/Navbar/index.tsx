@@ -12,9 +12,8 @@ import Logo2 from "@/assets/images/img_logo2.png";
 import AddWorkSpace from "@/components/Modal/AddWorkSpace";
 import NavBarMenu from "./NavbarMenu";
 import AddBoards from "@/components/Modal/AddBoards";
-import { useAppSelector } from "@/hooks/useAppSelector";
+import { useAppSelector, useAppDispatch } from "@/hooks";
 import { selectOrganization } from "@/redux/organizationSlice";
-import { useAppDispatch } from "@/hooks/useAppDispatch";
 import { changeWorkSpace, selectShowWorkSpace } from "@/redux/screenSlice";
 
 export const Navbar: React.FC = () => {

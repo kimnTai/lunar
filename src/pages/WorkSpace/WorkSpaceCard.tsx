@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 import WorkSpaceCardContent from "./WorkSpaceCardContent";
 import { WorkSpaceCardCss } from "./style";
 import { changeWorkSpace } from "@/redux/screenSlice";
-import { useAppDispatch } from "@/hooks/useAppDispatch";
+import { useAppDispatch } from "@/hooks";
 
 const WorkSpaceCard: React.FC<WorkSpaceCardProps> = ({
   title,

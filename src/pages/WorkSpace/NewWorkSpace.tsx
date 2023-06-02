@@ -7,7 +7,7 @@ import Logo from "@/assets/images/img_logo.png";
 import Bg from "@/assets/images/newWorkSpace_bg.png";
 import CreateWork from "@/assets/images/img_createWork.png";
 import InviteMemberSelect from "@/components/WorkSpace/InviteMemberSelect";
-import { useAppDispatch } from "@/hooks/useAppDispatch";
+import { useAppDispatch } from "@/hooks";
 import { newOrganizationAction } from "@/redux/organizationSlice";
 
 const NewWorkSpace: React.FC = () => {

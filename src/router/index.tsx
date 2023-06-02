@@ -12,13 +12,12 @@ import WorkSpaceMember from "@/pages/WorkSpace/WorkSpaceMember";
 import WorkSpaceSetting from "@/pages/WorkSpace/WorkSpaceSetting";
 import Invitation from "@/pages/InvitationPage";
 import LoginLayout from "./LoginLayout";
-import { useAppDispatch } from "@/hooks/useAppDispatch";
+import { useAppDispatch, useAppSelector } from "@/hooks";
 import { loginJwtAction, selectAuth } from "@/redux/userSlice";
 import {
   getOrganizationsAction,
   selectOrganization,
 } from "@/redux/organizationSlice";
-import { useAppSelector } from "@/hooks/useAppSelector";
 
 const AppRouter: React.FC = () => {
   const organization = useAppSelector(selectOrganization);

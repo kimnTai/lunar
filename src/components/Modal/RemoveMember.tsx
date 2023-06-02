@@ -4,7 +4,7 @@ import { Button, Form } from "antd";
 import { OrganizationMemberProps } from "@/interfaces/organization";
 import { deleteOrganizationMemberApi } from "@/api/organization";
 import { useApi } from "@/hooks/useApiHook";
-import { useAppDispatch } from "@/hooks/useAppDispatch";
+import { useAppDispatch } from "@/hooks";
 import { getOrganizationsAction } from "@/redux/organizationSlice";
 
 const RemoveMember: React.FC<{

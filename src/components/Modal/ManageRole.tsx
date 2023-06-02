@@ -7,7 +7,7 @@ import {
   UpdateOrganizationMemberProps,
 } from "@/interfaces/organization";
 import { useForm } from "antd/lib/form/Form";
-import { useAppDispatch } from "@/hooks/useAppDispatch";
+import { useAppDispatch } from "@/hooks";
 import { updateOrganizationMemberAction } from "@/redux/organizationSlice";
 
 const ManageRole: React.FC<{

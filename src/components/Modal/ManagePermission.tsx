@@ -9,7 +9,7 @@ import {
   UpdateOrganizationProps,
 } from "@/interfaces/organization";
 import { useForm } from "antd/lib/form/Form";
-import { useAppDispatch } from "@/hooks/useAppDispatch";
+import { useAppDispatch } from "@/hooks";
 import { getOrganizationsAction } from "@/redux/organizationSlice";
 
 const ManagePermission: React.FC<{

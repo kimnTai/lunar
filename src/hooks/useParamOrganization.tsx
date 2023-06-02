@@ -1,6 +1,6 @@
 import { useParams } from "react-router";
-import { useAppSelector } from "./useAppSelector";
 import { selectOrganization } from "@/redux/organizationSlice";
+import { useAppSelector } from "./";
 
 export const useParamOrganization = () => {
   const organizationId = useParams().workSpaceId;

@@ -14,7 +14,7 @@ import {
 } from "@/api/organization";
 import InviteMemberSelect from "../WorkSpace/InviteMemberSelect";
 import { getOrganizationsAction } from "@/redux/organizationSlice";
-import { useAppDispatch } from "@/hooks/useAppDispatch";
+import { useAppDispatch } from "@/hooks";
 
 const InviteMember: React.FC<{
   open: boolean;

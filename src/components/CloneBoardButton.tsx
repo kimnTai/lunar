@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Button, Form, Input, Popover, Select, Spin } from "antd";
 import ListButton from "./ListButton";
 import { CopyOutlined } from "@ant-design/icons";
-import { useAppSelector } from "@/hooks/useAppSelector";
+import { useAppSelector } from "@/hooks";
 import { useNavigate, useParams } from "react-router";
 import { postCloneBoardApi } from "@/api/boards";
 import { selectOrganization } from "@/redux/organizationSlice";

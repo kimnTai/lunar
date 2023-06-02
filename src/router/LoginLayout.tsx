@@ -1,5 +1,5 @@
 import { Navbar } from "@/components/User/Navbar";
-import { useAppSelector } from "@/hooks/useAppSelector";
+import { useAppSelector } from "@/hooks";
 import { MainLayoutCss } from "@/pages/Billboard/style";
 import { Layout } from "antd";
 import { Header } from "@/components/User/Header";

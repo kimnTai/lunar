@@ -1,5 +1,5 @@
 import { deleteBoardApi } from "@/api/boards";
-import { useAppDispatch } from "@/hooks/useAppDispatch";
+import { useAppDispatch } from "@/hooks";
 import { getOrganizationsAction } from "@/redux/organizationSlice";
 import { Button, ButtonProps } from "antd";
 import { useState } from "react";

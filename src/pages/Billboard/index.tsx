@@ -15,7 +15,7 @@ import {
   updateColumn,
   getSocketChange,
 } from "@/utils/cardFunc";
-import { useAppSelector } from "@/hooks/useAppSelector";
+import { useAppSelector, useAppDispatch } from "@/hooks";
 import useWebSocket from "@/hooks/useWebSocket";
 import { LoadingOutlined } from "@ant-design/icons";
 import { getCardApi } from "@/api/cards";
@@ -24,7 +24,6 @@ import { CardModalProvider } from "@/context/CardModalContext";
 import TrelloCardModal from "@/components/TrelloCard/Modal";
 import { useLocation } from "react-router-dom";
 import { changeWorkSpace } from "@/redux/screenSlice";
-import { useAppDispatch } from "@/hooks/useAppDispatch";
 
 const Billboard: React.FC = () => {
   const dispatch = useAppDispatch();

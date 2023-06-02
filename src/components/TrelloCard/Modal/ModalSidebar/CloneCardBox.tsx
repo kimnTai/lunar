@@ -3,7 +3,7 @@ import { CopyOutlined } from "@ant-design/icons";
 import { Button, Cascader, Form, Input, Popover, Spin } from "antd";
 import { postCloneCardApi } from "@/api/cards";
 import { useCardModalContext } from "@/context/CardModalContext";
-import { useAppDispatch } from "@/hooks/useAppDispatch";
+import { useAppDispatch } from "@/hooks";
 import { getOrganizationsAction } from "@/redux/organizationSlice";
 
 const CloneCardBox: React.FC = () => {

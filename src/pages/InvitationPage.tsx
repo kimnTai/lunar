@@ -1,5 +1,5 @@
 import { invitationApi } from "@/api/invitation";
-import { useAppSelector } from "@/hooks/useAppSelector";
+import { useAppSelector } from "@/hooks";
 import { selectAuth } from "@/redux/userSlice";
 import { useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";

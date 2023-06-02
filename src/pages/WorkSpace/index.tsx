@@ -6,10 +6,9 @@ import { useParams } from "react-router-dom";
 import WorkSpaceCard from "./WorkSpaceCard";
 import AddBoards from "@/components/Modal/AddBoards";
 import { WorkSpaceHeader } from "@/components/WorkSpace/WorkSpaceHeader";
-import { useAppSelector } from "@/hooks/useAppSelector";
+import { useAppSelector, useAppDispatch } from "@/hooks";
 import { selectOrganization } from "@/redux/organizationSlice";
 import { changeWorkSpace } from "@/redux/screenSlice";
-import { useAppDispatch } from "@/hooks/useAppDispatch";
 
 const WorkSpace: React.FC = () => {
   const dispatch = useAppDispatch();

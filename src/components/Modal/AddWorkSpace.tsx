@@ -3,7 +3,7 @@ import { AddWorkSpaceCss } from "./style";
 import { Button, Form, Input } from "antd";
 import { NewOrganizationFormProps } from "@/interfaces/organization";
 import { newOrganizationAction } from "@/redux/organizationSlice";
-import { useAppDispatch } from "@/hooks/useAppDispatch";
+import { useAppDispatch } from "@/hooks";
 import InviteMemberSelect from "../WorkSpace/InviteMemberSelect";
 
 const AddWorkSpace: React.FC<{

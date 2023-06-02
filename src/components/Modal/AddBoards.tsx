@@ -4,7 +4,7 @@ import { newBoardApi } from "@/api/boards";
 import { NewBoardsProps } from "@/interfaces/boards";
 import { Button, Form, Input, Select } from "antd";
 import Cover from "@/assets/images/img_cover.png";
-import { useAppDispatch } from "@/hooks/useAppDispatch";
+import { useAppDispatch } from "@/hooks";
 import { getOrganizationByIdAction } from "@/redux/organizationSlice";
 
 const AddBoards: React.FC<{
