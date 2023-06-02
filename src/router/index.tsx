@@ -18,6 +18,7 @@ import {
   getOrganizationsAction,
   selectOrganization,
 } from "@/redux/organizationSlice";
+import Cookie from "@/utils/cookie";
 
 const AppRouter: React.FC = () => {
   const organization = useAppSelector(selectOrganization);
@@ -28,7 +29,7 @@ const AppRouter: React.FC = () => {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    if (localStorage.getItem("token")) {
+    if (Cookie.get("lunar-token")) {
       Promise.all([
         dispatch(loginJwtAction()),
         dispatch(getOrganizationsAction()),

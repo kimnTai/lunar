@@ -2,6 +2,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { loginApi, loginJwtApi, signInApi } from "@/api/auth";
 import { LoginProps, UserProps } from "@/interfaces/user";
 import { RootState } from "./store";
+import Cookie from "@/utils/cookie";
 
 const initialState: {
   token: string;
@@ -40,23 +41,41 @@ export const userSlice = createSlice({
   initialState,
   reducers: {
     logout: (state) => {
-      localStorage.removeItem("token");
+      Cookie.remove("lunar-token");
       state.token = "";
     },
   },
   extraReducers: (builder) => {
-    [signInAction, loginAction, loginJwtAction].forEach((actionCreator) => {
-      builder
-        .addCase(actionCreator.fulfilled, (state, action) => {
-          state.user = action.payload.result;
-          state.token = action.payload.token;
-          localStorage.setItem("token", action.payload.token);
-        })
-        .addCase(actionCreator.rejected, (state) => {
-          state.token = "";
-          localStorage.removeItem("token");
-        });
-    });
+    builder
+      .addCase(signInAction.fulfilled, (state, action) => {
+        state.user = action.payload.result;
+        state.token = action.payload.token;
+        Cookie.set("lunar-token", action.payload.token);
+      })
+      .addCase(signInAction.rejected, (state) => {
+        state.token = "";
+        Cookie.remove("lunar-token");
+      });
+
+    builder
+      .addCase(loginAction.fulfilled, (state, action) => {
+        state.user = action.payload.result;
+        state.token = action.payload.token;
+        Cookie.set("lunar-token", action.payload.token);
+      })
+      .addCase(loginAction.rejected, (state) => {
+        state.token = "";
+        Cookie.remove("lunar-token");
+      });
+
+    builder
+      .addCase(loginJwtAction.fulfilled, (state, action) => {
+        state.user = action.payload.result;
+        state.token = action.payload.token;
+      })
+      .addCase(loginJwtAction.rejected, (state) => {
+        state.token = "";
+      });
   },
 });
 

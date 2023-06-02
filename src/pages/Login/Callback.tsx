@@ -3,6 +3,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { useAppDispatch } from "@/hooks";
 import { loginJwtAction } from "@/redux/userSlice";
 import { getOrganizationsAction } from "@/redux/organizationSlice";
+import Cookie from "@/utils/cookie";
 
 const Callback: React.FC = () => {
   const navigate = useNavigate();
@@ -14,7 +15,7 @@ const Callback: React.FC = () => {
 
   useEffect(() => {
     if (token) {
-      localStorage.setItem("token", token);
+      Cookie.set("lunar-token", token);
 
       Promise.all([
         dispatch(loginJwtAction()),
