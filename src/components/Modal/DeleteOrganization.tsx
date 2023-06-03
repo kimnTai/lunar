@@ -1,9 +1,8 @@
 import React, { useState } from "react";
 import { DeleteOrgModalCss } from "./style";
 import { Button, Form, Input } from "antd";
-import { deleteOrganizationApi } from "@/api/organization";
 import { useNavigate } from "react-router-dom";
-import { getOrganizationsAction } from "@/redux/organizationSlice";
+import { deleteOrganizationAction } from "@/redux/organizationSlice";
 import { useAppDispatch } from "@/hooks";
 import { useParamOrganization } from "@/hooks/useParamOrganization";
 
@@ -33,15 +32,15 @@ const DeleteOrganization: React.FC<{
     }
     setButtonLoading(true);
 
-    deleteOrganizationApi({
-      organizationId: userOrganization._id,
-    })
-      .then(() => dispatch(getOrganizationsAction()))
-      .finally(() => {
-        navigate(`/`);
-        onCancel();
-        setButtonLoading(false);
-      });
+    dispatch(
+      deleteOrganizationAction({
+        organizationId: userOrganization._id,
+      })
+    ).finally(() => {
+      navigate(`/`);
+      onCancel();
+      setButtonLoading(false);
+    });
   };
   return (
     <DeleteOrgModalCss

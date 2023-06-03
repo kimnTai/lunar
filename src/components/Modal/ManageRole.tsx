@@ -1,7 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import { useParams } from "react-router";
 import { CheckOutlined } from "@ant-design/icons";
-import { Form, Radio } from "antd";
+import { Form, Radio, Spin } from "antd";
 import { useAppDispatch } from "@/hooks";
 import {
   OrganizationMemberProps,
@@ -19,11 +19,13 @@ const ManageRole: React.FC<{
   const [form] = Form.useForm();
   const userId = selectedMember?.userId._id;
   const dispatch = useAppDispatch();
+  const [spinning, setSpinning] = useState(false);
 
   const onFinish = async (values: UpdateOrganizationMemberProps) => {
     if (!workSpaceId) {
       return;
     }
+    setSpinning(true);
 
     dispatch(
       updateOrganizationMemberAction({
@@ -33,6 +35,7 @@ const ManageRole: React.FC<{
       })
     ).finally(() => {
       setOpen(false);
+      setSpinning(false);
     });
   };
 
@@ -44,78 +47,80 @@ const ManageRole: React.FC<{
       onCancel={() => setOpen(false)}
       footer={null}
     >
-      <Form form={form} onFinish={onFinish} layout="vertical">
-        <Form.Item name="role">
-          <Radio.Group size="large">
-            <Radio.Button
-              value="manager"
-              style={{
-                textAlign: "left",
-                border: "0",
-                width: "100%",
-                padding: "4px 15px",
-                margin: "8px 0 4px 0",
-              }}
-              onClick={() => form.submit()}
-            >
-              <p
+      <Spin spinning={spinning}>
+        <Form form={form} onFinish={onFinish} layout="vertical">
+          <Form.Item name="role">
+            <Radio.Group size="large">
+              <Radio.Button
+                value="manager"
                 style={{
-                  fontWeight: "500",
-                  fontSize: "16px",
-                  lineHeight: "24px",
+                  textAlign: "left",
+                  border: "0",
+                  width: "100%",
+                  padding: "4px 15px",
+                  margin: "8px 0 4px 0",
                 }}
+                onClick={() => form.submit()}
               >
-                管理員
-                {selectedMember?.role === "manager" && (
-                  <CheckOutlined style={{ fontSize: "14px" }} />
-                )}
-              </p>
-              <span
+                <p
+                  style={{
+                    fontWeight: "500",
+                    fontSize: "16px",
+                    lineHeight: "24px",
+                  }}
+                >
+                  管理員
+                  {selectedMember?.role === "manager" && (
+                    <CheckOutlined style={{ fontSize: "14px" }} />
+                  )}
+                </p>
+                <span
+                  style={{
+                    lineHeight: "24px",
+                    fontWeight: "400",
+                    fontSize: "12px",
+                  }}
+                >
+                  可以查看、建立及編輯工作區看板，並可以為工作區更改設定。在此工作區中的所有看板上將擁有管理員權限。
+                </span>
+              </Radio.Button>
+              <Radio.Button
+                value="viewer"
                 style={{
-                  lineHeight: "24px",
-                  fontWeight: "400",
-                  fontSize: "12px",
+                  textAlign: "left",
+                  border: "0",
+                  width: "100%",
+                  padding: "4px 15px",
+                  margin: "4px 0 8px 0",
                 }}
+                onClick={() => form.submit()}
               >
-                可以查看、建立及編輯工作區看板，並可以為工作區更改設定。在此工作區中的所有看板上將擁有管理員權限。
-              </span>
-            </Radio.Button>
-            <Radio.Button
-              value="viewer"
-              style={{
-                textAlign: "left",
-                border: "0",
-                width: "100%",
-                padding: "4px 15px",
-                margin: "4px 0 8px 0",
-              }}
-              onClick={() => form.submit()}
-            >
-              <p
-                style={{
-                  fontWeight: "500",
-                  fontSize: "16px",
-                  lineHeight: "24px",
-                }}
-              >
-                一般
-                {selectedMember?.role === "viewer" && (
-                  <CheckOutlined style={{ fontSize: "14px" }} />
-                )}
-              </p>
-              <span
-                style={{
-                  lineHeight: "24px",
-                  fontWeight: "400",
-                  fontSize: "12px",
-                }}
-              >
-                可以查看、建立及編輯工作區看板，但不能更改設定。
-              </span>
-            </Radio.Button>
-          </Radio.Group>
-        </Form.Item>
-      </Form>
+                <p
+                  style={{
+                    fontWeight: "500",
+                    fontSize: "16px",
+                    lineHeight: "24px",
+                  }}
+                >
+                  一般
+                  {selectedMember?.role === "viewer" && (
+                    <CheckOutlined style={{ fontSize: "14px" }} />
+                  )}
+                </p>
+                <span
+                  style={{
+                    lineHeight: "24px",
+                    fontWeight: "400",
+                    fontSize: "12px",
+                  }}
+                >
+                  可以查看、建立及編輯工作區看板，但不能更改設定。
+                </span>
+              </Radio.Button>
+            </Radio.Group>
+          </Form.Item>
+        </Form>
+      </Spin>
     </MemberModalCss>
   );
 };

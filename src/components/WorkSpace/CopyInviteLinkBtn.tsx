@@ -1,32 +1,28 @@
-import { OrganizationProps } from "@/interfaces/organization";
-import { UserAddOutlined } from "@ant-design/icons";
+import React, { CSSProperties } from "react";
 import { Button, notification } from "antd";
-import React from "react";
+import { UserAddOutlined } from "@ant-design/icons";
 
 const CopyInviteLinkBtn: React.FC<{
-  userOrganization?: OrganizationProps;
+  organizationInviteLink?: string;
   boardInviteLink?: string;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  style?: any;
-}> = ({ userOrganization, setOpen, style, boardInviteLink }) => {
+  style?: CSSProperties;
+}> = ({ setOpen, style, organizationInviteLink, boardInviteLink }) => {
   const [api, contextHolder] = notification.useNotification();
 
-  const onCancel: () => void = () => {
-    setOpen(false);
-  };
-
   const handleClickInviteBtn = () => {
-    if (userOrganization) {
-      navigator.clipboard.writeText(userOrganization?.inviteLink ?? "");
+    if (organizationInviteLink) {
+      navigator.clipboard.writeText(organizationInviteLink);
     } else if (boardInviteLink) {
       navigator.clipboard.writeText(boardInviteLink);
     }
 
-    api["success"]({
+    api.success({
       message: "已複製到剪貼簿",
       placement: "bottomLeft",
     });
-    onCancel();
+
+    setOpen(false);
   };
 
   return (
@@ -34,9 +30,7 @@ const CopyInviteLinkBtn: React.FC<{
       {contextHolder}
       <Button
         icon={<UserAddOutlined />}
-        style={{
-          ...style,
-        }}
+        style={style}
         onClick={handleClickInviteBtn}
       >
         以連結邀請

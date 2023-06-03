@@ -30,6 +30,7 @@ const NewWorkSpace: React.FC = () => {
     ).finally(() => {
       setLoading(false);
       navigate("/");
+      form.resetFields();
     });
   };
 

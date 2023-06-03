@@ -1,13 +1,11 @@
 import React from "react";
 import { MemberModalCss } from "./style";
-import { useApi } from "@/hooks/useApiHook";
-import { updateOrganizationApi } from "@/api/organization";
 import { Form, Radio } from "antd";
 import { CheckOutlined, LockOutlined, GlobalOutlined } from "@ant-design/icons";
 import { UpdateOrganizationProps } from "@/interfaces/organization";
 import { useForm } from "antd/lib/form/Form";
 import { useAppDispatch } from "@/hooks";
-import { getOrganizationsAction } from "@/redux/organizationSlice";
+import { updateOrganizationAction } from "@/redux/organizationSlice";
 import { useParamOrganization } from "@/hooks/useParamOrganization";
 
 const ManagePermission: React.FC<{
@@ -15,21 +13,19 @@ const ManagePermission: React.FC<{
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }> = ({ open, setOpen }) => {
   const userOrganization = useParamOrganization();
-  const onCancel = () => {
-    setOpen(false);
-  };
   const [form] = useForm();
 
   const dispatch = useAppDispatch();
 
-  const [_result, _loading, callApi] = useApi(updateOrganizationApi);
   const onFinish = async (values: UpdateOrganizationProps) => {
-    await callApi({
-      organizationId: userOrganization?._id || "",
-      permission: values.permission,
+    dispatch(
+      updateOrganizationAction({
+        organizationId: userOrganization?._id || "",
+        permission: values.permission,
+      })
+    ).finally(() => {
+      setOpen(false);
     });
-    await dispatch(getOrganizationsAction());
-    onCancel();
   };
 
   return (
@@ -37,7 +33,7 @@ const ManagePermission: React.FC<{
       title={<p style={{ textAlign: "center" }}>選取工作區觀看權限</p>}
       width={332}
       open={open}
-      onCancel={onCancel}
+      onCancel={() => setOpen(false)}
       footer={null}
     >
       <Form form={form} onFinish={onFinish} layout="vertical">

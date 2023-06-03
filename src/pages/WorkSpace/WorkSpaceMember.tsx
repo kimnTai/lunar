@@ -138,7 +138,7 @@ const WorkSpaceMember: React.FC = () => {
                   </p>
                 </Col>
                 <CopyInviteLinkBtn
-                  userOrganization={userOrganization}
+                  organizationInviteLink={userOrganization?.inviteLink}
                   setOpen={onCancel}
                 />
               </Row>

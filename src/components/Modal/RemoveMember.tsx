@@ -1,10 +1,9 @@
 import React, { useState } from "react";
 import { useParams } from "react-router";
 import { Button, Form } from "antd";
-import { deleteOrganizationMemberApi } from "@/api/organization";
 import { useAppDispatch } from "@/hooks";
 import { OrganizationMemberProps } from "@/interfaces/organization";
-import { getOrganizationsAction } from "@/redux/organizationSlice";
+import { deleteOrganizationMemberAction } from "@/redux/organizationSlice";
 import { MemberModalCss } from "./style";
 
 const RemoveMember: React.FC<{
@@ -23,15 +22,15 @@ const RemoveMember: React.FC<{
     }
     setLoading(true);
 
-    deleteOrganizationMemberApi({
-      organizationId: workSpaceId,
-      memberId: selectedMember?.userId._id || "",
-    })
-      .then(() => dispatch(getOrganizationsAction()))
-      .finally(() => {
-        setLoading(false);
-        setOpen(false);
-      });
+    dispatch(
+      deleteOrganizationMemberAction({
+        organizationId: workSpaceId,
+        memberId: selectedMember?.userId._id || "",
+      })
+    ).finally(() => {
+      setLoading(false);
+      setOpen(false);
+    });
   };
   return (
     <MemberModalCss

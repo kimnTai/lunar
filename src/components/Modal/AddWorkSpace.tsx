@@ -28,6 +28,7 @@ const AddWorkSpace: React.FC<{
     ).finally(() => {
       setButtonLoading(false);
       setOpen(false);
+      form.resetFields();
     });
   };
   return (
@@ -40,7 +41,7 @@ const AddWorkSpace: React.FC<{
         <Form.Item label="工作區名稱" name="name">
           <Input />
         </Form.Item>
-        <Form.Item label="邀請你的團隊" className="invite">
+        <Form.Item name="invite" label="邀請你的團隊" className="invite">
           <InviteMemberSelect
             selectedUsers={selectedUsers}
             setSelectedUsers={setSelectedUsers}
