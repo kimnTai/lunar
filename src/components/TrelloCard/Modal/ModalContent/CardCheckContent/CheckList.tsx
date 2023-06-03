@@ -3,7 +3,6 @@ import { Button, Col, Row, Space } from "antd";
 import TextArea from "antd/es/input/TextArea";
 import { PlusOutlined } from "@ant-design/icons";
 import { Draggable, Droppable } from "react-beautiful-dnd";
-import { ChecklistProps } from "@/interfaces/checklists";
 import { useCardModalContext } from "@/context/CardModalContext";
 import { newCheckItemApi } from "@/api/cards";
 import { nextPosition } from "@/utils/cardFunc";
@@ -11,18 +10,16 @@ import CheckItems from "./CheckItems";
 import { SectionHeaderStyled } from "../style";
 import { CheckListStyled } from "./CheckListStyle";
 
-const CheckList: React.FC<{ checkList?: ChecklistProps[] }> = ({
-  checkList = [],
-}) => {
+const CheckList: React.FC = () => {
   const { cardData, setCardData } = useCardModalContext();
   const { id = "", checklist = [] } = cardData ?? {};
 
   const [checkItemsIsEdit, setCheckItemsIsEdit] = useState(
-    new Array(checkList.length).fill(false)
+    new Array(checklist.length).fill(false)
   );
 
   const [checkItemsTitle, setCheckItemsTitle] = useState(
-    new Array(checkList.length).fill("")
+    new Array(checklist.length).fill("")
   );
 
   // 多個 CheckList 新增 Item 時每次只顯示一個新增欄位
@@ -51,7 +48,7 @@ const CheckList: React.FC<{ checkList?: ChecklistProps[] }> = ({
         cardId: id,
         checklistId: checklist[index].id,
         name: checkItemsTitle[index],
-        position: nextPosition(checkList[index].checkItem).toString(),
+        position: nextPosition(checklist[index].checkItem).toString(),
       });
 
       handleCheckItemsTitleChange(index);
@@ -73,7 +70,7 @@ const CheckList: React.FC<{ checkList?: ChecklistProps[] }> = ({
 
   return (
     <>
-      {checkList
+      {checklist
         .sort((a, b) => +a.position - +b.position)
         .map(({ _id, name, checkItem }, index) => (
           <Draggable key={_id} draggableId={_id} index={index}>

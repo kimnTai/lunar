@@ -72,7 +72,7 @@ const CardCheckContent: React.FC = () => {
               rowGap: "8px",
             }}
           >
-            <CheckList checkList={cardData?.checklist} />
+            <CheckList />
             {provided.placeholder}
           </div>
         )}
