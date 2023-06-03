@@ -25,12 +25,17 @@ export const CheckItemsStyled = styled.div`
   .isCompletedTitle {
     text-decoration: line-through;
   }
+
   .isShow {
     display: block;
   }
 
   .isHidden {
     display: none;
+  }
+
+  .underline {
+    text-decoration: underline;
   }
 `;
 

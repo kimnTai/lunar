@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useLayoutEffect, useState } from "react";
 import { Draggable } from "react-beautiful-dnd";
 import { Button, Checkbox, Col, Progress, Row, Space } from "antd";
 import { CheckboxChangeEvent } from "antd/es/checkbox";
@@ -19,6 +19,10 @@ const CheckItems: React.FC<{ checklistIndex: number }> = ({
 
   const [itemsNameList, setItemNameList] = useState(
     checklist[checklistIndex].checkItem.map((item) => item.name)
+  );
+
+  const [itemsNameIsNotSaveList, setItemNameIsNotSaveList] = useState(
+    new Array(checklist[checklistIndex].checkItem.length).fill(false)
   );
 
   const getProgressPercent = () => {
@@ -65,7 +69,29 @@ const CheckItems: React.FC<{ checklistIndex: number }> = ({
     }
   };
 
-  //#regin checkItem Name
+  //#region checkItem name
+
+  // 判斷是否有未儲存的編輯內容
+  const handleItemNameIsNotSave = () => {
+    const newItemNameIsNotSaveList = [...itemsNameIsNotSaveList];
+    itemsNameList.forEach((itemName, index) => {
+      if (itemName.trim() !== checklist[checklistIndex].checkItem[index].name) {
+        newItemNameIsNotSaveList[index] = true;
+      } else {
+        newItemNameIsNotSaveList[index] = false;
+      }
+    });
+    setItemNameIsNotSaveList(newItemNameIsNotSaveList);
+  };
+
+  // 取消未儲存的待辦項目名稱
+  const cleanNotSaveItemName = (itemIndex: number) => {
+    const newItemNameList = [...itemsNameList];
+    newItemNameList[itemIndex] =
+      checklist[checklistIndex].checkItem[itemIndex].name;
+    setItemNameList(newItemNameList);
+  };
+
   const handleItemNameIsEdit = (itemIndex: number, isEdit: boolean) => {
     const newItemNameIsEditList = nameIsEditList.map((item) => (item = false));
 
@@ -98,7 +124,7 @@ const CheckItems: React.FC<{ checklistIndex: number }> = ({
         name: itemsNameList[itemIndex],
       });
       handleItemNameIsEdit(itemIndex, false);
-      // 更新畫面
+      // 更新畫面與來源資料狀態
       setCardData({
         ...cardData!,
         checklist: checklist.map((list) => {
@@ -120,7 +146,12 @@ const CheckItems: React.FC<{ checklistIndex: number }> = ({
       console.error(error);
     }
   };
-  //#endregin
+  //#endregion
+
+  // 在畫面渲染前先去執行狀態更新
+  useLayoutEffect(() => {
+    handleItemNameIsNotSave();
+  }, [nameIsEditList, itemsNameList]);
 
   return (
     <CheckItemsStyled>
@@ -161,7 +192,7 @@ const CheckItems: React.FC<{ checklistIndex: number }> = ({
                         />
                       </Col>
                       <Col flex="auto">
-                        <span
+                        <div
                           className={
                             nameIsEditList[index] ? "isHidden" : "isShow"
                           }
@@ -170,8 +201,39 @@ const CheckItems: React.FC<{ checklistIndex: number }> = ({
                           }}
                         >
                           {name}
-                        </span>
-                        <span
+                        </div>
+                        <div
+                          className={
+                            itemsNameIsNotSaveList[index] &&
+                            !nameIsEditList[index]
+                              ? "isShow"
+                              : "isHidden"
+                          }
+                        >
+                          <Space>
+                            <span>你在這個項目有未儲存的編輯內容。</span>
+                            <Button size="small" type="link">
+                              <span
+                                onClick={() =>
+                                  handleItemNameIsEdit(index, true)
+                                }
+                                className="underline"
+                              >
+                                檢視編輯
+                              </span>
+                            </Button>
+                            |
+                            <Button size="small" type="link">
+                              <span
+                                onClick={() => cleanNotSaveItemName(index)}
+                                className="underline"
+                              >
+                                放棄
+                              </span>
+                            </Button>
+                          </Space>
+                        </div>
+                        <div
                           className={
                             nameIsEditList[index] ? "isShow" : "isHidden"
                           }
@@ -196,7 +258,7 @@ const CheckItems: React.FC<{ checklistIndex: number }> = ({
                               取消
                             </Button>
                           </Space>
-                        </span>
+                        </div>
                       </Col>
                     </Row>
                   </Col>
