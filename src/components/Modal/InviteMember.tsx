@@ -3,10 +3,7 @@ import { InviteMemberCss } from "./style";
 import { useApi } from "@/hooks/useApiHook";
 import { Button, Col, Form, Row } from "antd";
 import { LinkOutlined } from "@ant-design/icons";
-import {
-  OrganizationProps,
-  addOrganizationMemberProps,
-} from "@/interfaces/organization";
+import { addOrganizationMemberProps } from "@/interfaces/organization";
 import CopyInviteLinkBtn from "@/components/WorkSpace/CopyInviteLinkBtn";
 import {
   addOrganizationMemberApi,
@@ -15,14 +12,15 @@ import {
 import InviteMemberSelect from "../WorkSpace/InviteMemberSelect";
 import { getOrganizationsAction } from "@/redux/organizationSlice";
 import { useAppDispatch } from "@/hooks";
+import { useParamOrganization } from "@/hooks/useParamOrganization";
 
 const InviteMember: React.FC<{
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  organizationId: string;
-  userOrganization?: OrganizationProps;
-}> = ({ open, setOpen, userOrganization, organizationId }) => {
+}> = ({ open, setOpen }) => {
   const dispatch = useAppDispatch();
+  const userOrganization = useParamOrganization();
+  const organizationId = useParamOrganization()?._id || "";
   const [_result, loading, callApi] = useApi(addOrganizationMemberApi);
   const [form] = Form.useForm<addOrganizationMemberProps>();
   const [selectedUsers, setSelectedUsers] = useState<{ userIdList: string[] }>({

@@ -2,22 +2,18 @@ import React, { useEffect, useState } from "react";
 import { WorkSpaceCss } from "./style";
 import { Row, Col, Button, Select } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
-import { useParams } from "react-router-dom";
 import WorkSpaceCard from "./WorkSpaceCard";
 import AddBoards from "@/components/Modal/AddBoards";
 import { WorkSpaceHeader } from "@/components/WorkSpace/WorkSpaceHeader";
-import { useAppSelector, useAppDispatch } from "@/hooks";
-import { selectOrganization } from "@/redux/organizationSlice";
+import { useAppDispatch } from "@/hooks";
 import { changeWorkSpace } from "@/redux/screenSlice";
+import { useParamOrganization } from "@/hooks/useParamOrganization";
 
 const WorkSpace: React.FC = () => {
   const dispatch = useAppDispatch();
-  const { workSpaceId } = useParams();
   const [openModal, setOpenModal] = useState(false);
 
-  const userOrganization = useAppSelector(selectOrganization).find(
-    (ele) => ele._id === workSpaceId
-  );
+  const userOrganization = useParamOrganization();
 
   const [filteredBoards, setFilteredBoard] = useState(userOrganization?.board);
 
@@ -79,11 +75,7 @@ const WorkSpace: React.FC = () => {
           >
             新增看板
           </Button>
-          <AddBoards
-            open={openModal}
-            setOpen={setOpenModal}
-            organizationId={workSpaceId}
-          />
+          <AddBoards open={openModal} setOpen={setOpenModal} />
         </Col>
       </Row>
 

@@ -1,50 +1,47 @@
-import React from "react";
-import { MemberModalCss } from "./style";
+import React, { useState } from "react";
+import { useParams } from "react-router";
 import { Button, Form } from "antd";
-import { OrganizationMemberProps } from "@/interfaces/organization";
 import { deleteOrganizationMemberApi } from "@/api/organization";
-import { useApi } from "@/hooks/useApiHook";
 import { useAppDispatch } from "@/hooks";
+import { OrganizationMemberProps } from "@/interfaces/organization";
 import { getOrganizationsAction } from "@/redux/organizationSlice";
+import { MemberModalCss } from "./style";
 
 const RemoveMember: React.FC<{
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  organizationId: string;
   selectedMember: OrganizationMemberProps | null;
-}> = ({ open, setOpen, organizationId, selectedMember }) => {
-  const userId = selectedMember?.userId._id;
+}> = ({ open, setOpen, selectedMember }) => {
+  const { workSpaceId } = useParams();
 
   const dispatch = useAppDispatch();
+  const [loading, setLoading] = useState(false);
 
-  const onCancel = () => {
-    setOpen(false);
-  };
+  const onFinish = () => {
+    if (!workSpaceId) {
+      return;
+    }
+    setLoading(true);
 
-  const [_result, loading, callApi] = useApi(deleteOrganizationMemberApi);
-
-  const onFinish = async () => {
-    await callApi({
-      organizationId,
-      memberId: userId || "",
-    });
-    await dispatch(getOrganizationsAction());
-
-    onCancel();
+    deleteOrganizationMemberApi({
+      organizationId: workSpaceId,
+      memberId: selectedMember?.userId._id || "",
+    })
+      .then(() => dispatch(getOrganizationsAction()))
+      .finally(() => {
+        setLoading(false);
+        setOpen(false);
+      });
   };
   return (
     <MemberModalCss
       title={<p style={{ textAlign: "center" }}>移除或停用成員</p>}
       width={332}
       open={open}
-      onCancel={onCancel}
+      onCancel={() => setOpen(false)}
       footer={null}
     >
-      <Form
-        // form={form}
-        layout="vertical"
-        onFinish={onFinish}
-      >
+      <Form layout="vertical" onFinish={onFinish}>
         <Form.Item name="exit">
           <Button
             type="text"

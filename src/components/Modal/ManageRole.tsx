@@ -1,38 +1,39 @@
 import React from "react";
-import { MemberModalCss } from "./style";
-import { Form, Radio } from "antd";
+import { useParams } from "react-router";
 import { CheckOutlined } from "@ant-design/icons";
+import { Form, Radio } from "antd";
+import { useAppDispatch } from "@/hooks";
 import {
   OrganizationMemberProps,
   UpdateOrganizationMemberProps,
 } from "@/interfaces/organization";
-import { useForm } from "antd/lib/form/Form";
-import { useAppDispatch } from "@/hooks";
 import { updateOrganizationMemberAction } from "@/redux/organizationSlice";
+import { MemberModalCss } from "./style";
 
 const ManageRole: React.FC<{
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  organizationId: string;
   selectedMember: OrganizationMemberProps | null;
-}> = ({ open, setOpen, organizationId, selectedMember }) => {
-  const onCancel = () => {
-    setOpen(false);
-  };
-  const [form] = useForm();
+}> = ({ open, setOpen, selectedMember }) => {
+  const { workSpaceId } = useParams();
+  const [form] = Form.useForm();
   const userId = selectedMember?.userId._id;
   const dispatch = useAppDispatch();
 
   const onFinish = async (values: UpdateOrganizationMemberProps) => {
-    onCancel();
+    if (!workSpaceId) {
+      return;
+    }
 
     dispatch(
       updateOrganizationMemberAction({
-        organizationId,
+        organizationId: workSpaceId,
         memberId: userId || "",
         role: values.role,
       })
-    );
+    ).finally(() => {
+      setOpen(false);
+    });
   };
 
   return (
@@ -40,7 +41,7 @@ const ManageRole: React.FC<{
       title={<p style={{ textAlign: "center" }}>更改許可設定</p>}
       width={332}
       open={open}
-      onCancel={onCancel}
+      onCancel={() => setOpen(false)}
       footer={null}
     >
       <Form form={form} onFinish={onFinish} layout="vertical">

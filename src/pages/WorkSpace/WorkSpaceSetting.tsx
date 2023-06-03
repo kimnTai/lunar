@@ -6,16 +6,14 @@ import {
   LockOutlined,
   GlobalOutlined,
 } from "@ant-design/icons";
-import { useParams } from "react-router-dom";
 import InviteMember from "@/components/Modal/InviteMember";
 import DeleteOrganization from "@/components/Modal/DeleteOrganization";
 import ManagePermission from "@/components/Modal/ManagePermission";
 import { WorkSpaceHeader } from "@/components/WorkSpace/WorkSpaceHeader";
 import { useAppSelector } from "@/hooks";
-import { selectOrganization } from "@/redux/organizationSlice";
+import { useParamOrganization } from "@/hooks/useParamOrganization";
 
 const WorkSpaceSetting: React.FC = () => {
-  const { workSpaceId } = useParams();
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
   const [openInviteModal, setOpenInviteModal] = useState(false);
   const [openManagePermissionModal, setOpenManagePermissionModal] =
@@ -23,9 +21,7 @@ const WorkSpaceSetting: React.FC = () => {
 
   const currentUser = useAppSelector((state) => state.user.user);
 
-  const userOrganization = useAppSelector(selectOrganization).find(
-    (ele) => ele._id === workSpaceId
-  );
+  const userOrganization = useParamOrganization();
 
   const orgUser = userOrganization?.member.find(
     (user) => user.userId._id === currentUser._id
@@ -49,11 +45,7 @@ const WorkSpaceSetting: React.FC = () => {
           >
             邀請工作區成員
           </Button>
-          <InviteMember
-            open={openInviteModal}
-            setOpen={setOpenInviteModal}
-            organizationId={workSpaceId!}
-          />
+          <InviteMember open={openInviteModal} setOpen={setOpenInviteModal} />
         </Col>
       </Row>
       <Divider />
@@ -119,14 +111,10 @@ const WorkSpaceSetting: React.FC = () => {
         <DeleteOrganization
           open={openDeleteModal}
           setOpen={setOpenDeleteModal}
-          organizationId={workSpaceId}
-          userOrganization={userOrganization}
         />
         <ManagePermission
           open={openManagePermissionModal}
           setOpen={setOpenManagePermissionModal}
-          organizationId={workSpaceId!}
-          userOrganization={userOrganization}
         />
       </WorkSpaceMemberCss>
     </WorkSpaceCss>

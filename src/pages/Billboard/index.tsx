@@ -22,11 +22,11 @@ import { getCardApi } from "@/api/cards";
 import { UrlCardShareProps } from "@/interfaces/trelloCard";
 import { CardModalProvider } from "@/context/CardModalContext";
 import TrelloCardModal from "@/components/TrelloCard/Modal";
-import { changeWorkSpace } from "@/redux/screenSlice";
+import { changeWorkSpace, selectShowWorkSpace } from "@/redux/screenSlice";
 
 const Billboard: React.FC = () => {
   const dispatch = useAppDispatch();
-  const workSpace = useAppSelector((state) => state.screen.showWorkSpace);
+  const workSpace = useAppSelector(selectShowWorkSpace);
   const navigate = useNavigate();
   const [cardList, setCardList] = useState<ListsProps[]>([]);
   const { boardId, cardId } = useParams();

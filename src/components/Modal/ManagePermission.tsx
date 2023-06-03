@@ -4,20 +4,17 @@ import { useApi } from "@/hooks/useApiHook";
 import { updateOrganizationApi } from "@/api/organization";
 import { Form, Radio } from "antd";
 import { CheckOutlined, LockOutlined, GlobalOutlined } from "@ant-design/icons";
-import {
-  OrganizationProps,
-  UpdateOrganizationProps,
-} from "@/interfaces/organization";
+import { UpdateOrganizationProps } from "@/interfaces/organization";
 import { useForm } from "antd/lib/form/Form";
 import { useAppDispatch } from "@/hooks";
 import { getOrganizationsAction } from "@/redux/organizationSlice";
+import { useParamOrganization } from "@/hooks/useParamOrganization";
 
 const ManagePermission: React.FC<{
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  organizationId: string;
-  userOrganization?: OrganizationProps;
-}> = ({ open, setOpen, organizationId, userOrganization }) => {
+}> = ({ open, setOpen }) => {
+  const userOrganization = useParamOrganization();
   const onCancel = () => {
     setOpen(false);
   };
@@ -28,7 +25,7 @@ const ManagePermission: React.FC<{
   const [_result, _loading, callApi] = useApi(updateOrganizationApi);
   const onFinish = async (values: UpdateOrganizationProps) => {
     await callApi({
-      organizationId,
+      organizationId: userOrganization?._id || "",
       permission: values.permission,
     });
     await dispatch(getOrganizationsAction());
