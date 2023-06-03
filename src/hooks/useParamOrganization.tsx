@@ -1,11 +1,17 @@
 import { useParams } from "react-router";
-import { selectOrganization } from "@/redux/organizationSlice";
 import { useAppSelector } from "./";
 
 export const useParamOrganization = () => {
-  const organizationId = useParams().workSpaceId;
+  const { workSpaceId, boardId } = useParams();
 
-  return useAppSelector(selectOrganization).find(
-    ({ _id }) => organizationId && _id === organizationId
+  return useAppSelector((state) =>
+    state.organization.organization.find(({ _id, board }) => {
+      if (workSpaceId) {
+        return _id === workSpaceId;
+      }
+      if (boardId) {
+        return board.map(({ _id }) => _id).includes(boardId);
+      }
+    })
   );
 };

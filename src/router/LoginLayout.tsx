@@ -1,9 +1,9 @@
-import { Navbar } from "@/components/User/Navbar";
-import { useAppSelector } from "@/hooks";
-import { MainLayoutCss } from "@/pages/Billboard/style";
+import React, { ReactNode } from "react";
 import { Layout } from "antd";
 import { Header } from "@/components/User/Header";
-import React, { ReactNode } from "react";
+import Navbar from "@/components/User/Navbar";
+import { useAppSelector } from "@/hooks";
+import { MainLayoutCss } from "@/pages/Billboard/style";
 
 const LoginLayout = React.memo<{
   children: ReactNode;
