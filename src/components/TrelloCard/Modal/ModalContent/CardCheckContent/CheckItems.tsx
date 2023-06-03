@@ -1,6 +1,6 @@
 import React from "react";
 import { Draggable } from "react-beautiful-dnd";
-import { Checkbox } from "antd";
+import { Checkbox, Progress } from "antd";
 import { CheckboxChangeEvent } from "antd/es/checkbox";
 import { updateCheckItemApi } from "@/api/cards";
 import { useCardModalContext } from "@/context/CardModalContext";
@@ -10,6 +10,15 @@ const CheckItems: React.FC<{ checklistIndex: number }> = ({
 }) => {
   const { cardData, setCardData } = useCardModalContext();
   const { id = "", checklist = [] } = cardData ?? {};
+
+  const getProgressPercent = () => {
+    const listItemsTotal = checklist[checklistIndex].checkItem.length;
+    const listItemsCompleted = checklist[checklistIndex].checkItem.filter(
+      (item) => item.completed
+    ).length;
+
+    return Math.round((listItemsCompleted / listItemsTotal) * 100);
+  };
 
   const handleCompletedChange = async (
     checkItemId: string,
@@ -48,6 +57,7 @@ const CheckItems: React.FC<{ checklistIndex: number }> = ({
 
   return (
     <>
+      <Progress percent={getProgressPercent()} />
       {checklist[checklistIndex].checkItem
         .sort((a, b) => +a.position - +b.position)
         .map(({ _id, completed, name }, index) => (
