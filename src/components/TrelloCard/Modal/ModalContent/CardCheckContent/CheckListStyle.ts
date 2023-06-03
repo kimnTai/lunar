@@ -20,3 +20,17 @@ export const CheckListStyled = styled.div`
     color: #9f9f9f;
   }
 `;
+
+export const CheckItemsStyled = styled.div`
+  .isCompletedTitle {
+    text-decoration: line-through;
+  }
+  .isShow {
+    display: block;
+  }
+
+  .isHidden {
+    display: none;
+  }
+`;
+

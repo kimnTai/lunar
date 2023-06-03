@@ -1,15 +1,25 @@
-import React from "react";
+import React, { useState } from "react";
 import { Draggable } from "react-beautiful-dnd";
-import { Checkbox, Progress } from "antd";
+import { Button, Checkbox, Col, Progress, Row, Space } from "antd";
 import { CheckboxChangeEvent } from "antd/es/checkbox";
+import TextArea from "antd/es/input/TextArea";
 import { updateCheckItemApi } from "@/api/cards";
 import { useCardModalContext } from "@/context/CardModalContext";
+import { CheckItemsStyled } from "./CheckListStyle";
 
 const CheckItems: React.FC<{ checklistIndex: number }> = ({
   checklistIndex = 0,
 }) => {
   const { cardData, setCardData } = useCardModalContext();
   const { id = "", checklist = [] } = cardData ?? {};
+
+  const [nameIsEditList, setNameIsEditList] = useState(
+    new Array(checklist[checklistIndex].checkItem.length).fill(false)
+  );
+
+  const [itemsNameList, setItemNameList] = useState(
+    checklist[checklistIndex].checkItem.map((item) => item.name)
+  );
 
   const getProgressPercent = () => {
     const listItemsTotal = checklist[checklistIndex].checkItem.length;
@@ -55,8 +65,65 @@ const CheckItems: React.FC<{ checklistIndex: number }> = ({
     }
   };
 
+  //#regin checkItem Name
+  const handleItemNameIsEdit = (itemIndex: number, isEdit: boolean) => {
+    const newItemNameIsEditList = nameIsEditList.map((item) => (item = false));
+
+    if (isEdit) {
+      newItemNameIsEditList[itemIndex] = true;
+    }
+
+    setNameIsEditList(newItemNameIsEditList);
+  };
+
+  const handleItemNameChange = (
+    itemIndex: number,
+    e: React.ChangeEvent<HTMLTextAreaElement>
+  ) => {
+    const newItemNameList = itemsNameList.map((itemName) => itemName);
+    newItemNameList[itemIndex] = e.target.value;
+    setItemNameList(newItemNameList);
+  };
+
+  const handleSaveItemName = async (itemIndex: number, checkItemId: string) => {
+    if (itemsNameList[itemIndex].trim() === "") {
+      return;
+    }
+
+    try {
+      const { result } = await updateCheckItemApi({
+        cardId: id,
+        checklistId: checklist[checklistIndex].id,
+        checkItemId: checkItemId,
+        name: itemsNameList[itemIndex],
+      });
+      handleItemNameIsEdit(itemIndex, false);
+      // 更新畫面
+      setCardData({
+        ...cardData!,
+        checklist: checklist.map((list) => {
+          if (list.id === result.checklistId) {
+            return {
+              ...list,
+              checkItem: list.checkItem.map((item) => {
+                if (item._id === checkItemId) {
+                  return result;
+                }
+                return item;
+              }),
+            };
+          }
+          return list;
+        }),
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  //#endregin
+
   return (
-    <>
+    <CheckItemsStyled>
       <Progress percent={getProgressPercent()} />
       {checklist[checklistIndex].checkItem
         .sort((a, b) => +a.position - +b.position)
@@ -82,19 +149,63 @@ const CheckItems: React.FC<{ checklistIndex: number }> = ({
                   })(),
                 }}
               >
-                <Checkbox
-                  checked={completed}
-                  onChange={(e) => {
-                    handleCompletedChange(_id, e);
-                  }}
-                >
-                  {name}
-                </Checkbox>
+                <Row gutter={[16, 8]}>
+                  <Col span={24}>
+                    <Row gutter={[16, 8]}>
+                      <Col flex="none">
+                        <Checkbox
+                          checked={completed}
+                          onChange={(e) => {
+                            handleCompletedChange(_id, e);
+                          }}
+                        />
+                      </Col>
+                      <Col flex="auto">
+                        <span
+                          className={
+                            nameIsEditList[index] ? "isHidden" : "isShow"
+                          }
+                          onClick={() => {
+                            handleItemNameIsEdit(index, true);
+                          }}
+                        >
+                          {name}
+                        </span>
+                        <span
+                          className={
+                            nameIsEditList[index] ? "isShow" : "isHidden"
+                          }
+                        >
+                          <TextArea
+                            value={itemsNameList[index]}
+                            onChange={(e) => handleItemNameChange(index, e)}
+                            placeholder="填寫待辦項目"
+                          />
+                          <Space>
+                            <Button
+                              type="primary"
+                              size="small"
+                              onClick={() => handleSaveItemName(index, _id)}
+                            >
+                              儲存
+                            </Button>
+                            <Button
+                              size="small"
+                              onClick={() => handleItemNameIsEdit(index, false)}
+                            >
+                              取消
+                            </Button>
+                          </Space>
+                        </span>
+                      </Col>
+                    </Row>
+                  </Col>
+                </Row>
               </div>
             )}
           </Draggable>
         ))}
-    </>
+    </CheckItemsStyled>
   );
 };
 
