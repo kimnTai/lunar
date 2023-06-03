@@ -22,7 +22,17 @@ const TrelloCardInner: React.FC<TrelloCardInnerProps> = ({
         .sort((a, b) => +a.position - +b.position)
         .map(
           (
-            { id, name, attachment, label, checklist, date, member, comment },
+            {
+              id,
+              name,
+              attachment,
+              label,
+              checklist,
+              date,
+              member,
+              comment,
+              boardId,
+            },
             index
           ) => (
             <Draggable key={id} draggableId={id} index={index}>
@@ -57,7 +67,7 @@ const TrelloCardInner: React.FC<TrelloCardInnerProps> = ({
                         cardId: id,
                         open: true,
                       });
-                      navigate(`/cards/${id}`);
+                      navigate(`/board/${boardId}/cards/${id}`);
                     }}
                   >
                     <CardInnerTitle name={name} />

@@ -89,7 +89,7 @@ const AppRouter: React.FC = () => {
                 element={<LoginLayout children={<Billboard />} />}
               />
               <Route
-                path="/cards/:cardId"
+                path="/board/:boardId/cards/:cardId"
                 element={<LoginLayout children={<Billboard />} />}
               />
             </>
