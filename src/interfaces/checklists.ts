@@ -25,7 +25,7 @@ export interface UpdateCardCheckListProps {
   cardId: string;
   checklistId: string;
   name?: string;
-  position: string;
+  position?: string;
   checklistIdOld?: string;
 }
 
