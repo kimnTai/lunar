@@ -19,10 +19,16 @@ const UserList: React.FC<OrganizationMemberProps> = ({
         </div>
       </div>
       <div className="d-flex" style={{ alignItems: "center" }}>
-        <Select defaultValue={role} style={{ width: "100px" }} size="large">
-          <Select.Option value="master">管理員</Select.Option>
-          <Select.Option value="user">成員</Select.Option>
-        </Select>
+        <Select
+          defaultValue={role}
+          style={{ width: "100px" }}
+          size="large"
+          options={[
+            { value: "manager", label: "管理員" },
+            { value: "editor", label: "成員" },
+            { value: "viewer", label: "一般" },
+          ]}
+        />
         <Button
           shape="circle"
           danger

@@ -56,10 +56,13 @@ const AddMember: React.FC<{
           />
         </Form.Item>
         <Form.Item initialValue="user" className="select">
-          <Select>
-            <Select.Option value="master">管理員</Select.Option>
-            <Select.Option value="user">成員</Select.Option>
-          </Select>
+          <Select
+            options={[
+              { value: "manager", label: "管理員" },
+              { value: "editor", label: "成員" },
+              { value: "viewer", label: "一般" },
+            ]}
+          />
         </Form.Item>
         <Form.Item className="btn">
           <Button type="primary" htmlType="submit" loading={loading}>
