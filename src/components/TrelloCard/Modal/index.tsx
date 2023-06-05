@@ -39,6 +39,9 @@ const TrelloCardModal: React.FC<TrelloCardModalProps> = ({
     }
   }, [openModal.open]);
 
+  // 有卡片資料才顯示 Modal
+  if (!cardData) return null;
+
   return (
     <TrelloCardModalStyled
       open={openModal.open}
