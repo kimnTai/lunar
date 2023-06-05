@@ -13,7 +13,6 @@ import {
 } from "antd";
 import type { MenuProps } from "antd";
 import { UserAddOutlined, ExclamationCircleOutlined } from "@ant-design/icons";
-import { useParams } from "react-router-dom";
 import { getMenuItem as getItem } from "@/utils/func";
 import RemoveMember from "@/components/Modal/RemoveMember";
 import { OrganizationMemberProps } from "@/interfaces/organization";
@@ -22,7 +21,7 @@ import InviteMember from "@/components/Modal/InviteMember";
 import { WorkSpaceHeader } from "@/components/WorkSpace/WorkSpaceHeader";
 import { useAppSelector } from "@/hooks";
 import CopyInviteLinkBtn from "@/components/WorkSpace/CopyInviteLinkBtn";
-import { selectOrganization } from "@/redux/organizationSlice";
+import { useParamOrganization } from "@/hooks/useParamOrganization";
 
 const items: MenuProps["items"] = [
   getItem(
@@ -35,7 +34,6 @@ const items: MenuProps["items"] = [
 ];
 
 const WorkSpaceMember: React.FC = () => {
-  const { workSpaceId } = useParams();
   const [openRemoveModal, setOpenRemoveModal] = useState(false);
   const [openManageRoleModal, setOpenManageRoleModal] = useState(false);
   const [openInviteModal, setOpenInviteModal] = useState(false);
@@ -44,9 +42,7 @@ const WorkSpaceMember: React.FC = () => {
 
   const currentUser = useAppSelector((state) => state.user.user);
 
-  const userOrganization = useAppSelector(selectOrganization).find(
-    (ele) => ele._id === workSpaceId
-  );
+  const userOrganization = useParamOrganization();
 
   const orgUser = userOrganization?.member.find(
     (user) => user.userId._id === currentUser._id
@@ -101,12 +97,7 @@ const WorkSpaceMember: React.FC = () => {
           >
             邀請工作區成員
           </Button>
-          <InviteMember
-            open={openInviteModal}
-            setOpen={setOpenInviteModal}
-            organizationId={workSpaceId!}
-            userOrganization={userOrganization}
-          />
+          <InviteMember open={openInviteModal} setOpen={setOpenInviteModal} />
         </Col>
       </Row>
       <Divider />
@@ -147,7 +138,7 @@ const WorkSpaceMember: React.FC = () => {
                   </p>
                 </Col>
                 <CopyInviteLinkBtn
-                  userOrganization={userOrganization}
+                  organizationInviteLink={userOrganization?.inviteLink}
                   setOpen={onCancel}
                 />
               </Row>
@@ -204,13 +195,11 @@ const WorkSpaceMember: React.FC = () => {
             <ManageRole
               open={openManageRoleModal}
               setOpen={setOpenManageRoleModal}
-              organizationId={workSpaceId || ""}
               selectedMember={selectedMember}
             />
             <RemoveMember
               open={openRemoveModal}
               setOpen={setOpenRemoveModal}
-              organizationId={workSpaceId!}
               selectedMember={selectedMember}
             />
           </Col>

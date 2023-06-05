@@ -13,6 +13,7 @@ export const Sider = styled(Layout.Sider)`
   .logo {
     width: 140px;
     height: 32px;
+    margin-left: 11px;
   }
   .logo2 {
     width: 84px;

@@ -4,7 +4,7 @@ import { Card, Button, Divider, Form, Input } from "antd";
 import GoogleIcon from "@/assets/images/google.png";
 import GitHubIcon from "@/assets/images/GitHub.png";
 import { LoginCss } from "./style";
-import { useLocation, useNavigate } from "react-router-dom";
+import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import type { LoginProps } from "@/interfaces/user";
 import ThirdPartyButton from "./ThirdPartyButton";
 import { useAppSelector, useAppDispatch } from "@/hooks";
@@ -41,6 +41,7 @@ const Login: React.FC = () => {
 
   return (
     <LoginCss>
+      <Outlet />
       <img className="header" src={Logo} alt="" />
       <Card>
         <h1 className="cardHeader">{isSignUpPage ? "免費註冊" : "登入"}</h1>

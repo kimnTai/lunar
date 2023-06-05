@@ -1,18 +1,16 @@
 import React, { useState } from "react";
 import { DeleteOrgModalCss } from "./style";
 import { Button, Form, Input } from "antd";
-import { deleteOrganizationApi } from "@/api/organization";
-import { OrganizationProps } from "@/interfaces/organization";
 import { useNavigate } from "react-router-dom";
-import { getOrganizationsAction } from "@/redux/organizationSlice";
+import { deleteOrganizationAction } from "@/redux/organizationSlice";
 import { useAppDispatch } from "@/hooks";
+import { useParamOrganization } from "@/hooks/useParamOrganization";
 
 const DeleteOrganization: React.FC<{
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  organizationId?: string;
-  userOrganization?: OrganizationProps;
-}> = ({ open, setOpen, organizationId, userOrganization }) => {
+}> = ({ open, setOpen }) => {
+  const userOrganization = useParamOrganization();
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const [isButtonDisabled, setIsButtonDisabled] = useState(true);
@@ -29,20 +27,20 @@ const DeleteOrganization: React.FC<{
 
   const [buttonLoading, setButtonLoading] = useState(false);
   const onFinish = async () => {
-    if (!organizationId) {
+    if (!userOrganization) {
       return;
     }
     setButtonLoading(true);
 
-    deleteOrganizationApi({
-      organizationId: organizationId,
-    })
-      .then(() => dispatch(getOrganizationsAction()))
-      .finally(() => {
-        navigate(`/`);
-        onCancel();
-        setButtonLoading(false);
-      });
+    dispatch(
+      deleteOrganizationAction({
+        organizationId: userOrganization._id,
+      })
+    ).finally(() => {
+      navigate(`/`);
+      onCancel();
+      setButtonLoading(false);
+    });
   };
   return (
     <DeleteOrgModalCss

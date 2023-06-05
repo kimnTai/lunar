@@ -6,12 +6,13 @@ import { Button, Form, Input, Select } from "antd";
 import Cover from "@/assets/images/img_cover.png";
 import { useAppDispatch } from "@/hooks";
 import { getOrganizationByIdAction } from "@/redux/organizationSlice";
+import { useParamOrganization } from "@/hooks/useParamOrganization";
 
 const AddBoards: React.FC<{
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  organizationId?: string;
-}> = ({ open, setOpen, organizationId }) => {
+}> = ({ open, setOpen }) => {
+  const organizationId = useParamOrganization()?._id;
   const [buttonLoading, setButtonLoading] = useState(false);
   const dispatch = useAppDispatch();
 

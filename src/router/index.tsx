@@ -46,13 +46,14 @@ const AppRouter: React.FC = () => {
       {spinning && <Route path="*" element={<SpinPage />} />}
       {!spinning && (
         <>
-          {!login && <Route path="/" element={<Home />}></Route>}
+          {!login && <Route path="/" element={<Home />} />}
           <Route
             path="/invitation/:type/:invitationToken"
             element={<Invitation />}
-          ></Route>
-          <Route path="/login/:callback" element={<Callback />}></Route>
-          <Route path="/login" element={<Login />} />
+          />
+          <Route path="/login" element={<Login />}>
+            <Route path="callback" element={<Callback />} />
+          </Route>
           <Route path="/signup" element={<Login />} />
           <Route path="*" element={<ErrorPage />} />
           {login && (
@@ -70,28 +71,19 @@ const AppRouter: React.FC = () => {
                   />
                 }
               />
-              <Route path={"/workspace/new"} element={<NewWorkSpace />} />
-              <Route
-                index
-                path={`/workspace/:workSpaceId/home`}
-                element={<LoginLayout children={<WorkSpace />} />}
-              />
-              <Route
-                path={`/workspace/:workSpaceId/members`}
-                element={<LoginLayout children={<WorkSpaceMember />} />}
-              />
-              <Route
-                path={`/workspace/:workSpaceId/setting`}
-                element={<LoginLayout children={<WorkSpaceSetting />} />}
-              />
-              <Route
-                path="/board/:boardId"
-                element={<LoginLayout children={<Billboard />} />}
-              />
-              <Route
-                path="/cards/:cardId"
-                element={<LoginLayout children={<Billboard />} />}
-              />
+              <Route path="/workspace">
+                <Route path="new" element={<NewWorkSpace />} />
+                <Route path=":workSpaceId" element={<LoginLayout />}>
+                  <Route index path="home" element={<WorkSpace />} />
+                  <Route path="members" element={<WorkSpaceMember />} />
+                  <Route path="setting" element={<WorkSpaceSetting />} />
+                </Route>
+              </Route>
+              <Route path="/board" element={<LoginLayout />}>
+                <Route path=":boardId" element={<Billboard />}>
+                  <Route path="cards/:cardId" element={<></>} />
+                </Route>
+              </Route>
             </>
           )}
         </>

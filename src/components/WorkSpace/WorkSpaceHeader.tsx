@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { EditOutlined } from "@ant-design/icons";
 import { Button, Col, Form, Input, Row, Spin } from "antd";
 import { ColorIcon } from "../Icons";
@@ -11,6 +11,8 @@ export const WorkSpaceHeader: React.FC = () => {
   const paramOrganization = useParamOrganization();
   const [isEdit, setIsEdit] = useState(false);
   const [spinning, setSpinning] = useState(false);
+  const formRef = useRef(null);
+  const containerRef = useRef<HTMLDivElement>(null);
 
   const dispatch = useAppDispatch();
 
@@ -34,6 +36,21 @@ export const WorkSpaceHeader: React.FC = () => {
     });
   };
 
+  useEffect(() => {
+    const handleClickOutside = ({ target }: PointerEvent) => {
+      if (
+        containerRef.current &&
+        !containerRef.current.contains(target as Node)
+      ) {
+        setIsEdit(false);
+      }
+    };
+    document.addEventListener("pointerdown", handleClickOutside);
+    return () => {
+      document.removeEventListener("pointerdown", handleClickOutside);
+    };
+  }, []);
+
   return (
     <Row>
       <ColorIcon
@@ -48,6 +65,7 @@ export const WorkSpaceHeader: React.FC = () => {
           align={"middle"}
           justify={"center"}
           style={{ marginBottom: "8px" }}
+          ref={containerRef}
         >
           {isEdit ? (
             <Spin spinning={spinning}>
@@ -55,6 +73,7 @@ export const WorkSpaceHeader: React.FC = () => {
                 onFinish={UpdateOrganizationName}
                 initialValues={{ name: paramOrganization?.name }}
                 style={{ display: "flex", gap: "4px" }}
+                ref={formRef}
               >
                 <Form.Item name="name" style={{ marginBottom: "8px" }}>
                   <Input />

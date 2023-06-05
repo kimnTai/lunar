@@ -1,13 +1,12 @@
-import { Navbar } from "@/components/User/Navbar";
-import { useAppSelector } from "@/hooks";
-import { MainLayoutCss } from "@/pages/Billboard/style";
+import React from "react";
+import { Outlet } from "react-router";
 import { Layout } from "antd";
 import { Header } from "@/components/User/Header";
-import React, { ReactNode } from "react";
+import Navbar from "@/components/User/Navbar";
+import { useAppSelector } from "@/hooks";
+import { MainLayoutCss } from "@/pages/Billboard/style";
 
-const LoginLayout = React.memo<{
-  children: ReactNode;
-}>(({ children }) => {
+const LoginLayout = React.memo(() => {
   const showWorkSpace = useAppSelector((state) => state.screen.showWorkSpace);
 
   return (
@@ -15,7 +14,9 @@ const LoginLayout = React.memo<{
       <Navbar />
       <Layout>
         <Header />
-        <MainLayoutCss workspace={`${showWorkSpace}`}>{children}</MainLayoutCss>
+        <MainLayoutCss workspace={`${showWorkSpace}`}>
+          <Outlet />
+        </MainLayoutCss>
       </Layout>
     </Layout>
   );
