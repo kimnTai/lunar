@@ -2,19 +2,19 @@ import { useState } from "react";
 import { Button, Form, Select } from "antd";
 import { useAppSelector, useAppDispatch } from "@/hooks";
 import { CloseOutlined } from "@ant-design/icons";
-import { updateBoardApi } from "@/api/boards";
 import { useNavigate } from "react-router";
 import {
   getOrganizationByIdAction,
   selectOrganization,
 } from "@/redux/organizationSlice";
-import { BoardsProps } from "@/interfaces/boards";
+import { selectBoard, updateBoardAction } from "@/redux/boardSlice";
 
-const SettingContent: React.FC<{ board?: BoardsProps }> = ({ board }) => {
+const SettingContent: React.FC = () => {
   const [isShowChangeWorkSpace, setIsShowChangeWorkSpace] = useState(false);
   const [isShowChangePeople, setIsShowChangePeople] = useState(false);
   const [people, setPeople] = useState("成員");
 
+  const board = useAppSelector(selectBoard);
   const userOrganization = useAppSelector(selectOrganization);
   const orgName = userOrganization.find(
     (ele) => ele._id === board?.organizationId
@@ -37,31 +37,22 @@ const SettingContent: React.FC<{ board?: BoardsProps }> = ({ board }) => {
     setIsShowChangePeople(false);
   };
 
-  const onFinish = (values: any) => {
+  const onFinish = async (values: any) => {
     if (!board) {
       return;
     }
-    const changeData = {
-      name: board?.name,
-      organizationId: values.orgID,
-      permission: board?.permission,
-      closed: closed,
-      image: board?.image,
-      boardId: board?._id,
-    };
-    console.log(changeData);
-    updateBoardApi({
-      name: board.name,
-      organizationId: values.orgID,
-      permission: board.permission,
-      closed: closed,
-      image: board.image,
-      boardId: board._id,
-    }).then((res) => {
-      console.log(res);
-      dispatch(getOrganizationByIdAction(values.orgID));
-      navigate(`/workspace/${values.orgID}/home`);
-    });
+
+    await dispatch(
+      updateBoardAction({
+        name: board.name,
+        organizationId: values.orgID,
+        permission: board.permission,
+        closed: closed,
+        boardId: board._id,
+      })
+    );
+    await dispatch(getOrganizationByIdAction(values.orgID));
+    navigate(`/workspace/${values.orgID}/home`);
   };
 
   return (

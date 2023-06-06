@@ -1,6 +1,5 @@
-import { deleteBoardApi } from "@/api/boards";
 import { useAppDispatch } from "@/hooks";
-import { getOrganizationsAction } from "@/redux/organizationSlice";
+import { deleteBoardAction } from "@/redux/boardSlice";
 import { Button, ButtonProps } from "antd";
 import { useState } from "react";
 
@@ -26,14 +25,13 @@ const WorkSpaceCardContent: React.FC<
         danger
         type="text"
         loading={loading}
-        onClick={async (e) => {
+        onClick={(e) => {
           e.stopPropagation();
           setLoading(true);
 
-          await deleteBoardApi(boardId);
-          await dispatch(getOrganizationsAction());
-
-          setLoading(false);
+          dispatch(deleteBoardAction(boardId)).finally(() => {
+            setLoading(false);
+          });
         }}
       >
         刪除看板

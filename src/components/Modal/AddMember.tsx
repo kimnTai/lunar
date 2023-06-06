@@ -1,35 +1,34 @@
 import React, { useState } from "react";
-import { useParams } from "react-router";
 import { Button, Divider, Form, Select } from "antd";
-import { addBoardMembersApi } from "@/api/boards";
-import { OrganizationMemberProps } from "@/interfaces/organization";
 import CopyInviteLinkBtn from "../WorkSpace/CopyInviteLinkBtn";
 import InviteMemberSelect from "../WorkSpace/InviteMemberSelect";
 import UserList from "./UserList";
 import { AddMemberCss } from "./style";
+import { useAppDispatch, useAppSelector } from "@/hooks";
+import { addBoardMembersAction, selectBoard } from "@/redux/boardSlice";
 
 const AddMember: React.FC<{
-  member: OrganizationMemberProps[];
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  boardInviteLink: string;
-}> = ({ member, open, setOpen, boardInviteLink }) => {
+}> = ({ open, setOpen }) => {
+  const board = useAppSelector(selectBoard);
+  const dispatch = useAppDispatch();
   const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);
   const [selectedUsers, setSelectedUsers] = useState<{ userIdList: string[] }>({
     userIdList: [],
   });
 
-  const { boardId } = useParams();
-
   const onFinish = async () => {
     setLoading(true);
 
     try {
-      await addBoardMembersApi({
-        boardId: boardId!,
-        userIdList: selectedUsers.userIdList,
-      });
+      await dispatch(
+        addBoardMembersAction({
+          boardId: board._id,
+          userIdList: selectedUsers.userIdList,
+        })
+      );
     } catch (error) {}
 
     setSelectedUsers({
@@ -70,7 +69,9 @@ const AddMember: React.FC<{
           </Button>
         </Form.Item>
       </Form>
-      {member && member?.map((ele, idx) => <UserList {...ele} key={idx} />)}
+      {board.member?.map((ele, idx) => (
+        <UserList {...ele} key={idx} />
+      ))}
       <Divider style={{ margin: "12px 0" }} />
       <div
         className="d-flex"
@@ -80,7 +81,7 @@ const AddMember: React.FC<{
         <CopyInviteLinkBtn
           setOpen={setOpen}
           style={{ backgroundColor: "var(--graye9)", marginLeft: "16px" }}
-          boardInviteLink={boardInviteLink}
+          boardInviteLink={board.inviteLink}
         />
       </div>
     </AddMemberCss>

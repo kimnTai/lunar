@@ -1,11 +1,12 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
-import { PlusOutlined, CloseOutlined } from "@ant-design/icons";
-import { Button, Input, Form, Row, Col, Spin } from "antd";
-import type { InputRef } from "antd";
+import { CloseOutlined, PlusOutlined } from "@ant-design/icons";
+import { Button, Col, Form, Input, Row, Spin, type InputRef } from "antd";
 import { AddListProps } from "@/interfaces/lists";
-import { newListApi } from "@/api/lists";
 import { nextPosition } from "@/utils/cardFunc";
+import { useAppDispatch, useAppSelector } from "@/hooks";
+import { selectBoard } from "@/redux/boardSlice";
+import { newListApiAction } from "@/redux/listSlice";
 
 const AddListCss = styled(Form)<{ useadd: string }>`
   height: ${(props) => (props.useadd === "true" ? "88px" : "40px")};
@@ -31,36 +32,28 @@ const AddListCss = styled(Form)<{ useadd: string }>`
   }
 `;
 
-const AddList: React.FC<AddListProps> = ({
-  cardList,
-  boardId,
-  callGetBoardApi,
-}) => {
+const AddList: React.FC<AddListProps> = () => {
+  const board = useAppSelector(selectBoard);
+  const dispatch = useAppDispatch();
+
   const [add, setAdd] = useState(false);
   const [loading, setLoading] = useState(false);
   const [text, setText] = useState("");
   const inputRef = useRef<InputRef>(null);
 
-  const handleMouseDown = (e: any) => {
-    e.preventDefault();
-  };
-  const handleClick = () => {
-    setAdd(!add);
-    setText("");
-  };
   const onFinish = async () => {
     setLoading(true);
-    await newListApi({
-      name: text,
-      boardId: boardId,
-      position: nextPosition(cardList).toString(),
-    })
-      .then((res) => {
-        if (res.status === "success") {
-          callGetBoardApi(boardId);
-        }
-      })
-      .catch(() => setLoading(false));
+
+    try {
+      await dispatch(
+        newListApiAction({
+          name: text,
+          boardId: board._id,
+          position: `${nextPosition(board.list)}`,
+        })
+      );
+    } catch (error) {}
+
     setLoading(false);
     setAdd(false);
   };
@@ -81,12 +74,15 @@ const AddList: React.FC<AddListProps> = ({
         <AddListCss
           useadd={add.toString()}
           onBlur={() => setAdd(false)}
-          onMouseDown={handleMouseDown}
+          onMouseDown={(e) => e.preventDefault()}
           onFinish={onFinish}
         >
           <Row>
             <a
-              onClick={handleClick}
+              onClick={() => {
+                setAdd((pre) => !pre);
+                setText("");
+              }}
               className="addCard"
               style={{ display: add ? "none" : "block" }}
             >

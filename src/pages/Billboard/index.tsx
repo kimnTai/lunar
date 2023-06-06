@@ -5,8 +5,7 @@ import { DragDropContext, DropResult, Droppable } from "react-beautiful-dnd";
 import { BillboardStyled } from "./style";
 import BillboardHeader from "./BillboardHeader";
 import { useNavigate, useParams } from "react-router";
-import { useApi } from "@/hooks/useApiHook";
-import { getBoardApi } from "@/api/boards";
+import { getBoardByIdAction, selectBoard } from "@/redux/boardSlice";
 import { Spin } from "antd";
 import { ListsProps } from "@/interfaces/lists";
 import {
@@ -30,10 +29,11 @@ const Billboard: React.FC = () => {
   const navigate = useNavigate();
   const [cardList, setCardList] = useState<ListsProps[]>([]);
   const { boardId, cardId } = useParams();
-  const [boardResult, isBoardLoading, callGetBoardApi] = useApi(getBoardApi);
+  const board = useAppSelector(selectBoard);
+  const [isBoardLoading, setBoardLoading] = useState(false);
   const { data: socketEvent, sendMessage } = useWebSocket(
     boardId!,
-    callGetBoardApi
+    async (_: string) => {}
   );
   const [openModal, setOpenModal] = useState<UrlCardShareProps>({
     listId: "",
@@ -44,15 +44,16 @@ const Billboard: React.FC = () => {
   useEffect(() => {
     if (socketEvent) {
       setCardList(getSocketChange(cardList, socketEvent)!);
-      console.log(getSocketChange(cardList, socketEvent)!);
     }
   }, [socketEvent]);
 
   useEffect(() => {
     if (boardId) {
-      (async () => {
-        await callGetBoardApi(boardId);
-      })();
+      setBoardLoading(true);
+
+      dispatch(getBoardByIdAction(boardId)).finally(() => {
+        setBoardLoading(false);
+      });
     }
   }, [boardId]);
 
@@ -62,26 +63,26 @@ const Billboard: React.FC = () => {
     }
   }, [workSpace]);
   useEffect(() => {
-    if (boardResult?.result) {
-      setCardList(boardResult.result.list);
+    if (board.list) {
+      const cloneList = JSON.parse(JSON.stringify(board.list));
+      setCardList(cloneList);
       sendMessage({ type: "subscribe", boardId }); // socket
     }
     return () => sendMessage({ type: "unsubscribe", boardId });
-  }, [boardResult?.result]);
+  }, [board.list]);
 
   useEffect(() => {
     if (cardId && !openModal.open) {
-      (async () =>
-        await getCardApi(cardId).then((res) => {
-          if (res.status === "success") {
-            navigate(`/board/${res.result.boardId}`);
-            setOpenModal({
-              listId: res.result.listId,
-              cardId,
-              open: true,
-            });
-          }
-        }))();
+      getCardApi(cardId).then((res) => {
+        if (res.status === "success") {
+          navigate(`/board/${res.result.boardId}`);
+          setOpenModal({
+            listId: res.result.listId,
+            cardId,
+            open: true,
+          });
+        }
+      });
     }
   }, [cardId]);
   const onDragEnd = (result: DropResult) => {
@@ -122,10 +123,7 @@ const Billboard: React.FC = () => {
         />
       ) : (
         <>
-          <BillboardHeader
-            board={boardResult?.result}
-            callGetBoardApi={callGetBoardApi}
-          />
+          <BillboardHeader />
           <DragDropContext onDragEnd={onDragEnd}>
             <Droppable
               droppableId="board"
@@ -154,11 +152,7 @@ const Billboard: React.FC = () => {
                       />
                     ))}
                   {provided.placeholder}
-                  <AddList
-                    cardList={cardList}
-                    boardId={boardId || ""}
-                    callGetBoardApi={callGetBoardApi}
-                  />
+                  <AddList />
                 </BillboardStyled>
               )}
             </Droppable>

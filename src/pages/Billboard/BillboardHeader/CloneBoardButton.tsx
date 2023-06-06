@@ -1,11 +1,11 @@
 import React, { useState } from "react";
-import { Button, Form, Input, Popover, Select, Spin } from "antd";
-import ListButton from "@/components/ListButton";
-import { CopyOutlined } from "@ant-design/icons";
-import { useAppSelector } from "@/hooks";
 import { useNavigate, useParams } from "react-router";
-import { postCloneBoardApi } from "@/api/boards";
+import { Button, Form, Input, Popover, Select, Spin } from "antd";
+import { CopyOutlined } from "@ant-design/icons";
+import ListButton from "@/components/ListButton";
+import { useAppDispatch, useAppSelector } from "@/hooks";
 import { selectOrganization } from "@/redux/organizationSlice";
+import { postCloneBoardAction } from "@/redux/boardSlice";
 
 type FormValues = {
   name: string;
@@ -23,26 +23,29 @@ const CloneBoardButton: React.FC = () => {
 
   const navigate = useNavigate();
 
-  const onFinish = (value: FormValues) => {
+  const dispatch = useAppDispatch();
+
+  const onFinish = async (value: FormValues) => {
     if (boardId) {
       setComponentState((pre) => ({
         ...pre,
         isLoading: true,
       }));
 
-      postCloneBoardApi({
-        ...value,
-        sourceBoardId: boardId,
-      })
-        .then((res) => {
-          navigate(`/board/${res.result.id}`);
-        })
-        .finally(() => {
-          setComponentState({
-            isPopoverOpen: false,
-            isLoading: false,
-          });
-        });
+      try {
+        await dispatch(
+          postCloneBoardAction({
+            ...value,
+            sourceBoardId: boardId,
+          })
+        );
+        navigate(`/workspace/${value.organizationId}/home`);
+      } catch (error) {}
+
+      setComponentState({
+        isPopoverOpen: false,
+        isLoading: false,
+      });
     }
   };
 
