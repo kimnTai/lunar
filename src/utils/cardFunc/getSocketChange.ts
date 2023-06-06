@@ -1,69 +1,54 @@
 import { ListsProps } from "@/interfaces/lists";
 import { SocketResultProps } from "@/interfaces/socket";
+import { cloneDeep } from "lodash";
 
 export function getSocketChange(
   cardList: ListsProps[],
   result: SocketResultProps
 ) {
-  if (!result.listId) {
-    if (cardList.filter((ele) => ele.id === result.id)?.length) {
+  if (!("listId" in result)) {
+    const target = cardList.find((ele) => ele._id === result.id);
+
+    if (target) {
       // column 互換
-      cardList.filter((ele) => ele._id === result.id)[0].position =
-        result.position;
-      return JSON.parse(JSON.stringify(cardList));
+      target.position = result.position;
     } else {
       // column 新增
-      cardList.push({
-        _id: result._id,
-        name: result.name,
-        position: result.position,
-        boardId: result.boardId,
-        card: [],
-        id: result.id,
-      });
-      return JSON.parse(JSON.stringify(cardList));
+      cardList.push(result);
     }
+
+    return cloneDeep(cardList);
   }
+
   // column 內互換 與 column外互換
-  const originColumn = cardList.filter(
-    (ele) => ele.card.filter((cardEle) => cardEle.id === result.id)[0]
-  )[0];
-  const newData = {
-    name: result.name,
-    closed: result.closed,
-    position: result.position,
-    listId: result.listId,
-    label: result.label,
-    _id: result._id,
-    member: result.member,
-    createdAt: result.createdAt,
-    updatedAt: result.createdAt,
-    id: result.id,
-    description: result.description,
-    checklist: result.checklist,
-    comment: result.comment,
-    attachment: result.attachment,
-    date: result.date,
-  };
+  const originColumn = cardList.find((ele) =>
+    ele.card.find((cardEle) => cardEle.id === result.id)
+  );
+
+  const newData = cloneDeep(result);
+  // 新增
   if (!originColumn) {
-    // 新增
-    cardList.filter((ele) => ele.id === result.listId)[0].card.push(newData);
-    return JSON.parse(JSON.stringify(cardList));
+    cardList.find((ele) => ele.id === result.listId)?.card.push(newData);
+    return cloneDeep(cardList);
   }
+
+  // 同column 互換
   if (originColumn.id === result.listId) {
-    // 同column 互換
-    const useData = originColumn.card.filter((ele) => ele.id === result.id)[0];
-    if (useData.position !== result.position) {
+    const useData = originColumn.card.find((ele) => ele.id === result.id);
+    if (useData && useData.position !== result.position) {
       useData.position = result.position;
-      return JSON.parse(JSON.stringify(cardList));
+
+      return cloneDeep(cardList);
     }
   }
+
+  // 跨Column 互換
   if (originColumn.id !== result.listId) {
-    // 跨Column 互換
-    const newColumn = cardList.filter((ele) => ele.id === result.listId)[0];
+    const newColumn = cardList.find((ele) => ele.id === result.listId);
     originColumn.card = originColumn.card.filter((ele) => ele.id !== result.id);
-    newColumn.card.push(newData);
-    return JSON.parse(JSON.stringify(cardList));
+    newColumn?.card.push(newData);
+
+    return cloneDeep(cardList);
   }
   return cardList;
 }
