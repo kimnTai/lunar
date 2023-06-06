@@ -104,7 +104,7 @@ const Billboard: React.FC = () => {
     }
     if (source.droppableId === destination.droppableId) {
       // List 中間互換
-      const data = updateCardInColumn(result, cardList) as ListsProps[];
+      const data = updateCardInColumn(result, cardList);
       setCardList(data);
       return;
     }

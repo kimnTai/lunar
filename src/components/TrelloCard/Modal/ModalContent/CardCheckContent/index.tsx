@@ -33,11 +33,7 @@ const CardCheckContent: React.FC = () => {
     if (source.droppableId === destination.droppableId) {
       // List 中間互換
       console.log("===List 中間 互換===");
-      updateCardInColumn(
-        result,
-        cardData?.checklist! as ChecklistProps[],
-        "CheckList"
-      );
+      updateCardInColumn(result, cardData?.checklist);
       return;
     }
 

@@ -1,51 +1,58 @@
 import { updateCardApi, updateCheckItemApi } from "@/api/cards";
-import { ListsProps } from "@/interfaces/lists";
 import { DropResult } from "react-beautiful-dnd";
-import { ChecklistProps } from "@/interfaces/checklists";
-import { nextPosition } from "./nextPosition";
+import { getTargetAndPosition } from "./getTargetAndPosition";
+import { CardsProps } from "@/interfaces/cards";
+import { CheckItemProps } from "@/interfaces/checklists";
 
-export function updateCardInColumn(
+export function updateCardInColumn<T extends PositionItem>(
   result: DropResult,
-  cardList: (ListsProps | ChecklistProps)[],
-  type = "Card"
+  list: T[]
 ) {
   if (!result.destination) {
-    return cardList;
+    return list;
   }
-  const source = result.source;
-  const destination = result.destination;
-  const useList = cardList.find((ele) => ele.id === destination.droppableId);
-  if (useList) {
-    if (type === "Card") {
-      const useCardIndex = (useList as ListsProps).card.findIndex(
-        (ele) => ele.id === result.draggableId
-      );
-      (useList as ListsProps).card[useCardIndex].position = nextPosition(
-        (useList as ListsProps).card,
-        destination.index + (destination.index > useCardIndex ? 1 : 0)
-      ).toString();
+
+  const useList = list.find(
+    ({ _id }) => _id === result.destination?.droppableId
+  );
+
+  if (useList && "card" in useList && Array.isArray(useList.card)) {
+    const { target, position } = getTargetAndPosition<CardsProps>(
+      result,
+      useList.card
+    );
+
+    if (target) {
+      target.position = `${position}`;
       updateCardApi({
-        listId: source.droppableId,
-        cardId: result.draggableId,
-        position: (useList as ListsProps).card[useCardIndex].position,
-      });
-    } else {
-      const useCardIndex = (useList as ChecklistProps).checkItem.findIndex(
-        (ele) => ele._id === result.draggableId
-      );
-      (useList as ChecklistProps).checkItem[useCardIndex].position =
-        nextPosition(
-          (useList as ChecklistProps).checkItem,
-          destination.index + (destination.index > useCardIndex ? 1 : 0)
-        ).toString();
-      updateCheckItemApi({
-        cardId: (useList as ChecklistProps).cardId,
-        checklistId: (useList as ChecklistProps).id,
-        checkItemId: result.draggableId,
-        position: (useList as ChecklistProps).checkItem[useCardIndex].position,
+        cardId: target._id,
+        position: target.position,
       });
     }
   }
 
-  return cardList;
+  if (
+    useList &&
+    "cardId" in useList &&
+    typeof useList.cardId === "string" &&
+    "checkItem" in useList &&
+    Array.isArray(useList.checkItem)
+  ) {
+    const { target, position } = getTargetAndPosition<CheckItemProps>(
+      result,
+      useList.checkItem
+    );
+
+    if (target) {
+      target.position = `${position}`;
+      updateCheckItemApi({
+        cardId: useList.cardId,
+        checklistId: target.checklistId,
+        checkItemId: target._id,
+        position: target.position,
+      });
+    }
+  }
+
+  return list;
 }
