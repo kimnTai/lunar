@@ -12,8 +12,8 @@ export interface ListsProps {
 export interface UpdateListProps {
   name?: string;
   listId: string;
-  position: string;
-  closed: boolean;
+  position?: string;
+  closed?: boolean;
   boardId?: string;
 }
 

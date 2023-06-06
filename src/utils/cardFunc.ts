@@ -61,7 +61,6 @@ export const updateCardInColumn = (
         listId: source.droppableId,
         cardId: result.draggableId,
         position: (useList as ListsProps).card[useCardIndex].position,
-        closed: false,
       });
     } else {
       const useCardIndex = (useList as ChecklistProps).checkItem.findIndex(
@@ -165,7 +164,6 @@ export const updateCardDiffColumn = (
         listId: destination.droppableId,
         cardId: result.draggableId,
         position: usePosition,
-        closed: false,
       })
     : updateCheckItemApi({
         checkItemId: result.draggableId,
@@ -218,7 +216,6 @@ export const updateColumn = (
     ? updateListApi({
         listId: result.draggableId,
         position: usePosition,
-        closed: false,
       })
     : updateChecklistApi({
         cardId: (target as ChecklistProps).cardId,
