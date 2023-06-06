@@ -8,12 +8,7 @@ import { useNavigate, useParams } from "react-router";
 import { getBoardByIdAction, selectBoard } from "@/redux/boardSlice";
 import { Spin } from "antd";
 import { ListsProps } from "@/interfaces/lists";
-import {
-  updateCardInColumn,
-  updateCardDiffColumn,
-  updateColumn,
-  getSocketChange,
-} from "@/utils/cardFunc";
+import { getSocketChange, handleOnDragEnd } from "@/utils/cardFunc";
 import { useAppSelector, useAppDispatch } from "@/hooks";
 import useWebSocket from "@/hooks/useWebSocket";
 import { LoadingOutlined } from "@ant-design/icons";
@@ -86,32 +81,10 @@ const Billboard: React.FC = () => {
     }
   }, [cardId]);
   const onDragEnd = (result: DropResult) => {
-    const source = result.source;
-    const destination = result.destination;
-    // 未移動
-    if (
-      (source.index === destination?.index &&
-        source.droppableId === destination.droppableId) ||
-      !destination
-    ) {
-      return;
+    const resultList = handleOnDragEnd(result, cardList);
+    if (resultList) {
+      setCardList(resultList);
     }
-    // Column 互換
-    if (result.type === "COLUMN") {
-      const data = updateColumn(result, cardList);
-      setCardList(data);
-
-      return;
-    }
-    if (source.droppableId === destination.droppableId) {
-      // List 中間互換
-      const data = updateCardInColumn(result, cardList);
-      setCardList(data);
-      return;
-    }
-    // card 移動
-    const data = updateCardDiffColumn(result, cardList);
-    setCardList(data);
   };
 
   return (
