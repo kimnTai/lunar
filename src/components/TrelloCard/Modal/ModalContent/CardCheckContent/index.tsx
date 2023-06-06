@@ -6,7 +6,6 @@ import {
   updateCardInColumn,
   updateColumn,
 } from "@/utils/cardFunc";
-import { ChecklistProps } from "@/interfaces/checklists";
 
 const CardCheckContent: React.FC = () => {
   const { cardData, setCardData } = useCardModalContext();
@@ -27,29 +26,17 @@ const CardCheckContent: React.FC = () => {
     // Column 互換
     if (result.type === "COLUMN") {
       console.log("===column 互換===");
-      updateColumn(
-        result,
-        cardData?.checklist! as ChecklistProps[],
-        "CheckList"
-      );
+      updateColumn(result, cardData?.checklist);
       return;
     }
     if (source.droppableId === destination.droppableId) {
       // List 中間互換
       console.log("===List 中間 互換===");
-      updateCardInColumn(
-        result,
-        cardData?.checklist! as ChecklistProps[],
-        "CheckList"
-      );
+      updateCardInColumn(result, cardData?.checklist);
       return;
     }
 
-    const data = updateCardDiffColumn(
-      result,
-      cardData?.checklist! as ChecklistProps[],
-      "CheckList"
-    ) as ChecklistProps[];
+    const data = updateCardDiffColumn(result, cardData?.checklist, "CheckList");
     setCardData({ ...cardData, checklist: data });
   };
 

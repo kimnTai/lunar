@@ -97,19 +97,19 @@ const Billboard: React.FC = () => {
     }
     // Column 互換
     if (result.type === "COLUMN") {
-      const data = updateColumn(result, cardList) as ListsProps[];
+      const data = updateColumn(result, cardList);
       setCardList(data);
 
       return;
     }
     if (source.droppableId === destination.droppableId) {
       // List 中間互換
-      const data = updateCardInColumn(result, cardList) as ListsProps[];
+      const data = updateCardInColumn(result, cardList);
       setCardList(data);
       return;
     }
     // card 移動
-    const data = updateCardDiffColumn(result, cardList) as ListsProps[];
+    const data = updateCardDiffColumn(result, cardList);
     setCardList(data);
   };
 

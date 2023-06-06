@@ -47,10 +47,10 @@ export const addBoardMembersApi = (data: AddBoardsMembers) => {
 // 更新看板
 export const updateBoardApi = (data: {
   boardId: string;
-  name: string;
-  organizationId: string;
-  permission: string;
-  closed: boolean;
+  name?: string;
+  organizationId?: string;
+  permission?: string;
+  closed?: boolean;
   image?: string;
 }) => {
   return Request.put<any, PrometheusResponse<BoardsProps>>(
