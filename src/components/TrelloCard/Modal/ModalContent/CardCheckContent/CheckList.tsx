@@ -28,7 +28,7 @@ const CheckList: React.FC = () => {
 
   // 多個 CheckList 新增 Item 時每次只顯示一個新增欄位
   const handleCheckItemsIsEdit = (index: number, isCheck: boolean) => {
-    const newCheckList = checkItemsIsEdit.map((item) => (item = false));
+    const newCheckList = checkItemsIsEdit.map((_item) => (_item = false));
 
     if (isCheck) {
       newCheckList[index] = true;
