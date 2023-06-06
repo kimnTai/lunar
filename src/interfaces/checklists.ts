@@ -18,14 +18,14 @@ export interface ChecklistProps {
 export interface NewCardCheckListProps {
   cardId: string;
   name: string;
-  position: number;
+  position: string;
 }
 
 export interface UpdateCardCheckListProps {
   cardId: string;
   checklistId: string;
   name?: string;
-  position: string;
+  position?: string;
   checklistIdOld?: string;
 }
 
@@ -42,10 +42,8 @@ export interface UpdateCardCheckItemProps extends UpdateCardCheckListProps {
 export interface NewCheckItemProps {
   cardId: string;
   checklistId: string;
-  checkItemId: string;
   name: string;
   position: string;
-  completed: boolean;
 }
 
 export interface DeleteChecklistItemProps {
