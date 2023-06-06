@@ -6,7 +6,6 @@ import {
   updateCardInColumn,
   updateColumn,
 } from "@/utils/cardFunc";
-import { ChecklistProps } from "@/interfaces/checklists";
 
 const CardCheckContent: React.FC = () => {
   const { cardData, setCardData } = useCardModalContext();
@@ -37,11 +36,7 @@ const CardCheckContent: React.FC = () => {
       return;
     }
 
-    const data = updateCardDiffColumn(
-      result,
-      cardData?.checklist! as ChecklistProps[],
-      "CheckList"
-    ) as ChecklistProps[];
+    const data = updateCardDiffColumn(result, cardData?.checklist, "CheckList");
     setCardData({ ...cardData, checklist: data });
   };
 

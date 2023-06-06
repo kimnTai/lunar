@@ -109,7 +109,7 @@ const Billboard: React.FC = () => {
       return;
     }
     // card 移動
-    const data = updateCardDiffColumn(result, cardList) as ListsProps[];
+    const data = updateCardDiffColumn(result, cardList);
     setCardList(data);
   };
 

@@ -1,116 +1,110 @@
 import { updateCardApi, updateCheckItemApi } from "@/api/cards";
 import { ListsProps } from "@/interfaces/lists";
-import { CardsProps } from "@/interfaces/cards";
 import { DropResult } from "react-beautiful-dnd";
-import { CheckItemProps, ChecklistProps } from "@/interfaces/checklists";
+import { ChecklistProps } from "@/interfaces/checklists";
 import { nextPosition } from "./nextPosition";
-
-function getNewColumn(
-  columns: (ListsProps | ChecklistProps)[],
-  id: string,
-  newArr: (CardsProps | CheckItemProps)[],
-  type = "Card"
-) {
-  const useColumn = [...columns];
-  const useIndex = columns.findIndex((ele) => ele.id === id);
-
-  if (useIndex !== -1) {
-    const useArr =
-      type === "Card"
-        ? { ...useColumn[useIndex], card: newArr }
-        : { ...useColumn[useIndex], checkItem: newArr };
-    useColumn.splice(useIndex, 1, useArr as any);
-  }
-  return useColumn;
-}
-
-function getColumn(
-  columns: (ListsProps | ChecklistProps)[],
-  id: string,
-  type = "Card"
-) {
-  return type === "Card"
-    ? columns.find((ele) => ele.id === id) || { card: [] }
-    : columns.find((ele) => ele.id === id) || { checkItem: [] };
-}
 
 export function updateCardDiffColumn(
   result: DropResult,
-  cardList: (ListsProps | ChecklistProps)[],
-  type = "Card"
+  list: ListsProps[]
+): ListsProps[];
+export function updateCardDiffColumn(
+  result: DropResult,
+  list: ChecklistProps[],
+  type: "CheckList"
+): ChecklistProps[];
+// TODO:型別先用斷言跟重載來推
+export function updateCardDiffColumn(
+  result: DropResult,
+  list: (ListsProps | ChecklistProps)[],
+  type: "Card" | "CheckList" = "Card"
 ) {
   if (!result.destination) {
-    return cardList;
+    throw new Error("DropResult 錯誤");
   }
 
-  const source = result.source;
-  const destination = result.destination;
+  if (type === "Card") {
+    const _list = list as ListsProps[];
+    const { target, position, newList, newId } = getCommonDiffColumnInfo(
+      result,
+      _list,
+      "card"
+    );
 
-  const current =
-    type === "Card"
-      ? [...(getColumn(cardList, source.droppableId) as ListsProps).card]
-      : [
-          ...(
-            getColumn(
-              cardList,
-              source.droppableId,
-              "CheckList"
-            ) as ChecklistProps
-          ).checkItem,
-        ];
-  const next =
-    type === "Card"
-      ? [...(getColumn(cardList, destination.droppableId) as ListsProps).card]
-      : [
-          ...(
-            getColumn(
-              cardList,
-              destination.droppableId,
-              "CheckList"
-            ) as ChecklistProps
-          ).checkItem,
-        ];
+    target.position = `${position}`;
 
-  const usePosition =
-    type === "Card"
-      ? nextPosition(next as CardsProps[], destination.index).toString()
-      : nextPosition(next as CheckItemProps[], destination.index).toString();
+    updateCardApi({
+      listId: newId,
+      cardId: target._id,
+      position: `${position}`,
+    });
 
-  const target = current[source.index];
-  target.position = usePosition;
+    return newList;
+  } else {
+    const _list = list as ChecklistProps[];
+    const { target, position, newList, newId } = getCommonDiffColumnInfo(
+      result,
+      _list,
+      "checkItem"
+    );
 
-  current.splice(source.index, 1);
-  next.splice(destination.index, 0, target as any);
-  type === "Card"
-    ? updateCardApi({
-        listId: destination.droppableId,
-        cardId: result.draggableId,
-        position: usePosition,
-      })
-    : updateCheckItemApi({
-        checkItemId: result.draggableId,
-        cardId: (cardList as ChecklistProps[]).find(
-          (ele) => ele.id === destination.droppableId
-        )!.cardId,
-        checklistId: (cardList as ChecklistProps[]).find(
-          (ele) => ele.id === destination.droppableId
-        )!.id,
-        checklistIdOld: (cardList as ChecklistProps[]).find(
-          (ele) => ele.id === source.droppableId
-        )!.id,
-        position: usePosition,
-      });
+    target.position = `${position}`;
 
-  return type === "Card"
-    ? getNewColumn(
-        getNewColumn(cardList, source.droppableId, current),
-        destination.droppableId,
-        next
-      )
-    : getNewColumn(
-        getNewColumn(cardList, source.droppableId, current, "CheckList"),
-        destination.droppableId,
-        next,
-        "CheckList"
-      );
+    const startId = result.source.droppableId;
+    updateCheckItemApi({
+      cardId: _list.find(({ _id }) => _id === newId)!.cardId,
+      checkItemId: target._id,
+      checklistIdOld: startId,
+      checklistId: newId,
+      position: `${position}`,
+    });
+
+    return newList;
+  }
+}
+
+function getCommonDiffColumnInfo<T extends PositionItem, K extends keyof T>(
+  result: DropResult,
+  list: T[],
+  key: K
+) {
+  if (!result.destination) {
+    throw new Error("DropResult 錯誤");
+  }
+  const startId = result.source.droppableId;
+  const startIndex = result.source.index;
+
+  const endId = result.destination.droppableId;
+  const endIndex = result.destination.index;
+
+  // TODO:型別先用斷言來推
+  const [current, next] = [startId, endId].map((id) =>
+    list
+      .filter(({ _id }) => _id === id)
+      .flatMap((item) => item[key] as PositionItem[])
+  );
+
+  const position = nextPosition(next, endIndex);
+
+  const target = current[startIndex];
+
+  current.splice(startIndex, 1);
+  next.splice(endIndex, 0, target);
+
+  const newList = list.map((value) => {
+    if (value._id === startId) {
+      return { ...value, [key]: current };
+    }
+    if (value._id === endId) {
+      return { ...value, [key]: next };
+    }
+    return value;
+  });
+
+  return {
+    target,
+    position,
+    newList,
+    newId: endId,
+  };
 }
