@@ -1,38 +1,45 @@
 import { updateChecklistApi } from "@/api/cards";
 import { updateListApi } from "@/api/lists";
-import { ListsProps } from "@/interfaces/lists";
 import { DropResult } from "react-beautiful-dnd";
-import { ChecklistProps } from "@/interfaces/checklists";
-import { nextPosition } from "./nextPosition";
+import { getTargetAndPosition } from "./getTargetAndPosition";
 
-export function updateColumn(
+export function updateColumn<T extends PositionItem>(
   result: DropResult,
-  cardList: (ListsProps | ChecklistProps)[],
-  type = "Card"
+  list: T[]
 ) {
   if (!result.destination) {
-    return cardList;
+    throw new Error("DropResult 錯誤");
   }
-  const startIndex = result.source.index;
-  const endIndex = result.destination.index;
-  const usePosition = nextPosition(
-    cardList,
-    endIndex + (startIndex < endIndex ? 1 : 0)
-  ).toString();
 
-  const target = cardList.find((ele) => ele.id === result.draggableId);
+  const { target, position } = getTargetAndPosition(result, list);
+
   if (target) {
-    target.position = usePosition;
+    updateColumnTrigger(target, position);
   }
-  type === "Card"
-    ? updateListApi({
-        listId: result.draggableId,
-        position: usePosition,
-      })
-    : updateChecklistApi({
-        cardId: (target as ChecklistProps).cardId,
-        checklistId: result.draggableId,
-        position: usePosition,
-      });
-  return cardList;
+
+  return list;
+}
+
+function updateColumnTrigger<T extends PositionItem>(
+  target: T,
+  position: number
+) {
+  target.position = `${position}`;
+
+  if (
+    "checkItem" in target &&
+    "cardId" in target &&
+    typeof target.cardId === "string"
+  ) {
+    updateChecklistApi({
+      cardId: target.cardId,
+      checklistId: target._id,
+      position: target.position,
+    });
+  } else if ("card" in target) {
+    updateListApi({
+      listId: target._id,
+      position: target.position,
+    });
+  }
 }

@@ -10,3 +10,8 @@ type PrometheusResponseWithToken<T> = PrometheusResponse<T> & {
   token: string;
   websocketUrl: string;
 };
+
+interface PositionItem {
+  _id: string;
+  position: string;
+}

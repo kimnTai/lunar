@@ -27,11 +27,7 @@ const CardCheckContent: React.FC = () => {
     // Column 互換
     if (result.type === "COLUMN") {
       console.log("===column 互換===");
-      updateColumn(
-        result,
-        cardData?.checklist! as ChecklistProps[],
-        "CheckList"
-      );
+      updateColumn(result, cardData?.checklist);
       return;
     }
     if (source.droppableId === destination.droppableId) {

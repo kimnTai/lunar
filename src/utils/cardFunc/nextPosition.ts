@@ -1,7 +1,7 @@
 import { POSITION_GAP } from "../constant";
 import isUndefined from "lodash/isUndefined";
 
-export function nextPosition<T extends { _id: string; position: string }>(
+export function nextPosition<T extends PositionItem>(
   items: T[],
   index?: number,
   excludedId?: string

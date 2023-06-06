@@ -97,7 +97,7 @@ const Billboard: React.FC = () => {
     }
     // Column 互換
     if (result.type === "COLUMN") {
-      const data = updateColumn(result, cardList) as ListsProps[];
+      const data = updateColumn(result, cardList);
       setCardList(data);
 
       return;
