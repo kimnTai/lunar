@@ -56,8 +56,10 @@ export const updateOrganizationAction = createAsyncThunk(
 
 export const deleteOrganizationAction = createAsyncThunk(
   "organization/deleteOrganization",
-  async (data: DeleteOrganizationProps) =>
-    await deleteOrganizationApi(data).then(() => getUserOrganizationsApi())
+  async (data: DeleteOrganizationProps, thunkAPI) =>
+    await deleteOrganizationApi(data).then(() =>
+      thunkAPI.dispatch(getOrganizationsAction())
+    )
 );
 
 export const addOrganizationMemberAction = createAsyncThunk(
@@ -95,13 +97,6 @@ export const organizationSlice = createSlice({
     builder.addCase(newOrganizationAction.fulfilled, (state, { payload }) => {
       state.organization = [...state.organization, payload.result];
     });
-
-    builder.addCase(
-      deleteOrganizationAction.fulfilled,
-      (state, { payload }) => {
-        state.organization = payload.result;
-      }
-    );
 
     const updateOneList = [
       getOrganizationByIdAction,
