@@ -6,8 +6,6 @@ import UserContent from "./UserContent";
 import { PopoverContentStyle } from "./style";
 
 const PopoverContent: React.FC<PopoverContentProps> = ({
-  board,
-  callGetBoardApi,
   headerState,
   setHeaderState,
 }) => {
@@ -16,11 +14,9 @@ const PopoverContent: React.FC<PopoverContentProps> = ({
       {headerState === "MENU" && (
         <MenuContent setHeaderState={setHeaderState} />
       )}
-      {headerState === "USER" && <UserContent member={board?.member || []} />}
-      {headerState === "SETTING" && <SettingContent board={board} />}
-      {headerState === "LABEL" && (
-        <LabelContent callGetBoardApi={callGetBoardApi} />
-      )}
+      {headerState === "USER" && <UserContent />}
+      {headerState === "SETTING" && <SettingContent />}
+      {headerState === "LABEL" && <LabelContent />}
     </PopoverContentStyle>
   );
 };

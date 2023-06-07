@@ -93,7 +93,7 @@ const CheckItems: React.FC<{ checklistIndex: number }> = ({
   };
 
   const handleItemNameIsEdit = (itemIndex: number, isEdit: boolean) => {
-    const newItemNameIsEditList = nameIsEditList.map((item) => (item = false));
+    const newItemNameIsEditList = nameIsEditList.map((_item) => (_item = false));
 
     if (isEdit) {
       newItemNameIsEditList[itemIndex] = true;

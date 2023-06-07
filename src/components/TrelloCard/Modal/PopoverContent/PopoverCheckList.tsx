@@ -21,7 +21,7 @@ const PopoverCheckList: React.FC = () => {
       const { result } = await newChecklistApi({
         cardId: id,
         name: checkListTitle,
-        position: nextPosition(checklist),
+        position: `${nextPosition(checklist)}`,
       });
       setCardData({
         ...cardData!,

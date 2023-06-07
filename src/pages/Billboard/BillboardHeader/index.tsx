@@ -1,4 +1,4 @@
-import { BillboardHeaderProps, HeaderState } from "@/interfaces/boards";
+import { HeaderState } from "@/interfaces/boards";
 import { useState } from "react";
 import { BillboardHeaderBtn, BillboardHeaderCss } from "./style";
 import { ColorIcon } from "@/components/Icons";
@@ -11,12 +11,11 @@ import {
 import PopoverTitle from "./PopoverTitle";
 import PopoverContent from "./PopoverContent";
 import AddMember from "@/components/Modal/AddMember";
+import { useAppSelector } from "@/hooks";
+import { selectBoard } from "@/redux/boardSlice";
 
-const BillboardHeader: React.FC<BillboardHeaderProps> = ({
-  board,
-
-  callGetBoardApi,
-}) => {
+const BillboardHeader: React.FC = () => {
+  const board = useAppSelector(selectBoard);
   const [openInvite, setOpenInvite] = useState(false);
   const [openPopover, setOpenPopover] = useState(false);
   const [headerState, setHeaderState] = useState<HeaderState>("MENU");
@@ -71,8 +70,6 @@ const BillboardHeader: React.FC<BillboardHeaderProps> = ({
             <PopoverContent
               headerState={headerState}
               setHeaderState={setHeaderState}
-              board={board}
-              callGetBoardApi={callGetBoardApi}
             />
           }
           trigger="click"
@@ -89,12 +86,7 @@ const BillboardHeader: React.FC<BillboardHeaderProps> = ({
           </Button>
         </Popover>
       </div>
-      <AddMember
-        open={openInvite}
-        setOpen={setOpenInvite}
-        member={board?.member || []}
-        boardInviteLink={board?.inviteLink || ""}
-      />
+      <AddMember open={openInvite} setOpen={setOpenInvite} />
     </BillboardHeaderCss>
   );
 };

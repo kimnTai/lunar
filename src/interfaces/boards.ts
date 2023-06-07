@@ -26,7 +26,6 @@ export interface NewBoardsProps {
 
 export interface BillboardHeaderProps {
   board?: BoardsProps;
-  callGetBoardApi: (id: string) => Promise<void>;
 }
 
 export interface SingleBoardProps {}
@@ -43,10 +42,24 @@ export interface PopoverContentProps {
   headerState: HeaderState;
   setHeaderState: React.Dispatch<React.SetStateAction<HeaderState>>;
   board?: BoardsProps;
-  callGetBoardApi: (id: string) => Promise<void>;
 }
 
 export interface AddBoardsMembers {
   boardId: string;
   userIdList: string[];
+}
+
+export interface updateBoardProps {
+  boardId: string;
+  name?: string;
+  organizationId?: string;
+  permission?: string;
+  closed?: boolean;
+  image?: string;
+}
+
+export interface CloneBoardProps {
+  sourceBoardId: string;
+  organizationId: string;
+  name: string;
 }

@@ -5,16 +5,10 @@ import { DragDropContext, DropResult, Droppable } from "react-beautiful-dnd";
 import { BillboardStyled } from "./style";
 import BillboardHeader from "./BillboardHeader";
 import { useNavigate, useParams } from "react-router";
-import { useApi } from "@/hooks/useApiHook";
-import { getBoardApi } from "@/api/boards";
+import { getBoardByIdAction, selectBoard } from "@/redux/boardSlice";
 import { Spin } from "antd";
 import { ListsProps } from "@/interfaces/lists";
-import {
-  updateCardInColumn,
-  updateCardDiffColumn,
-  updateColumn,
-  getSocketChange,
-} from "@/utils/cardFunc";
+import { getSocketChange, handleOnDragEnd } from "@/utils/cardFunc";
 import { useAppSelector, useAppDispatch } from "@/hooks";
 import useWebSocket from "@/hooks/useWebSocket";
 import { LoadingOutlined } from "@ant-design/icons";
@@ -30,10 +24,11 @@ const Billboard: React.FC = () => {
   const navigate = useNavigate();
   const [cardList, setCardList] = useState<ListsProps[]>([]);
   const { boardId, cardId } = useParams();
-  const [boardResult, isBoardLoading, callGetBoardApi] = useApi(getBoardApi);
+  const board = useAppSelector(selectBoard);
+  const [isBoardLoading, setBoardLoading] = useState(false);
   const { data: socketEvent, sendMessage } = useWebSocket(
     boardId!,
-    callGetBoardApi
+    async (_: string) => {}
   );
   const [openModal, setOpenModal] = useState<UrlCardShareProps>({
     listId: "",
@@ -44,15 +39,16 @@ const Billboard: React.FC = () => {
   useEffect(() => {
     if (socketEvent) {
       setCardList(getSocketChange(cardList, socketEvent)!);
-      console.log(getSocketChange(cardList, socketEvent)!);
     }
   }, [socketEvent]);
 
   useEffect(() => {
     if (boardId) {
-      (async () => {
-        await callGetBoardApi(boardId);
-      })();
+      setBoardLoading(true);
+
+      dispatch(getBoardByIdAction(boardId)).finally(() => {
+        setBoardLoading(false);
+      });
     }
   }, [boardId]);
 
@@ -62,55 +58,33 @@ const Billboard: React.FC = () => {
     }
   }, [workSpace]);
   useEffect(() => {
-    if (boardResult?.result) {
-      setCardList(boardResult.result.list);
+    if (board.list) {
+      const cloneList = JSON.parse(JSON.stringify(board.list));
+      setCardList(cloneList);
       sendMessage({ type: "subscribe", boardId }); // socket
     }
     return () => sendMessage({ type: "unsubscribe", boardId });
-  }, [boardResult?.result]);
+  }, [board.list]);
 
   useEffect(() => {
     if (cardId && !openModal.open) {
-      (async () =>
-        await getCardApi(cardId).then((res) => {
-          if (res.status === "success") {
-            navigate(`/board/${res.result.boardId}`);
-            setOpenModal({
-              listId: res.result.listId,
-              cardId,
-              open: true,
-            });
-          }
-        }))();
+      getCardApi(cardId).then((res) => {
+        if (res.status === "success") {
+          navigate(`/board/${res.result.boardId}`);
+          setOpenModal({
+            listId: res.result.listId,
+            cardId,
+            open: true,
+          });
+        }
+      });
     }
   }, [cardId]);
   const onDragEnd = (result: DropResult) => {
-    const source = result.source;
-    const destination = result.destination;
-    // 未移動
-    if (
-      (source.index === destination?.index &&
-        source.droppableId === destination.droppableId) ||
-      !destination
-    ) {
-      return;
+    const resultList = handleOnDragEnd(result, cardList);
+    if (resultList) {
+      setCardList(resultList);
     }
-    // Column 互換
-    if (result.type === "COLUMN") {
-      const data = updateColumn(result, cardList);
-      setCardList(data);
-
-      return;
-    }
-    if (source.droppableId === destination.droppableId) {
-      // List 中間互換
-      const data = updateCardInColumn(result, cardList);
-      setCardList(data);
-      return;
-    }
-    // card 移動
-    const data = updateCardDiffColumn(result, cardList);
-    setCardList(data);
   };
 
   return (
@@ -122,10 +96,7 @@ const Billboard: React.FC = () => {
         />
       ) : (
         <>
-          <BillboardHeader
-            board={boardResult?.result}
-            callGetBoardApi={callGetBoardApi}
-          />
+          <BillboardHeader />
           <DragDropContext onDragEnd={onDragEnd}>
             <Droppable
               droppableId="board"
@@ -154,11 +125,7 @@ const Billboard: React.FC = () => {
                       />
                     ))}
                   {provided.placeholder}
-                  <AddList
-                    cardList={cardList}
-                    boardId={boardId || ""}
-                    callGetBoardApi={callGetBoardApi}
-                  />
+                  <AddList />
                 </BillboardStyled>
               )}
             </Droppable>

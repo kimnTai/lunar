@@ -17,11 +17,7 @@ export interface UpdateListProps {
   boardId?: string;
 }
 
-export interface AddListProps {
-  cardList: ListsProps[];
-  boardId: string;
-  callGetBoardApi: (id: string) => Promise<void>;
-}
+export interface AddListProps {}
 
 export interface NewListProps {
   name: string;

@@ -20,6 +20,12 @@ import {
   updateOrganizationMemberApi,
 } from "@/api/organization";
 import { RootState } from "./store";
+import {
+  deleteBoardAction,
+  newBoardAction,
+  postCloneBoardAction,
+  updateBoardAction,
+} from "./boardSlice";
 
 const initialState: {
   organization: OrganizationProps[];
@@ -50,8 +56,10 @@ export const updateOrganizationAction = createAsyncThunk(
 
 export const deleteOrganizationAction = createAsyncThunk(
   "organization/deleteOrganization",
-  async (data: DeleteOrganizationProps) =>
-    await deleteOrganizationApi(data).then(() => getUserOrganizationsApi())
+  async (data: DeleteOrganizationProps, thunkAPI) =>
+    await deleteOrganizationApi(data).then(() =>
+      thunkAPI.dispatch(getOrganizationsAction())
+    )
 );
 
 export const addOrganizationMemberAction = createAsyncThunk(
@@ -90,13 +98,6 @@ export const organizationSlice = createSlice({
       state.organization = [...state.organization, payload.result];
     });
 
-    builder.addCase(
-      deleteOrganizationAction.fulfilled,
-      (state, { payload }) => {
-        state.organization = payload.result;
-      }
-    );
-
     const updateOneList = [
       getOrganizationByIdAction,
       updateOrganizationAction,
@@ -115,6 +116,44 @@ export const organizationSlice = createSlice({
         });
         state.organization = newOrganization;
       });
+    });
+
+    builder.addCase(newBoardAction.fulfilled, (state, { payload }) => {
+      const board = payload.result;
+      state.organization
+        .find(({ _id }) => _id === board.organizationId)
+        ?.board.push(board);
+    });
+
+    builder.addCase(deleteBoardAction.fulfilled, (state, { payload }) => {
+      const deleteBoard = payload.result;
+      const target = state.organization.find(
+        ({ _id }) => _id === deleteBoard.organizationId
+      );
+      if (target) {
+        target.board = target.board.filter(
+          ({ _id }) => _id !== deleteBoard._id
+        );
+      }
+    });
+
+    builder.addCase(updateBoardAction.fulfilled, (state, { payload }) => {
+      const updateBoard = payload.result;
+      const target = state.organization.find(
+        ({ _id }) => _id === updateBoard.organizationId
+      );
+      if (target) {
+        target.board = target.board.map((value) => {
+          return value._id === updateBoard._id ? updateBoard : value;
+        });
+      }
+    });
+
+    builder.addCase(postCloneBoardAction.fulfilled, (state, { payload }) => {
+      const board = payload.result;
+      state.organization
+        .find(({ _id }) => _id === board.organizationId)
+        ?.board.push(board);
     });
   },
 });

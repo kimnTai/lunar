@@ -9,13 +9,13 @@ import {
   updateLabelApi,
 } from "@/api/label";
 import { useApi } from "@/hooks/useApiHook";
-import { PopoverContentProps } from "@/interfaces/boards";
 import { LabelsProps } from "@/interfaces/labels";
 import { colorList } from "@/utils/constant";
+import { useAppDispatch } from "@/hooks";
+import { getBoardByIdAction } from "@/redux/boardSlice";
 
-const LabelContent: React.FC<Pick<PopoverContentProps, "callGetBoardApi">> = ({
-  callGetBoardApi,
-}) => {
+const LabelContent: React.FC = () => {
+  const dispatch = useAppDispatch();
   const { boardId } = useParams();
   const [form] = Form.useForm();
   const [labelList, setLabelList] = useState<LabelsProps[]>([]);
@@ -101,7 +101,7 @@ const LabelContent: React.FC<Pick<PopoverContentProps, "callGetBoardApi">> = ({
     })
       .then((res) => {
         if (res.status === "success") {
-          callGetBoardApi(boardId);
+          dispatch(getBoardByIdAction(boardId));
         }
       })
       .finally(() => setLoading(false));
@@ -138,7 +138,7 @@ const LabelContent: React.FC<Pick<PopoverContentProps, "callGetBoardApi">> = ({
         .then((res) => {
           if (res.status === "success") {
             labelCallApi(boardId);
-            callGetBoardApi(boardId);
+            dispatch(getBoardByIdAction(boardId));
           }
         })
         .finally(() => {
@@ -157,7 +157,7 @@ const LabelContent: React.FC<Pick<PopoverContentProps, "callGetBoardApi">> = ({
           console.log("==res==", res);
           if (res.status === "success") {
             labelCallApi(boardId);
-            callGetBoardApi(boardId);
+            dispatch(getBoardByIdAction(boardId));
           }
         })
         .finally(() => {

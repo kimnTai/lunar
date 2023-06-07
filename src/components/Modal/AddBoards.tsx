@@ -1,11 +1,10 @@
 import React, { useState } from "react";
 import { AddBoardsCss } from "./style";
-import { newBoardApi } from "@/api/boards";
+import { newBoardAction } from "@/redux/boardSlice";
 import { NewBoardsProps } from "@/interfaces/boards";
 import { Button, Form, Input, Select } from "antd";
 import Cover from "@/assets/images/img_cover.png";
 import { useAppDispatch } from "@/hooks";
-import { getOrganizationByIdAction } from "@/redux/organizationSlice";
 import { useParamOrganization } from "@/hooks/useParamOrganization";
 
 const AddBoards: React.FC<{
@@ -22,16 +21,16 @@ const AddBoards: React.FC<{
     }
     setButtonLoading(true);
 
-    newBoardApi({
-      name: values.name,
-      organizationId,
-      permission: values.permission,
-    })
-      .then(() => dispatch(getOrganizationByIdAction(organizationId)))
-      .finally(() => {
-        setOpen(false);
-        setButtonLoading(false);
-      });
+    dispatch(
+      newBoardAction({
+        name: values.name,
+        organizationId,
+        permission: values.permission,
+      })
+    ).finally(() => {
+      setOpen(false);
+      setButtonLoading(false);
+    });
   };
   return (
     <AddBoardsCss

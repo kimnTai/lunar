@@ -1,10 +1,9 @@
-import { OrganizationMemberProps } from "@/interfaces/organization";
+import { useAppSelector } from "@/hooks";
+import { selectBoardManagers } from "@/redux/boardSlice";
 import { Avatar } from "antd";
 
-const UserContent: React.FC<{ member: OrganizationMemberProps[] }> = ({
-  member,
-}) => {
-  const boardManager = member?.filter(({ role }) => role === "manager");
+const UserContent: React.FC = () => {
+  const boardManager = useAppSelector(selectBoardManagers);
   return (
     <div className="top-border" style={{ paddingBottom: 0 }}>
       {boardManager?.map(({ userId }) => (
