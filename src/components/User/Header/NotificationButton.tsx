@@ -6,7 +6,7 @@ import {
   deleteNotificationApi,
   getNotificationApi,
   updateNotificationApi,
-} from "@/api/auth";
+} from "@/api/user";
 import type { NotificationProps } from "@/interfaces/notification";
 
 const NotificationButton: React.FC = () => {

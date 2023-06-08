@@ -1,22 +1,19 @@
-import React, { useState, useEffect } from "react";
-import AddList from "@/components/AddList";
-import { TrelloCard } from "@/components/TrelloCard";
-import { DragDropContext, DropResult, Droppable } from "react-beautiful-dnd";
-import { BillboardStyled } from "./style";
-import BillboardHeader from "./BillboardHeader";
+import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router";
-import { getBoardByIdAction, selectBoard } from "@/redux/boardSlice";
 import { Spin } from "antd";
-import { ListsProps } from "@/interfaces/lists";
-import { getSocketChange, handleOnDragEnd } from "@/utils/cardFunc";
-import { useAppSelector, useAppDispatch } from "@/hooks";
-import useWebSocket from "@/hooks/useWebSocket";
 import { LoadingOutlined } from "@ant-design/icons";
 import { getCardApi } from "@/api/cards";
-import { UrlCardShareProps } from "@/interfaces/trelloCard";
-import { CardModalProvider } from "@/context/CardModalContext";
 import TrelloCardModal from "@/components/TrelloCard/Modal";
+import { CardModalProvider } from "@/context/CardModalContext";
+import { useAppDispatch, useAppSelector } from "@/hooks";
+import useWebSocket from "@/hooks/useWebSocket";
+import { ListsProps } from "@/interfaces/lists";
+import { UrlCardShareProps } from "@/interfaces/trelloCard";
+import { getBoardByIdAction, selectBoard } from "@/redux/boardSlice";
 import { changeWorkSpace, selectShowWorkSpace } from "@/redux/screenSlice";
+import { getSocketChange } from "@/utils/cardFunc";
+import BillboardHeader from "./BillboardHeader";
+import DnDContext from "./DnDContext";
 
 const Billboard: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -31,7 +28,6 @@ const Billboard: React.FC = () => {
     async (_: string) => {}
   );
   const [openModal, setOpenModal] = useState<UrlCardShareProps>({
-    listId: "",
     cardId: "",
     open: false,
   });
@@ -68,24 +64,15 @@ const Billboard: React.FC = () => {
 
   useEffect(() => {
     if (cardId && !openModal.open) {
-      getCardApi(cardId).then((res) => {
-        if (res.status === "success") {
-          navigate(`/board/${res.result.boardId}`);
-          setOpenModal({
-            listId: res.result.listId,
-            cardId,
-            open: true,
-          });
-        }
+      getCardApi(cardId).then(({ result: { boardId } }) => {
+        navigate(`/board/${boardId}/cards/${cardId}`);
+        setOpenModal({
+          cardId: cardId,
+          open: true,
+        });
       });
     }
   }, [cardId]);
-  const onDragEnd = (result: DropResult) => {
-    const resultList = handleOnDragEnd(result, cardList);
-    if (resultList) {
-      setCardList(resultList);
-    }
-  };
 
   return (
     <>
@@ -97,39 +84,11 @@ const Billboard: React.FC = () => {
       ) : (
         <>
           <BillboardHeader />
-          <DragDropContext onDragEnd={onDragEnd}>
-            <Droppable
-              droppableId="board"
-              type="COLUMN"
-              direction="horizontal"
-              ignoreContainerClipping={false}
-              isCombineEnabled={false}
-            >
-              {(provided) => (
-                <BillboardStyled
-                  {...provided.droppableProps}
-                  ref={provided.innerRef}
-                >
-                  {cardList
-                    .sort((a, b) => Number(a.position) - Number(b.position))
-                    .map((ele, index) => (
-                      <TrelloCard
-                        key={ele.id}
-                        index={index}
-                        quotes={ele}
-                        isScrollable={true}
-                        isCombineEnabled={false}
-                        useClone={undefined}
-                        openModal={openModal}
-                        setOpenModal={setOpenModal}
-                      />
-                    ))}
-                  {provided.placeholder}
-                  <AddList />
-                </BillboardStyled>
-              )}
-            </Droppable>
-          </DragDropContext>
+          <DnDContext
+            setCardList={setCardList}
+            cardList={cardList}
+            setOpenModal={setOpenModal}
+          />
           <CardModalProvider>
             <TrelloCardModal
               openModal={openModal}

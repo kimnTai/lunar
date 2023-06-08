@@ -17,7 +17,6 @@ export interface TrelloCardProps {
   isScrollable: boolean;
   isCombineEnabled: boolean;
   useClone: any;
-  openModal: UrlCardShareProps;
   setOpenModal: React.Dispatch<React.SetStateAction<UrlCardShareProps>>;
 }
 
