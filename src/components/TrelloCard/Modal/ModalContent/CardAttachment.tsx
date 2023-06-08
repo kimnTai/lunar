@@ -1,37 +1,34 @@
 import React, { useEffect, useState } from "react";
+import { useParams } from "react-router";
+import { Col, Modal, Upload, UploadProps, message } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
-import { Col, Modal, Upload } from "antd";
-import type { RcFile } from "antd/es/upload";
-import type { UploadFile } from "antd/es/upload/interface";
 import { getBase64 } from "@/utils/func";
-import { useCardModalContext } from "@/context/CardModalContext";
+import {
+  deleteAttachmentAction,
+  newAttachmentAction,
+  selectCardById,
+} from "@/redux/cardSlice";
+import { useAppDispatch, useAppSelector } from "@/hooks";
 import { SectionHeaderStyled } from "./style";
 
 const CardAttachment: React.FC = () => {
+  const { cardId } = useParams();
+  const cardData = useAppSelector(selectCardById(cardId));
+
   const [previewOpen, setPreviewOpen] = useState(false);
   const [previewImage, setPreviewImage] = useState("");
-  const [previewTitle, setPreviewTitle] = useState("");
-  const { cardData } = useCardModalContext();
-  const [fileList, setFileList] = useState<UploadFile[]>([]);
+  const [fileList, setFileList] = useState<UploadProps["fileList"]>([]);
 
   useEffect(() => {
-    setFileList(
-      cardData?.attachment?.map(({ _id, filename, dirname }) => ({
-        uid: _id,
-        name: filename,
-        url: dirname,
-      })) || []
-    );
+    const _list = cardData?.attachment?.map(({ _id, filename, dirname }) => ({
+      uid: _id,
+      name: filename,
+      url: dirname,
+    }));
+    setFileList(_list || []);
   }, [cardData]);
 
-  const handlePreview = async (file: UploadFile<RcFile>) => {
-    if (!file.url && !file.preview && file.originFileObj) {
-      file.preview = await getBase64(file.originFileObj);
-    }
-    setPreviewImage(file.url || `${file.preview}`);
-    setPreviewOpen(true);
-    setPreviewTitle(file.name);
-  };
+  const dispatch = useAppDispatch();
 
   return (
     <>
@@ -43,14 +40,54 @@ const CardAttachment: React.FC = () => {
       <Upload
         listType="picture-card"
         fileList={fileList}
-        onPreview={handlePreview}
-        onChange={({ fileList }) => setFileList(fileList)}
+        onPreview={async ({ url, preview, originFileObj }) => {
+          if (!url && !preview && originFileObj) {
+            preview = await getBase64(originFileObj);
+          }
+          setPreviewImage(url || `${preview}`);
+          setPreviewOpen(true);
+        }}
+        onChange={({ file, fileList }) => {
+          if (file.status === "done") {
+            message.success(`${file.name} 上傳成功`);
+          }
+          if (file.status === "error") {
+            message.error(`${file.name} 上傳失敗`);
+          }
+          setFileList(fileList);
+        }}
+        customRequest={async (options) => {
+          if (typeof options.file === "string" || !cardData) {
+            options.onError?.(new Error("上傳錯誤"));
+            return;
+          }
+
+          await dispatch(
+            newAttachmentAction({
+              file: options.file,
+              filename: `${options.filename}`,
+              cardId: cardData._id,
+            })
+          );
+
+          options.onSuccess?.("");
+        }}
+        onRemove={async (file) => {
+          if (!cardData) {
+            return false;
+          }
+          await dispatch(
+            deleteAttachmentAction({
+              cardId: cardData?._id,
+              attachmentId: file.uid,
+            })
+          );
+        }}
       >
-        {fileList.length <= 8 && <PlusOutlined />}
+        {fileList && fileList.length <= 8 && <PlusOutlined />}
       </Upload>
       <Modal
         open={previewOpen}
-        title={previewTitle}
         footer={null}
         onCancel={() => setPreviewOpen(false)}
       >

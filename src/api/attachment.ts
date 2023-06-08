@@ -11,3 +11,12 @@ export const newAttachment = (data: {
     data
   );
 };
+
+export const deleteAttachment = (data: {
+  cardId: string;
+  attachmentId: string;
+}) => {
+  return Request.delete<any, PrometheusResponse<AttachmentProps>>(
+    `/cards/${data.cardId}/attachments/${data.attachmentId}`
+  );
+};

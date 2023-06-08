@@ -16,7 +16,11 @@ import {
 } from "@/api/boards";
 import { RootState } from "./store";
 import { newListApiAction } from "./listSlice";
-import { updateCardAction } from "./cardSlice";
+import {
+  deleteAttachmentAction,
+  newAttachmentAction,
+  updateCardAction,
+} from "./cardSlice";
 
 const initialState: {
   board: BoardsProps;
@@ -95,7 +99,6 @@ export const boardSlice = createSlice({
         state.board.list.push(newList);
       }
     });
-
     builder.addCase(updateCardAction.fulfilled, (state, action) => {
       const updateCard = action.payload.result;
       state.board.list
@@ -105,6 +108,30 @@ export const boardSlice = createSlice({
             value._id === updateCard._id ? updateCard : value
           );
         });
+    });
+    builder.addCase(newAttachmentAction.fulfilled, (state, action) => {
+      const attachment = action.payload.result;
+
+      const card = state.board.list
+        .flatMap(({ card }) => card)
+        .find(({ _id }) => _id === attachment.cardId);
+
+      if (card) {
+        card.attachment = [...card.attachment, attachment];
+      }
+    });
+    builder.addCase(deleteAttachmentAction.fulfilled, (state, action) => {
+      const attachment = action.payload.result;
+
+      const card = state.board.list
+        .flatMap(({ card }) => card)
+        .find(({ _id }) => _id === attachment.cardId);
+
+      if (card) {
+        card.attachment = card.attachment.filter(
+          ({ _id }) => _id !== attachment._id
+        );
+      }
     });
   },
 });

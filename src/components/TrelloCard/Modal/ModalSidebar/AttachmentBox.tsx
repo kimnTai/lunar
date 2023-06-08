@@ -1,13 +1,16 @@
 import React, { useState } from "react";
+import { useParams } from "react-router";
 import { Button, message, Popover, Upload } from "antd";
 import { PaperClipOutlined, WalletOutlined } from "@ant-design/icons";
-import { newImageFileUrl } from "@/api/upload";
-import { newAttachment } from "@/api/attachment";
-import { useCardModalContext } from "@/context/CardModalContext";
+import { useAppDispatch, useAppSelector } from "@/hooks";
+import { newAttachmentAction, selectCardById } from "@/redux/cardSlice";
 
 const AttachmentBox: React.FC = () => {
-  const { cardData, setCardData } = useCardModalContext();
+  const { cardId } = useParams();
+  const cardData = useAppSelector(selectCardById(cardId));
   const [isPopoverOpen, setPopoverOpen] = useState(false);
+
+  const dispatch = useAppDispatch();
 
   return (
     <Popover
@@ -26,36 +29,23 @@ const AttachmentBox: React.FC = () => {
               message.error(`${info.file.name} 上傳失敗`);
             }
           }}
-          customRequest={(options) => {
+          customRequest={async (options) => {
             if (typeof options.file === "string" || !cardData) {
               options.onError?.(new Error("上傳錯誤"));
               return;
             }
-
-            newImageFileUrl(options.file)
-              .then((res) =>
-                newAttachment({
+            try {
+              await dispatch(
+                newAttachmentAction({
+                  file: options.file,
                   filename: `${options.filename}`,
-                  dirname: res.result.link,
                   cardId: cardData._id,
                 })
-              )
-              .then(({ result }) => {
-                setCardData((state) => {
-                  if (state) {
-                    return {
-                      ...state,
-                      attachment: [...state.attachment, result],
-                    };
-                  }
-                  return state;
-                });
-
-                options.onSuccess?.(result.dirname);
-              })
-              .finally(() => {
-                setPopoverOpen(false);
-              });
+              );
+              options.onSuccess?.("");
+            } finally {
+              setPopoverOpen(false);
+            }
           }}
         >
           <Button>上傳封面圖片</Button>
