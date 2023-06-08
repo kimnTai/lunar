@@ -68,15 +68,13 @@ const Billboard: React.FC = () => {
 
   useEffect(() => {
     if (cardId && !openModal.open) {
-      getCardApi(cardId).then((res) => {
-        if (res.status === "success") {
-          navigate(`/board/${res.result.boardId}`);
-          setOpenModal({
-            listId: res.result.listId,
-            cardId,
-            open: true,
-          });
-        }
+      getCardApi(cardId).then(({ result: { boardId, listId } }) => {
+        navigate(`/board/${boardId}/cards/${cardId}`);
+        setOpenModal({
+          listId: listId,
+          cardId: cardId,
+          open: true,
+        });
       });
     }
   }, [cardId]);
