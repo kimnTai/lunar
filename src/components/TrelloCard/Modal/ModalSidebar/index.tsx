@@ -83,27 +83,25 @@ const ModalSidebar: React.FC = () => {
             </Button>
           </Col>
         )}
-        <Col style={{ position: "relative" }}>
-          <Button
-            className="button-link"
-            onClick={() => setIsOpenAddMember(true)}
-            icon={<UserOutlined />}
-          >
-            成員
-          </Button>
-
-          {isOpenAddMember && (
-            <AddMemberModal
-              setIsOpenAddMember={setIsOpenAddMember}
-              style={{ top: " 32px", left: 0 }}
-            />
-          )}
-        </Col>
-
+        {/** Modal */}
+        {isOpenAddMember && (
+          <AddMemberModal
+            setIsOpenAddMember={setIsOpenAddMember}
+            style={{ top: " 32px", left: 0 }}
+          />
+        )}
         <SidebarBox
           className={"mid"}
           title={"新增至卡片"}
           data={[
+            {
+              label: "成員",
+              value: "member",
+              icon: <UserOutlined />,
+              onClickEvent: () => {
+                setIsOpenAddMember(true);
+              },
+            },
             { label: "標籤", value: "member", icon: <TagOutlined /> },
             {
               label: "代辦清單",
