@@ -1,4 +1,5 @@
 import Request from "@/api/base/request";
+import { BoardsProps } from "@/interfaces/boards";
 import type { NotificationProps } from "@/interfaces/notification";
 import type { UserProps } from "@/interfaces/user";
 
@@ -25,9 +26,6 @@ export const loginApi = (data: {
     data
   );
 };
-
-// google 登入
-export const loginGoogleApi = () => Request.get<any, any>("/user/google");
 
 // 驗證登入
 export const loginJwtApi = () =>
@@ -60,5 +58,11 @@ export const updateNotificationApi = (data: {
 export const deleteNotificationApi = (data: { notificationId: string }) => {
   return Request.delete<any, PrometheusResponse<NotificationProps>>(
     `/user/notification/${data.notificationId}`
+  );
+};
+
+export const getRecentBoardsApi = () => {
+  return Request.get<any, PrometheusResponse<Omit<BoardsProps, "list">[]>>(
+    `/user/recentBoards`
   );
 };

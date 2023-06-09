@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { loginApi, loginJwtApi, signInApi } from "@/api/auth";
+import { loginApi, loginJwtApi, signInApi } from "@/api/user";
 import { LoginProps, UserProps } from "@/interfaces/user";
 import { RootState } from "./store";
 import Cookie from "@/utils/cookie";

@@ -1,13 +1,11 @@
-import PermissionBtn from "@/components/WorkSpace/PermissionBtn";
-import { WorkSpaceCardProps } from "@/interfaces/workspace";
-import { EllipsisOutlined } from "@ant-design/icons";
-import { Button, Col, Popover, Row } from "antd";
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import { Button, Col, Popover, Row } from "antd";
+import { EllipsisOutlined } from "@ant-design/icons";
+import PermissionBtn from "@/components/WorkSpace/PermissionBtn";
+import { WorkSpaceCardProps } from "@/interfaces/workspace";
 import WorkSpaceCardContent from "./WorkSpaceCardContent";
 import { WorkSpaceCardCss } from "./style";
-import { changeWorkSpace } from "@/redux/screenSlice";
-import { useAppDispatch } from "@/hooks";
 
 const WorkSpaceCard: React.FC<WorkSpaceCardProps> = ({
   title,
@@ -17,14 +15,11 @@ const WorkSpaceCard: React.FC<WorkSpaceCardProps> = ({
 }) => {
   const navigate = useNavigate();
 
-  const dispatch = useAppDispatch();
-
   return (
     <WorkSpaceCardCss
       hoverable
       background-image={`${backgroundImage}`}
       onClick={() => {
-        dispatch(changeWorkSpace());
         navigate(`/board/${boardId}`);
       }}
     >
@@ -54,7 +49,6 @@ const WorkSpaceCard: React.FC<WorkSpaceCardProps> = ({
               icon={<EllipsisOutlined />}
               type={"text"}
               style={{ color: "white" }}
-              className="EllipsisOutlined"
               onClick={(e) => {
                 e.stopPropagation();
               }}

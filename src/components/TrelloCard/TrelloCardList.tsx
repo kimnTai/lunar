@@ -4,7 +4,7 @@ import TrelloCardAdd from "./TrelloCardAdd";
 import CardInner from "./CardInner";
 import { ScrollContainer } from "./style";
 
-export const TrelloCardList: React.FC<TrelloCardListProps> = (props) => {
+const TrelloCardList: React.FC<TrelloCardListProps> = (props) => {
   const {
     listType,
     isCombineEnabled,
