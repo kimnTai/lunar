@@ -11,9 +11,7 @@ const TrelloCardList: React.FC<TrelloCardListProps> = (props) => {
     internalScroll,
     quotes,
     showAddCard,
-
     setShowAddCard,
-    setOpenModal,
   } = props;
   return (
     <Droppable
@@ -40,7 +38,6 @@ const TrelloCardList: React.FC<TrelloCardListProps> = (props) => {
                 lists={quotes}
                 dropProvided={dropProvided}
                 isDrag={dropSnapshot.isDraggingOver}
-                setOpenModal={setOpenModal}
               />
               <TrelloCardAdd
                 list={quotes}

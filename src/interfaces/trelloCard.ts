@@ -17,7 +17,6 @@ export interface TrelloCardProps {
   isScrollable: boolean;
   isCombineEnabled: boolean;
   useClone: any;
-  setOpenModal: React.Dispatch<React.SetStateAction<UrlCardShareProps>>;
 }
 
 export interface TrelloCardListProps
@@ -32,7 +31,6 @@ export interface TrelloCardInnerProps {
   lists: ListsProps;
   dropProvided: DroppableProvided;
   isDrag: boolean;
-  setOpenModal: React.Dispatch<React.SetStateAction<UrlCardShareProps>>;
 }
 
 export interface TrelloCardBottomFuncProps {
