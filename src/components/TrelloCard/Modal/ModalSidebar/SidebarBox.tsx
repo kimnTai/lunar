@@ -1,7 +1,7 @@
 import React from "react";
 import { Button } from "antd";
 
-export const SidebarBox: React.FC<{
+const SidebarBox: React.FC<{
   title: string;
   className?: string;
   data: {
@@ -9,7 +9,7 @@ export const SidebarBox: React.FC<{
     value: string;
     icon: any;
     onClickEvent?: React.MouseEventHandler<HTMLAnchorElement> &
-    React.MouseEventHandler<HTMLButtonElement>;
+      React.MouseEventHandler<HTMLButtonElement>;
   }[];
 }> = ({ title, data, className }) => {
   return (
@@ -31,3 +31,5 @@ export const SidebarBox: React.FC<{
     </div>
   );
 };
+
+export default SidebarBox;

@@ -92,6 +92,11 @@ export const cloneCardAction = createAsyncThunk(
   async (data: CloneCardProps) => await postCloneCardApi(data)
 );
 
+export const moveCardAction = createAsyncThunk(
+  "card/moveCard",
+  async (data: UpdateCardProps) => await updateCardApi(data)
+);
+
 export const selectCardById = (cardId?: string) => (state: RootState) =>
   state.board.board.list
     .flatMap(({ card }) => card)

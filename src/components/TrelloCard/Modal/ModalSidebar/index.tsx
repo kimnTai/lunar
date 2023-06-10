@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { Button, Col, Divider, message } from "antd";
 import {
-  ArrowRightOutlined,
   CheckSquareOutlined,
   ClockCircleOutlined,
   ContainerOutlined,
@@ -16,7 +15,8 @@ import { addCardMemberAction } from "@/redux/cardSlice";
 import AddMemberModal from "./AddMemberModal";
 import AttachmentBox from "./AttachmentBox";
 import CloneCard from "./CloneCard";
-import { SidebarBox } from "./SidebarBox";
+import MoveCard from "./MoveCard";
+import SidebarBox from "./SidebarBox";
 import { ModalSidebarStyled, ModalStyle } from "./style";
 
 const ModalSidebar: React.FC = () => {
@@ -112,17 +112,8 @@ const ModalSidebar: React.FC = () => {
         />
 
         <AttachmentBox />
-        <SidebarBox
-          className={"mid"}
-          title={"動作"}
-          data={[
-            {
-              label: "移動",
-              value: "move",
-              icon: <ArrowRightOutlined />,
-            },
-          ]}
-        />
+        <SidebarBox className={"mid"} title={"動作"} data={[]} />
+        <MoveCard />
         <CloneCard />
         <Divider style={{ margin: "8px 0" }} />
         <Button className="button-link">

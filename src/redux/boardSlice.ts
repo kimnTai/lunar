@@ -20,6 +20,7 @@ import {
   cloneCardAction,
   deleteAttachmentAction,
   deleteCardDateAction,
+  moveCardAction,
   newAttachmentAction,
   newCardCommentAction,
   updateCardAction,
@@ -121,6 +122,20 @@ export const boardSlice = createSlice({
           .filter(({ _id }) => _id === cloneCard.listId)
           .forEach((list) => {
             list.card.push(cloneCard);
+          });
+      })
+      .addCase(moveCardAction.fulfilled, (state, action) => {
+        const moveCard = action.payload.result;
+        if (state.board._id !== moveCard.boardId) {
+          return;
+        }
+        state.board.list.forEach((list) => {
+          list.card = list.card.filter(({ _id }) => _id !== moveCard._id);
+        });
+        state.board.list
+          .filter(({ _id }) => _id === moveCard.listId)
+          .forEach((list) => {
+            list.card.push(moveCard);
           });
       });
     // 卡片附件
