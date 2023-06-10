@@ -1,6 +1,7 @@
 import React, { CSSProperties } from "react";
-import { Button, notification } from "antd";
+import { Button } from "antd";
 import { UserAddOutlined } from "@ant-design/icons";
+import openNotification from "@/utils/openNotification";
 
 const CopyInviteLinkBtn: React.FC<{
   organizationInviteLink?: string;
@@ -8,8 +9,6 @@ const CopyInviteLinkBtn: React.FC<{
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
   style?: CSSProperties;
 }> = ({ setOpen, style, organizationInviteLink, boardInviteLink }) => {
-  const [api, contextHolder] = notification.useNotification();
-
   const handleClickInviteBtn = () => {
     if (organizationInviteLink) {
       navigator.clipboard.writeText(organizationInviteLink);
@@ -17,9 +16,8 @@ const CopyInviteLinkBtn: React.FC<{
       navigator.clipboard.writeText(boardInviteLink);
     }
 
-    api.success({
+    openNotification({
       message: "已複製到剪貼簿",
-      placement: "bottomLeft",
     });
 
     setOpen(false);
@@ -27,7 +25,6 @@ const CopyInviteLinkBtn: React.FC<{
 
   return (
     <>
-      {contextHolder}
       <Button
         icon={<UserAddOutlined />}
         style={style}

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Button, Col, Divider, message } from "antd";
+import { Button, Col, Divider } from "antd";
 import {
   CheckSquareOutlined,
   ClockCircleOutlined,
@@ -12,6 +12,7 @@ import { useCardModalContext } from "@/context/CardModalContext";
 import { useAppDispatch, useAppSelector } from "@/hooks";
 import { useParamCard } from "@/hooks/useParamCard";
 import { addCardMemberAction } from "@/redux/cardSlice";
+import openNotification from "@/utils/openNotification";
 import AddMemberModal from "./AddMemberModal";
 import AttachmentBox from "./AttachmentBox";
 import CloneCard from "./CloneCard";
@@ -39,7 +40,9 @@ const ModalSidebar: React.FC = () => {
 
     try {
       await dispatch(addCardMemberAction({ cardId, userIdList: [userId] }));
-      message.success(`加入成功`);
+      openNotification({
+        message: `加入成功`,
+      });
     } catch (error) {}
 
     setIsLoading(false);
@@ -122,7 +125,15 @@ const ModalSidebar: React.FC = () => {
           </span>
           <span>封存</span>
         </Button>
-        <Button className="button-link">
+        <Button
+          className="button-link"
+          onClick={() => {
+            navigator.clipboard.writeText(window.location.href);
+            openNotification({
+              message: "已複製到剪貼簿",
+            });
+          }}
+        >
           <span style={{ marginRight: "6px" }}>
             <ShareAltOutlined />
           </span>

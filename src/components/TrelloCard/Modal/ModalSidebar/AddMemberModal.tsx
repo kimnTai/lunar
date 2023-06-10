@@ -1,13 +1,14 @@
-import { searchLunarMemberApi } from "@/api/search";
-import { CloseOutlined, SearchOutlined } from "@ant-design/icons";
-import { Avatar, Button, Card, Col, Input, List, message } from "antd";
-import { debounce } from "lodash";
 import { CSSProperties, ChangeEvent, useState } from "react";
-import { AddMemberModalStyled } from "./style";
-import type { UserProps } from "@/interfaces/user";
-import { useParamCard } from "@/hooks/useParamCard";
+import { Avatar, Button, Card, Col, Input, List } from "antd";
+import { CloseOutlined, SearchOutlined } from "@ant-design/icons";
+import { debounce } from "lodash";
+import { searchLunarMemberApi } from "@/api/search";
 import { useAppDispatch } from "@/hooks";
+import { useParamCard } from "@/hooks/useParamCard";
+import type { UserProps } from "@/interfaces/user";
 import { addCardMemberAction } from "@/redux/cardSlice";
+import openNotification from "@/utils/openNotification";
+import { AddMemberModalStyled } from "./style";
 
 const AddMemberModal: React.FC<{
   setIsOpenAddMember: Function;
@@ -32,7 +33,9 @@ const AddMemberModal: React.FC<{
     const cardId = cardData?._id;
     if (cardId) {
       await dispatch(addCardMemberAction({ cardId, userIdList: [member._id] }));
-      message.success(`加入成功`);
+      openNotification({
+        message: `加入成功`,
+      });
     }
     setIsOpenAddMember(false);
   };

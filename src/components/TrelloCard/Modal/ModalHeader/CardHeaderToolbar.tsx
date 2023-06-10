@@ -1,16 +1,17 @@
 import React from "react";
-import { Row, Col, message } from "antd";
+import { Col, Row } from "antd";
 import {
+  EyeOutlined,
   InboxOutlined,
   UsergroupAddOutlined,
-  EyeOutlined,
 } from "@ant-design/icons";
 import { useAppDispatch, useAppSelector } from "@/hooks";
-import { selectListByCardId } from "@/redux/boardSlice";
-import { selectUser } from "@/redux/userSlice";
-import { CardHeaderToolbarStyled } from "./style";
 import { useParamCard } from "@/hooks/useParamCard";
+import { selectListByCardId } from "@/redux/boardSlice";
 import { addCardMemberAction } from "@/redux/cardSlice";
+import { selectUser } from "@/redux/userSlice";
+import openNotification from "@/utils/openNotification";
+import { CardHeaderToolbarStyled } from "./style";
 
 const CardHeaderToolbar: React.FC = () => {
   const cardData = useParamCard();
@@ -43,8 +44,9 @@ const CardHeaderToolbar: React.FC = () => {
                     userIdList: [user._id],
                   })
                 );
-
-                message.success(`加入成功`);
+                openNotification({
+                  message: `加入成功`,
+                });
               }}
             >
               加入
