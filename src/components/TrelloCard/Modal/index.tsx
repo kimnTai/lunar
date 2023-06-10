@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useNavigate } from "react-router";
 import Popover from "@/components/TrelloCard/Modal/Popover";
 import { useCardModalContext } from "@/context/CardModalContext";
@@ -11,7 +11,6 @@ import { TrelloCardModalStyled } from "./style";
 
 const TrelloCardModal: React.FC = () => {
   const cardData = useParamCard();
-  const [openModal, setOpenModal] = useState(false);
   const { setCardData } = useCardModalContext();
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
@@ -23,26 +22,22 @@ const TrelloCardModal: React.FC = () => {
     }
 
     setCardData(JSON.parse(JSON.stringify(cardData)));
-    setOpenModal(true);
 
-    if (openModal) {
-      dispatch(getCardAction(cardData._id));
-    }
-  }, [openModal, cardData?._id]);
+    dispatch(getCardAction(cardData._id));
+  }, [cardData?._id]);
+
+  const handleCancel = () => {
+    navigate(`/board/${cardData?.boardId}`);
+  };
 
   // 有卡片資料才顯示 Modal
   if (!cardData) return null;
 
   return (
     <TrelloCardModalStyled
-      open={openModal}
-      onOk={() => {
-        setOpenModal(false);
-      }}
-      onCancel={() => {
-        setOpenModal(false);
-        navigate(`/board/${cardData?.boardId}`);
-      }}
+      open={Boolean(cardData)}
+      onOk={handleCancel}
+      onCancel={handleCancel}
       width={768}
       title={<ModalHeader />}
       footer={null}
