@@ -18,7 +18,7 @@ import { useAppDispatch } from "@/hooks";
 import { addCardLabelAction, deleteCardLabelAction } from "@/redux/cardSlice";
 
 const LabelModal: React.FC<{
-  setIsOpenLabel: Function;
+  setIsOpenLabel: React.Dispatch<React.SetStateAction<boolean>>;
   style?: CSSProperties;
 }> = ({ style, setIsOpenLabel }) => {
   const { boardId } = useParams();
