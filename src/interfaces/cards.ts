@@ -30,6 +30,7 @@ export interface UpdateCardProps {
   position?: string;
   closed?: boolean;
   description?: string;
+  boardId?: string;
 }
 
 export interface NewCardProps {
@@ -66,4 +67,12 @@ export interface UpdateCardDateProps {
 export interface addCardMemberProps {
   cardId: string;
   userIdList: string[];
+}
+
+export interface CloneCardProps {
+  sourceCardId: string;
+  boardId: string;
+  listId: string;
+  name: string;
+  position: string;
 }

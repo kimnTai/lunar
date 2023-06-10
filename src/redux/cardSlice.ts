@@ -7,11 +7,13 @@ import {
   getCardApi,
   newCardCommentApi,
   newCardDateApi,
+  postCloneCardApi,
   updateCardApi,
   updateCardDateApi,
 } from "@/api/cards";
 import { newImageFileUrl } from "@/api/upload";
 import {
+  CloneCardProps,
   NewCardDateProps,
   UpdateCardDateProps,
   UpdateCardProps,
@@ -83,6 +85,11 @@ export const updateCardDateAction = createAsyncThunk(
 export const deleteCardDateAction = createAsyncThunk(
   "card/deleteCardDate",
   async (cardId: string) => await deleteCardDateApi(cardId)
+);
+
+export const cloneCardAction = createAsyncThunk(
+  "card/cloneCard",
+  async (data: CloneCardProps) => await postCloneCardApi(data)
 );
 
 export const selectCardById = (cardId?: string) => (state: RootState) =>

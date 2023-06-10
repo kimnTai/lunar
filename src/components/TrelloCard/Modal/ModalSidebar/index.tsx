@@ -15,7 +15,7 @@ import { useParamCard } from "@/hooks/useParamCard";
 import { addCardMemberAction } from "@/redux/cardSlice";
 import AddMemberModal from "./AddMemberModal";
 import AttachmentBox from "./AttachmentBox";
-import CloneCardBox from "./CloneCardBox";
+import CloneCard from "./CloneCard";
 import { SidebarBox } from "./SidebarBox";
 import { ModalSidebarStyled, ModalStyle } from "./style";
 
@@ -123,7 +123,7 @@ const ModalSidebar: React.FC = () => {
             },
           ]}
         />
-        <CloneCardBox />
+        <CloneCard />
         <Divider style={{ margin: "8px 0" }} />
         <Button className="button-link">
           <span style={{ marginRight: "6px" }}>

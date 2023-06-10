@@ -17,6 +17,7 @@ import {
 import { RootState } from "./store";
 import { newListApiAction } from "./listSlice";
 import {
+  cloneCardAction,
   deleteAttachmentAction,
   deleteCardDateAction,
   newAttachmentAction,
@@ -103,16 +104,25 @@ export const boardSlice = createSlice({
       }
     });
     // 卡片
-    builder.addCase(updateCardAction.fulfilled, (state, action) => {
-      const updateCard = action.payload.result;
-      state.board.list
-        .filter(({ _id }) => _id === updateCard.listId)
-        .forEach((list) => {
-          list.card = list.card.map((value) =>
-            value._id === updateCard._id ? updateCard : value
-          );
-        });
-    });
+    builder
+      .addCase(updateCardAction.fulfilled, (state, action) => {
+        const updateCard = action.payload.result;
+        state.board.list
+          .filter(({ _id }) => _id === updateCard.listId)
+          .forEach((list) => {
+            list.card = list.card.map((value) =>
+              value._id === updateCard._id ? updateCard : value
+            );
+          });
+      })
+      .addCase(cloneCardAction.fulfilled, (state, action) => {
+        const cloneCard = action.payload.result;
+        state.board.list
+          .filter(({ _id }) => _id === cloneCard.listId)
+          .forEach((list) => {
+            list.card.push(cloneCard);
+          });
+      });
     // 卡片附件
     builder
       .addCase(newAttachmentAction.fulfilled, (state, action) => {

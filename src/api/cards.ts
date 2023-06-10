@@ -7,6 +7,7 @@ import type {
   NewCardDateProps,
   UpdateCardDateProps,
   addCardMemberProps,
+  CloneCardProps,
 } from "@/interfaces/cards";
 import {
   ChecklistProps,
@@ -109,13 +110,7 @@ export const deleteCardDateApi = (cardId: string) => {
 };
 
 // 複製單一卡片
-export const postCloneCardApi = (data: {
-  sourceCardId: string;
-  boardId: string;
-  listId: string;
-  name: string;
-  position: string;
-}) =>
+export const postCloneCardApi = (data: CloneCardProps) =>
   Request.post<any, PrometheusResponse<CardsProps>>(`/cards/cloneById`, {
     ...data,
   });
