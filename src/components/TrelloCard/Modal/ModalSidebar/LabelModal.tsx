@@ -12,13 +12,13 @@ import { colorList } from "@/utils/constant";
 import { CloseOutlined, EditOutlined, LeftOutlined } from "@ant-design/icons";
 import { Button, Card, Checkbox, Col, Form, Input, Row, Spin } from "antd";
 import { CheckboxChangeEvent } from "antd/es/checkbox";
-import { useEffect, useState } from "react";
+import { CSSProperties, useEffect, useState } from "react";
 import { useParams } from "react-router";
 import { LabelModalStyled } from "./style";
 
 const LabelModal: React.FC<{
   setIsOpenLabel: Function;
-  style?: any;
+  style?: CSSProperties;
 }> = ({ style, setIsOpenLabel }) => {
   const { boardId } = useParams();
   const { cardData, setCardData } = useCardModalContext();

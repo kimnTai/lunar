@@ -2,7 +2,7 @@ import { searchLunarMemberApi } from "@/api/search";
 import { CloseOutlined, SearchOutlined } from "@ant-design/icons";
 import { Avatar, Button, Card, Col, Input, List, message } from "antd";
 import { debounce } from "lodash";
-import { ChangeEvent, useState } from "react";
+import { CSSProperties, ChangeEvent, useState } from "react";
 import { AddMemberModalStyled } from "./style";
 import type { UserProps } from "@/interfaces/user";
 import { useCardModalContext } from "@/context/CardModalContext";
@@ -10,7 +10,7 @@ import { addCardMemberApi } from "@/api/cards";
 
 const AddMemberModal: React.FC<{
   setIsOpenAddMember: Function;
-  style?: any;
+  style?: CSSProperties;
 }> = ({ setIsOpenAddMember, style }) => {
   const { cardData, setCardData } = useCardModalContext();
   const [resultMember, setResultMember] = useState<UserProps[] | null>(null);
