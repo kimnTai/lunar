@@ -68,7 +68,7 @@ export const addBoardMembersAction = createAsyncThunk(
 );
 
 export const postCloneBoardAction = createAsyncThunk(
-  "board/postCloneBoard",
+  "board/newBoard",
   async (data: CloneBoardProps) => await postCloneBoardApi(data)
 );
 
