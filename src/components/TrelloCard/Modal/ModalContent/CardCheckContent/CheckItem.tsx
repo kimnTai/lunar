@@ -1,10 +1,12 @@
 import React, { useLayoutEffect, useState } from "react";
 import { Button, Checkbox, Col, Row, Space } from "antd";
 import TextArea from "antd/es/input/TextArea";
+import { DeleteOutlined } from "@ant-design/icons";
 import { CheckItemProps } from "@/interfaces/checklists";
-import { updateCheckItemApi } from "@/api/cards";
+import { deleteCheckItemApi, updateCheckItemApi } from "@/api/cards";
 import { useCardModalContext } from "@/context/CardModalContext";
-
+import { CheckItemStyled } from "./CheckListStyle";
+// TODO: 刪除
 const CheckItem: React.FC<{ itemData: CheckItemProps }> = ({
   itemData: { _id: itemId, checklistId, name, completed },
 }) => {
@@ -14,6 +16,7 @@ const CheckItem: React.FC<{ itemData: CheckItemProps }> = ({
   const [isEditItemName, setIsEditItemName] = useState(false);
   const [itemNameField, setItemNameField] = useState(name);
   const [isNotSaveItemNameField, setIsNotSaveItemNameField] = useState(false);
+  const [isShowDelete, setIsShowDelete] = useState(false);
 
   const handleCompletedChange = async (isChecked: boolean) => {
     try {
@@ -96,15 +99,47 @@ const CheckItem: React.FC<{ itemData: CheckItemProps }> = ({
   };
   //#endregion
 
+  const handleDeleteItem = async (
+    event:
+      | React.MouseEvent<HTMLAnchorElement, MouseEvent>
+      | React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
+    event.stopPropagation();
+
+    try {
+      const { result } = await deleteCheckItemApi({
+        cardId: cardId,
+        checklistId: checklistId,
+        checkItemId: itemId,
+      });
+
+      setCardData({
+        ...cardData!,
+        checklist: checkLists.map((list) => {
+          if (list._id === result.checklistId) {
+            return {
+              ...list,
+              checkItem: list.checkItem.filter((item) => item._id !== itemId),
+            };
+          } else {
+            return list;
+          }
+        }),
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   // 在畫面渲染前先去執行狀態更新
   useLayoutEffect(() => {
     handleItemNameIsNotSave();
   }, [isEditItemName, itemNameField]);
 
   return (
-    <Row gutter={[16, 8]}>
+    <CheckItemStyled gutter={[16, 8]}>
       <Col span={24}>
-        <Row gutter={[16, 8]}>
+        <Row gutter={[16, 8]} align="middle">
           <Col flex="none">
             <Checkbox
               checked={completed}
@@ -114,42 +149,59 @@ const CheckItem: React.FC<{ itemData: CheckItemProps }> = ({
             />
           </Col>
           <Col flex="auto">
-            <div
-              className={isEditItemName ? "isHidden" : "isShow"}
-              onClick={() => {
-                setIsEditItemName(true);
-              }}
-            >
-              {name}
-            </div>
-            <div
-              className={
-                isNotSaveItemNameField && !isEditItemName
-                  ? "isShow"
-                  : "isHidden"
-              }
-            >
-              <Space>
-                <span>你在這個項目有未儲存的編輯內容。</span>
-                <Button size="small" type="link">
-                  <span
-                    onClick={() => setIsEditItemName(true)}
-                    className="underline"
-                  >
-                    檢視編輯
-                  </span>
-                </Button>
-                |
-                <Button size="small" type="link">
-                  <span
-                    onClick={() => setItemNameField(name)}
-                    className="underline"
-                  >
-                    放棄
-                  </span>
-                </Button>
-              </Space>
-            </div>
+            <Row align="middle">
+              <Col
+                span={24}
+                onMouseOver={() => setIsShowDelete(true)}
+                onMouseLeave={() => setIsShowDelete(false)}
+              >
+                <div
+                  className={isEditItemName ? "isHidden" : "isShow"}
+                  onClick={() => {
+                    setIsEditItemName(true);
+                  }}
+                >
+                  {name}
+                  {isShowDelete && (
+                    <span className="deleteIcon">
+                      <Button
+                        type="link"
+                        icon={<DeleteOutlined />}
+                        onClick={(event) => handleDeleteItem(event)}
+                      />
+                    </span>
+                  )}
+                </div>
+                <div
+                  className={
+                    isNotSaveItemNameField && !isEditItemName
+                      ? "isShow"
+                      : "isHidden"
+                  }
+                >
+                  <Space>
+                    <span>你在這個項目有未儲存的編輯內容。</span>
+                    <Button size="small" type="link">
+                      <span
+                        onClick={() => setIsEditItemName(true)}
+                        className="underline"
+                      >
+                        檢視編輯
+                      </span>
+                    </Button>
+                    |
+                    <Button size="small" type="link">
+                      <span
+                        onClick={() => setItemNameField(name)}
+                        className="underline"
+                      >
+                        放棄
+                      </span>
+                    </Button>
+                  </Space>
+                </div>
+              </Col>
+            </Row>
             <div className={isEditItemName ? "isShow" : "isHidden"}>
               <TextArea
                 value={itemNameField}
@@ -172,7 +224,7 @@ const CheckItem: React.FC<{ itemData: CheckItemProps }> = ({
           </Col>
         </Row>
       </Col>
-    </Row>
+    </CheckItemStyled>
   );
 };
 

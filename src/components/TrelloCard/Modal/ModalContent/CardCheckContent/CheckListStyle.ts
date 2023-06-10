@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { Row } from "antd";
 
 export const CheckListStyled = styled.div`
   .isShow {
@@ -39,3 +40,11 @@ export const CheckItemsStyled = styled.div`
   }
 `;
 
+export const CheckItemStyled = styled(Row)`
+  .deleteIcon {
+    position: absolute;
+    right: 0;
+    top: 0;
+    z-index: 1;
+  }
+`;
