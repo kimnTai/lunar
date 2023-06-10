@@ -11,9 +11,6 @@ import {
   DateSelectorStyled,
 } from "./PopoverDateStyle";
 
-import isBetween from "dayjs/plugin/isBetween";
-dayjs.extend(isBetween);
-
 const PopoverDate: React.FC = () => {
   const { cardData, setCardData, handleClosePopover } = useCardModalContext();
   const { id = "", date = {} as DateProps } = cardData ?? {};
