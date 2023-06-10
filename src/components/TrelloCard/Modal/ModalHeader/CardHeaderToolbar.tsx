@@ -5,15 +5,16 @@ import {
   UsergroupAddOutlined,
   EyeOutlined,
 } from "@ant-design/icons";
-import { useCardModalContext } from "@/context/CardModalContext";
-import { useAppSelector } from "@/hooks";
-import { addCardMemberApi } from "@/api/cards";
+import { useAppDispatch, useAppSelector } from "@/hooks";
 import { selectListByCardId } from "@/redux/boardSlice";
 import { selectUser } from "@/redux/userSlice";
 import { CardHeaderToolbarStyled } from "./style";
+import { useParamCard } from "@/hooks/useParamCard";
+import { addCardMemberAction } from "@/redux/cardSlice";
 
 const CardHeaderToolbar: React.FC = () => {
-  const { cardData, setCardData } = useCardModalContext();
+  const cardData = useParamCard();
+  const dispatch = useAppDispatch();
   const currentList = useAppSelector(selectListByCardId(cardData?._id));
   const user = useAppSelector(selectUser);
 
@@ -36,11 +37,13 @@ const CardHeaderToolbar: React.FC = () => {
                 if (!cardData) {
                   return;
                 }
-                const { result } = await addCardMemberApi({
-                  cardId: cardData?._id,
-                  userIdList: [user._id],
-                });
-                setCardData(result);
+                await dispatch(
+                  addCardMemberAction({
+                    cardId: cardData?._id,
+                    userIdList: [user._id],
+                  })
+                );
+
                 message.success(`加入成功`);
               }}
             >

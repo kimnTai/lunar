@@ -1,29 +1,39 @@
 import React, { useState } from "react";
-import { Button, Form, Col, Space } from "antd";
-import { useCardModalContext } from "@/context/CardModalContext";
-import { updateCardApi } from "@/api/cards";
+import { Button, Col, Form, Space } from "antd";
 import TextEditor from "@/components/TextEditor";
-import { SectionHeaderStyled, SectionContentStyled } from "./style";
+import { useAppDispatch } from "@/hooks";
+import { useParamCard } from "@/hooks/useParamCard";
+import { updateCardAction } from "@/redux/cardSlice";
+import { SectionContentStyled, SectionHeaderStyled } from "./style";
 
 const CardDescription: React.FC = () => {
-  const { cardData } = useCardModalContext();
-  const { id = "", description = "" } = cardData ?? {};
+  const dispatch = useAppDispatch();
+  const cardData = useParamCard();
 
   const [openTextEditor, setOpenTextEditor] = useState(false);
-  const [descriptionField, setDescriptionField] = useState(description); // 編輯中的內容
-  const [descriptionSaved, setDescriptionSaved] = useState(descriptionField); // 最新的儲存內容
+  // 編輯中的內容
+  const [descriptionField, setDescriptionField] = useState(
+    cardData?.description ?? ""
+  );
+  // 最新的儲存內容
+  const [descriptionSaved, setDescriptionSaved] = useState(descriptionField);
 
   const [form] = Form.useForm();
 
-  const onSubmit = async (_values: string) => {
+  const onSubmit = async (values: string) => {
+    if (!cardData) {
+      return;
+    }
     form.resetFields();
 
     try {
-      const { result } = await updateCardApi({
-        cardId: id,
-        description: _values,
-      });
-      setDescriptionSaved(result.description);
+      await dispatch(
+        updateCardAction({
+          cardId: cardData._id,
+          description: values,
+        })
+      );
+      setDescriptionSaved(values);
     } catch (error) {
       console.error(error);
     }

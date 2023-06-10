@@ -1,12 +1,11 @@
 import React from "react";
 import { Avatar, Col, List } from "antd";
-import { useCardModalContext } from "@/context/CardModalContext";
-import { SectionHeaderStyled } from "./style";
+import { useParamCard } from "@/hooks/useParamCard";
 import CardCommentForm from "./CardCommentForm";
-import { CardCommentListStyled } from "./style";
+import { CardCommentListStyled, SectionHeaderStyled } from "./style";
 
 const CardComment: React.FC = () => {
-  const { cardData } = useCardModalContext();
+  const cardData = useParamCard();
 
   const getTimeText = (time: string) => {
     const seconds = (Date.now() - new Date(time).getTime()) / 1000;

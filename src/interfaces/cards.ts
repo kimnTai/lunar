@@ -49,12 +49,14 @@ export interface DateProps {
 }
 
 export interface NewCardDateProps {
+  cardId: string;
   startDate?: string;
   dueDate?: string;
   dueReminder?: number;
 }
 
 export interface UpdateCardDateProps {
+  cardId: string;
   startDate?: string;
   dueDate?: string;
   dueComplete?: boolean;

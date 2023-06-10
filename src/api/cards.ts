@@ -88,16 +88,16 @@ export const newCardCommentApi = (data: NewCommentProps) =>
   );
 
 // 新增卡片日期
-export const newCardDateApi = (cardId: string, data: NewCardDateProps) =>
+export const newCardDateApi = (data: NewCardDateProps) =>
   Request.post<any, PrometheusResponse<DateProps>>(
-    `/cards/${cardId}/date`,
+    `/cards/${data.cardId}/date`,
     data
   );
 
 // 修改卡片日期
-export const updateCardDateApi = (cardId: string, data: UpdateCardDateProps) =>
+export const updateCardDateApi = (data: UpdateCardDateProps) =>
   Request.put<any, PrometheusResponse<DateProps>>(
-    `/cards/${cardId}/date`,
+    `/cards/${data.cardId}/date`,
     data
   );
 

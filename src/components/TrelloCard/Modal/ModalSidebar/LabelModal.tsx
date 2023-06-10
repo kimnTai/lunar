@@ -1,11 +1,9 @@
-import { AddCardLabelApi, DeleteCardLabelApi } from "@/api/cards";
 import {
   deleteLabelApi,
   getLabelApi,
   newLabelApi,
   updateLabelApi,
 } from "@/api/label";
-import { useCardModalContext } from "@/context/CardModalContext";
 import { useApi } from "@/hooks/useApiHook";
 import { LabelsProps } from "@/interfaces/labels";
 import { colorList } from "@/utils/constant";
@@ -15,13 +13,17 @@ import { CheckboxChangeEvent } from "antd/es/checkbox";
 import { CSSProperties, useEffect, useState } from "react";
 import { useParams } from "react-router";
 import { LabelModalStyled } from "./style";
+import { useParamCard } from "@/hooks/useParamCard";
+import { useAppDispatch } from "@/hooks";
+import { addCardLabelAction, deleteCardLabelAction } from "@/redux/cardSlice";
 
 const LabelModal: React.FC<{
   setIsOpenLabel: Function;
   style?: CSSProperties;
 }> = ({ style, setIsOpenLabel }) => {
   const { boardId } = useParams();
-  const { cardData, setCardData } = useCardModalContext();
+  const cardData = useParamCard();
+  const dispatch = useAppDispatch();
   const selectedLabelArray = cardData?.label.map((label) => label._id);
   const [selectedColor, setSelectedColor] = useState(colorList[0].color);
   const [labelName, setLabelName] = useState("");
@@ -43,21 +45,21 @@ const LabelModal: React.FC<{
   };
 
   const handleAddCardLabel = async (labelId: string) => {
-    await AddCardLabelApi({
-      cardId: cardData?._id!,
-      labelId,
-    }).then((result) => {
-      setCardData(result.result);
-    });
+    await dispatch(
+      addCardLabelAction({
+        cardId: cardData?._id!,
+        labelId,
+      })
+    );
   };
 
   const handleRemoveCardLabel = async (labelId: string) => {
-    await DeleteCardLabelApi({
-      cardId: cardData?._id!,
-      labelId,
-    }).then((result) => {
-      setCardData(result.result);
-    });
+    await dispatch(
+      deleteCardLabelAction({
+        cardId: cardData?._id!,
+        labelId,
+      })
+    );
   };
 
   const handleCheckboxChange = async (e: CheckboxChangeEvent) => {

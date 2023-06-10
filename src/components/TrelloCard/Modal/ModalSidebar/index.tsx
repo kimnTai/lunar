@@ -12,19 +12,22 @@ import { Button, Col, Divider, message } from "antd";
 import { ModalStyle, ModalSidebarStyled } from "./style";
 import AttachmentBox from "./AttachmentBox";
 import CloneCardBox from "./CloneCardBox";
-import { useAppSelector } from "@/hooks";
+import { useAppDispatch, useAppSelector } from "@/hooks";
 import { useCardModalContext } from "@/context/CardModalContext";
-import { addCardMemberApi } from "@/api/cards";
 import AddMemberModal from "./AddMemberModal";
+import { addCardMemberAction } from "@/redux/cardSlice";
+import { useParamCard } from "@/hooks/useParamCard";
 
 const ModalSidebar: React.FC = () => {
+  const dispatch = useAppDispatch();
+
   const { setOpenPopover, PopoverType } = useCardModalContext();
 
   const [isLoading, setIsLoading] = useState(false);
   const [isOpenAddMember, setIsOpenAddMember] = useState(false);
 
   const userId = useAppSelector((state) => state.user.user._id);
-  const { cardData, setCardData } = useCardModalContext();
+  const cardData = useParamCard();
 
   const SidebarBox: React.FC<{
     title: string;
@@ -54,17 +57,16 @@ const ModalSidebar: React.FC = () => {
 
   const handleJoinCard = async () => {
     const cardId = cardData?._id;
-    setIsLoading(true);
-    if (cardId) {
-      await addCardMemberApi({ cardId, userIdList: [userId] }).then(
-        (result) => {
-          if (result.status === "success") {
-            message.success(`加入成功`);
-            setCardData(result.result);
-          }
-        }
-      );
+    if (!cardId) {
+      return;
     }
+    setIsLoading(true);
+
+    try {
+      await dispatch(addCardMemberAction({ cardId, userIdList: [userId] }));
+      message.success(`加入成功`);
+    } catch (error) {}
+
     setIsLoading(false);
   };
   return (

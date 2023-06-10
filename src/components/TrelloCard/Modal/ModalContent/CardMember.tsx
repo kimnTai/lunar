@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import { Avatar, Button, Col, Tooltip } from "antd";
-import { useCardModalContext } from "@/context/CardModalContext";
-import { SectionHeaderStyled } from "./style";
 import { PlusOutlined } from "@ant-design/icons";
+import { useParamCard } from "@/hooks/useParamCard";
 import AddMemberModal from "../ModalSidebar/AddMemberModal";
+import { SectionHeaderStyled } from "./style";
 
 const CardMember: React.FC = () => {
-  const { cardData } = useCardModalContext();
+  const cardData = useParamCard();
   const [isOpenAddMember, setIsOpenAddMember] = useState(false);
 
   const memberAvatarGroup = cardData?.member.map(

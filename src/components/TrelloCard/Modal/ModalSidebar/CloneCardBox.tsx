@@ -2,12 +2,12 @@ import React, { useState } from "react";
 import { CopyOutlined } from "@ant-design/icons";
 import { Button, Cascader, Form, Input, Popover, Spin } from "antd";
 import { postCloneCardApi } from "@/api/cards";
-import { useCardModalContext } from "@/context/CardModalContext";
 import { useAppDispatch } from "@/hooks";
 import { getOrganizationsAction } from "@/redux/organizationSlice";
+import { useParamCard } from "@/hooks/useParamCard";
 
 const CloneCardBox: React.FC = () => {
-  const { cardData } = useCardModalContext();
+  const cardData = useParamCard();
   const [form] = Form.useForm<{
     name: string;
     cascader: [string, string, string, number];

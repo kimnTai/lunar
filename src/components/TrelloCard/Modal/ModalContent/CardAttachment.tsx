@@ -1,19 +1,14 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router";
 import { Col, Modal, Upload, UploadProps, message } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import { getBase64 } from "@/utils/func";
-import {
-  deleteAttachmentAction,
-  newAttachmentAction,
-  selectCardById,
-} from "@/redux/cardSlice";
-import { useAppDispatch, useAppSelector } from "@/hooks";
+import { deleteAttachmentAction, newAttachmentAction } from "@/redux/cardSlice";
+import { useAppDispatch } from "@/hooks";
 import { SectionHeaderStyled } from "./style";
+import { useParamCard } from "@/hooks/useParamCard";
 
 const CardAttachment: React.FC = () => {
-  const { cardId } = useParams();
-  const cardData = useAppSelector(selectCardById(cardId));
+  const cardData = useParamCard();
 
   const [previewOpen, setPreviewOpen] = useState(false);
   const [previewImage, setPreviewImage] = useState("");

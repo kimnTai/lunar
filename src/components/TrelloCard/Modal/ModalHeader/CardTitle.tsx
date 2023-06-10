@@ -1,12 +1,12 @@
 import React, { useState } from "react";
-import { Row, Col, Input } from "antd";
-import { useCardModalContext } from "@/context/CardModalContext";
-import { CardTitleStyled } from "./style";
+import { Col, Input, Row } from "antd";
 import { useAppDispatch } from "@/hooks";
+import { useParamCard } from "@/hooks/useParamCard";
 import { updateCardAction } from "@/redux/cardSlice";
+import { CardTitleStyled } from "./style";
 
 const CardTitle: React.FC = () => {
-  const { cardData } = useCardModalContext();
+  const cardData = useParamCard();
   const [isEdit, setIsEdit] = useState(false);
   const [titleFiled, setTitleFiled] = useState(cardData?.name || "");
 

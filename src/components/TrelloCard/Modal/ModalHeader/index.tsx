@@ -1,15 +1,12 @@
 import React from "react";
-import { useParams } from "react-router";
 import { Image } from "antd";
-import { useAppSelector } from "@/hooks";
-import { selectCardById } from "@/redux/cardSlice";
+import { useParamCard } from "@/hooks/useParamCard";
 import CardHeaderToolbar from "./CardHeaderToolbar";
 import CardTitle from "./CardTitle";
 import { ModalHeaderStyled } from "./style";
 
 const ModalHeader: React.FC = () => {
-  const { cardId } = useParams();
-  const cardData = useAppSelector(selectCardById(cardId));
+  const cardData = useParamCard();
 
   const coverUrl = cardData?.attachment.at(0)?.dirname;
 

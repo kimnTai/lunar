@@ -1,13 +1,12 @@
 import React, { useState } from "react";
-import { useParams } from "react-router";
 import { Button, message, Popover, Upload } from "antd";
 import { PaperClipOutlined, WalletOutlined } from "@ant-design/icons";
-import { useAppDispatch, useAppSelector } from "@/hooks";
-import { newAttachmentAction, selectCardById } from "@/redux/cardSlice";
+import { useAppDispatch } from "@/hooks";
+import { newAttachmentAction } from "@/redux/cardSlice";
+import { useParamCard } from "@/hooks/useParamCard";
 
 const AttachmentBox: React.FC = () => {
-  const { cardId } = useParams();
-  const cardData = useAppSelector(selectCardById(cardId));
+  const cardData = useParamCard();
   const [isPopoverOpen, setPopoverOpen] = useState(false);
 
   const dispatch = useAppDispatch();

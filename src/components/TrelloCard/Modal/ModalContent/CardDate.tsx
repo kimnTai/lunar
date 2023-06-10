@@ -1,31 +1,39 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Checkbox, Col, Space, Tag } from "antd";
 import type { CheckboxChangeEvent } from "antd/es/checkbox";
+import { EditOutlined } from "@ant-design/icons";
 import dayjs from "dayjs";
-import { DateProps } from "@/interfaces/cards";
 import { useCardModalContext } from "@/context/CardModalContext";
+import { useAppDispatch } from "@/hooks";
+import { updateCardDateAction } from "@/redux/cardSlice";
 import {
   CardDateStyled,
   SectionContentStyled,
   SectionHeaderStyled,
 } from "./style";
-import { EditOutlined } from "@ant-design/icons";
-import { updateCardDateApi } from "@/api/cards";
+import { useParamCard } from "@/hooks/useParamCard";
 
 const CardDate: React.FC = () => {
-  const { cardData, setOpenPopover, PopoverType } = useCardModalContext();
-  const { id = "", date = {} as DateProps } = cardData ?? {};
-  const { startDate = "", dueDate = "", dueComplete = false } = date ?? {}; // 2023-05-22T00:00:00.000Z
+  const dispatch = useAppDispatch();
+  const cardData = useParamCard();
+  const { setOpenPopover, PopoverType } = useCardModalContext();
+  const { startDate, dueDate, dueComplete } = cardData?.date ?? {}; // 2023-05-22T00:00:00.000Z
 
-  const [isCompleted, setIsCompleted] = React.useState<boolean>(dueComplete);
-  const [isExpired, setIsExpired] = React.useState<boolean>(false);
+  const [isCompleted, setIsCompleted] = useState(dueComplete);
+  const [isExpired, setIsExpired] = useState(false);
 
-  const handleComplete = async (_e: CheckboxChangeEvent) => {
+  const handleComplete = async ({ target }: CheckboxChangeEvent) => {
+    if (!cardData) {
+      return;
+    }
     try {
-      await updateCardDateApi(id, {
-        dueComplete: _e.target.checked,
-      });
-      setIsCompleted(_e.target.checked);
+      await dispatch(
+        updateCardDateAction({
+          cardId: cardData.id,
+          dueComplete: target.checked,
+        })
+      );
+      setIsCompleted(target.checked);
     } catch (error) {
       console.log(error);
     }
@@ -43,7 +51,7 @@ const CardDate: React.FC = () => {
   }, [dueDate, isCompleted]);
 
   // 沒有設定日期不顯示日期區塊
-  if (!cardData || !date) {
+  if (!cardData || !cardData?.date) {
     return null;
   }
 
@@ -55,7 +63,7 @@ const CardDate: React.FC = () => {
         </Col>
       </SectionHeaderStyled>
       <SectionContentStyled>
-        {date && (
+        {cardData?.date && (
           <CardDateStyled>
             <Space
               className="cardDate"
