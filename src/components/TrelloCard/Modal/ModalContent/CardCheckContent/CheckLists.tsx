@@ -10,20 +10,20 @@ import CheckItems from "./CheckItems";
 import { SectionHeaderStyled } from "../style";
 import { CheckListStyled } from "./CheckListStyle";
 
-const CheckList: React.FC = () => {
+const CheckLists: React.FC = () => {
   const { cardData, setCardData } = useCardModalContext();
-  const { id = "", checklist = [] } = cardData ?? {};
+  const { id = "", checklist: checkLists = [] } = cardData ?? {};
 
   const [checkItemsIsEdit, setCheckItemsIsEdit] = useState(
-    new Array(checklist.length).fill(false)
+    new Array(checkLists.length).fill(false)
   );
 
   const [checkItemsTitle, setCheckItemsTitle] = useState(
-    new Array(checklist.length).fill("")
+    new Array(checkLists.length).fill("")
   );
 
   const [openDeleteConfirmList, setIsOpenDeleteConfirm] = useState(
-    new Array(checklist.length).fill(false)
+    new Array(checkLists.length).fill(false)
   );
 
   // 多個 CheckList 新增 Item 時每次只顯示一個新增欄位
@@ -50,9 +50,9 @@ const CheckList: React.FC = () => {
     try {
       const { result } = await newCheckItemApi({
         cardId: id,
-        checklistId: checklist[index].id,
+        checklistId: checkLists[index].id,
         name: checkItemsTitle[index],
-        position: nextPosition(checklist[index].checkItem).toString(),
+        position: nextPosition(checkLists[index].checkItem).toString(),
       });
 
       handleCheckItemsTitleChange(index);
@@ -60,8 +60,8 @@ const CheckList: React.FC = () => {
       // 更新畫面
       setCardData({
         ...cardData!,
-        checklist: checklist.map((list) => {
-          if (list.id === checklist[index].id) {
+        checklist: checkLists.map((list) => {
+          if (list.id === checkLists[index].id) {
             list.checkItem.push(result);
           }
           return list;
@@ -87,13 +87,13 @@ const CheckList: React.FC = () => {
     try {
       await deleteChecklistApi({
         cardId: id,
-        checklistId: checklist[listIndex].id,
+        checklistId: checkLists[listIndex].id,
       });
 
       setCardData({
         ...cardData!,
-        checklist: checklist.filter(
-          (list) => list.id !== checklist[listIndex].id
+        checklist: checkLists.filter(
+          (list) => list.id !== checkLists[listIndex].id
         ),
       });
       handleOpenDeleteConfirm(false);
@@ -104,7 +104,7 @@ const CheckList: React.FC = () => {
 
   return (
     <>
-      {checklist
+      {checkLists
         .sort((a, b) => +a.position - +b.position)
         .map(({ _id, name }, index) => (
           <Draggable key={_id} draggableId={_id} index={index}>
@@ -266,4 +266,4 @@ const CheckList: React.FC = () => {
   );
 };
 
-export default CheckList;
+export default CheckLists;
