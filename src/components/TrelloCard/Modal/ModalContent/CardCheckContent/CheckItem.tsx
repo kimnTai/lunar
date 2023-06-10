@@ -17,6 +17,8 @@ const CheckItem: React.FC<{ itemData: CheckItemProps }> = ({
   const [itemNameField, setItemNameField] = useState(name);
   const [isNotSaveItemNameField, setIsNotSaveItemNameField] = useState(false);
   const [isShowDelete, setIsShowDelete] = useState(false);
+  const [isItemNameSubmitting, setIsItemNameSubmitting] = useState(false);
+  const [isDeleteItemSubmitting, setIsDeleteItemSubmitting] = useState(false);
 
   const handleCompletedChange = async (isChecked: boolean) => {
     try {
@@ -64,6 +66,7 @@ const CheckItem: React.FC<{ itemData: CheckItemProps }> = ({
     if (itemNameField.trim() === "") {
       return;
     }
+    setIsItemNameSubmitting(true);
 
     try {
       const { result } = await updateCheckItemApi({
@@ -94,6 +97,7 @@ const CheckItem: React.FC<{ itemData: CheckItemProps }> = ({
     } catch (error) {
       console.error(error);
     } finally {
+      setIsItemNameSubmitting(false);
       setIsEditItemName(false);
     }
   };
@@ -105,6 +109,7 @@ const CheckItem: React.FC<{ itemData: CheckItemProps }> = ({
       | React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
     event.stopPropagation();
+    setIsDeleteItemSubmitting(true);
 
     try {
       const { result } = await deleteCheckItemApi({
@@ -128,6 +133,8 @@ const CheckItem: React.FC<{ itemData: CheckItemProps }> = ({
       });
     } catch (error) {
       console.error(error);
+    } finally {
+      setIsDeleteItemSubmitting(false);
     }
   };
 
@@ -139,7 +146,7 @@ const CheckItem: React.FC<{ itemData: CheckItemProps }> = ({
   return (
     <CheckItemStyled gutter={[16, 8]}>
       <Col span={24}>
-        <Row gutter={[16, 8]} align="middle">
+        <Row gutter={[16, 8]} align="top">
           <Col flex="none">
             <Checkbox
               checked={completed}
@@ -168,6 +175,7 @@ const CheckItem: React.FC<{ itemData: CheckItemProps }> = ({
                         type="link"
                         icon={<DeleteOutlined />}
                         onClick={(event) => handleDeleteItem(event)}
+                        loading={isDeleteItemSubmitting}
                       />
                     </span>
                   )}
@@ -202,25 +210,34 @@ const CheckItem: React.FC<{ itemData: CheckItemProps }> = ({
                 </div>
               </Col>
             </Row>
-            <div className={isEditItemName ? "isShow" : "isHidden"}>
-              <TextArea
-                value={itemNameField}
-                onChange={(e) => setItemNameField(e.target.value)}
-                placeholder="填寫待辦項目"
-              />
-              <Space>
-                <Button
-                  type="primary"
-                  size="small"
-                  onClick={handleSaveItemName}
-                >
-                  儲存
-                </Button>
-                <Button size="small" onClick={() => setIsEditItemName(false)}>
-                  取消
-                </Button>
-              </Space>
-            </div>
+            <Row>
+              <Col span={24} className={isEditItemName ? "isShow" : "isHidden"}>
+                <TextArea
+                  value={itemNameField}
+                  onChange={(e) => setItemNameField(e.target.value)}
+                  onKeyDown={(event) => {
+                    if (event.key === "Enter") {
+                      event.preventDefault();
+                      handleSaveItemName();
+                    }
+                  }}
+                  placeholder="填寫待辦項目"
+                />
+                <Space>
+                  <Button
+                    type="primary"
+                    size="small"
+                    onClick={handleSaveItemName}
+                    loading={isItemNameSubmitting}
+                  >
+                    儲存
+                  </Button>
+                  <Button size="small" onClick={() => setIsEditItemName(false)}>
+                    取消
+                  </Button>
+                </Space>
+              </Col>
+            </Row>
           </Col>
         </Row>
       </Col>

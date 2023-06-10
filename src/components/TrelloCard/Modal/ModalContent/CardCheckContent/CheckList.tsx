@@ -19,8 +19,15 @@ const CheckList: React.FC<{
   const [isNewCheckItemEdit, setIsNewCheckItemEdit] = useState(false);
   const [newCheckItemTitle, setNewCheckItemTitle] = useState("");
   const [isOpenDeleteConfirm, setIsOpenDeleteConfirm] = useState(false);
+  const [isNewItemSubmitting, setIsNewItemSubmitting] =
+    useState<boolean>(false);
+  const [isDeleteListSubmitting, setIsDeleteListSubmitting] =
+    useState<boolean>(false);
 
   const handleAddCheckItem = async () => {
+    if (!newCheckItemTitle.trim()) return;
+    setIsNewItemSubmitting(true);
+
     try {
       const { result } = await newCheckItemApi({
         cardId: cardId,
@@ -43,11 +50,13 @@ const CheckList: React.FC<{
     } catch (error) {
       console.error(error);
     } finally {
+      setIsNewItemSubmitting(false);
       setIsNewCheckItemEdit(false);
     }
   };
 
   const handleDeleteChecklist = async () => {
+    setIsDeleteListSubmitting(true);
     try {
       await deleteChecklistApi({
         cardId: cardId,
@@ -61,6 +70,7 @@ const CheckList: React.FC<{
     } catch (error) {
       console.error(error);
     } finally {
+      setIsDeleteListSubmitting(false);
       setIsOpenDeleteConfirm(false);
     }
   };
@@ -98,7 +108,12 @@ const CheckList: React.FC<{
                 <br />
               </Col>
               <Col span={24}>
-                <Button block danger onClick={handleDeleteChecklist}>
+                <Button
+                  block
+                  danger
+                  onClick={handleDeleteChecklist}
+                  loading={isDeleteListSubmitting}
+                >
                   刪除
                 </Button>
               </Col>
@@ -130,12 +145,22 @@ const CheckList: React.FC<{
               <TextArea
                 value={newCheckItemTitle}
                 onChange={(e) => setNewCheckItemTitle(e.target.value)}
-                placeholder="填寫代辦清單..."
+                onKeyDown={(event) => {
+                  if (event.key === "Enter") {
+                    event.preventDefault();
+                    handleAddCheckItem();
+                  }
+                }}
+                placeholder="填寫待辦清單..."
               />
             </Col>
             <Col span={24}>
               <Space>
-                <Button type="primary" onClick={handleAddCheckItem}>
+                <Button
+                  type="primary"
+                  onClick={handleAddCheckItem}
+                  loading={isNewItemSubmitting}
+                >
                   新增
                 </Button>
                 <Button onClick={() => setIsNewCheckItemEdit(false)}>
