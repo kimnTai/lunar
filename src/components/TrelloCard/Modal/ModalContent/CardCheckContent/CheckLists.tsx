@@ -34,7 +34,7 @@ const CheckLists: React.FC = () => {
                       ref={dropProvided.innerRef}
                       style={{ minHeight: "1px" }}
                     >
-                      <CheckList listData={list} listIndex={index} />
+                      <CheckList listData={list} />
                       {dropProvided.placeholder}
                     </div>
                   )}

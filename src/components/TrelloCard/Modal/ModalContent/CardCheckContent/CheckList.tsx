@@ -12,8 +12,7 @@ import { CheckListStyled } from "./CheckListStyle";
 
 const CheckList: React.FC<{
   listData: ChecklistProps;
-  listIndex: number; // TODO: 重構完刪除
-}> = ({ listData: { _id: listId, name, checkItem, cardId }, listIndex }) => {
+}> = ({ listData: { _id: listId, name, checkItem, cardId } }) => {
   const { cardData, setCardData } = useCardModalContext();
   const { checklist: checkLists = [] } = cardData ?? {};
 
@@ -121,7 +120,7 @@ const CheckList: React.FC<{
       </SectionHeaderStyled>
 
       <CheckListStyled>
-        <CheckItems checklistIndex={listIndex} />
+        <CheckItems itemsData={checkItem} />
         <>
           <Row
             gutter={[16, 8]}
