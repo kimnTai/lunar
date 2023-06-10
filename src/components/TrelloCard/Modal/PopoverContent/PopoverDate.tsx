@@ -1,21 +1,22 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Button, Space, Checkbox, Input, InputRef } from "antd";
-import dayjs from "dayjs";
-import type { Dayjs } from "dayjs";
-import { DateProps } from "@/interfaces/cards";
+import { Button, Checkbox, Input, InputRef, Space } from "antd";
+import dayjs, { type Dayjs } from "dayjs";
 import { useCardModalContext } from "@/context/CardModalContext";
-import { newCardDateApi, deleteCardDateApi } from "@/api/cards";
+import { useAppDispatch } from "@/hooks";
+import { useParamCard } from "@/hooks/useParamCard";
+import { DateProps } from "@/interfaces/cards";
+import { deleteCardDateAction, newCardDateAction } from "@/redux/cardSlice";
 import {
   AntCalendarStyled,
-  PopoverSectionTitleStyled,
   DateSelectorStyled,
+  PopoverSectionTitleStyled,
 } from "./PopoverDateStyle";
 
-import isBetween from "dayjs/plugin/isBetween";
-dayjs.extend(isBetween);
-
 const PopoverDate: React.FC = () => {
-  const { cardData, setCardData, handleClosePopover } = useCardModalContext();
+  const cardData = useParamCard();
+  const dispatch = useAppDispatch();
+
+  const { handleClosePopover } = useCardModalContext();
   const { id = "", date = {} as DateProps } = cardData ?? {};
   const { startDate = "", dueDate = "" } = date ?? {}; // 2023-05-22T00:00:00.000Z
 
@@ -99,25 +100,13 @@ const PopoverDate: React.FC = () => {
     }
 
     try {
-      const {
-        result: { _id, cardId, dueComplete, startDate, dueDate },
-      } = await newCardDateApi(id, {
-        startDate: startDateField?.format() ?? "",
-        dueDate: endDateField?.format() ?? "",
-      });
-
-      // 更新卡片畫面資料
-      setCardData({
-        ...cardData!,
-        date: {
-          _id: _id,
-          cardId: cardId,
-          dueComplete: dueComplete,
-          dueReminder: 0,
-          startDate: startDate,
-          dueDate: dueDate,
-        },
-      });
+      await dispatch(
+        newCardDateAction({
+          cardId: id,
+          startDate: startDateField?.format() ?? "",
+          dueDate: endDateField?.format() ?? "",
+        })
+      );
       handleClosePopover();
     } catch (error) {
       console.error(error);
@@ -126,18 +115,12 @@ const PopoverDate: React.FC = () => {
 
   const handleRemoveDate = async () => {
     try {
-      await deleteCardDateApi(id);
+      await dispatch(deleteCardDateAction(id));
       setEditDateType("");
       setStartDateField(null);
       setEndDateField(null);
       setIsCheckEndField(false);
       setIsCheckStartField(false);
-
-      // 更新卡片畫面資料
-      setCardData({
-        ...cardData!,
-        date: null,
-      });
 
       handleClosePopover();
     } catch (error) {

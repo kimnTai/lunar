@@ -1,70 +1,47 @@
 import React, { useState } from "react";
+import { Button, Col, Divider, message } from "antd";
 import {
-  UserOutlined,
+  ArrowRightOutlined,
+  CheckSquareOutlined,
+  ClockCircleOutlined,
   ContainerOutlined,
   ShareAltOutlined,
-  ArrowRightOutlined,
-  ClockCircleOutlined,
-  CheckSquareOutlined,
   TagOutlined,
+  UserOutlined,
 } from "@ant-design/icons";
-import { Button, Col, Divider, message } from "antd";
-import { ModalStyle, ModalSidebarStyled } from "./style";
+import { useCardModalContext } from "@/context/CardModalContext";
+import { useAppDispatch, useAppSelector } from "@/hooks";
+import { useParamCard } from "@/hooks/useParamCard";
+import { addCardMemberAction } from "@/redux/cardSlice";
+import AddMemberModal from "./AddMemberModal";
 import AttachmentBox from "./AttachmentBox";
 import CloneCardBox from "./CloneCardBox";
-import { useAppSelector } from "@/hooks";
-import { useCardModalContext } from "@/context/CardModalContext";
-import { addCardMemberApi } from "@/api/cards";
-import AddMemberModal from "./AddMemberModal";
+import { SidebarBox } from "./SidebarBox";
+import { ModalSidebarStyled, ModalStyle } from "./style";
 
 const ModalSidebar: React.FC = () => {
+  const dispatch = useAppDispatch();
+
   const { setOpenPopover, PopoverType } = useCardModalContext();
 
   const [isLoading, setIsLoading] = useState(false);
   const [isOpenAddMember, setIsOpenAddMember] = useState(false);
 
   const userId = useAppSelector((state) => state.user.user._id);
-  const { cardData, setCardData } = useCardModalContext();
-
-  const SidebarBox: React.FC<{
-    title: string;
-    className?: string;
-    data: any[];
-  }> = ({ title, data, className }) => {
-    return (
-      <div className={className}>
-        <h3>{title}</h3>
-        <div className="action-list">
-          {data.map((ele, idx) => (
-            <Button
-              block
-              key={idx}
-              className="button-link"
-              onClick={ele.onClickEvent}
-              loading={ele.loading}
-            >
-              <span style={{ marginRight: "6px" }}>{ele.icon}</span>
-              <span>{ele.label}</span>
-            </Button>
-          ))}
-        </div>
-      </div>
-    );
-  };
+  const cardData = useParamCard();
 
   const handleJoinCard = async () => {
     const cardId = cardData?._id;
-    setIsLoading(true);
-    if (cardId) {
-      await addCardMemberApi({ cardId, userIdList: [userId] }).then(
-        (result) => {
-          if (result.status === "success") {
-            message.success(`加入成功`);
-            setCardData(result.result);
-          }
-        }
-      );
+    if (!cardId) {
+      return;
     }
+    setIsLoading(true);
+
+    try {
+      await dispatch(addCardMemberAction({ cardId, userIdList: [userId] }));
+      message.success(`加入成功`);
+    } catch (error) {}
+
     setIsLoading(false);
   };
   return (
@@ -83,31 +60,33 @@ const ModalSidebar: React.FC = () => {
             </Button>
           </Col>
         )}
-        <Col style={{ position: "relative" }}>
-          <Button
-            className="button-link"
-            onClick={() => setIsOpenAddMember(true)}
-            icon={<UserOutlined />}
-          >
-            成員
-          </Button>
-
-          {isOpenAddMember && (
-            <AddMemberModal
-              setIsOpenAddMember={setIsOpenAddMember}
-              style={{ top: " 32px", left: 0 }}
-            />
-          )}
-        </Col>
-
+        {/** Modal */}
+        {isOpenAddMember && (
+          <AddMemberModal
+            setIsOpenAddMember={setIsOpenAddMember}
+            style={{ top: " 32px", left: 0 }}
+          />
+        )}
         <SidebarBox
           className={"mid"}
           title={"新增至卡片"}
           data={[
-            { label: "標籤", value: "member", icon: <TagOutlined /> },
+            {
+              label: "成員",
+              value: "member",
+              icon: <UserOutlined />,
+              onClickEvent: () => {
+                setIsOpenAddMember(true);
+              },
+            },
+            {
+              label: "標籤",
+              value: "label",
+              icon: <TagOutlined />,
+            },
             {
               label: "代辦清單",
-              value: "member",
+              value: "checklist",
               icon: <CheckSquareOutlined />,
               onClickEvent: () => {
                 setOpenPopover({
@@ -119,7 +98,7 @@ const ModalSidebar: React.FC = () => {
             },
             {
               label: "日期",
-              value: "member",
+              value: "date",
               icon: <ClockCircleOutlined />,
               onClickEvent: () => {
                 setOpenPopover({
@@ -137,7 +116,11 @@ const ModalSidebar: React.FC = () => {
           className={"mid"}
           title={"動作"}
           data={[
-            { label: "移動", value: "move", icon: <ArrowRightOutlined /> },
+            {
+              label: "移動",
+              value: "move",
+              icon: <ArrowRightOutlined />,
+            },
           ]}
         />
         <CloneCardBox />

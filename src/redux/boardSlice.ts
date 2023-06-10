@@ -18,8 +18,11 @@ import { RootState } from "./store";
 import { newListApiAction } from "./listSlice";
 import {
   deleteAttachmentAction,
+  deleteCardDateAction,
   newAttachmentAction,
+  newCardCommentAction,
   updateCardAction,
+  updateCardDateAction,
 } from "./cardSlice";
 
 const initialState: {
@@ -63,12 +66,12 @@ export const deleteBoardAction = createAsyncThunk(
 );
 
 export const addBoardMembersAction = createAsyncThunk(
-  "board/addBoardMembers",
+  "board/getBoardById",
   async (data: AddBoardsMembers) => await addBoardMembersApi(data)
 );
 
 export const postCloneBoardAction = createAsyncThunk(
-  "board/postCloneBoard",
+  "board/newBoard",
   async (data: CloneBoardProps) => await postCloneBoardApi(data)
 );
 
@@ -82,23 +85,24 @@ export const boardSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    builder.addCase(getBoardByIdAction.fulfilled, (state, action) => {
-      state.board = action.payload.result;
-    });
-    builder.addCase(addBoardMembersAction.fulfilled, (state, action) => {
-      state.board = action.payload.result;
-    });
-    builder.addCase(updateBoardAction.fulfilled, (state, action) => {
-      if (state.board._id === action.payload.result._id) {
+    // 看板
+    builder
+      .addCase(getBoardByIdAction.fulfilled, (state, action) => {
         state.board = action.payload.result;
-      }
-    });
+      })
+      .addCase(updateBoardAction.fulfilled, (state, action) => {
+        if (state.board._id === action.payload.result._id) {
+          state.board = action.payload.result;
+        }
+      });
+    // 列表
     builder.addCase(newListApiAction.fulfilled, (state, action) => {
       const newList = action.payload.result;
       if (state.board._id === newList.boardId) {
         state.board.list.push(newList);
       }
     });
+    // 卡片
     builder.addCase(updateCardAction.fulfilled, (state, action) => {
       const updateCard = action.payload.result;
       state.board.list
@@ -109,30 +113,68 @@ export const boardSlice = createSlice({
           );
         });
     });
-    builder.addCase(newAttachmentAction.fulfilled, (state, action) => {
-      const attachment = action.payload.result;
+    // 卡片附件
+    builder
+      .addCase(newAttachmentAction.fulfilled, (state, action) => {
+        const attachment = action.payload.result;
+
+        const card = state.board.list
+          .flatMap(({ card }) => card)
+          .find(({ _id }) => _id === attachment.cardId);
+
+        if (card) {
+          card.attachment = [...card.attachment, attachment];
+        }
+      })
+      .addCase(deleteAttachmentAction.fulfilled, (state, action) => {
+        const attachment = action.payload.result;
+
+        const card = state.board.list
+          .flatMap(({ card }) => card)
+          .find(({ _id }) => _id === attachment.cardId);
+
+        if (card) {
+          card.attachment = card.attachment.filter(
+            ({ _id }) => _id !== attachment._id
+          );
+        }
+      });
+    // 卡片評論
+    builder.addCase(newCardCommentAction.fulfilled, (state, action) => {
+      const comment = action.payload.result;
 
       const card = state.board.list
         .flatMap(({ card }) => card)
-        .find(({ _id }) => _id === attachment.cardId);
+        .find(({ _id }) => _id === comment.cardId);
 
       if (card) {
-        card.attachment = [...card.attachment, attachment];
+        card.comment = [...card.comment, comment];
       }
     });
-    builder.addCase(deleteAttachmentAction.fulfilled, (state, action) => {
-      const attachment = action.payload.result;
+    // 卡片日期
+    builder
+      .addCase(updateCardDateAction.fulfilled, (state, action) => {
+        const date = action.payload.result;
 
-      const card = state.board.list
-        .flatMap(({ card }) => card)
-        .find(({ _id }) => _id === attachment.cardId);
+        const card = state.board.list
+          .flatMap(({ card }) => card)
+          .find(({ _id }) => _id === date.cardId);
 
-      if (card) {
-        card.attachment = card.attachment.filter(
-          ({ _id }) => _id !== attachment._id
-        );
-      }
-    });
+        if (card) {
+          card.date = date;
+        }
+      })
+      .addCase(deleteCardDateAction.fulfilled, (state, action) => {
+        const cardId = action.meta.arg;
+
+        const card = state.board.list
+          .flatMap(({ card }) => card)
+          .find(({ _id }) => _id === cardId);
+
+        if (card) {
+          card.date = null;
+        }
+      });
   },
 });
 

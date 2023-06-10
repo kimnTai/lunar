@@ -2,17 +2,19 @@ import { searchLunarMemberApi } from "@/api/search";
 import { CloseOutlined, SearchOutlined } from "@ant-design/icons";
 import { Avatar, Button, Card, Col, Input, List, message } from "antd";
 import { debounce } from "lodash";
-import { ChangeEvent, useState } from "react";
+import { CSSProperties, ChangeEvent, useState } from "react";
 import { AddMemberModalStyled } from "./style";
 import type { UserProps } from "@/interfaces/user";
-import { useCardModalContext } from "@/context/CardModalContext";
-import { addCardMemberApi } from "@/api/cards";
+import { useParamCard } from "@/hooks/useParamCard";
+import { useAppDispatch } from "@/hooks";
+import { addCardMemberAction } from "@/redux/cardSlice";
 
 const AddMemberModal: React.FC<{
   setIsOpenAddMember: Function;
-  style?: any;
+  style?: CSSProperties;
 }> = ({ setIsOpenAddMember, style }) => {
-  const { cardData, setCardData } = useCardModalContext();
+  const dispatch = useAppDispatch();
+  const cardData = useParamCard();
   const [resultMember, setResultMember] = useState<UserProps[] | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -29,14 +31,8 @@ const AddMemberModal: React.FC<{
   const handleAddCardMember = async (member: UserProps) => {
     const cardId = cardData?._id;
     if (cardId) {
-      await addCardMemberApi({ cardId, userIdList: [member._id] }).then(
-        (result) => {
-          if (result.status === "success") {
-            message.success(`加入成功`);
-            setCardData(result.result);
-          }
-        }
-      );
+      await dispatch(addCardMemberAction({ cardId, userIdList: [member._id] }));
+      message.success(`加入成功`);
     }
     setIsOpenAddMember(false);
   };

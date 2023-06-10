@@ -7,7 +7,7 @@ const useWebSocket = (
 ) => {
   const webSocketRef = useRef<WebSocket | null>(null);
   const [connect, setConnect] = useState(false);
-  const [data, setData] = useState<any>();
+  const [data, setData] = useState<SocketResultProps>();
   useEffect(() => {
     // 創建WebSocket連接
     webSocketRef.current = new WebSocket(
@@ -33,7 +33,7 @@ const useWebSocket = (
     webSocketRef.current.onmessage = (event: MessageEvent) => {
       const evenData = JSON.parse(event.data);
       if (evenData.type === "update") {
-        setData(evenData.result as SocketResultProps);
+        setData(evenData.result);
       }
     };
 

@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import { Avatar, Button, Col } from "antd";
-import { useCardModalContext } from "@/context/CardModalContext";
-import { SectionHeaderStyled } from "./style";
 import { PlusOutlined } from "@ant-design/icons";
+import { useParamCard } from "@/hooks/useParamCard";
 import LabelModal from "../ModalSidebar/LabelModal";
+import { SectionHeaderStyled } from "./style";
 
 const CardLabel: React.FC = () => {
-  const { cardData } = useCardModalContext();
+  const cardData = useParamCard();
 
   const [isOpenLabel, setIsOpenLabel] = useState(false);
 

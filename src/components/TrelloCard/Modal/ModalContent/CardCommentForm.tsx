@@ -1,13 +1,14 @@
-import { Button, Form, Input } from "antd";
-import { useAppSelector } from "@/hooks";
-import { SendOutlined } from "@ant-design/icons";
-import { useCardModalContext } from "@/context/CardModalContext";
-import { getCardApi, newCardCommentApi } from "@/api/cards";
 import { useState } from "react";
+import { Button, Form, Input } from "antd";
+import { SendOutlined } from "@ant-design/icons";
+import { useAppDispatch, useAppSelector } from "@/hooks";
+import { useParamCard } from "@/hooks/useParamCard";
+import { newCardCommentAction } from "@/redux/cardSlice";
 import { CardCommentFormStyled } from "./style";
 
 const CardCommentForm: React.FC = () => {
-  const { cardData, setCardData } = useCardModalContext();
+  const dispatch = useAppDispatch();
+  const cardId = useParamCard()?._id;
   const user = useAppSelector((state) => state.user.user);
 
   const [form] = Form.useForm<{ comment: string }>();
@@ -17,8 +18,8 @@ const CardCommentForm: React.FC = () => {
     <CardCommentFormStyled>
       <Form
         form={form}
-        onFinish={({ comment }) => {
-          if (!cardData) {
+        onFinish={async ({ comment }) => {
+          if (!cardId) {
             return;
           }
           if (!comment) {
@@ -27,16 +28,17 @@ const CardCommentForm: React.FC = () => {
 
           setLoading(true);
 
-          newCardCommentApi({
-            cardId: cardData._id,
-            comment,
-          })
-            .then(() => getCardApi(cardData._id))
-            .then(({ result }) => setCardData(result))
-            .finally(() => {
-              setLoading(false);
-              form.resetFields();
-            });
+          try {
+            await dispatch(
+              newCardCommentAction({
+                cardId,
+                comment,
+              })
+            );
+          } finally {
+            setLoading(false);
+            form.resetFields();
+          }
         }}
       >
         <Form.Item
