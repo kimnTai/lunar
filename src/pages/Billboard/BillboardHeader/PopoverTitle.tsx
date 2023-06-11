@@ -13,6 +13,7 @@ const PopoverTitle: React.FC<PopoverTitleProps> = ({
     USER: "查看看板管理員",
     SETTING: "設定",
     LABEL: "標籤",
+    ARCHIVE: "封存",
   }[headerState];
 
   return (

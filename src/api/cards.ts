@@ -41,6 +41,14 @@ export const updateCardApi = (data: UpdateCardProps) =>
     data
   );
 
+// 卡片封存
+export const closedCardApi = (cardId: string) =>
+  Request.put<any, PrometheusResponse<CardsProps>>(`/cards/${cardId}/closed`);
+
+// 卡片刪除
+export const deleteCardApi = (cardId: string) =>
+  Request.delete<any, PrometheusResponse<CardsProps>>(`/cards/${cardId}`);
+
 // 新增checkList
 export const newChecklistApi = (data: NewCardCheckListProps) =>
   Request.post<any, PrometheusResponse<ChecklistProps>>(

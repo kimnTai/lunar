@@ -3,7 +3,6 @@ import { Button, Col, Divider } from "antd";
 import {
   CheckSquareOutlined,
   ClockCircleOutlined,
-  ContainerOutlined,
   ShareAltOutlined,
   TagOutlined,
   UserOutlined,
@@ -16,6 +15,7 @@ import openNotification from "@/utils/openNotification";
 import AddMemberModal from "./AddMemberModal";
 import AttachmentBox from "./AttachmentBox";
 import CloneCard from "./CloneCard";
+import CloseCard from "./CloseCard";
 import MoveCard from "./MoveCard";
 import SidebarBox from "./SidebarBox";
 import { ModalSidebarStyled, ModalStyle } from "./style";
@@ -119,12 +119,7 @@ const ModalSidebar: React.FC = () => {
         <MoveCard />
         <CloneCard />
         <Divider style={{ margin: "8px 0" }} />
-        <Button className="button-link">
-          <span style={{ marginRight: "6px" }}>
-            <ContainerOutlined />
-          </span>
-          <span>封存</span>
-        </Button>
+        <CloseCard />
         <Button
           className="button-link"
           onClick={() => {

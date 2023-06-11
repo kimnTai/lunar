@@ -2,6 +2,7 @@ import Request from "@/api/base/request";
 import type {
   AddBoardsMembers,
   BoardsProps,
+  ClosedItemsProps,
   NewBoardsProps,
   UpdateBoardProps,
 } from "@/interfaces/boards";
@@ -50,5 +51,12 @@ export const updateBoardApi = (data: UpdateBoardProps) => {
   return Request.put<any, PrometheusResponse<BoardsProps>>(
     `/boards/${data.boardId}`,
     data
+  );
+};
+
+// 取得看板封存項目
+export const getBoardClosedItemsApi = (boardId: string) => {
+  return Request.get<any, PrometheusResponse<ClosedItemsProps>>(
+    `/boards/${boardId}/closedCardsAndList`
   );
 };

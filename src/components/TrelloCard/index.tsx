@@ -25,7 +25,7 @@ const TrelloCard: React.FC<TrelloCardProps> = (props) => {
               <Card.Meta
                 title={
                   <TrelloCardHeader
-                    title={listName}
+                    list={props.quotes}
                     showAddCard={showAddCard}
                     setShowAddCard={setShowAddCard}
                   />
