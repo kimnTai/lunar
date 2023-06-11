@@ -1,6 +1,7 @@
 import { OrganizationMemberProps } from "./organization";
 import { ListsProps } from "./lists";
 import { LabelsProps } from "./labels";
+import { CardsProps } from "./cards";
 
 export interface BoardsProps {
   _id: string;
@@ -30,7 +31,7 @@ export interface BillboardHeaderProps {
 
 export interface SingleBoardProps {}
 
-export type HeaderState = "MENU" | "USER" | "SETTING" | "LABEL";
+export type HeaderState = "MENU" | "USER" | "SETTING" | "LABEL" | "ARCHIVE";
 
 export interface PopoverTitleProps {
   headerState: HeaderState;
@@ -62,4 +63,9 @@ export interface CloneBoardProps {
   sourceBoardId: string;
   organizationId: string;
   name: string;
+}
+
+export interface ClosedItemsProps {
+  closedList: ListsProps[];
+  closedCard: CardsProps[];
 }

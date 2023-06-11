@@ -44,7 +44,7 @@ const MenuContent: React.FC<Pick<PopoverContentProps, "setHeaderState">> = ({
             <InboxOutlined style={{ fontSize: "20px", marginRight: "12px" }} />
           }
           text="已封存的項目"
-          onClick={() => {}}
+          onClick={() => setHeaderState("ARCHIVE")}
         />
       </div>
       <div className="top-border listBtn">

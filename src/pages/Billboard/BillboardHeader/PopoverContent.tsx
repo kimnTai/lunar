@@ -1,4 +1,5 @@
 import { PopoverContentProps } from "@/interfaces/boards";
+import ArchiveContent from "./ArchiveContent";
 import LabelContent from "./Label/LabelContent";
 import MenuContent from "./MenuContent";
 import SettingContent from "./SettingContent";
@@ -17,6 +18,7 @@ const PopoverContent: React.FC<PopoverContentProps> = ({
       {headerState === "USER" && <UserContent />}
       {headerState === "SETTING" && <SettingContent />}
       {headerState === "LABEL" && <LabelContent />}
+      {headerState === "ARCHIVE" && <ArchiveContent />}
     </PopoverContentStyle>
   );
 };
