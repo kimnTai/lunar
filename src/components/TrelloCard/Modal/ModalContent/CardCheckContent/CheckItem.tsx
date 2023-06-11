@@ -1,12 +1,12 @@
 import React, { useLayoutEffect, useState } from "react";
 import { Button, Checkbox, Col, Row, Space } from "antd";
 import TextArea from "antd/es/input/TextArea";
-import { DeleteOutlined } from "@ant-design/icons";
+import { DeleteOutlined, LoadingOutlined } from "@ant-design/icons";
 import { CheckItemProps } from "@/interfaces/checklists";
 import { deleteCheckItemApi, updateCheckItemApi } from "@/api/cards";
 import { useCardModalContext } from "@/context/CardModalContext";
 import { CheckItemStyled } from "./CheckListStyle";
-// TODO: 刪除
+
 const CheckItem: React.FC<{ itemData: CheckItemProps }> = ({
   itemData: { _id: itemId, checklistId, name, completed },
 }) => {
@@ -19,8 +19,11 @@ const CheckItem: React.FC<{ itemData: CheckItemProps }> = ({
   const [isShowDelete, setIsShowDelete] = useState(false);
   const [isItemNameSubmitting, setIsItemNameSubmitting] = useState(false);
   const [isDeleteItemSubmitting, setIsDeleteItemSubmitting] = useState(false);
+  const [isCompletedSubmitting, setIsCompletedSubmitting] = useState(false);
 
   const handleCompletedChange = async (isChecked: boolean) => {
+    setIsCompletedSubmitting(true);
+
     try {
       const { result } = await updateCheckItemApi({
         cardId: cardId,
@@ -49,6 +52,8 @@ const CheckItem: React.FC<{ itemData: CheckItemProps }> = ({
       });
     } catch (error) {
       console.error(error);
+    } finally {
+      setIsCompletedSubmitting(false);
     }
   };
 
@@ -144,74 +149,87 @@ const CheckItem: React.FC<{ itemData: CheckItemProps }> = ({
   }, [isEditItemName, itemNameField]);
 
   return (
-    <CheckItemStyled gutter={[16, 8]}>
-      <Col span={24}>
-        <Row gutter={[16, 8]} align="top">
-          <Col flex="none">
-            <Checkbox
-              checked={completed}
-              onChange={(e) => {
-                handleCompletedChange(e.target.checked);
+    <CheckItemStyled gutter={0} align="top">
+      {/* Checkbox */}
+      <Col flex="none">
+        {!isCompletedSubmitting ? (
+          <Checkbox
+            className="checkbox"
+            checked={completed}
+            onChange={(e) => {
+              handleCompletedChange(e.target.checked);
+            }}
+          />
+        ) : (
+          <LoadingOutlined className="checkboxLoading" />
+        )}
+      </Col>
+      {/**/}
+      <Col flex="auto">
+        {/* 項目名稱 */}
+        <Row align="middle">
+          <Col
+            span={24}
+            onMouseOver={() => setIsShowDelete(true)}
+            onMouseLeave={() => setIsShowDelete(false)}
+          >
+            <div
+              className={isEditItemName ? "isHidden" : "isShow"}
+              onClick={() => {
+                setIsEditItemName(true);
               }}
-            />
+            >
+              <div className={`itemName ${completed ? "lineThrough" : ""}`}>
+                {name}
+              </div>
+              {/* 刪除按鈕 */}
+              {isShowDelete && (
+                <span className="deleteIcon">
+                  <Button
+                    type="link"
+                    icon={<DeleteOutlined />}
+                    onClick={(event) => handleDeleteItem(event)}
+                    loading={isDeleteItemSubmitting}
+                  />
+                </span>
+              )}
+            </div>
+            {/* 未儲存提示 */}
+            <div
+              className={
+                isNotSaveItemNameField && !isEditItemName
+                  ? "isShow"
+                  : "isHidden"
+              }
+            >
+              <Space>
+                <span>你在這個項目有未儲存的編輯內容。</span>
+                <Button size="small" type="link">
+                  <span
+                    onClick={() => setIsEditItemName(true)}
+                    className="underline"
+                  >
+                    檢視編輯
+                  </span>
+                </Button>
+                |
+                <Button size="small" type="link">
+                  <span
+                    onClick={() => setItemNameField(name)}
+                    className="underline"
+                  >
+                    放棄
+                  </span>
+                </Button>
+              </Space>
+            </div>
           </Col>
-          <Col flex="auto">
-            <Row align="middle">
-              <Col
-                span={24}
-                onMouseOver={() => setIsShowDelete(true)}
-                onMouseLeave={() => setIsShowDelete(false)}
-              >
-                <div
-                  className={isEditItemName ? "isHidden" : "isShow"}
-                  onClick={() => {
-                    setIsEditItemName(true);
-                  }}
-                >
-                  {name}
-                  {isShowDelete && (
-                    <span className="deleteIcon">
-                      <Button
-                        type="link"
-                        icon={<DeleteOutlined />}
-                        onClick={(event) => handleDeleteItem(event)}
-                        loading={isDeleteItemSubmitting}
-                      />
-                    </span>
-                  )}
-                </div>
-                <div
-                  className={
-                    isNotSaveItemNameField && !isEditItemName
-                      ? "isShow"
-                      : "isHidden"
-                  }
-                >
-                  <Space>
-                    <span>你在這個項目有未儲存的編輯內容。</span>
-                    <Button size="small" type="link">
-                      <span
-                        onClick={() => setIsEditItemName(true)}
-                        className="underline"
-                      >
-                        檢視編輯
-                      </span>
-                    </Button>
-                    |
-                    <Button size="small" type="link">
-                      <span
-                        onClick={() => setItemNameField(name)}
-                        className="underline"
-                      >
-                        放棄
-                      </span>
-                    </Button>
-                  </Space>
-                </div>
-              </Col>
-            </Row>
-            <Row>
-              <Col span={24} className={isEditItemName ? "isShow" : "isHidden"}>
+        </Row>
+        {/* 編輯欄位 */}
+        <Row>
+          <Col span={24} className={isEditItemName ? "isShow" : "isHidden"}>
+            <Row gutter={[16, 4]}>
+              <Col span={24}>
                 <TextArea
                   value={itemNameField}
                   onChange={(e) => setItemNameField(e.target.value)}
@@ -223,6 +241,8 @@ const CheckItem: React.FC<{ itemData: CheckItemProps }> = ({
                   }}
                   placeholder="填寫待辦項目"
                 />
+              </Col>
+              <Col span={24}>
                 <Space>
                   <Button
                     type="primary"

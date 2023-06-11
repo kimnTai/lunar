@@ -11,8 +11,7 @@ import {
 } from "@/api/cards";
 import { nextPosition } from "@/utils/cardFunc";
 import CheckItems from "./CheckItems";
-import { SectionHeaderStyled } from "../style";
-import { CheckListStyled } from "./CheckListStyle";
+import { CheckItemStyled, CheckListStyled } from "./CheckListStyle";
 
 const CheckList: React.FC<{
   listData: ChecklistProps;
@@ -112,25 +111,32 @@ const CheckList: React.FC<{
   };
 
   return (
-    <>
-      <SectionHeaderStyled justify="space-between" align="middle" gutter={8}>
+    <CheckListStyled>
+      {/* 清單標題*/}
+      <Row
+        justify="space-between"
+        align="middle"
+        gutter={0}
+        className="listTitle"
+      >
         <Col span={24}>
           <Row
             className={isEditListName ? "isHidden" : "isShow"}
             justify="space-between"
             align="middle"
-            gutter={8}
+            gutter={0}
           >
             <Col flex="auto">
               <div onClick={() => setIsEditListName(true)}>{name}</div>
             </Col>
+            {/* 刪除待辦清單 */}
             <Col flex="none">
               <Popover
                 overlayStyle={{ width: "300px" }}
                 trigger="click"
                 title={
                   <>
-                    <Row justify="center" gutter={[16, 8]}>
+                    <Row justify="center" gutter={0}>
                       <Col flex="none">
                         <Space size={8}>
                           <ExclamationCircleOutlined style={{ color: "red" }} />
@@ -141,7 +147,7 @@ const CheckList: React.FC<{
                   </>
                 }
                 content={
-                  <Row gutter={[16, 8]}>
+                  <Row gutter={0}>
                     <Col span={24}>
                       <br />
                       確定要刪除"{name}
@@ -180,7 +186,10 @@ const CheckList: React.FC<{
               </Popover>
             </Col>
           </Row>
-          <Row className={isEditListName ? "isShow" : "isHidden"} gutter={8}>
+          <Row
+            className={isEditListName ? "isShow" : "isHidden"}
+            gutter={[16, 4]}
+          >
             <Col span={24}>
               <TextArea
                 value={listNameField}
@@ -194,71 +203,74 @@ const CheckList: React.FC<{
                 placeholder="填寫待辦清單名稱..."
               />
             </Col>
-            <Col>
+            <Col span={24}>
               <Space>
                 <Button
                   type="primary"
+                  size="small"
                   onClick={submitListName}
                   loading={isListNameSubmitting}
                 >
                   儲存
                 </Button>
-                <Button onClick={() => setIsEditListName(false)}>取消</Button>
-              </Space>
-            </Col>
-          </Row>
-        </Col>
-      </SectionHeaderStyled>
-
-      <CheckListStyled>
-        <CheckItems itemsData={checkItem} />
-        <>
-          <Row
-            gutter={[16, 8]}
-            className={isNewCheckItemEdit ? "isShow" : "isHidden"}
-          >
-            <Col span={24}>
-              <TextArea
-                value={newCheckItemTitle}
-                onChange={(e) => setNewCheckItemTitle(e.target.value)}
-                onKeyDown={(event) => {
-                  if (event.key === "Enter") {
-                    event.preventDefault();
-                    handleAddCheckItem();
-                  }
-                }}
-                placeholder="填寫待辦清單..."
-              />
-            </Col>
-            <Col span={24}>
-              <Space>
-                <Button
-                  type="primary"
-                  onClick={handleAddCheckItem}
-                  loading={isNewItemSubmitting}
-                >
-                  新增
-                </Button>
-                <Button onClick={() => setIsNewCheckItemEdit(false)}>
+                <Button size="small" onClick={() => setIsEditListName(false)}>
                   取消
                 </Button>
               </Space>
             </Col>
           </Row>
-          <Row
-            gutter={[16, 8]}
-            className={isNewCheckItemEdit ? "isHidden" : "isShow"}
-          >
-            <Col span={24} onClick={() => setIsNewCheckItemEdit(true)}>
-              <Space size={16}>
-                <PlusOutlined />
-                <span className="addCheckList">新增待辦清單</span>
-              </Space>
-            </Col>
-          </Row>
-        </>
-      </CheckListStyled>
-    </>
+        </Col>
+      </Row>
+      <>
+        {/* 待辦項目們 */}
+        <CheckItems itemsData={checkItem} />
+        {/* 新增待辦項目 */}
+        <Row
+          gutter={[16, 4]}
+          className={`addCheckItem ${
+            isNewCheckItemEdit ? "isShow" : "isHidden"
+          }`}
+        >
+          <Col span={24}>
+            <TextArea
+              value={newCheckItemTitle}
+              onChange={(e) => setNewCheckItemTitle(e.target.value)}
+              onKeyDown={(event) => {
+                if (event.key === "Enter") {
+                  event.preventDefault();
+                  handleAddCheckItem();
+                }
+              }}
+              placeholder="填寫待辦項目..."
+              className="addCheckItemTextArea"
+            />
+          </Col>
+          <Col span={24}>
+            <Space>
+              <Button
+                type="primary"
+                onClick={handleAddCheckItem}
+                loading={isNewItemSubmitting}
+              >
+                新增
+              </Button>
+              <Button onClick={() => setIsNewCheckItemEdit(false)}>取消</Button>
+            </Space>
+          </Col>
+        </Row>
+        <CheckItemStyled
+          gutter={0}
+          className={isNewCheckItemEdit ? "isHidden" : "isShow"}
+        >
+          <Col span={24} onClick={() => setIsNewCheckItemEdit(true)}>
+            <Space size={8}>
+              <PlusOutlined />
+              <span className="addCheckItem">新增待辦項目</span>
+            </Space>
+          </Col>
+        </CheckItemStyled>
+      </>
+    </CheckListStyled>
   );
 };
 

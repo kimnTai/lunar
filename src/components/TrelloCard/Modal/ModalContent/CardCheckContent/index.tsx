@@ -1,4 +1,5 @@
 import { DragDropContext, DropResult, Droppable } from "react-beautiful-dnd";
+import { Row } from "antd";
 import { useCardModalContext } from "@/context/CardModalContext";
 import { handleOnDragEnd } from "@/utils/cardFunc";
 import CheckLists from "./CheckLists";
@@ -26,18 +27,17 @@ const CardCheckContent: React.FC = () => {
         isCombineEnabled={false}
       >
         {(provided) => (
-          <div
+          <Row
             ref={provided.innerRef}
+            gutter={8}
             style={{
               minHeight: "1px",
-              display: "flex",
               flexDirection: "column",
-              rowGap: "8px",
             }}
           >
             <CheckLists />
             {provided.placeholder}
-          </div>
+          </Row>
         )}
       </Droppable>
     </DragDropContext>
