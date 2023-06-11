@@ -13,6 +13,8 @@ import {
   updateCardCommentApi,
   deleteCardCommentApi,
   closedCardApi,
+  deleteCardApi,
+  newCardApi,
 } from "@/api/cards";
 import { newImageFileUrl } from "@/api/upload";
 import {
@@ -21,6 +23,7 @@ import {
   UpdateCardDateProps,
   UpdateCardProps,
   AddCardMemberProps,
+  NewCardProps,
 } from "@/interfaces/cards";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { RootState } from "./store";
@@ -30,6 +33,11 @@ import {
   UpdateCommentProps,
 } from "@/interfaces/comments";
 import { CardLabelsProps } from "@/interfaces/labels";
+
+export const newCardAction = createAsyncThunk(
+  "card/newCard",
+  async (data: NewCardProps) => await newCardApi(data)
+);
 
 export const getCardAction = createAsyncThunk(
   "card/updateCard",
@@ -105,7 +113,7 @@ export const deleteCardDateAction = createAsyncThunk(
 );
 
 export const cloneCardAction = createAsyncThunk(
-  "card/cloneCard",
+  "card/newCard",
   async (data: CloneCardProps) => await postCloneCardApi(data)
 );
 
@@ -117,6 +125,11 @@ export const moveCardAction = createAsyncThunk(
 export const closeCardAction = createAsyncThunk(
   "card/closeCard",
   async (cardId: string) => await closedCardApi(cardId)
+);
+
+export const deleteCardAction = createAsyncThunk(
+  "card/closeCard",
+  async (cardId: string) => await deleteCardApi(cardId)
 );
 
 export const selectCardById = (cardId?: string) => (state: RootState) =>
