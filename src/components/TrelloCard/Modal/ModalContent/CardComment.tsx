@@ -1,22 +1,218 @@
-import React from "react";
-import { Avatar, Col, List } from "antd";
+import React, { useState } from "react";
+import { Avatar, Button, Col, List, Popover, Row, Space } from "antd";
+import { ExclamationCircleOutlined } from "@ant-design/icons";
+import {
+  deleteCardCommentAction,
+  updateCardCommentAction,
+} from "@/redux/cardSlice";
+import { CommentProps } from "@/interfaces/comments";
 import { useParamCard } from "@/hooks/useParamCard";
+import { useAppDispatch } from "@/hooks";
+import openNotification from "@/utils/openNotification";
 import CardCommentForm from "./CardCommentForm";
 import { CardCommentListStyled, SectionHeaderStyled } from "./style";
+import TextArea from "antd/es/input/TextArea";
+
+const getTimeText = (time: string) => {
+  const seconds = (Date.now() - new Date(time).getTime()) / 1000;
+  const [days, hours, minutes] = [
+    seconds / 60 / 60 / 24,
+    (seconds / 60 / 60) % 24,
+    (seconds / 60) % 60,
+  ].map((item) => `${~~item}`);
+
+  return `${days} 天 ${hours} 時 ${minutes} 分 前`;
+};
+
+const PopoverDelete: React.FC<{ commentData: CommentProps }> = ({
+  commentData,
+}) => {
+  const dispatch = useAppDispatch();
+
+  const [isOpenDeleteConfirm, setIsOpenDeleteConfirm] = useState(false);
+  const [isDeleteSubmitting, setIsDeleteSubmitting] = useState(false);
+
+  const handleDeleteComment = async () => {
+    setIsDeleteSubmitting(true);
+
+    try {
+      await dispatch(
+        deleteCardCommentAction({
+          cardId: commentData.cardId,
+          commentId: commentData._id,
+        })
+      );
+      openNotification({
+        message: `評論刪除成功`,
+      });
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setIsDeleteSubmitting(false);
+      setIsOpenDeleteConfirm(false);
+    }
+  };
+
+  return (
+    <Popover
+      overlayStyle={{ width: "300px" }}
+      trigger="click"
+      open={isOpenDeleteConfirm}
+      title={
+        <Row justify="center" gutter={0}>
+          <Col flex="none">
+            <Space size={8}>
+              <ExclamationCircleOutlined style={{ color: "red" }} />
+              刪除評論
+            </Space>
+          </Col>
+        </Row>
+      }
+      content={
+        <Row gutter={0}>
+          <Col span={24}>
+            刪除評論是永久性的，無法復原
+            <br />
+            <br />
+          </Col>
+          <Col span={24}>
+            <Button
+              block
+              danger
+              onClick={handleDeleteComment}
+              loading={isDeleteSubmitting}
+            >
+              刪除
+            </Button>
+          </Col>
+          <Col span={24}>
+            <Button
+              block
+              type="text"
+              onClick={() => setIsOpenDeleteConfirm(false)}
+            >
+              取消
+            </Button>
+          </Col>
+        </Row>
+      }
+    >
+      <Button type="text" onClick={() => setIsOpenDeleteConfirm(true)}>
+        刪除
+      </Button>
+    </Popover>
+  );
+};
+
+const Comment: React.FC<{ itemData: CommentProps }> = ({ itemData }) => {
+  const dispatch = useAppDispatch();
+
+  const [isCommentEdit, setIsCommentEdit] = useState(false);
+  const [commentField, setCommentField] = useState(itemData.comment);
+  const [isUpdateSubmitting, setIsUpdateSubmitting] = useState(false);
+
+  const handleUpdateComment = async () => {
+    setIsUpdateSubmitting(true);
+
+    try {
+      await dispatch(
+        updateCardCommentAction({
+          cardId: itemData.cardId,
+          commentId: itemData._id,
+          comment: commentField,
+        })
+      );
+      openNotification({
+        message: `評論更新成功`,
+      });
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setIsUpdateSubmitting(false);
+      setIsCommentEdit(false);
+    }
+  };
+
+  return (
+    <>
+      <List.Item
+        actions={
+          !isCommentEdit
+            ? [
+                <a
+                  key="list-loadmore-edit"
+                  onClick={() => {
+                    setIsCommentEdit(true);
+                  }}
+                >
+                  編輯
+                </a>,
+                <PopoverDelete commentData={itemData} />,
+              ]
+            : []
+        }
+      >
+        <List.Item.Meta
+          avatar={<Avatar src={itemData.userId.avatar} />}
+          title={
+            <Space size={12}>
+              <span className="userName">{itemData.userId.name}</span>
+              <span className="timeText">
+                {getTimeText(itemData.updatedAt)}
+              </span>
+            </Space>
+          }
+          description={
+            !isCommentEdit ? (
+              <div className="comment">{itemData.comment}</div>
+            ) : (
+              <Row className={isCommentEdit ? "isShow" : "isHidden"}>
+                <Col span={24}>
+                  <Row gutter={[16, 4]}>
+                    <Col span={24}>
+                      <TextArea
+                        value={commentField}
+                        onChange={(e) => setCommentField(e.target.value)}
+                        onKeyDown={(event) => {
+                          if (event.key === "Enter") {
+                            event.preventDefault();
+                            handleUpdateComment();
+                          }
+                        }}
+                        placeholder="填寫待辦項目"
+                      />
+                    </Col>
+                    <Col span={24}>
+                      <Space>
+                        <Button
+                          type="primary"
+                          size="small"
+                          onClick={handleUpdateComment}
+                          loading={isUpdateSubmitting}
+                        >
+                          儲存
+                        </Button>
+                        <Button
+                          size="small"
+                          onClick={() => setIsCommentEdit(false)}
+                        >
+                          取消
+                        </Button>
+                      </Space>
+                    </Col>
+                  </Row>
+                </Col>
+              </Row>
+            )
+          }
+        />
+      </List.Item>
+    </>
+  );
+};
 
 const CardComment: React.FC = () => {
   const cardData = useParamCard();
-
-  const getTimeText = (time: string) => {
-    const seconds = (Date.now() - new Date(time).getTime()) / 1000;
-    const [days, hours, minutes] = [
-      seconds / 60 / 60 / 24,
-      (seconds / 60 / 60) % 24,
-      (seconds / 60) % 60,
-    ].map((item) => `${~~item}`);
-
-    return `${days} 天 ${hours} 時 ${minutes} 分 前`;
-  };
 
   return (
     <>
@@ -30,16 +226,7 @@ const CardComment: React.FC = () => {
           itemLayout="horizontal"
           dataSource={cardData?.comment}
           locale={{ emptyText: " " }}
-          renderItem={(item) => (
-            <List.Item>
-              <List.Item.Meta
-                avatar={<Avatar src={item.userId.avatar} />}
-                title={`${item.userId.name}`}
-                description={getTimeText(item.updatedAt)}
-              />
-              <p className="ant-list-item-comment">{item.comment}</p>
-            </List.Item>
-          )}
+          renderItem={(item) => <Comment itemData={item} />}
         />
       </CardCommentListStyled>
       <CardCommentForm />

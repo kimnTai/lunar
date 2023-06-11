@@ -19,11 +19,13 @@ import { newListApiAction } from "./listSlice";
 import {
   cloneCardAction,
   deleteAttachmentAction,
+  deleteCardCommentAction,
   deleteCardDateAction,
   moveCardAction,
   newAttachmentAction,
   newCardCommentAction,
   updateCardAction,
+  updateCardCommentAction,
   updateCardDateAction,
 } from "./cardSlice";
 
@@ -165,17 +167,42 @@ export const boardSlice = createSlice({
         }
       });
     // 卡片評論
-    builder.addCase(newCardCommentAction.fulfilled, (state, action) => {
-      const comment = action.payload.result;
+    builder
+      .addCase(newCardCommentAction.fulfilled, (state, action) => {
+        const comment = action.payload.result;
 
-      const card = state.board.list
-        .flatMap(({ card }) => card)
-        .find(({ _id }) => _id === comment.cardId);
+        const card = state.board.list
+          .flatMap(({ card }) => card)
+          .find(({ _id }) => _id === comment.cardId);
 
-      if (card) {
-        card.comment = [...card.comment, comment];
-      }
-    });
+        if (card) {
+          card.comment = [...card.comment, comment];
+        }
+      })
+      .addCase(updateCardCommentAction.fulfilled, (state, action) => {
+        const comment = action.payload.result;
+
+        const card = state.board.list
+          .flatMap(({ card }) => card)
+          .find(({ _id }) => _id === comment.cardId);
+
+        if (card) {
+          card.comment = card.comment.map((value) =>
+            value._id === comment._id ? comment : value
+          );
+        }
+      })
+      .addCase(deleteCardCommentAction.fulfilled, (state, action) => {
+        const comment = action.payload.result;
+
+        const card = state.board.list
+          .flatMap(({ card }) => card)
+          .find(({ _id }) => _id === comment.cardId);
+
+        if (card) {
+          card.comment = card.comment.filter(({ _id }) => _id !== comment._id);
+        }
+      });
     // 卡片日期
     builder
       .addCase(updateCardDateAction.fulfilled, (state, action) => {

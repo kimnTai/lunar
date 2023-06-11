@@ -18,7 +18,12 @@ import {
   UpdateCardCheckItemProps,
   NewCheckItemProps,
 } from "@/interfaces/checklists";
-import { CommentProps, NewCommentProps } from "@/interfaces/comments";
+import {
+  CommentProps,
+  DeleteCommentProps,
+  NewCommentProps,
+  UpdateCommentProps,
+} from "@/interfaces/comments";
 import { CardLabelsProps } from "@/interfaces/labels";
 
 // 取得單張卡片
@@ -86,6 +91,18 @@ export const newCardCommentApi = (data: NewCommentProps) =>
   Request.post<any, PrometheusResponse<CommentProps>>(
     `/cards/${data.cardId}/comments`,
     data
+  );
+
+export const updateCardCommentApi = (data: UpdateCommentProps) => {
+  return Request.put<any, PrometheusResponse<CommentProps>>(
+    `/cards/${data.cardId}/comments/${data.commentId}`,
+    data
+  );
+};
+
+export const deleteCardCommentApi = (data: DeleteCommentProps) =>
+  Request.delete<any, PrometheusResponse<CommentProps>>(
+    `/cards/${data.cardId}/comments/${data.commentId}`
   );
 
 // 新增卡片日期

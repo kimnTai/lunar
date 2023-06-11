@@ -13,3 +13,14 @@ export interface NewCommentProps {
   cardId: string;
   comment: string;
 }
+
+export interface UpdateCommentProps {
+  cardId: string;
+  commentId: string;
+  comment: string;
+}
+
+export interface DeleteCommentProps {
+  cardId: string;
+  commentId: string;
+}

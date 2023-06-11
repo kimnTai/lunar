@@ -97,29 +97,32 @@ export const CardCommentFormStyled = styled.div`
 `;
 
 export const CardCommentListStyled = styled.div`
-  .ant-list {
-    .ant-list-item {
-      display: block;
-      .ant-list-item-meta-content {
-        display: flex;
-        gap: 12px;
-        .ant-list-item-meta-title {
-          font-weight: 600;
-          font-size: 14px;
-          line-height: 150%;
-          color: var(--black23);
-        }
-        .ant-list-item-meta-description {
-          font-weight: 400;
-          font-size: 14px;
-          line-height: 150%;
-          letter-spacing: 0.02em;
-          color: var(--gray9f);
-        }
-      }
-      .ant-list-item-comment {
-        margin-left: 48px;
-      }
-    }
+  .userName {
+    color: #232323;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 150%;
+  }
+
+  .timeText {
+    color: var(--gray9f);
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 150%;
+  }
+
+  .comment {
+    color: #232323;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 150%;
+  }
+
+  .isShow {
+    display: flex;
+  }
+
+  .isHidden {
+    display: none !important;
   }
 `;
