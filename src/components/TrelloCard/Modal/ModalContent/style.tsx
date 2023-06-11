@@ -26,6 +26,14 @@ export const SectionHeaderStyled = styled(Row)<RowProps>`
   font-size: 14px;
   line-height: 150%;
   margin-bottom: 8px;
+
+  .isShow {
+    display: flex;
+  }
+
+  .isHidden {
+    display: none;
+  }
 `;
 
 export const SectionContentStyled = styled.div`

@@ -4,7 +4,11 @@ import TextArea from "antd/es/input/TextArea";
 import { PlusOutlined, ExclamationCircleOutlined } from "@ant-design/icons";
 import { ChecklistProps } from "@/interfaces/checklists";
 import { useCardModalContext } from "@/context/CardModalContext";
-import { deleteChecklistApi, newCheckItemApi } from "@/api/cards";
+import {
+  deleteChecklistApi,
+  newCheckItemApi,
+  updateChecklistApi,
+} from "@/api/cards";
 import { nextPosition } from "@/utils/cardFunc";
 import CheckItems from "./CheckItems";
 import { SectionHeaderStyled } from "../style";
@@ -16,13 +20,45 @@ const CheckList: React.FC<{
   const { cardData, setCardData } = useCardModalContext();
   const { checklist: checkLists = [] } = cardData ?? {};
 
+  const [isEditListName, setIsEditListName] = useState<boolean>(false);
+  const [listNameField, setListNameField] = useState<string>(name);
   const [isNewCheckItemEdit, setIsNewCheckItemEdit] = useState(false);
   const [newCheckItemTitle, setNewCheckItemTitle] = useState("");
   const [isOpenDeleteConfirm, setIsOpenDeleteConfirm] = useState(false);
+  const [isListNameSubmitting, setIsListNameSubmitting] =
+    useState<boolean>(false);
   const [isNewItemSubmitting, setIsNewItemSubmitting] =
     useState<boolean>(false);
   const [isDeleteListSubmitting, setIsDeleteListSubmitting] =
     useState<boolean>(false);
+
+  const submitListName = async () => {
+    if (!listNameField.trim()) return;
+    setIsListNameSubmitting(true);
+
+    try {
+      const { result } = await updateChecklistApi({
+        cardId: cardId,
+        checklistId: listId,
+        name: listNameField,
+      });
+
+      setCardData({
+        ...cardData!,
+        checklist: checkLists.map((list) => {
+          if (list.id === listId) {
+            return result;
+          }
+          return list;
+        }),
+      });
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setIsListNameSubmitting(false);
+      setIsEditListName(false);
+    }
+  };
 
   const handleAddCheckItem = async () => {
     if (!newCheckItemTitle.trim()) return;
@@ -78,60 +114,100 @@ const CheckList: React.FC<{
   return (
     <>
       <SectionHeaderStyled justify="space-between" align="middle" gutter={8}>
-        <Col flex="none">
-          <h3>{name}</h3>
-        </Col>
-        <Popover
-          overlayStyle={{ width: "300px" }}
-          trigger="click"
-          title={
-            <>
-              <Row justify="center" gutter={[16, 8]}>
-                <Col flex="none">
-                  <Space size={8}>
-                    <ExclamationCircleOutlined style={{ color: "red" }} />
-                    刪除待辦清單
-                  </Space>
-                </Col>
-              </Row>
-            </>
-          }
-          content={
-            <Row gutter={[16, 8]}>
-              <Col span={24}>
-                <br />
-                確定要刪除"{name}
-                "嗎？
-                <br />
-                (刪除待辦清單是永久性的，無法復原)
-                <br />
-                <br />
-              </Col>
-              <Col span={24}>
-                <Button
-                  block
-                  danger
-                  onClick={handleDeleteChecklist}
-                  loading={isDeleteListSubmitting}
-                >
+        <Col span={24}>
+          <Row
+            className={isEditListName ? "isHidden" : "isShow"}
+            justify="space-between"
+            align="middle"
+            gutter={8}
+          >
+            <Col flex="auto">
+              <div onClick={() => setIsEditListName(true)}>{name}</div>
+            </Col>
+            <Col flex="none">
+              <Popover
+                overlayStyle={{ width: "300px" }}
+                trigger="click"
+                title={
+                  <>
+                    <Row justify="center" gutter={[16, 8]}>
+                      <Col flex="none">
+                        <Space size={8}>
+                          <ExclamationCircleOutlined style={{ color: "red" }} />
+                          刪除待辦清單
+                        </Space>
+                      </Col>
+                    </Row>
+                  </>
+                }
+                content={
+                  <Row gutter={[16, 8]}>
+                    <Col span={24}>
+                      <br />
+                      確定要刪除"{name}
+                      "嗎？
+                      <br />
+                      (刪除待辦清單是永久性的，無法復原)
+                      <br />
+                      <br />
+                    </Col>
+                    <Col span={24}>
+                      <Button
+                        block
+                        danger
+                        onClick={handleDeleteChecklist}
+                        loading={isDeleteListSubmitting}
+                      >
+                        刪除
+                      </Button>
+                    </Col>
+                    <Col span={24}>
+                      <Button
+                        block
+                        type="text"
+                        onClick={() => setIsOpenDeleteConfirm(false)}
+                      >
+                        取消
+                      </Button>
+                    </Col>
+                  </Row>
+                }
+                open={isOpenDeleteConfirm}
+              >
+                <Button onClick={() => setIsOpenDeleteConfirm(true)}>
                   刪除
                 </Button>
-              </Col>
-              <Col span={24}>
+              </Popover>
+            </Col>
+          </Row>
+          <Row className={isEditListName ? "isShow" : "isHidden"} gutter={8}>
+            <Col span={24}>
+              <TextArea
+                value={listNameField}
+                onChange={(e) => setListNameField(e.target.value)}
+                onKeyDown={(event) => {
+                  if (event.key === "Enter") {
+                    event.preventDefault();
+                    submitListName();
+                  }
+                }}
+                placeholder="填寫待辦清單名稱..."
+              />
+            </Col>
+            <Col>
+              <Space>
                 <Button
-                  block
-                  type="text"
-                  onClick={() => setIsOpenDeleteConfirm(false)}
+                  type="primary"
+                  onClick={submitListName}
+                  loading={isListNameSubmitting}
                 >
-                  取消
+                  儲存
                 </Button>
-              </Col>
-            </Row>
-          }
-          open={isOpenDeleteConfirm}
-        >
-          <Button onClick={() => setIsOpenDeleteConfirm(true)}>刪除</Button>
-        </Popover>
+                <Button onClick={() => setIsEditListName(false)}>取消</Button>
+              </Space>
+            </Col>
+          </Row>
+        </Col>
       </SectionHeaderStyled>
 
       <CheckListStyled>
