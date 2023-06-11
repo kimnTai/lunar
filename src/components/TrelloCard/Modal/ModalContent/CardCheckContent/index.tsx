@@ -1,7 +1,7 @@
 import { DragDropContext, DropResult, Droppable } from "react-beautiful-dnd";
-import CheckList from "./CheckLists";
 import { useCardModalContext } from "@/context/CardModalContext";
 import { handleOnDragEnd } from "@/utils/cardFunc";
+import CheckLists from "./CheckLists";
 
 const CardCheckContent: React.FC = () => {
   const { cardData, setCardData } = useCardModalContext();
@@ -35,7 +35,7 @@ const CardCheckContent: React.FC = () => {
               rowGap: "8px",
             }}
           >
-            <CheckList />
+            <CheckLists />
             {provided.placeholder}
           </div>
         )}

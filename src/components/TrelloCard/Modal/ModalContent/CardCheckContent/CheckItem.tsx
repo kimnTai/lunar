@@ -55,7 +55,7 @@ const CheckItem: React.FC<{ itemData: CheckItemProps }> = ({
   //#region checkItem name
   // 判斷是否有未儲存的編輯內容
   const handleItemNameIsNotSave = () => {
-    if (itemNameField.trim() !== name) {
+    if (itemNameField !== name) {
       setIsNotSaveItemNameField(true);
     } else {
       setIsNotSaveItemNameField(false);
