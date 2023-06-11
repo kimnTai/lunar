@@ -1,7 +1,7 @@
 import React from "react";
 import { Outlet } from "react-router";
 import { Layout } from "antd";
-import { Header } from "@/components/User/Header";
+import Header from "@/components/User/Header";
 import Navbar from "@/components/User/Navbar";
 import { useAppSelector } from "@/hooks";
 import { MainLayoutCss } from "@/pages/Billboard/style";

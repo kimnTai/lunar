@@ -49,7 +49,7 @@ export interface AddBoardsMembers {
   userIdList: string[];
 }
 
-export interface updateBoardProps {
+export interface UpdateBoardProps {
   boardId: string;
   name?: string;
   organizationId?: string;

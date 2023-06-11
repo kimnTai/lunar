@@ -1,4 +1,4 @@
-export interface searchLunarMemberProps {
+export interface SearchLunarMemberProps {
   query: string;
   organizationId?: string;
 }

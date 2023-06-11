@@ -18,7 +18,7 @@ import RemoveMember from "@/components/Modal/RemoveMember";
 import { OrganizationMemberProps } from "@/interfaces/organization";
 import ManageRole from "@/components/Modal/ManageRole";
 import InviteMember from "@/components/Modal/InviteMember";
-import { WorkSpaceHeader } from "@/components/WorkSpace/WorkSpaceHeader";
+import WorkSpaceHeader from "@/components/WorkSpace/WorkSpaceHeader";
 import { useAppSelector } from "@/hooks";
 import CopyInviteLinkBtn from "@/components/WorkSpace/CopyInviteLinkBtn";
 import { useParamOrganization } from "@/hooks/useParamOrganization";

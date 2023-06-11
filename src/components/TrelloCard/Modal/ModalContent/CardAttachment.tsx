@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { Col, Modal, Upload, UploadProps, message } from "antd";
+import { Col, Modal, Upload, UploadProps } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import { getBase64 } from "@/utils/func";
 import { deleteAttachmentAction, newAttachmentAction } from "@/redux/cardSlice";
 import { useAppDispatch } from "@/hooks";
 import { SectionHeaderStyled } from "./style";
 import { useParamCard } from "@/hooks/useParamCard";
+import openNotification from "@/utils/openNotification";
 
 const CardAttachment: React.FC = () => {
   const cardData = useParamCard();
@@ -44,10 +45,15 @@ const CardAttachment: React.FC = () => {
         }}
         onChange={({ file, fileList }) => {
           if (file.status === "done") {
-            message.success(`${file.name} 上傳成功`);
+            openNotification({
+              message: `${file.name} 上傳成功`,
+            });
           }
           if (file.status === "error") {
-            message.error(`${file.name} 上傳失敗`);
+            openNotification({
+              message: `${file.name} 上傳失敗`,
+              success: false,
+            });
           }
           setFileList(fileList);
         }}

@@ -1,7 +1,6 @@
 import axios, { AxiosHeaders } from "axios";
-import { openNotification } from "@/utils/openNotification";
+import openNotification from "@/utils/openNotification";
 import Cookies from "@/utils/cookie";
-
 
 // 顯示axios 返回的資料
 interface BaseResponse {
@@ -59,7 +58,11 @@ instance.interceptors.response.use(
       status,
       data,
     };
-    openNotification("與伺服器溝通失敗", data.message, false);
+    openNotification({
+      message: "與伺服器溝通失敗",
+      description: data.message,
+      success: false,
+    });
     return Promise.reject(responseErrorData.data);
   }
 );

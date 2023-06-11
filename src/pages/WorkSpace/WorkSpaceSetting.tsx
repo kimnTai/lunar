@@ -9,7 +9,7 @@ import {
 import InviteMember from "@/components/Modal/InviteMember";
 import DeleteOrganization from "@/components/Modal/DeleteOrganization";
 import ManagePermission from "@/components/Modal/ManagePermission";
-import { WorkSpaceHeader } from "@/components/WorkSpace/WorkSpaceHeader";
+import WorkSpaceHeader from "@/components/WorkSpace/WorkSpaceHeader";
 import { useAppSelector } from "@/hooks";
 import { useParamOrganization } from "@/hooks/useParamOrganization";
 

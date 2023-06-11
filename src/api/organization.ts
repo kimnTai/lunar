@@ -6,7 +6,7 @@ import type {
   OrganizationProps,
   UpdateOrganizationMemberProps,
   UpdateOrganizationProps,
-  addOrganizationMemberProps,
+  AddOrganizationMemberProps,
 } from "@/interfaces/organization";
 
 // 取得會員所有組織
@@ -32,7 +32,7 @@ export const newOrganizationApi = (data: NewOrganizationFormProps) => {
 };
 
 // 新增組織成員
-export const addOrganizationMemberApi = (data: addOrganizationMemberProps) => {
+export const addOrganizationMemberApi = (data: AddOrganizationMemberProps) => {
   const { organizationId } = data;
 
   return Request.post<any, PrometheusResponse<OrganizationProps>>(

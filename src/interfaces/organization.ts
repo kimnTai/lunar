@@ -23,7 +23,7 @@ export interface NewOrganizationFormProps {
   userIdList?: string[];
 }
 
-export interface addOrganizationMemberProps {
+export interface AddOrganizationMemberProps {
   organizationId?: string;
   userIdList: string[];
 }

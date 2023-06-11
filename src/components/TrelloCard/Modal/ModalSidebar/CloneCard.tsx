@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { CopyOutlined } from "@ant-design/icons";
 import { Button, Form, Input, Popover, Spin } from "antd";
-import { postCloneCardApi } from "@/api/cards";
+import { cloneCardAction } from "@/redux/cardSlice";
+import { useAppDispatch } from "@/hooks";
 import { useParamCard } from "@/hooks/useParamCard";
 import { useNavigate } from "react-router";
 import CardCascader from "./CardCascader";
@@ -11,7 +12,8 @@ type FormValue = {
   cascader: [string, string, string, number];
 };
 
-const CloneCardBox: React.FC = () => {
+const CloneCard: React.FC = () => {
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const cardData = useParamCard();
   const [form] = Form.useForm<FormValue>();
@@ -33,13 +35,15 @@ const CloneCardBox: React.FC = () => {
     }));
 
     try {
-      await postCloneCardApi({
-        name,
-        boardId,
-        listId,
-        sourceCardId: cardData.id,
-        position: `${position}`,
-      });
+      await dispatch(
+        cloneCardAction({
+          name,
+          boardId,
+          listId,
+          sourceCardId: cardData.id,
+          position: `${position}`,
+        })
+      );
     } catch (error) {}
 
     navigate(`/board/${boardId}`);
@@ -87,7 +91,7 @@ const CloneCardBox: React.FC = () => {
             >
               <Input />
             </Form.Item>
-            <Form.Item
+            <CardCascader
               label="複製到..."
               name="cascader"
               rules={[
@@ -96,9 +100,7 @@ const CloneCardBox: React.FC = () => {
                   message: "請選擇位置!",
                 },
               ]}
-            >
-              <CardCascader />
-            </Form.Item>
+            />
             <Form.Item>
               <Button type="primary" htmlType="submit">
                 建立卡片
@@ -118,4 +120,4 @@ const CloneCardBox: React.FC = () => {
   );
 };
 
-export default CloneCardBox;
+export default CloneCard;

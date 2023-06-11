@@ -4,7 +4,7 @@ import {
   BoardsProps,
   CloneBoardProps,
   NewBoardsProps,
-  updateBoardProps,
+  UpdateBoardProps,
 } from "@/interfaces/boards";
 import {
   addBoardMembersApi,
@@ -17,8 +17,10 @@ import {
 import { RootState } from "./store";
 import { newListApiAction } from "./listSlice";
 import {
+  cloneCardAction,
   deleteAttachmentAction,
   deleteCardDateAction,
+  moveCardAction,
   newAttachmentAction,
   newCardCommentAction,
   updateCardAction,
@@ -57,7 +59,7 @@ export const newBoardAction = createAsyncThunk(
 
 export const updateBoardAction = createAsyncThunk(
   "board/updateBoard",
-  async (data: updateBoardProps) => await updateBoardApi(data)
+  async (data: UpdateBoardProps) => await updateBoardApi(data)
 );
 
 export const deleteBoardAction = createAsyncThunk(
@@ -103,16 +105,39 @@ export const boardSlice = createSlice({
       }
     });
     // 卡片
-    builder.addCase(updateCardAction.fulfilled, (state, action) => {
-      const updateCard = action.payload.result;
-      state.board.list
-        .filter(({ _id }) => _id === updateCard.listId)
-        .forEach((list) => {
-          list.card = list.card.map((value) =>
-            value._id === updateCard._id ? updateCard : value
-          );
+    builder
+      .addCase(updateCardAction.fulfilled, (state, action) => {
+        const updateCard = action.payload.result;
+        state.board.list
+          .filter(({ _id }) => _id === updateCard.listId)
+          .forEach((list) => {
+            list.card = list.card.map((value) =>
+              value._id === updateCard._id ? updateCard : value
+            );
+          });
+      })
+      .addCase(cloneCardAction.fulfilled, (state, action) => {
+        const cloneCard = action.payload.result;
+        state.board.list
+          .filter(({ _id }) => _id === cloneCard.listId)
+          .forEach((list) => {
+            list.card.push(cloneCard);
+          });
+      })
+      .addCase(moveCardAction.fulfilled, (state, action) => {
+        const moveCard = action.payload.result;
+        if (state.board._id !== moveCard.boardId) {
+          return;
+        }
+        state.board.list.forEach((list) => {
+          list.card = list.card.filter(({ _id }) => _id !== moveCard._id);
         });
-    });
+        state.board.list
+          .filter(({ _id }) => _id === moveCard.listId)
+          .forEach((list) => {
+            list.card.push(moveCard);
+          });
+      });
     // 卡片附件
     builder
       .addCase(newAttachmentAction.fulfilled, (state, action) => {

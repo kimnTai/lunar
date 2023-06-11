@@ -7,10 +7,6 @@ export interface UrlCardShareProps {
   open: boolean;
 }
 
-export interface CardReducerProps {
-  cardList: any[];
-}
-
 export interface TrelloCardProps {
   index: number;
   quotes: ListsProps;

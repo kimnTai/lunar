@@ -1,12 +1,12 @@
 import React, { useState } from "react";
-import { Cascader } from "antd";
+import { Cascader, Form, FormItemProps } from "antd";
 import { DefaultOptionType } from "antd/es/select";
 import { getBoardApi } from "@/api/boards";
 import { useAppSelector } from "@/hooks";
 import { selectOrganization } from "@/redux/organizationSlice";
 import { nextPosition } from "@/utils/cardFunc";
 
-const CardCascader: React.FC = () => {
+const CardCascader: React.FC<FormItemProps> = (props) => {
   const organization = useAppSelector(selectOrganization);
 
   const [options, setOptions] = useState(
@@ -50,7 +50,13 @@ const CardCascader: React.FC = () => {
     setOptions([...options]);
   };
   return (
-    <Cascader placement={"bottomRight"} options={options} loadData={loadData} />
+    <Form.Item {...props}>
+      <Cascader
+        placement={"bottomRight"}
+        options={options}
+        loadData={loadData}
+      />
+    </Form.Item>
   );
 };
 

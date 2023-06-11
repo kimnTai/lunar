@@ -4,7 +4,7 @@ import { Row, Col, Button, Select } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import WorkSpaceCard from "./WorkSpaceCard";
 import AddBoards from "@/components/Modal/AddBoards";
-import { WorkSpaceHeader } from "@/components/WorkSpace/WorkSpaceHeader";
+import WorkSpaceHeader from "@/components/WorkSpace/WorkSpaceHeader";
 import { useAppDispatch } from "@/hooks";
 import { changeWorkSpace } from "@/redux/screenSlice";
 import { useParamOrganization } from "@/hooks/useParamOrganization";
