@@ -19,17 +19,14 @@ const CheckList: React.FC<{
   const { cardData, setCardData } = useCardModalContext();
   const { checklist: checkLists = [] } = cardData ?? {};
 
-  const [isEditListName, setIsEditListName] = useState<boolean>(false);
-  const [listNameField, setListNameField] = useState<string>(name);
+  const [isEditListName, setIsEditListName] = useState(false);
+  const [listNameField, setListNameField] = useState(name);
   const [isNewCheckItemEdit, setIsNewCheckItemEdit] = useState(false);
   const [newCheckItemTitle, setNewCheckItemTitle] = useState("");
   const [isOpenDeleteConfirm, setIsOpenDeleteConfirm] = useState(false);
-  const [isListNameSubmitting, setIsListNameSubmitting] =
-    useState<boolean>(false);
-  const [isNewItemSubmitting, setIsNewItemSubmitting] =
-    useState<boolean>(false);
-  const [isDeleteListSubmitting, setIsDeleteListSubmitting] =
-    useState<boolean>(false);
+  const [isListNameSubmitting, setIsListNameSubmitting] = useState(false);
+  const [isNewItemSubmitting, setIsNewItemSubmitting] = useState(false);
+  const [isDeleteListSubmitting, setIsDeleteListSubmitting] = useState(false);
 
   const submitListName = async () => {
     if (!listNameField.trim()) return;
