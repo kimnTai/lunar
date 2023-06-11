@@ -7,7 +7,7 @@ import { updateOrganizationAction } from "@/redux/organizationSlice";
 import { useAppDispatch } from "@/hooks";
 import { useParamOrganization } from "@/hooks/useParamOrganization";
 
-export const WorkSpaceHeader: React.FC = () => {
+const WorkSpaceHeader: React.FC = () => {
   const paramOrganization = useParamOrganization();
   const [isEdit, setIsEdit] = useState(false);
   const [spinning, setSpinning] = useState(false);
@@ -100,3 +100,5 @@ export const WorkSpaceHeader: React.FC = () => {
     </Row>
   );
 };
+
+export default WorkSpaceHeader;

@@ -5,7 +5,7 @@ import CopyInviteLinkBtn from "@/components/WorkSpace/CopyInviteLinkBtn";
 import InviteMemberSelect from "@/components/WorkSpace/InviteMemberSelect";
 import { useAppDispatch } from "@/hooks";
 import { useParamOrganization } from "@/hooks/useParamOrganization";
-import { addOrganizationMemberProps } from "@/interfaces/organization";
+import { AddOrganizationMemberProps } from "@/interfaces/organization";
 import {
   addOrganizationMemberAction,
   generateInviteLinkAction,
@@ -20,7 +20,7 @@ const InviteMember: React.FC<{
   const userOrganization = useParamOrganization();
   const organizationId = useParamOrganization()?._id || "";
   const [spinning, setSpinning] = useState(false);
-  const [form] = Form.useForm<addOrganizationMemberProps>();
+  const [form] = Form.useForm<AddOrganizationMemberProps>();
   const [selectedUsers, setSelectedUsers] = useState<{ userIdList: string[] }>({
     userIdList: [],
   });

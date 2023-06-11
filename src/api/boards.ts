@@ -3,7 +3,7 @@ import type {
   AddBoardsMembers,
   BoardsProps,
   NewBoardsProps,
-  updateBoardProps,
+  UpdateBoardProps,
 } from "@/interfaces/boards";
 
 // 新增boards
@@ -46,7 +46,7 @@ export const addBoardMembersApi = (data: AddBoardsMembers) => {
 };
 
 // 更新看板
-export const updateBoardApi = (data: updateBoardProps) => {
+export const updateBoardApi = (data: UpdateBoardProps) => {
   return Request.put<any, PrometheusResponse<BoardsProps>>(
     `/boards/${data.boardId}`,
     data

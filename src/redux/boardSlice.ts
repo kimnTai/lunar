@@ -4,7 +4,7 @@ import {
   BoardsProps,
   CloneBoardProps,
   NewBoardsProps,
-  updateBoardProps,
+  UpdateBoardProps,
 } from "@/interfaces/boards";
 import {
   addBoardMembersApi,
@@ -59,7 +59,7 @@ export const newBoardAction = createAsyncThunk(
 
 export const updateBoardAction = createAsyncThunk(
   "board/updateBoard",
-  async (data: updateBoardProps) => await updateBoardApi(data)
+  async (data: UpdateBoardProps) => await updateBoardApi(data)
 );
 
 export const deleteBoardAction = createAsyncThunk(

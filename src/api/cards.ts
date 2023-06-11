@@ -6,7 +6,7 @@ import type {
   DateProps,
   NewCardDateProps,
   UpdateCardDateProps,
-  addCardMemberProps,
+  AddCardMemberProps,
   CloneCardProps,
 } from "@/interfaces/cards";
 import {
@@ -116,7 +116,7 @@ export const postCloneCardApi = (data: CloneCardProps) =>
   });
 
 // 新增多位卡片成員
-export const addCardMemberApi = (data: addCardMemberProps) => {
+export const addCardMemberApi = (data: AddCardMemberProps) => {
   return Request.post<any, PrometheusResponse<CardsProps>>(
     `/cards/${data.cardId}/members`,
     data
@@ -124,7 +124,7 @@ export const addCardMemberApi = (data: addCardMemberProps) => {
 };
 
 // 增加卡片標籤
-export const AddCardLabelApi = (data: CardLabelsProps) => {
+export const addCardLabelApi = (data: CardLabelsProps) => {
   return Request.post<any, PrometheusResponse<CardsProps>>(
     `/cards/${data.cardId}/labels`,
     data
@@ -132,7 +132,7 @@ export const AddCardLabelApi = (data: CardLabelsProps) => {
 };
 
 // 移除卡片標籤
-export const DeleteCardLabelApi = (data: CardLabelsProps) => {
+export const deleteCardLabelApi = (data: CardLabelsProps) => {
   return Request.delete<any, PrometheusResponse<CardsProps>>(
     `/cards/${data.cardId}/labels/${data.labelId}`
   );

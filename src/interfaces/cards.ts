@@ -64,7 +64,7 @@ export interface UpdateCardDateProps {
   dueReminder?: number;
 }
 
-export interface addCardMemberProps {
+export interface AddCardMemberProps {
   cardId: string;
   userIdList: string[];
 }

@@ -6,7 +6,7 @@ import {
   OrganizationProps,
   UpdateOrganizationMemberProps,
   UpdateOrganizationProps,
-  addOrganizationMemberProps,
+  AddOrganizationMemberProps,
 } from "@/interfaces/organization";
 import {
   addOrganizationMemberApi,
@@ -63,7 +63,7 @@ export const deleteOrganizationAction = createAsyncThunk(
 
 export const addOrganizationMemberAction = createAsyncThunk(
   "organization/updateOrganization",
-  async (data: addOrganizationMemberProps) =>
+  async (data: AddOrganizationMemberProps) =>
     await addOrganizationMemberApi(data)
 );
 

@@ -6,7 +6,7 @@ import UserModalButton from "./UserModalButton";
 import NotificationButton from "./NotificationButton";
 import { HeaderCss } from "./style";
 
-export const Header: React.FC = () => {
+const Header: React.FC = () => {
   const showWorkSpace = useAppSelector((state) => state.screen.showWorkSpace);
 
   return (
@@ -27,3 +27,5 @@ export const Header: React.FC = () => {
     </HeaderCss>
   );
 };
+
+export default Header;

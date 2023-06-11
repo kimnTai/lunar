@@ -1,7 +1,7 @@
 import { deleteAttachment, newAttachment } from "@/api/attachment";
 import {
-  AddCardLabelApi,
-  DeleteCardLabelApi,
+  addCardLabelApi,
+  deleteCardLabelApi,
   addCardMemberApi,
   deleteCardDateApi,
   getCardApi,
@@ -17,7 +17,7 @@ import {
   NewCardDateProps,
   UpdateCardDateProps,
   UpdateCardProps,
-  addCardMemberProps,
+  AddCardMemberProps,
 } from "@/interfaces/cards";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { RootState } from "./store";
@@ -36,17 +36,17 @@ export const updateCardAction = createAsyncThunk(
 
 export const addCardMemberAction = createAsyncThunk(
   "card/updateCard",
-  async (data: addCardMemberProps) => await addCardMemberApi(data)
+  async (data: AddCardMemberProps) => await addCardMemberApi(data)
 );
 
 export const addCardLabelAction = createAsyncThunk(
   "card/updateCard",
-  async (data: CardLabelsProps) => await AddCardLabelApi(data)
+  async (data: CardLabelsProps) => await addCardLabelApi(data)
 );
 
 export const deleteCardLabelAction = createAsyncThunk(
   "card/updateCard",
-  async (data: CardLabelsProps) => await DeleteCardLabelApi(data)
+  async (data: CardLabelsProps) => await deleteCardLabelApi(data)
 );
 
 export const newAttachmentAction = createAsyncThunk(
