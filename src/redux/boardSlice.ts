@@ -26,12 +26,18 @@ import {
   deleteAttachmentAction,
   deleteCardCommentAction,
   deleteCardDateAction,
+  deleteCheckItemAction,
+  deleteChecklistAction,
   moveCardAction,
   newAttachmentAction,
   newCardCommentAction,
+  newCheckItemAction,
+  newChecklistAction,
   updateCardAction,
   updateCardCommentAction,
   updateCardDateAction,
+  updateCheckItemAction,
+  updateChecklistAction,
 } from "./cardSlice";
 
 const initialState: {
@@ -257,6 +263,90 @@ export const boardSlice = createSlice({
 
         if (card) {
           card.date = null;
+        }
+      });
+    // 卡片待辦清單
+    builder
+      .addCase(newChecklistAction.fulfilled, (state, action) => {
+        const checklist = action.payload.result;
+
+        const card = state.board.list
+          .flatMap(({ card }) => card)
+          .find(({ _id }) => _id === checklist.cardId);
+
+        if (card) {
+          card.checklist = [...card.checklist, checklist];
+        }
+      })
+      .addCase(updateChecklistAction.fulfilled, (state, action) => {
+        const checklist = action.payload.result;
+
+        const card = state.board.list
+          .flatMap(({ card }) => card)
+          .find(({ _id }) => _id === checklist.cardId);
+
+        if (card) {
+          card.checklist = card.checklist.map((value) =>
+            value._id === checklist._id ? checklist : value
+          );
+        }
+      })
+      .addCase(deleteChecklistAction.fulfilled, (state, action) => {
+        const checklist = action.payload.result;
+
+        const card = state.board.list
+          .flatMap(({ card }) => card)
+          .find(({ _id }) => _id === checklist.cardId);
+
+        if (card) {
+          card.checklist = card.checklist.filter(
+            ({ _id }) => _id !== checklist._id
+          );
+        }
+      });
+    // 卡片待辦事項
+    builder
+      .addCase(newCheckItemAction.fulfilled, (state, action) => {
+        const checkItem = action.payload.result;
+
+        const checklist = state.board.list
+          .flatMap(({ card }) => card)
+          .flatMap(({ checklist }) => checklist)
+          .find(({ _id }) => _id === checkItem.checklistId);
+
+        if (checklist) {
+          checklist.checkItem = [...checklist.checkItem, checkItem];
+        }
+      })
+      .addCase(updateCheckItemAction.fulfilled, (state, action) => {
+        const checklistId =
+          action.meta.arg.checklistIdOld ?? action.meta.arg.checklistId;
+        const checklist = state.board.list
+          .flatMap(({ card }) => card)
+          .flatMap(({ checklist }) => checklist)
+          .find(({ _id }) => _id === checklistId);
+        if (checklist) {
+          // 先把舊的濾掉
+          checklist.checkItem = checklist.checkItem.filter(
+            ({ _id }) => _id !== action.meta.arg.checkItemId
+          );
+          // 放入更新後的
+          const updateCheckItem = action.payload.result;
+          checklist.checkItem.push(updateCheckItem);
+        }
+      })
+      .addCase(deleteCheckItemAction.fulfilled, (state, action) => {
+        const checkItem = action.payload.result;
+
+        const checklist = state.board.list
+          .flatMap(({ card }) => card)
+          .flatMap(({ checklist }) => checklist)
+          .find(({ _id }) => _id === checkItem.checklistId);
+
+        if (checklist) {
+          checklist.checkItem = checklist.checkItem.filter(
+            ({ _id }) => _id !== checkItem._id
+          );
         }
       });
   },

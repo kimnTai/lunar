@@ -1,24 +1,36 @@
-import { DragDropContext, DropResult, Droppable } from "react-beautiful-dnd";
+import { useEffect, useState } from "react";
+import { DragDropContext, Droppable } from "react-beautiful-dnd";
 import { Row } from "antd";
-import { useCardModalContext } from "@/context/CardModalContext";
+import { useParamCard } from "@/hooks/useParamCard";
 import { handleOnDragEnd } from "@/utils/cardFunc";
 import CheckLists from "./CheckLists";
+import { ChecklistProps } from "@/interfaces/checklists";
 
 const CardCheckContent: React.FC = () => {
-  const { cardData, setCardData } = useCardModalContext();
-  const onDragEnd = (result: DropResult) => {
-    if (!cardData) {
-      return;
-    }
-    const data = handleOnDragEnd(result, cardData?.checklist, "CheckList");
+  const cardData = useParamCard();
+  // DnD 用的 list
+  const [checkLists, setChecklist] = useState<ChecklistProps[]>([]);
 
-    if (data) {
-      setCardData({ ...cardData, checklist: data });
+  useEffect(() => {
+    if (cardData?.checklist) {
+      const cloneList = JSON.parse(JSON.stringify(cardData?.checklist));
+      setChecklist(cloneList);
     }
-  };
+  }, [cardData?.checklist]);
 
   return (
-    <DragDropContext onDragEnd={onDragEnd}>
+    <DragDropContext
+      onDragEnd={(result) => {
+        if (!checkLists) {
+          return;
+        }
+        const data = handleOnDragEnd(result, checkLists, "CheckList");
+
+        if (data) {
+          setChecklist(data);
+        }
+      }}
+    >
       <Droppable
         droppableId="board"
         type="COLUMN"
@@ -35,7 +47,7 @@ const CardCheckContent: React.FC = () => {
               flexDirection: "column",
             }}
           >
-            <CheckLists />
+            <CheckLists checkLists={checkLists} />
             {provided.placeholder}
           </Row>
         )}
