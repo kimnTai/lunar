@@ -3,13 +3,18 @@ import { NewListProps, UpdateListProps } from "@/interfaces/lists";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 
 export const newListApiAction = createAsyncThunk(
-  "list/newListApi",
+  "list/newList",
   async (data: NewListProps) => await newListApi(data)
 );
 
 export const updateListAction = createAsyncThunk(
-  "list/newListApi",
+  "list/updateList",
   async (data: UpdateListProps) => await updateListApi(data)
+);
+
+export const closeListAction = createAsyncThunk(
+  "list/closeList",
+  async (listId: string) => await updateListApi({ listId, closed: true })
 );
 
 // TODO:卡片拖曳更新

@@ -15,7 +15,11 @@ import {
   updateBoardApi,
 } from "@/api/boards";
 import { RootState } from "./store";
-import { newListApiAction } from "./listSlice";
+import {
+  closeListAction,
+  newListApiAction,
+  updateListAction,
+} from "./listSlice";
 import {
   cloneCardAction,
   closeCardAction,
@@ -101,12 +105,30 @@ export const boardSlice = createSlice({
         }
       });
     // 列表
-    builder.addCase(newListApiAction.fulfilled, (state, action) => {
-      const newList = action.payload.result;
-      if (state.board._id === newList.boardId) {
-        state.board.list.push(newList);
-      }
-    });
+    builder
+      .addCase(newListApiAction.fulfilled, (state, action) => {
+        const newList = action.payload.result;
+        if (state.board._id === newList.boardId) {
+          state.board.list.push(newList);
+        }
+      })
+      .addCase(updateListAction.fulfilled, (state, action) => {
+        const updateList = action.payload.result;
+        if (state.board._id === updateList.boardId) {
+          state.board.list = state.board.list.filter(
+            ({ _id }) => _id !== updateList._id
+          );
+          state.board.list.push(updateList);
+        }
+      })
+      .addCase(closeListAction.fulfilled, (state, action) => {
+        const closedList = action.payload.result;
+        if (state.board._id === closedList.boardId) {
+          state.board.list = state.board.list.filter(
+            ({ _id }) => _id !== closedList._id
+          );
+        }
+      });
     // 卡片
     builder
       .addCase(updateCardAction.fulfilled, (state, action) => {

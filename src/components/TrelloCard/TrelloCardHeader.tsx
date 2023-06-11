@@ -11,6 +11,9 @@ import {
 } from "./style";
 import { TrelloCardHeaderProps } from "@/interfaces/trelloCard";
 import { Button, Popover, Divider, Menu, MenuProps } from "antd";
+import { useAppDispatch } from "@/hooks";
+import { closeListAction } from "@/redux/listSlice";
+import { ListsProps } from "@/interfaces/lists";
 
 const PopoverHeader: React.FC<{ close: Function }> = ({ close }) => {
   return (
@@ -29,7 +32,9 @@ const PopoverHeader: React.FC<{ close: Function }> = ({ close }) => {
 const PopoverContent: React.FC<{
   close: Function;
   setShowAddCard: Function;
-}> = ({ setShowAddCard, close }) => {
+  list: ListsProps;
+}> = ({ setShowAddCard, close, list }) => {
+  const dispatch = useAppDispatch();
   const [current, setCurrent] = useState("");
   const handleClick: MenuProps["onClick"] = (element) => {
     setCurrent(element.key);
@@ -66,7 +71,12 @@ const PopoverContent: React.FC<{
       <Menu
         className="popoverList"
         selectedKeys={[current]}
-        onClick={handleClick}
+        onClick={async () => {
+          try {
+            await dispatch(closeListAction(list._id));
+          } catch (error) {}
+          close();
+        }}
         items={[{ key: "keepList", label: "封存這個列表" }]}
       />
     </PopoverContentStyled>
@@ -88,7 +98,7 @@ const TrelloCardHeader: React.FC<TrelloCardHeaderProps> = (props) => {
           fontWeight: 700,
         }}
       >
-        {props.title}
+        {props.list.name}
       </div>
       <div className="d-flex">
         <Button
@@ -104,6 +114,7 @@ const TrelloCardHeader: React.FC<TrelloCardHeaderProps> = (props) => {
             <PopoverContent
               setShowAddCard={props.setShowAddCard}
               close={closePopover}
+              list={props.list}
             />
           }
           title={<PopoverHeader close={closePopover} />}
