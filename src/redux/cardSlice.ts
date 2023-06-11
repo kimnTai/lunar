@@ -12,6 +12,7 @@ import {
   updateCardDateApi,
   updateCardCommentApi,
   deleteCardCommentApi,
+  closedCardApi,
 } from "@/api/cards";
 import { newImageFileUrl } from "@/api/upload";
 import {
@@ -111,6 +112,11 @@ export const cloneCardAction = createAsyncThunk(
 export const moveCardAction = createAsyncThunk(
   "card/moveCard",
   async (data: UpdateCardProps) => await updateCardApi(data)
+);
+
+export const closeCardAction = createAsyncThunk(
+  "card/closeCard",
+  async (cardId: string) => await closedCardApi(cardId)
 );
 
 export const selectCardById = (cardId?: string) => (state: RootState) =>

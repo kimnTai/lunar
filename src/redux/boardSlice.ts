@@ -18,6 +18,7 @@ import { RootState } from "./store";
 import { newListApiAction } from "./listSlice";
 import {
   cloneCardAction,
+  closeCardAction,
   deleteAttachmentAction,
   deleteCardCommentAction,
   deleteCardDateAction,
@@ -139,6 +140,15 @@ export const boardSlice = createSlice({
           .forEach((list) => {
             list.card.push(moveCard);
           });
+      })
+      .addCase(closeCardAction.fulfilled, (state, action) => {
+        const closedCard = action.payload.result;
+        if (state.board._id !== closedCard.boardId) {
+          return;
+        }
+        state.board.list.forEach((list) => {
+          list.card = list.card.filter(({ _id }) => _id !== closedCard._id);
+        });
       });
     // 卡片附件
     builder
