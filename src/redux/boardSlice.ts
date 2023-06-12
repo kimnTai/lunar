@@ -39,6 +39,7 @@ import {
   updateCheckItemAction,
   updateChecklistAction,
 } from "./cardSlice";
+import { ListsProps } from "@/interfaces/lists";
 
 const initialState: {
   board: BoardsProps;
@@ -97,6 +98,9 @@ export const boardSlice = createSlice({
     updateColumn: (state, action: PayloadAction<boolean | undefined>) => {
       state.board.list;
       action.payload;
+    },
+    setBoardList: (state, action: PayloadAction<ListsProps[]>) => {
+      state.board.list = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -352,9 +356,12 @@ export const boardSlice = createSlice({
   },
 });
 
-export const {} = boardSlice.actions;
+export const { setBoardList } = boardSlice.actions;
 
 export const selectBoard = (state: RootState) => state.board.board;
+
+export const selectCardList = (state: RootState) =>
+  state.board.board.list.flatMap(({ card }) => card);
 
 export const selectBoardManagers = (state: RootState) =>
   state.board.board.member.filter(({ role }) => role === "manager");

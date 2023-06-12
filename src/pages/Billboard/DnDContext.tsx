@@ -1,17 +1,18 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
+import { cloneDeep } from "lodash";
 import AddList from "@/components/AddList";
 import TrelloCard from "@/components/TrelloCard";
-import { useAppSelector } from "@/hooks";
+import { useAppDispatch, useAppSelector } from "@/hooks";
 import useWebSocket from "@/hooks/useWebSocket";
-import { ListsProps } from "@/interfaces/lists";
-import { selectBoard } from "@/redux/boardSlice";
+import { selectBoard, setBoardList } from "@/redux/boardSlice";
 import { getSocketChange, handleOnDragEnd } from "@/utils/cardFunc";
 import { BillboardStyled } from "./style";
 
 const DnDContext: React.FC = () => {
+  const dispatch = useAppDispatch();
   const board = useAppSelector(selectBoard);
-  const [cardList, setCardList] = useState<ListsProps[]>([]);
+  const dndCardList = cloneDeep(board.list);
 
   const { data: socketEvent, sendMessage } = useWebSocket(
     board._id,
@@ -20,14 +21,13 @@ const DnDContext: React.FC = () => {
 
   useEffect(() => {
     if (socketEvent) {
-      setCardList(getSocketChange(cardList, socketEvent));
+      const resultList = getSocketChange(dndCardList, socketEvent);
+      dispatch(setBoardList(resultList));
     }
   }, [socketEvent]);
 
   useEffect(() => {
     if (board.list) {
-      const cloneList = JSON.parse(JSON.stringify(board.list));
-      setCardList(cloneList);
       sendMessage({ type: "subscribe", boardId: board._id });
     }
     return () => sendMessage({ type: "unsubscribe", boardId: board._id });
@@ -36,9 +36,9 @@ const DnDContext: React.FC = () => {
   return (
     <DragDropContext
       onDragEnd={(result) => {
-        const resultList = handleOnDragEnd(result, cardList);
+        const resultList = handleOnDragEnd(result, dndCardList);
         if (resultList) {
-          setCardList(resultList);
+          dispatch(setBoardList(resultList));
         }
       }}
     >
@@ -51,7 +51,7 @@ const DnDContext: React.FC = () => {
       >
         {(provided) => (
           <BillboardStyled {...provided.droppableProps} ref={provided.innerRef}>
-            {cardList
+            {dndCardList
               .sort((a, b) => +a.position - +b.position)
               .map((ele, index) => (
                 <TrelloCard
