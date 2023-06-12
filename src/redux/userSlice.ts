@@ -6,9 +6,11 @@ import Cookie from "@/utils/cookie";
 
 const initialState: {
   token: string;
+  websocketUrl: string;
   user: UserProps;
 } = {
   token: "",
+  websocketUrl: "",
   user: {
     avatar: "",
     createdAt: "",
@@ -46,32 +48,36 @@ export const userSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
+    // 註冊
     builder
       .addCase(signInAction.fulfilled, (state, action) => {
         state.user = action.payload.result;
         state.token = action.payload.token;
+        state.websocketUrl = action.payload.websocketUrl;
         Cookie.set("lunar-token", action.payload.token);
       })
       .addCase(signInAction.rejected, (state) => {
         state.token = "";
         Cookie.remove("lunar-token");
       });
-
+    // 登入
     builder
       .addCase(loginAction.fulfilled, (state, action) => {
         state.user = action.payload.result;
         state.token = action.payload.token;
+        state.websocketUrl = action.payload.websocketUrl;
         Cookie.set("lunar-token", action.payload.token);
       })
       .addCase(loginAction.rejected, (state) => {
         state.token = "";
         Cookie.remove("lunar-token");
       });
-
+    // token 驗證
     builder
       .addCase(loginJwtAction.fulfilled, (state, action) => {
         state.user = action.payload.result;
         state.token = action.payload.token;
+        state.websocketUrl = action.payload.websocketUrl;
       })
       .addCase(loginJwtAction.rejected, (state) => {
         state.token = "";
@@ -84,5 +90,7 @@ export const { logout } = userSlice.actions;
 export const selectAuth = (state: RootState) => Boolean(state.user.token);
 
 export const selectUser = (state: RootState) => state.user.user;
+
+export const selectWebsocketUrl = (state: RootState) => state.user.websocketUrl;
 
 export default userSlice.reducer;

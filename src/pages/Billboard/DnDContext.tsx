@@ -3,8 +3,8 @@ import { DragDropContext, Droppable } from "react-beautiful-dnd";
 import { cloneDeep } from "lodash";
 import AddList from "@/components/AddList";
 import TrelloCard from "@/components/TrelloCard";
+import { useWebSocketContext } from "@/context/WebsocketContext";
 import { useAppDispatch, useAppSelector } from "@/hooks";
-import useWebSocket from "@/hooks/useWebSocket";
 import { selectBoard, setBoardList } from "@/redux/boardSlice";
 import { getSocketChange, handleOnDragEnd } from "@/utils/cardFunc";
 import { BillboardStyled } from "./style";
@@ -14,10 +14,7 @@ const DnDContext: React.FC = () => {
   const board = useAppSelector(selectBoard);
   const dndCardList = cloneDeep(board.list);
 
-  const { data: socketEvent, sendMessage } = useWebSocket(
-    board._id,
-    async (_: string) => {}
-  );
+  const [socketEvent, sendMessage] = useWebSocketContext();
 
   useEffect(() => {
     if (socketEvent) {
@@ -27,11 +24,11 @@ const DnDContext: React.FC = () => {
   }, [socketEvent]);
 
   useEffect(() => {
-    if (board.list) {
+    if (board._id) {
       sendMessage({ type: "subscribe", boardId: board._id });
     }
     return () => sendMessage({ type: "unsubscribe", boardId: board._id });
-  }, [board.list]);
+  }, [board._id]);
 
   return (
     <DragDropContext
