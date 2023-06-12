@@ -1,21 +1,16 @@
-import {
-  deleteLabelApi,
-  getLabelApi,
-  newLabelApi,
-  updateLabelApi,
-} from "@/api/label";
-import { useApi } from "@/hooks/useApiHook";
+import { deleteLabelApi, newLabelApi, updateLabelApi } from "@/api/label";
 import { LabelsProps } from "@/interfaces/labels";
 import { colorList } from "@/utils/constant";
 import { CloseOutlined, EditOutlined, LeftOutlined } from "@ant-design/icons";
-import { Button, Card, Checkbox, Col, Form, Input, Row, Spin } from "antd";
+import { Button, Card, Checkbox, Col, Form, Input, Row } from "antd";
 import { CheckboxChangeEvent } from "antd/es/checkbox";
-import { CSSProperties, useEffect, useState } from "react";
+import { CSSProperties, useState } from "react";
 import { useParams } from "react-router";
 import { LabelModalStyled } from "./style";
 import { useParamCard } from "@/hooks/useParamCard";
-import { useAppDispatch } from "@/hooks";
+import { useAppDispatch, useAppSelector } from "@/hooks";
 import { addCardLabelAction, deleteCardLabelAction } from "@/redux/cardSlice";
+import { getBoardByIdAction, selectBoard } from "@/redux/boardSlice";
 
 const LabelModal: React.FC<{
   setIsOpenLabel: React.Dispatch<React.SetStateAction<boolean>>;
@@ -30,16 +25,10 @@ const LabelModal: React.FC<{
   const [isCreatingLabel, setIsCreatingLabel] = useState(false);
   const [isUpdatingLabel, setIsUpdatingLabel] = useState(false);
   const [createNewLabel, setCreateLabel] = useState(false);
-  const [labelResult, labelLoading, labelCallApi] = useApi(getLabelApi);
   const [targetLabel, setTargetLabel] = useState<LabelsProps>();
   const [isEditLabel, setIsEditLabel] = useState(false);
   const [isDeletingLabel, setIsDeletingLabel] = useState(false);
-
-  useEffect(() => {
-    if (boardId) {
-      labelCallApi(boardId);
-    }
-  }, []);
+  const board = useAppSelector(selectBoard);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     console.log(e.target.value);
@@ -80,8 +69,7 @@ const LabelModal: React.FC<{
           color: selectedColor,
           boardId: boardId,
         });
-
-        await labelCallApi(boardId);
+        dispatch(getBoardByIdAction(boardId));
       } catch (error) {
       } finally {
         setIsCreatingLabel(false);
@@ -92,7 +80,7 @@ const LabelModal: React.FC<{
 
   const handleEditLabel = (labelId: string) => {
     setTargetLabel(
-      labelResult?.result.find((label) => {
+      board.label.find((label) => {
         return label._id === labelId;
       })
     );
@@ -111,7 +99,7 @@ const LabelModal: React.FC<{
           labelId: targetLabel?._id,
         });
 
-        await labelCallApi(boardId);
+        dispatch(getBoardByIdAction(boardId));
       } finally {
         setIsUpdatingLabel(false);
         setIsEditLabel(false);
@@ -128,7 +116,7 @@ const LabelModal: React.FC<{
           labelId: targetLabel._id,
         });
 
-        await labelCallApi(boardId);
+        dispatch(getBoardByIdAction(boardId));
       } finally {
         setIsDeletingLabel(false);
         setIsEditLabel(false);
@@ -295,47 +283,54 @@ const LabelModal: React.FC<{
         size={"small"}
         style={{ width: "auto" }}
       >
-        <Input placeholder="搜尋標籤" onChange={handleInputChange} />
-        <Col style={{ margin: "16px 0" }}>
-          {labelLoading ? (
-            <Spin />
-          ) : (
-            labelResult?.result.map((label) => (
-              <Row
-                align={"middle"}
-                key={label._id}
-                style={{ gap: "8px", margin: "4px 0" }}
+        {board.label.length !== 0 && (
+          <Input
+            placeholder="搜尋標籤"
+            onChange={handleInputChange}
+            style={{ margin: "16px 0" }}
+          />
+        )}
+
+        <Col>
+          {board.label.map((label) => (
+            <Row
+              align={"middle"}
+              key={label._id}
+              style={{ gap: "8px", margin: "4px 0" }}
+            >
+              <Checkbox
+                checked={selectedLabelArray?.includes(label._id)}
+                onChange={handleCheckboxChange}
+                value={label._id}
+              />
+              <Button
+                className="labelBtn"
+                type="primary"
+                style={{ backgroundColor: label.color }}
               >
-                <Checkbox
-                  checked={selectedLabelArray?.includes(label._id)}
-                  onChange={handleCheckboxChange}
-                  value={label._id}
-                />
-                <Button
-                  className="labelBtn"
-                  type="primary"
-                  style={{ backgroundColor: label.color }}
-                >
-                  {label.name}
-                </Button>
-                <Button
-                  type="text"
-                  icon={<EditOutlined />}
-                  style={{
-                    width: "32px",
-                    height: "32px",
-                    color: "var(--gray66)",
-                  }}
-                  onClick={() => handleEditLabel(label._id)}
-                />
-              </Row>
-            ))
-          )}
+                {label.name}
+              </Button>
+              <Button
+                type="text"
+                icon={<EditOutlined />}
+                style={{
+                  width: "32px",
+                  height: "32px",
+                  color: "var(--gray66)",
+                }}
+                onClick={() => handleEditLabel(label._id)}
+              />
+            </Row>
+          ))}
         </Col>
         <Button
           block
           type="primary"
-          style={{ backgroundColor: "var(--grayd4)", boxShadow: "none" }}
+          style={{
+            backgroundColor: "var(--grayd4)",
+            boxShadow: "none",
+            marginTop: "16px",
+          }}
           onClick={() => setCreateLabel(true)}
         >
           建立新標籤
