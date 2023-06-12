@@ -403,4 +403,7 @@ export const selectListByCardId = (cardId?: string) => (state: RootState) =>
     card.find(({ _id }) => _id === cardId)
   );
 
+export const selectLabelById = (labelId?: string) => (state: RootState) =>
+  state.board.board.label.find(({ _id }) => _id === labelId);
+
 export default boardSlice.reducer;

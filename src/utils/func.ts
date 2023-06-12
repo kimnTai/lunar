@@ -27,3 +27,27 @@ export const getBase64 = async (file: RcFile) => {
 
   return `${reader.result}`;
 };
+
+export const isDarkColor = (color: string) => {
+  // 將顏色代碼轉換為RGB值
+  const hexToRGB = (hex: string) =>
+    hex
+      .replace(
+        /^#?([a-f\d])([a-f\d])([a-f\d])$/i,
+        (_, r, g, b) => "#" + r + r + g + g + b + b
+      )
+      .substring(1)
+      .match(/.{2}/g)
+      ?.map((x) => parseInt(x, 16));
+
+  // 獲取RGB值的亮度
+  const getBrightness = (rgb: number[]) =>
+    (rgb[0] * 299 + rgb[1] * 587 + rgb[2] * 114) / 1000;
+
+  // 將顏色代碼轉換為RGB值並計算亮度
+  const rgb = hexToRGB(color);
+  const brightness = getBrightness(rgb || []);
+
+  // 根據亮度判斷是否為深色
+  return brightness < 128;
+};

@@ -1,43 +1,22 @@
 import { useState } from "react";
-import { useParams } from "react-router";
-import { CloseOutlined } from "@ant-design/icons";
 import { Button, Form, Input } from "antd";
-import { newLabelAction } from "@/redux/boardSlice";
+import { CloseOutlined } from "@ant-design/icons";
+import { useAppDispatch, useAppSelector } from "@/hooks";
+import { newLabelAction, selectBoard } from "@/redux/boardSlice";
 import { colorList } from "@/utils/constant";
-import { useAppDispatch } from "@/hooks";
 
 const CreateLabel: React.FC<{
-  setState: any;
-  inputColor: string;
-  inputName: string;
-  setInputName: any;
-  checkColorHandler: (color: any) => void;
-  clearColorHandler: () => void;
-}> = ({
-  setState,
-  inputColor,
-  inputName,
-  setInputName,
-  checkColorHandler,
-  clearColorHandler,
-}) => {
+  setState: React.Dispatch<React.SetStateAction<"NONE" | "CREATE" | "EDIT">>;
+}> = ({ setState }) => {
   const dispatch = useAppDispatch();
-  const { boardId } = useParams();
+  const board = useAppSelector(selectBoard);
+
+  const [form] = Form.useForm<{ labelName: string; labelColor: string }>();
+  const labelName = Form.useWatch("labelName", form);
+  const labelColor = Form.useWatch("labelColor", form);
+
   const [loading, setLoading] = useState(false);
-  // 建立標籤
-  const onCreateLabelFinish = () => {
-    if (!boardId) {
-      return;
-    }
-    setLoading(true);
-    dispatch(
-      newLabelAction({
-        name: inputName,
-        color: inputColor,
-        boardId: boardId,
-      })
-    ).finally(() => setLoading(false));
-  };
+
   return (
     <div className="createLabelView">
       <div className="peopleTitle">
@@ -56,7 +35,29 @@ const CreateLabel: React.FC<{
           onClick={() => setState("NONE")}
         />
       </div>
-      <Form onFinish={onCreateLabelFinish}>
+      <Form
+        form={form}
+        initialValues={{
+          labelName: "",
+          labelColor: "#DFE1E6",
+        }}
+        onFinish={async (values) => {
+          setLoading(true);
+
+          try {
+            await dispatch(
+              newLabelAction({
+                name: values.labelName,
+                color: values.labelColor,
+                boardId: board._id,
+              })
+            );
+          } catch (error) {}
+
+          setLoading(false);
+          setState("NONE");
+        }}
+      >
         <div
           style={{
             position: "relative",
@@ -70,7 +71,7 @@ const CreateLabel: React.FC<{
               position: "absolute",
               width: "80%",
               height: "40%",
-              backgroundColor: `${inputColor}`,
+              backgroundColor: `${labelColor}`,
               left: "10%",
               top: "30%",
               textAlign: "center",
@@ -79,7 +80,7 @@ const CreateLabel: React.FC<{
               borderRadius: "4px",
             }}
           >
-            {inputName}
+            {labelName}
           </div>
         </div>
         <div style={{ padding: "0 12px" }}>
@@ -104,7 +105,6 @@ const CreateLabel: React.FC<{
                 borderRadius: "4px",
                 marginTop: "8px",
               }}
-              onChange={(e) => setInputName(e.target.value)}
             />
           </Form.Item>
           <p
@@ -116,14 +116,14 @@ const CreateLabel: React.FC<{
           >
             選一個顏色
           </p>
-          <div>
-            <Form.Item name="labelColor">
-              {colorList?.map((ele, idx) => (
+          <Form.Item name="labelColor">
+            <div>
+              {colorList?.map(({ color }, index) => (
                 <Button
                   type="text"
                   style={{
                     color: "white",
-                    backgroundColor: ele.color,
+                    backgroundColor: color,
                     border: "1px solid white",
                     borderRadius: "4px",
                     width: "31%",
@@ -131,8 +131,10 @@ const CreateLabel: React.FC<{
                     marginTop: "8px",
                     marginRight: "5.2px",
                   }}
-                  key={idx}
-                  onClick={() => checkColorHandler(ele.color)}
+                  key={index}
+                  onClick={() => {
+                    form.setFieldValue("labelColor", color);
+                  }}
                 >
                   <div
                     className="hoverBtn"
@@ -147,26 +149,26 @@ const CreateLabel: React.FC<{
                   />
                 </Button>
               ))}
-            </Form.Item>
-            <Button
-              className="createLabelBtn"
-              type="primary"
-              style={{
-                fontWeight: "bold",
-                color: "white",
-                border: "1px solid white",
-                borderRadius: "4px",
-                width: "100%",
-                height: "38px",
-                marginTop: "-15px",
-              }}
-              icon={<CloseOutlined />}
-              disabled={inputColor === "#DFE1E6"}
-              onClick={clearColorHandler}
-            >
-              移除顏色
-            </Button>
-          </div>
+            </div>
+          </Form.Item>
+          <Button
+            className="createLabelBtn"
+            type="primary"
+            style={{
+              fontWeight: "bold",
+              color: "white",
+              border: "1px solid white",
+              borderRadius: "4px",
+              width: "100%",
+              height: "38px",
+              marginTop: "-15px",
+            }}
+            icon={<CloseOutlined />}
+            disabled={labelColor === "#DFE1E6"}
+            onClick={() => form.setFieldValue("labelColor", "#DFE1E6")}
+          >
+            移除顏色
+          </Button>
           <div className="top-border" style={{ marginTop: "10px" }}>
             <Button
               htmlType="submit"

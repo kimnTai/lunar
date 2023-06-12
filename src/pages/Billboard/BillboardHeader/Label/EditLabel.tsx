@@ -1,71 +1,44 @@
 import { useState } from "react";
-import { useParams } from "react-router";
-import { CloseOutlined } from "@ant-design/icons";
 import { Button, Form, Input } from "antd";
-import { deleteLabelAction, updateLabelAction } from "@/redux/boardSlice";
+import { useAppDispatch, useAppSelector } from "@/hooks";
+import { CloseOutlined } from "@ant-design/icons";
+import {
+  deleteLabelAction,
+  selectLabelById,
+  updateLabelAction,
+} from "@/redux/boardSlice";
 import { colorList } from "@/utils/constant";
-import { useAppDispatch } from "@/hooks";
 
 const EditLabel: React.FC<{
-  setState: Function;
-  labelID: string;
-  form: any;
-  inputColor: string;
-  inputName: string;
-  setInputName: any;
-  inputRef: any;
-  checkColorHandler: (color: any) => void;
-  clearColorHandler: () => void;
-}> = ({
-  setState,
-  labelID,
-  form,
-  inputColor,
-  inputName,
-  setInputName,
-  inputRef,
-  checkColorHandler,
-  clearColorHandler,
-}) => {
+  setState: React.Dispatch<React.SetStateAction<"NONE" | "CREATE" | "EDIT">>;
+  labelId: string;
+}> = ({ setState, labelId }) => {
   const dispatch = useAppDispatch();
-  const { boardId } = useParams();
-  const [isStoreLabel, setIsStoreLabel] = useState(false);
-  const [storeLoading, setStoreLoading] = useState(false);
-  const [deleteLoading, setDeleteLoading] = useState(false);
-  const [isDeleteLabel, setIsDeleteLabel] = useState(false);
-  // 編輯標籤
-  const onEditLabelFinish = () => {
-    if (!boardId) {
+  const label = useAppSelector(selectLabelById(labelId));
+
+  const [form] = Form.useForm<{ editLabelName: string; labelColor: string }>();
+  const editLabelName = Form.useWatch("editLabelName", form);
+  const labelColor = Form.useWatch("labelColor", form);
+
+  const [loading, setLoading] = useState(false);
+
+  const onClickDelete = async () => {
+    if (!label) {
       return;
     }
-    if (isStoreLabel) {
-      setStoreLoading(true);
+    setLoading(true);
 
-      dispatch(
-        updateLabelAction({
-          name: inputName,
-          color: inputColor,
-          boardId: boardId,
-          labelId: labelID,
-        })
-      ).finally(() => {
-        setStoreLoading(false);
-        setState("NONE");
-      });
-    }
-    if (isDeleteLabel) {
-      setDeleteLoading(true);
-
-      dispatch(
+    try {
+      await dispatch(
         deleteLabelAction({
-          boardId: boardId,
-          labelId: labelID,
+          boardId: label.boardId,
+          labelId: label._id,
         })
-      ).finally(() => {
-        setDeleteLoading(false);
-        setState("NONE");
-      });
-    }
+      );
+    } catch (error) {}
+
+    setLoading(false);
+    setState("NONE");
   };
 
   return (
@@ -86,7 +59,33 @@ const EditLabel: React.FC<{
           onClick={() => setState("NONE")}
         />
       </div>
-      <Form form={form} onFinish={onEditLabelFinish}>
+      <Form
+        initialValues={{
+          editLabelName: label?.name,
+          labelColor: label?.color,
+        }}
+        form={form}
+        onFinish={async (values) => {
+          if (!label) {
+            return;
+          }
+          setLoading(true);
+
+          try {
+            await dispatch(
+              updateLabelAction({
+                name: values.editLabelName,
+                color: values.labelColor,
+                boardId: label.boardId,
+                labelId: label._id,
+              })
+            );
+          } catch (error) {}
+
+          setLoading(false);
+          setState("NONE");
+        }}
+      >
         <div
           style={{
             position: "relative",
@@ -100,7 +99,7 @@ const EditLabel: React.FC<{
               position: "absolute",
               width: "80%",
               height: "40%",
-              backgroundColor: `${inputColor}`,
+              backgroundColor: `${labelColor}`,
               left: "10%",
               top: "30%",
               textAlign: "center",
@@ -109,7 +108,7 @@ const EditLabel: React.FC<{
               borderRadius: "4px",
             }}
           >
-            {inputName}
+            {editLabelName}
           </div>
         </div>
         <div style={{ padding: "0 12px" }}>
@@ -134,8 +133,6 @@ const EditLabel: React.FC<{
                 borderRadius: "4px",
                 marginTop: "8px",
               }}
-              onChange={(e) => setInputName(e.target.value)}
-              ref={inputRef}
             />
           </Form.Item>
           <p
@@ -149,35 +146,37 @@ const EditLabel: React.FC<{
           </p>
           <div>
             <Form.Item name="labelColor">
-              {colorList?.map((ele, idx) => (
-                <Button
-                  type="text"
-                  style={{
-                    color: "white",
-                    backgroundColor: ele.color,
-                    border: "1px solid white",
-                    borderRadius: "4px",
-                    width: "31%",
-                    height: "36px",
-                    marginTop: "8px",
-                    marginRight: "5.2px",
-                  }}
-                  key={idx}
-                  onClick={() => checkColorHandler(ele.color)}
-                >
-                  <div
-                    className="hoverBtn"
+              <div>
+                {colorList?.map(({ color }, idx) => (
+                  <Button
+                    type="text"
                     style={{
-                      width: "100%",
-                      height: "100%",
-                      position: "absolute",
+                      color: "white",
+                      backgroundColor: color,
+                      border: "1px solid white",
                       borderRadius: "4px",
-                      left: 0,
-                      top: 0,
+                      width: "31%",
+                      height: "36px",
+                      marginTop: "8px",
+                      marginRight: "5.2px",
                     }}
-                  />
-                </Button>
-              ))}
+                    key={idx}
+                    onClick={() => form.setFieldValue("labelColor", color)}
+                  >
+                    <div
+                      className="hoverBtn"
+                      style={{
+                        width: "100%",
+                        height: "100%",
+                        position: "absolute",
+                        borderRadius: "4px",
+                        left: 0,
+                        top: 0,
+                      }}
+                    />
+                  </Button>
+                ))}
+              </div>
             </Form.Item>
             <Button
               className="createLabelBtn"
@@ -192,8 +191,8 @@ const EditLabel: React.FC<{
                 marginTop: "-15px",
               }}
               icon={<CloseOutlined />}
-              disabled={inputColor === "#DFE1E6"}
-              onClick={clearColorHandler}
+              disabled={labelColor === "#DFE1E6"}
+              onClick={() => form.setFieldValue("labelColor", "#DFE1E6")}
             >
               移除顏色
             </Button>
@@ -215,13 +214,11 @@ const EditLabel: React.FC<{
                 marginTop: "5px",
                 borderRadius: "4px",
               }}
-              loading={storeLoading}
-              onClick={() => setIsStoreLabel(true)}
+              loading={loading}
             >
               儲存
             </Button>
             <Button
-              htmlType="submit"
               type="primary"
               danger
               style={{
@@ -230,8 +227,8 @@ const EditLabel: React.FC<{
                 marginTop: "5px",
                 borderRadius: "4px",
               }}
-              loading={deleteLoading}
-              onClick={() => setIsDeleteLabel(true)}
+              loading={loading}
+              onClick={() => onClickDelete()}
             >
               刪除
             </Button>
