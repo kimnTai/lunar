@@ -19,6 +19,7 @@ const LabelModal: React.FC<{
   const { boardId } = useParams();
   const cardData = useParamCard();
   const dispatch = useAppDispatch();
+  const labelList = useAppSelector(selectBoard).label;
   const selectedLabelArray = cardData?.label.map((label) => label._id);
   const [selectedColor, setSelectedColor] = useState(colorList[0].color);
   const [labelName, setLabelName] = useState("");
@@ -28,10 +29,17 @@ const LabelModal: React.FC<{
   const [targetLabel, setTargetLabel] = useState<LabelsProps>();
   const [isEditLabel, setIsEditLabel] = useState(false);
   const [isDeletingLabel, setIsDeletingLabel] = useState(false);
-  const board = useAppSelector(selectBoard);
+  const [filteredLabelList, setFilteredLabelList] = useState(labelList);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    console.log(e.target.value);
+    if (e.target.value) {
+      const newLabelList = labelList.filter((label) => {
+        return label.name.includes(e.target.value);
+      });
+      setFilteredLabelList(newLabelList);
+    } else {
+      setFilteredLabelList(labelList);
+    }
   };
 
   const handleAddCardLabel = async (labelId: string) => {
@@ -80,7 +88,7 @@ const LabelModal: React.FC<{
 
   const handleEditLabel = (labelId: string) => {
     setTargetLabel(
-      board.label.find((label) => {
+      labelList.find((label) => {
         return label._id === labelId;
       })
     );
@@ -283,7 +291,7 @@ const LabelModal: React.FC<{
         size={"small"}
         style={{ width: "auto" }}
       >
-        {board.label.length !== 0 && (
+        {labelList.length !== 0 && (
           <Input
             placeholder="搜尋標籤"
             onChange={handleInputChange}
@@ -292,7 +300,7 @@ const LabelModal: React.FC<{
         )}
 
         <Col>
-          {board.label.map((label) => (
+          {filteredLabelList.map((label) => (
             <Row
               align={"middle"}
               key={label._id}
