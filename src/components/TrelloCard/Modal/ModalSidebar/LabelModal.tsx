@@ -4,7 +4,7 @@ import { colorList } from "@/utils/constant";
 import { CloseOutlined, EditOutlined, LeftOutlined } from "@ant-design/icons";
 import { Button, Card, Checkbox, Col, Form, Input, Row } from "antd";
 import { CheckboxChangeEvent } from "antd/es/checkbox";
-import { CSSProperties, useState } from "react";
+import { CSSProperties, useEffect, useState } from "react";
 import { useParams } from "react-router";
 import { LabelModalStyled } from "./style";
 import { useParamCard } from "@/hooks/useParamCard";
@@ -30,6 +30,10 @@ const LabelModal: React.FC<{
   const [isEditLabel, setIsEditLabel] = useState(false);
   const [isDeletingLabel, setIsDeletingLabel] = useState(false);
   const [filteredLabelList, setFilteredLabelList] = useState(labelList);
+
+  useEffect(() => {
+    setFilteredLabelList(labelList);
+  }, [labelList]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.value) {
@@ -77,7 +81,7 @@ const LabelModal: React.FC<{
           color: selectedColor,
           boardId: boardId,
         });
-        dispatch(getBoardByIdAction(boardId));
+        await dispatch(getBoardByIdAction(boardId));
       } catch (error) {
       } finally {
         setIsCreatingLabel(false);
@@ -107,7 +111,7 @@ const LabelModal: React.FC<{
           labelId: targetLabel?._id,
         });
 
-        dispatch(getBoardByIdAction(boardId));
+        await dispatch(getBoardByIdAction(boardId));
       } finally {
         setIsUpdatingLabel(false);
         setIsEditLabel(false);
@@ -124,7 +128,7 @@ const LabelModal: React.FC<{
           labelId: targetLabel._id,
         });
 
-        dispatch(getBoardByIdAction(boardId));
+        await dispatch(getBoardByIdAction(boardId));
       } finally {
         setIsDeletingLabel(false);
         setIsEditLabel(false);

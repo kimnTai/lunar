@@ -31,11 +31,7 @@ const CardLabel: React.FC = () => {
           onClick={() => setIsOpenLabel(true)}
         />
         {isOpenLabel && (
-          <LabelModal
-            setIsOpenLabel={setIsOpenLabel}
-            // labelList={cardData?.label!}
-            style={{ top: "64px" }}
-          />
+          <LabelModal setIsOpenLabel={setIsOpenLabel} style={{ top: "64px" }} />
         )}
       </Avatar.Group>
     </Col>
