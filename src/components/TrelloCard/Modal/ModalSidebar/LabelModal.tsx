@@ -28,11 +28,12 @@ const LabelModal: React.FC<{
   const [selectedColor, setSelectedColor] = useState(colorList[0].color);
   const [labelName, setLabelName] = useState("");
   const [isCreatingLabel, setIsCreatingLabel] = useState(false);
+  const [isUpdatingLabel, setIsUpdatingLabel] = useState(false);
   const [createNewLabel, setCreateLabel] = useState(false);
   const [labelResult, labelLoading, labelCallApi] = useApi(getLabelApi);
   const [targetLabel, setTargetLabel] = useState<LabelsProps>();
-  const [isUpdateLabel, setIsUpdateLabel] = useState(false);
-  const [isDeleteLabel, setIsDeleteLabel] = useState(false);
+  const [isEditLabel, setIsEditLabel] = useState(false);
+  const [isDeletingLabel, setIsDeletingLabel] = useState(false);
 
   useEffect(() => {
     if (boardId) {
@@ -96,30 +97,30 @@ const LabelModal: React.FC<{
       })
     );
 
-    setCreateLabel(true);
+    setIsEditLabel(true);
   };
 
   const handleUpdateLabel = async () => {
-    setIsUpdateLabel(true);
+    setIsUpdatingLabel(true);
     if (boardId && targetLabel) {
       try {
         await updateLabelApi({
           name: targetLabel.name,
           color: targetLabel.color,
-          boardId: boardId,
+          boardId,
           labelId: targetLabel?._id,
         });
 
         await labelCallApi(boardId);
       } finally {
-        setIsUpdateLabel(false);
-        setCreateLabel(false);
+        setIsUpdatingLabel(false);
+        setIsEditLabel(false);
       }
     }
   };
 
   const handleDeleteLabel = async () => {
-    setIsDeleteLabel(true);
+    setIsDeletingLabel(true);
     if (boardId && targetLabel) {
       try {
         await deleteLabelApi({
@@ -129,8 +130,8 @@ const LabelModal: React.FC<{
 
         await labelCallApi(boardId);
       } finally {
-        setIsDeleteLabel(false);
-        setCreateLabel(false);
+        setIsDeletingLabel(false);
+        setIsEditLabel(false);
       }
     }
   };
@@ -139,7 +140,7 @@ const LabelModal: React.FC<{
     if (targetLabel) {
       const newLabel: LabelsProps = { ...targetLabel };
       newLabel.name = e.target.value;
-      targetLabel ? setTargetLabel(newLabel) : setLabelName(e.target.value);
+      setTargetLabel(newLabel);
     }
   };
 
@@ -153,7 +154,65 @@ const LabelModal: React.FC<{
 
   return (
     <LabelModalStyled style={{ ...style }}>
-      {createNewLabel ? (
+      {createNewLabel && (
+        <Card
+          title="標籤"
+          extra={
+            <Button
+              className="ant-back"
+              icon={<LeftOutlined style={{ fontSize: "12px" }} />}
+              onClick={() => setCreateLabel(false)}
+            />
+          }
+          size={"small"}
+          style={{ position: "absolute", zIndex: 20 }}
+        >
+          <div className="label-card-header">
+            <div
+              className="label-card-label"
+              style={{
+                backgroundColor: `${selectedColor}`,
+              }}
+            >
+              {labelName}
+            </div>
+          </div>
+          <Form layout="vertical">
+            <Form.Item
+              label="標題"
+              rules={[{ required: true, message: "請輸入標籤名稱!" }]}
+            >
+              <Input
+                placeholder="輸入標籤名稱"
+                onChange={(e) => setLabelName(e.target.value)}
+              />
+            </Form.Item>
+            <Form.Item label="選一個顏色" className="colored-label-list">
+              {colorList?.map((color, idx) => (
+                <Button
+                  className="colored-label"
+                  type="text"
+                  style={{
+                    backgroundColor: color.color,
+                  }}
+                  key={idx}
+                  onClick={() => setSelectedColor(color.color)}
+                />
+              ))}
+            </Form.Item>
+
+            <Button
+              type="primary"
+              block
+              loading={isCreatingLabel}
+              onClick={handleCreateNewLabel}
+            >
+              建立
+            </Button>
+          </Form>
+        </Card>
+      )}
+      {isEditLabel && (
         <Card
           title="標籤"
           extra={
@@ -161,23 +220,22 @@ const LabelModal: React.FC<{
               className="ant-back"
               icon={<LeftOutlined style={{ fontSize: "12px" }} />}
               onClick={() => {
-                setCreateLabel(false);
+                setIsEditLabel(false);
                 setTargetLabel(undefined);
               }}
             />
           }
           size={"small"}
+          style={{ position: "absolute", zIndex: 20 }}
         >
           <div className="label-card-header">
             <div
               className="label-card-label"
               style={{
-                backgroundColor: `${
-                  targetLabel ? targetLabel.color : selectedColor
-                }`,
+                backgroundColor: `${targetLabel?.color}`,
               }}
             >
-              {targetLabel ? targetLabel.name : labelName}
+              {targetLabel?.name}
             </div>
           </div>
           <Form layout="vertical">
@@ -188,7 +246,7 @@ const LabelModal: React.FC<{
               <Input
                 placeholder="輸入標籤名稱"
                 onChange={(e) => handleLabelInputChange(e)}
-                defaultValue={targetLabel && targetLabel.name}
+                defaultValue={targetLabel?.name}
               />
             </Form.Item>
             <Form.Item label="選一個顏色" className="colored-label-list">
@@ -204,98 +262,85 @@ const LabelModal: React.FC<{
                 />
               ))}
             </Form.Item>
-            {targetLabel ? (
-              <>
-                <Button
-                  type="primary"
-                  loading={isUpdateLabel}
-                  block
-                  onClick={handleUpdateLabel}
-                >
-                  儲存
-                </Button>
-                <Button
-                  type="link"
-                  loading={isDeleteLabel}
-                  block
-                  style={{ color: "red" }}
-                  onClick={handleDeleteLabel}
-                >
-                  刪除
-                </Button>
-              </>
-            ) : (
-              <Button
-                type="primary"
-                block
-                loading={isCreatingLabel}
-                onClick={handleCreateNewLabel}
-              >
-                建立
-              </Button>
-            )}
+
+            <Button
+              type="primary"
+              loading={isUpdatingLabel}
+              block
+              onClick={handleUpdateLabel}
+            >
+              儲存
+            </Button>
+            <Button
+              type="link"
+              loading={isDeletingLabel}
+              block
+              style={{ color: "red" }}
+              onClick={handleDeleteLabel}
+            >
+              刪除
+            </Button>
           </Form>
         </Card>
-      ) : (
-        <Card
-          title="標籤"
-          extra={
-            <Button
-              className="ant-close"
-              icon={<CloseOutlined style={{ fontSize: "12px" }} />}
-              onClick={() => setIsOpenLabel(false)}
-            />
-          }
-          size={"small"}
-          style={{ width: "auto" }}
-        >
-          <Input placeholder="搜尋標籤" onChange={handleInputChange} />
-          <Col style={{ margin: "16px 0" }}>
-            {labelLoading ? (
-              <Spin />
-            ) : (
-              labelResult?.result.map((label) => (
-                <Row
-                  align={"middle"}
-                  key={label._id}
-                  style={{ gap: "8px", margin: "4px 0" }}
-                >
-                  <Checkbox
-                    checked={selectedLabelArray?.includes(label._id)}
-                    onChange={handleCheckboxChange}
-                    value={label._id}
-                  />
-                  <Button
-                    className="labelBtn"
-                    type="primary"
-                    style={{ backgroundColor: label.color }}
-                  >
-                    {label.name}
-                  </Button>
-                  <Button
-                    type="text"
-                    icon={<EditOutlined />}
-                    style={{
-                      width: "32px",
-                      height: "32px",
-                      color: "var(--gray66)",
-                    }}
-                    onClick={() => handleEditLabel(label._id)}
-                  />
-                </Row>
-              ))
-            )}
-          </Col>
-          <Button
-            block
-            type="primary"
-            style={{ backgroundColor: "var(--grayd4)", boxShadow: "none" }}
-            onClick={() => setCreateLabel(true)}
-          >
-            建立新標籤
-          </Button>
-        </Card>
       )}
+      <Card
+        title="標籤"
+        extra={
+          <Button
+            className="ant-close"
+            icon={<CloseOutlined style={{ fontSize: "12px" }} />}
+            onClick={() => setIsOpenLabel(false)}
+          />
+        }
+        size={"small"}
+        style={{ width: "auto" }}
+      >
+        <Input placeholder="搜尋標籤" onChange={handleInputChange} />
+        <Col style={{ margin: "16px 0" }}>
+          {labelLoading ? (
+            <Spin />
+          ) : (
+            labelResult?.result.map((label) => (
+              <Row
+                align={"middle"}
+                key={label._id}
+                style={{ gap: "8px", margin: "4px 0" }}
+              >
+                <Checkbox
+                  checked={selectedLabelArray?.includes(label._id)}
+                  onChange={handleCheckboxChange}
+                  value={label._id}
+                />
+                <Button
+                  className="labelBtn"
+                  type="primary"
+                  style={{ backgroundColor: label.color }}
+                >
+                  {label.name}
+                </Button>
+                <Button
+                  type="text"
+                  icon={<EditOutlined />}
+                  style={{
+                    width: "32px",
+                    height: "32px",
+                    color: "var(--gray66)",
+                  }}
+                  onClick={() => handleEditLabel(label._id)}
+                />
+              </Row>
+            ))
+          )}
+        </Col>
+        <Button
+          block
+          type="primary"
+          style={{ backgroundColor: "var(--grayd4)", boxShadow: "none" }}
+          onClick={() => setCreateLabel(true)}
+        >
+          建立新標籤
+        </Button>
+      </Card>
     </LabelModalStyled>
   );
 };
