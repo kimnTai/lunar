@@ -8,7 +8,7 @@ export interface OrganizationProps {
   member: OrganizationMemberProps[];
   createdAt: string;
   updatedAt: string;
-  board: Omit<BoardsProps, "list">[];
+  board: Omit<BoardsProps, "list" | "label">[];
   id: string;
   inviteLink?: string;
 }

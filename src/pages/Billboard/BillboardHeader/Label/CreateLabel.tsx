@@ -2,10 +2,9 @@ import { useState } from "react";
 import { useParams } from "react-router";
 import { CloseOutlined } from "@ant-design/icons";
 import { Button, Form, Input } from "antd";
-import { newLabelApi } from "@/api/label";
+import { newLabelAction } from "@/redux/boardSlice";
 import { colorList } from "@/utils/constant";
 import { useAppDispatch } from "@/hooks";
-import { getBoardByIdAction } from "@/redux/boardSlice";
 
 const CreateLabel: React.FC<{
   setState: any;
@@ -31,17 +30,13 @@ const CreateLabel: React.FC<{
       return;
     }
     setLoading(true);
-    newLabelApi({
-      name: inputName,
-      color: inputColor,
-      boardId: boardId,
-    })
-      .then((res) => {
-        if (res.status === "success") {
-          dispatch(getBoardByIdAction(boardId));
-        }
+    dispatch(
+      newLabelAction({
+        name: inputName,
+        color: inputColor,
+        boardId: boardId,
       })
-      .finally(() => setLoading(false));
+    ).finally(() => setLoading(false));
   };
   return (
     <div className="createLabelView">

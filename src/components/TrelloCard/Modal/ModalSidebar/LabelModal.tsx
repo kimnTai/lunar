@@ -1,4 +1,3 @@
-import { deleteLabelApi, newLabelApi, updateLabelApi } from "@/api/label";
 import { LabelsProps } from "@/interfaces/labels";
 import { colorList } from "@/utils/constant";
 import { CloseOutlined, EditOutlined, LeftOutlined } from "@ant-design/icons";
@@ -10,7 +9,12 @@ import { LabelModalStyled } from "./style";
 import { useParamCard } from "@/hooks/useParamCard";
 import { useAppDispatch, useAppSelector } from "@/hooks";
 import { addCardLabelAction, deleteCardLabelAction } from "@/redux/cardSlice";
-import { getBoardByIdAction, selectBoard } from "@/redux/boardSlice";
+import {
+  deleteLabelAction,
+  newLabelAction,
+  selectBoard,
+  updateLabelAction,
+} from "@/redux/boardSlice";
 
 const LabelModal: React.FC<{
   setIsOpenLabel: React.Dispatch<React.SetStateAction<boolean>>;
@@ -76,12 +80,13 @@ const LabelModal: React.FC<{
     setIsCreatingLabel(true);
     if (boardId) {
       try {
-        await newLabelApi({
-          name: labelName,
-          color: selectedColor,
-          boardId: boardId,
-        });
-        await dispatch(getBoardByIdAction(boardId));
+        await dispatch(
+          newLabelAction({
+            name: labelName,
+            color: selectedColor,
+            boardId: boardId,
+          })
+        );
       } catch (error) {
       } finally {
         setIsCreatingLabel(false);
@@ -104,14 +109,14 @@ const LabelModal: React.FC<{
     setIsUpdatingLabel(true);
     if (boardId && targetLabel) {
       try {
-        await updateLabelApi({
-          name: targetLabel.name,
-          color: targetLabel.color,
-          boardId,
-          labelId: targetLabel?._id,
-        });
-
-        await dispatch(getBoardByIdAction(boardId));
+        await dispatch(
+          updateLabelAction({
+            name: targetLabel.name,
+            color: targetLabel.color,
+            boardId,
+            labelId: targetLabel?._id,
+          })
+        );
       } finally {
         setIsUpdatingLabel(false);
         setIsEditLabel(false);
@@ -123,12 +128,12 @@ const LabelModal: React.FC<{
     setIsDeletingLabel(true);
     if (boardId && targetLabel) {
       try {
-        await deleteLabelApi({
-          boardId,
-          labelId: targetLabel._id,
-        });
-
-        await dispatch(getBoardByIdAction(boardId));
+        await dispatch(
+          deleteLabelAction({
+            boardId,
+            labelId: targetLabel._id,
+          })
+        );
       } finally {
         setIsDeletingLabel(false);
         setIsEditLabel(false);

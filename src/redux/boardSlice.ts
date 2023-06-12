@@ -40,6 +40,12 @@ import {
   updateChecklistAction,
 } from "./cardSlice";
 import { ListsProps } from "@/interfaces/lists";
+import { deleteLabelApi, newLabelApi, updateLabelApi } from "@/api/label";
+import {
+  DateLabelsProps,
+  NewLabelsProps,
+  UpdateLabelsProps,
+} from "@/interfaces/labels";
 
 const initialState: {
   board: BoardsProps;
@@ -91,6 +97,27 @@ export const postCloneBoardAction = createAsyncThunk(
   async (data: CloneBoardProps) => await postCloneBoardApi(data)
 );
 
+export const newLabelAction = createAsyncThunk(
+  "board/newLabel",
+  async (data: NewLabelsProps) => await newLabelApi(data)
+);
+
+export const updateLabelAction = createAsyncThunk(
+  "board/updateLabel",
+  async (data: UpdateLabelsProps, thunkAPI) =>
+    await updateLabelApi(data).then(() =>
+      thunkAPI.dispatch(getBoardByIdAction(data.boardId))
+    )
+);
+
+export const deleteLabelAction = createAsyncThunk(
+  "board/deleteLabel",
+  async (data: DateLabelsProps, thunkAPI) =>
+    await deleteLabelApi(data).then(() =>
+      thunkAPI.dispatch(getBoardByIdAction(data.boardId))
+    )
+);
+
 export const boardSlice = createSlice({
   name: "board",
   initialState,
@@ -114,6 +141,11 @@ export const boardSlice = createSlice({
           state.board = action.payload.result;
         }
       });
+    // 標籤
+    builder.addCase(newLabelAction.fulfilled, (state, action) => {
+      const label = action.payload.result;
+      state.board.label = [...state.board.label, label];
+    });
     // 列表
     builder
       .addCase(newListApiAction.fulfilled, (state, action) => {

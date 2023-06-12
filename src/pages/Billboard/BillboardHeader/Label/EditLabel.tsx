@@ -2,10 +2,9 @@ import { useState } from "react";
 import { useParams } from "react-router";
 import { CloseOutlined } from "@ant-design/icons";
 import { Button, Form, Input } from "antd";
-import { deleteLabelApi, updateLabelApi } from "@/api/label";
+import { deleteLabelAction, updateLabelAction } from "@/redux/boardSlice";
 import { colorList } from "@/utils/constant";
 import { useAppDispatch } from "@/hooks";
-import { getBoardByIdAction } from "@/redux/boardSlice";
 
 const EditLabel: React.FC<{
   setState: Function;
@@ -42,34 +41,30 @@ const EditLabel: React.FC<{
     if (isStoreLabel) {
       setStoreLoading(true);
 
-      updateLabelApi({
-        name: inputName,
-        color: inputColor,
-        boardId: boardId,
-        labelId: labelID,
-      })
-        .then(() => {
-          dispatch(getBoardByIdAction(boardId));
+      dispatch(
+        updateLabelAction({
+          name: inputName,
+          color: inputColor,
+          boardId: boardId,
+          labelId: labelID,
         })
-        .finally(() => {
-          setStoreLoading(false);
-          setState("NONE");
-        });
+      ).finally(() => {
+        setStoreLoading(false);
+        setState("NONE");
+      });
     }
     if (isDeleteLabel) {
       setDeleteLoading(true);
 
-      deleteLabelApi({
-        boardId: boardId,
-        labelId: labelID,
-      })
-        .then(() => {
-          dispatch(getBoardByIdAction(boardId));
+      dispatch(
+        deleteLabelAction({
+          boardId: boardId,
+          labelId: labelID,
         })
-        .finally(() => {
-          setDeleteLoading(false);
-          setState("NONE");
-        });
+      ).finally(() => {
+        setDeleteLoading(false);
+        setState("NONE");
+      });
     }
   };
 
