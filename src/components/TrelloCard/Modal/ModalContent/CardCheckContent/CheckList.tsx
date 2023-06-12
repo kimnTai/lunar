@@ -1,14 +1,13 @@
 import { useState } from "react";
-import { Button, Col, Row, Space, Popover } from "antd";
-import TextArea from "antd/es/input/TextArea";
-import { PlusOutlined, ExclamationCircleOutlined } from "@ant-design/icons";
+import { Button, Col, Input, Popover, Row, Space } from "antd";
+import { ExclamationCircleOutlined, PlusOutlined } from "@ant-design/icons";
+import { useAppDispatch } from "@/hooks";
 import { ChecklistProps } from "@/interfaces/checklists";
-import { useCardModalContext } from "@/context/CardModalContext";
 import {
-  deleteChecklistApi,
-  newCheckItemApi,
-  updateChecklistApi,
-} from "@/api/cards";
+  deleteChecklistAction,
+  newCheckItemAction,
+  updateChecklistAction,
+} from "@/redux/cardSlice";
 import { nextPosition } from "@/utils/cardFunc";
 import CheckItems from "./CheckItems";
 import { CheckItemStyled, CheckListStyled } from "./CheckListStyle";
@@ -16,41 +15,29 @@ import { CheckItemStyled, CheckListStyled } from "./CheckListStyle";
 const CheckList: React.FC<{
   listData: ChecklistProps;
 }> = ({ listData: { _id: listId, name, checkItem, cardId } }) => {
-  const { cardData, setCardData } = useCardModalContext();
-  const { checklist: checkLists = [] } = cardData ?? {};
+  const dispatch = useAppDispatch();
 
-  const [isEditListName, setIsEditListName] = useState<boolean>(false);
-  const [listNameField, setListNameField] = useState<string>(name);
+  const [isEditListName, setIsEditListName] = useState(false);
+  const [listNameField, setListNameField] = useState(name);
   const [isNewCheckItemEdit, setIsNewCheckItemEdit] = useState(false);
   const [newCheckItemTitle, setNewCheckItemTitle] = useState("");
   const [isOpenDeleteConfirm, setIsOpenDeleteConfirm] = useState(false);
-  const [isListNameSubmitting, setIsListNameSubmitting] =
-    useState<boolean>(false);
-  const [isNewItemSubmitting, setIsNewItemSubmitting] =
-    useState<boolean>(false);
-  const [isDeleteListSubmitting, setIsDeleteListSubmitting] =
-    useState<boolean>(false);
+  const [isListNameSubmitting, setIsListNameSubmitting] = useState(false);
+  const [isNewItemSubmitting, setIsNewItemSubmitting] = useState(false);
+  const [isDeleteListSubmitting, setIsDeleteListSubmitting] = useState(false);
 
   const submitListName = async () => {
     if (!listNameField.trim()) return;
     setIsListNameSubmitting(true);
 
     try {
-      const { result } = await updateChecklistApi({
-        cardId: cardId,
-        checklistId: listId,
-        name: listNameField,
-      });
-
-      setCardData({
-        ...cardData!,
-        checklist: checkLists.map((list) => {
-          if (list.id === listId) {
-            return result;
-          }
-          return list;
-        }),
-      });
+      await dispatch(
+        updateChecklistAction({
+          cardId: cardId,
+          checklistId: listId,
+          name: listNameField,
+        })
+      );
     } catch (error) {
       console.error(error);
     } finally {
@@ -64,24 +51,16 @@ const CheckList: React.FC<{
     setIsNewItemSubmitting(true);
 
     try {
-      const { result } = await newCheckItemApi({
-        cardId: cardId,
-        checklistId: listId,
-        name: newCheckItemTitle,
-        position: nextPosition(checkItem).toString(),
-      });
+      await dispatch(
+        newCheckItemAction({
+          cardId: cardId,
+          checklistId: listId,
+          name: newCheckItemTitle,
+          position: `${nextPosition(checkItem)}`,
+        })
+      );
 
       setNewCheckItemTitle("");
-      // 更新畫面
-      setCardData({
-        ...cardData!,
-        checklist: checkLists.map((list) => {
-          if (list.id === listId) {
-            list.checkItem.push(result);
-          }
-          return list;
-        }),
-      });
     } catch (error) {
       console.error(error);
     } finally {
@@ -93,15 +72,12 @@ const CheckList: React.FC<{
   const handleDeleteChecklist = async () => {
     setIsDeleteListSubmitting(true);
     try {
-      await deleteChecklistApi({
-        cardId: cardId,
-        checklistId: listId,
-      });
-
-      setCardData({
-        ...cardData!,
-        checklist: checkLists.filter((list) => list.id !== listId),
-      });
+      await dispatch(
+        deleteChecklistAction({
+          cardId: cardId,
+          checklistId: listId,
+        })
+      );
     } catch (error) {
       console.error(error);
     } finally {
@@ -191,7 +167,7 @@ const CheckList: React.FC<{
             gutter={[16, 4]}
           >
             <Col span={24}>
-              <TextArea
+              <Input.TextArea
                 value={listNameField}
                 onChange={(e) => setListNameField(e.target.value)}
                 onKeyDown={(event) => {
@@ -232,7 +208,7 @@ const CheckList: React.FC<{
           }`}
         >
           <Col span={24}>
-            <TextArea
+            <Input.TextArea
               value={newCheckItemTitle}
               onChange={(e) => setNewCheckItemTitle(e.target.value)}
               onKeyDown={(event) => {

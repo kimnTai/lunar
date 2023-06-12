@@ -1,11 +1,10 @@
 import { Draggable, Droppable } from "react-beautiful-dnd";
-import { useCardModalContext } from "@/context/CardModalContext";
+import { ChecklistProps } from "@/interfaces/checklists";
 import CheckList from "./CheckList";
 
-const CheckLists: React.FC = () => {
-  const { cardData } = useCardModalContext();
-  const { checklist: checkLists = [] } = cardData ?? {};
-
+const CheckLists: React.FC<{ checkLists: ChecklistProps[] }> = ({
+  checkLists,
+}) => {
   return (
     <>
       {checkLists

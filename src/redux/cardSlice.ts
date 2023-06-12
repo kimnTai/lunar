@@ -15,6 +15,12 @@ import {
   closedCardApi,
   deleteCardApi,
   newCardApi,
+  updateChecklistApi,
+  newChecklistApi,
+  deleteChecklistApi,
+  newCheckItemApi,
+  updateCheckItemApi,
+  deleteCheckItemApi,
 } from "@/api/cards";
 import { newImageFileUrl } from "@/api/upload";
 import {
@@ -33,6 +39,13 @@ import {
   UpdateCommentProps,
 } from "@/interfaces/comments";
 import { CardLabelsProps } from "@/interfaces/labels";
+import {
+  DeleteCardCheckListProps,
+  NewCardCheckListProps,
+  NewCheckItemProps,
+  UpdateCardCheckItemProps,
+  UpdateCardCheckListProps,
+} from "@/interfaces/checklists";
 
 export const newCardAction = createAsyncThunk(
   "card/newCard",
@@ -130,6 +143,36 @@ export const closeCardAction = createAsyncThunk(
 export const deleteCardAction = createAsyncThunk(
   "card/closeCard",
   async (cardId: string) => await deleteCardApi(cardId)
+);
+
+export const newChecklistAction = createAsyncThunk(
+  "card/newChecklist",
+  async (data: NewCardCheckListProps) => await newChecklistApi(data)
+);
+
+export const updateChecklistAction = createAsyncThunk(
+  "card/updateChecklist",
+  async (data: UpdateCardCheckListProps) => await updateChecklistApi(data)
+);
+
+export const deleteChecklistAction = createAsyncThunk(
+  "card/deleteChecklist",
+  async (data: DeleteCardCheckListProps) => await deleteChecklistApi(data)
+);
+
+export const newCheckItemAction = createAsyncThunk(
+  "card/newCheckItem",
+  async (data: NewCheckItemProps) => await newCheckItemApi(data)
+);
+
+export const updateCheckItemAction = createAsyncThunk(
+  "card/updateCheckItem",
+  async (data: UpdateCardCheckItemProps) => await updateCheckItemApi(data)
+);
+
+export const deleteCheckItemAction = createAsyncThunk(
+  "card/deleteCheckItem",
+  async (data: UpdateCardCheckItemProps) => await deleteCheckItemApi(data)
 );
 
 export const selectCardById = (cardId?: string) => (state: RootState) =>
