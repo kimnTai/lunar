@@ -1,33 +1,29 @@
-import { useEffect, useState } from "react";
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
 import { Row } from "antd";
+import { cloneDeep } from "lodash";
+import { useAppDispatch } from "@/hooks";
 import { useParamCard } from "@/hooks/useParamCard";
+import { setCardChecklist } from "@/redux/boardSlice";
 import { handleOnDragEnd } from "@/utils/cardFunc";
 import CheckLists from "./CheckLists";
-import { ChecklistProps } from "@/interfaces/checklists";
 
 const CardCheckContent: React.FC = () => {
+  const dispatch = useAppDispatch();
   const cardData = useParamCard();
-  // DnD 用的 list
-  const [checkLists, setChecklist] = useState<ChecklistProps[]>([]);
-
-  useEffect(() => {
-    if (cardData?.checklist) {
-      const cloneList = JSON.parse(JSON.stringify(cardData?.checklist));
-      setChecklist(cloneList);
-    }
-  }, [cardData?.checklist]);
+  // DnD 用的 checklist
+  const dndChecklist = cloneDeep(cardData?.checklist || []);
 
   return (
     <DragDropContext
       onDragEnd={(result) => {
-        if (!checkLists) {
-          return;
-        }
-        const data = handleOnDragEnd(result, checkLists, "CheckList");
-
-        if (data) {
-          setChecklist(data);
+        const data = handleOnDragEnd(result, dndChecklist, "CheckList");
+        if (data && cardData) {
+          dispatch(
+            setCardChecklist({
+              cardId: cardData?._id,
+              checklist: data,
+            })
+          );
         }
       }}
     >
@@ -47,7 +43,7 @@ const CardCheckContent: React.FC = () => {
               flexDirection: "column",
             }}
           >
-            <CheckLists checkLists={checkLists} />
+            <CheckLists checkLists={dndChecklist} />
             {provided.placeholder}
           </Row>
         )}

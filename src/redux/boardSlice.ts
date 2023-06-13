@@ -46,6 +46,7 @@ import {
   NewLabelsProps,
   UpdateLabelsProps,
 } from "@/interfaces/labels";
+import { ChecklistProps } from "@/interfaces/checklists";
 
 const initialState: {
   board: BoardsProps;
@@ -122,12 +123,19 @@ export const boardSlice = createSlice({
   name: "board",
   initialState,
   reducers: {
-    updateColumn: (state, action: PayloadAction<boolean | undefined>) => {
-      state.board.list;
-      action.payload;
-    },
     setBoardList: (state, action: PayloadAction<ListsProps[]>) => {
       state.board.list = action.payload;
+    },
+    setCardChecklist: (
+      state,
+      action: PayloadAction<{ cardId: string; checklist: ChecklistProps[] }>
+    ) => {
+      const card = state.board.list
+        .flatMap(({ card }) => card)
+        .find(({ _id }) => _id === action.payload.cardId);
+      if (card) {
+        card.checklist = action.payload.checklist;
+      }
     },
   },
   extraReducers: (builder) => {
@@ -388,7 +396,7 @@ export const boardSlice = createSlice({
   },
 });
 
-export const { setBoardList } = boardSlice.actions;
+export const { setBoardList, setCardChecklist } = boardSlice.actions;
 
 export const selectBoard = (state: RootState) => state.board.board;
 

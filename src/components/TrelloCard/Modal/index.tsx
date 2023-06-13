@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router";
 import Popover from "@/components/TrelloCard/Modal/Popover";
-import { useCardModalContext } from "@/context/CardModalContext";
 import { useAppDispatch } from "@/hooks";
 import { useParamCard } from "@/hooks/useParamCard";
 import { getCardAction } from "@/redux/cardSlice";
@@ -11,7 +10,6 @@ import { TrelloCardModalStyled } from "./style";
 
 const TrelloCardModal: React.FC = () => {
   const cardData = useParamCard();
-  const { setCardData } = useCardModalContext();
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
@@ -20,8 +18,6 @@ const TrelloCardModal: React.FC = () => {
     if (!cardData) {
       return;
     }
-
-    setCardData(JSON.parse(JSON.stringify(cardData)));
 
     dispatch(getCardAction(cardData._id));
   }, [cardData?._id]);
