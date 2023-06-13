@@ -18,6 +18,12 @@ const Billboard: React.FC = () => {
   const [isBoardLoading, setBoardLoading] = useState(false);
 
   useEffect(() => {
+    if (workSpace) {
+      dispatch(changeWorkSpace());
+    }
+  }, [workSpace]);
+
+  useEffect(() => {
     if (boardId) {
       setBoardLoading(true);
 
@@ -25,11 +31,7 @@ const Billboard: React.FC = () => {
         setBoardLoading(false);
       });
     }
-
-    if (workSpace) {
-      dispatch(changeWorkSpace());
-    }
-  }, [boardId, workSpace]);
+  }, [boardId]);
 
   return (
     <WebSocketProvider>
