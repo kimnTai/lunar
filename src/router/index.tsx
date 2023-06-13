@@ -1,15 +1,9 @@
-import React, { useEffect } from "react";
+import React, { lazy, useEffect } from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "@/hooks";
-import Billboard from "@/pages/Billboard";
-import ErrorPage from "@/pages/ErrorPage";
-import Home from "@/pages/Home";
 import Invitation from "@/pages/InvitationPage";
-import Login from "@/pages/Login";
 import Callback from "@/pages/Login/Callback";
 import SpinPage from "@/pages/SpinPage";
-import WorkSpace from "@/pages/WorkSpace";
-import NewWorkSpace from "@/pages/WorkSpace/NewWorkSpace";
 import WorkSpaceMember from "@/pages/WorkSpace/WorkSpaceMember";
 import WorkSpaceSetting from "@/pages/WorkSpace/WorkSpaceSetting";
 import {
@@ -20,6 +14,13 @@ import { selectSpinning, setSpinning } from "@/redux/screenSlice";
 import { loginJwtAction, selectAuth } from "@/redux/userSlice";
 import Cookie from "@/utils/cookie";
 import LoginLayout from "./LoginLayout";
+
+const Billboard = lazy(() => import("@/pages/Billboard"));
+const ErrorPage = lazy(() => import("@/pages/ErrorPage"));
+const Home = lazy(() => import("@/pages/Home"));
+const Login = lazy(() => import("@/pages/Login"));
+const WorkSpace = lazy(() => import("@/pages/WorkSpace"));
+const NewWorkSpace = lazy(() => import("@/pages/WorkSpace/NewWorkSpace"));
 
 const AppRouter: React.FC = () => {
   const organization = useAppSelector(selectOrganization);
