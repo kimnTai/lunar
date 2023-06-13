@@ -15,9 +15,7 @@ export interface TrelloCardProps {
   useClone: any;
 }
 
-export interface TrelloCardListProps
-  extends TrelloCardProps,
-    TrelloCardBottomFuncProps {
+export interface TrelloCardListProps extends TrelloCardProps {
   listId: string;
   listType: string;
   internalScroll: boolean;
@@ -27,17 +25,6 @@ export interface TrelloCardInnerProps {
   lists: ListsProps;
   dropProvided: DroppableProvided;
   isDrag: boolean;
-}
-
-export interface TrelloCardBottomFuncProps {
-  showAddCard: boolean;
-  setShowAddCard: React.Dispatch<React.SetStateAction<boolean>>;
-}
-
-export interface TrelloCardHeaderProps extends TrelloCardBottomFuncProps {
-  list: ListsProps;
-  showAddCard: boolean;
-  setShowAddCard: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export interface TrelloCardModalProps {

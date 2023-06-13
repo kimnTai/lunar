@@ -1,12 +1,10 @@
 import { Button } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
-import { TrelloCardBottomFuncProps } from "@/interfaces/trelloCard";
+import { useListsContext } from "@/context/ListsContext";
 import { TrelloCardBottomFuncStyled } from "./style";
 
-const TrelloCardBottomFunc: React.FC<TrelloCardBottomFuncProps> = ({
-  showAddCard,
-  setShowAddCard,
-}) => {
+const TrelloCardBottomFunc: React.FC = () => {
+  const { showAddCard, setShowAddCard } = useListsContext();
   return (
     <TrelloCardBottomFuncStyled show={showAddCard.toString()}>
       <Button

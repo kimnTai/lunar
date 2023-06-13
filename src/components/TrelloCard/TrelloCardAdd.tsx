@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Button, Input, Spin, type InputRef } from "antd";
 import { CloseOutlined, EllipsisOutlined } from "@ant-design/icons";
+import { useListsContext } from "@/context/ListsContext";
 import { useAppDispatch } from "@/hooks";
 import { ListsProps } from "@/interfaces/lists";
 import { newCardAction } from "@/redux/cardSlice";
@@ -9,9 +10,8 @@ import { TrelloCardAddCss } from "./style";
 
 const TrelloCardAdd: React.FC<{
   list: ListsProps;
-  showAddCard: boolean;
-  setShowAddCard: React.Dispatch<React.SetStateAction<boolean>>;
-}> = ({ list, showAddCard, setShowAddCard }) => {
+}> = ({ list }) => {
+  const { showAddCard, setShowAddCard } = useListsContext();
   const dispatch = useAppDispatch();
   const [text, setText] = useState("");
   const [spinning, setSpinning] = useState(false);

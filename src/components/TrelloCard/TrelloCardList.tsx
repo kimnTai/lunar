@@ -1,18 +1,15 @@
-import { TrelloCardListProps } from "@/interfaces/trelloCard";
 import { Droppable } from "react-beautiful-dnd";
-import TrelloCardAdd from "./TrelloCardAdd";
+import { TrelloCardListProps } from "@/interfaces/trelloCard";
 import CardInner from "./CardInner";
+import TrelloCardAdd from "./TrelloCardAdd";
 import { ScrollContainer } from "./style";
 
-const TrelloCardList: React.FC<TrelloCardListProps> = (props) => {
-  const {
-    listType,
-    isCombineEnabled,
-    internalScroll,
-    quotes,
-    showAddCard,
-    setShowAddCard,
-  } = props;
+const TrelloCardList: React.FC<TrelloCardListProps> = ({
+  listType,
+  isCombineEnabled,
+  internalScroll,
+  quotes,
+}) => {
   return (
     <Droppable
       droppableId={quotes.id}
@@ -39,11 +36,7 @@ const TrelloCardList: React.FC<TrelloCardListProps> = (props) => {
                 dropProvided={dropProvided}
                 isDrag={dropSnapshot.isDraggingOver}
               />
-              <TrelloCardAdd
-                list={quotes}
-                showAddCard={showAddCard}
-                setShowAddCard={setShowAddCard}
-              />
+              <TrelloCardAdd list={quotes} />
               {dropProvided.placeholder}
             </div>
           </ScrollContainer>
