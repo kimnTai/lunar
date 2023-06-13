@@ -1,9 +1,8 @@
 import React, { useState } from "react";
-import { Divider, Menu, MenuProps } from "antd";
+import { Divider, Menu, MenuProps, Spin } from "antd";
 import { useListsContext } from "@/context/ListsContext";
 import { useAppDispatch } from "@/hooks";
 import { closeListAction } from "@/redux/listSlice";
-import { PopoverContentStyled } from "./style";
 
 const PopoverContent: React.FC<{
   listId: string;
@@ -12,17 +11,19 @@ const PopoverContent: React.FC<{
   const dispatch = useAppDispatch();
   const { setShowAddCard } = useListsContext();
   const [current, setCurrent] = useState("");
-  const handleClick: MenuProps["onClick"] = (element) => {
-    setCurrent(element.key);
+  const [spinning, setSpinning] = useState(false);
 
-    if (element.key === "newCard") {
+  const handleClick: MenuProps["onClick"] = ({ key }) => {
+    setCurrent(key);
+
+    if (key === "newCard") {
       setShowAddCard(true);
       setOpenPopover(false);
     }
   };
 
   return (
-    <PopoverContentStyled>
+    <Spin spinning={spinning}>
       <Menu
         className="popoverList"
         selectedKeys={[current]}
@@ -48,14 +49,16 @@ const PopoverContent: React.FC<{
         className="popoverList"
         selectedKeys={[current]}
         onClick={async () => {
+          setSpinning(true);
           try {
             await dispatch(closeListAction(listId));
           } catch (error) {}
-          close();
+          setSpinning(false);
+          setOpenPopover(false);
         }}
         items={[{ key: "keepList", label: "封存這個列表" }]}
       />
-    </PopoverContentStyled>
+    </Spin>
   );
 };
 

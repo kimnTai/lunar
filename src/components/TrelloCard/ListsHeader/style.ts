@@ -24,5 +24,3 @@ export const PopoverHeaderStyled = styled.div`
   }
   border-bottom: 1px solid var(--divider-gray);
 `;
-
-export const PopoverContentStyled = styled.div``;
