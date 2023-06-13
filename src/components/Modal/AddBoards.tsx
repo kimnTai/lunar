@@ -21,16 +21,18 @@ const AddBoards: React.FC<{
     }
     setButtonLoading(true);
 
-    dispatch(
-      newBoardAction({
-        name: values.name,
-        organizationId,
-        permission: values.permission,
-      })
-    ).finally(() => {
-      setOpen(false);
-      setButtonLoading(false);
-    });
+    try {
+      await dispatch(
+        newBoardAction({
+          name: values.name,
+          organizationId,
+          permission: values.permission,
+        })
+      );
+    } catch (error) {}
+
+    setOpen(false);
+    setButtonLoading(false);
   };
   return (
     <AddBoardsCss
@@ -46,10 +48,12 @@ const AddBoards: React.FC<{
           <Input style={{ height: "48px" }} />
         </Form.Item>
         <Form.Item label={"觀看權限"} name="permission" initialValue="private">
-          <Select>
-            <Select.Option value="private">私人</Select.Option>
-            <Select.Option value="public">公開</Select.Option>
-          </Select>
+          <Select
+            options={[
+              { value: "private", label: "私人" },
+              { value: "public", label: "公開" },
+            ]}
+          />
         </Form.Item>
         <Form.Item>
           <Button
