@@ -10,7 +10,10 @@ export function getSocketChange(
   if ("card" in result) {
     const list = result;
     const target = cardList.filter(({ _id }) => _id !== list._id);
-    target.push(list);
+    // 不是封存才把 result 放進去
+    if (!list.closed) {
+      target.push(list);
+    }
 
     return cloneDeep(target);
   }
@@ -25,7 +28,10 @@ export function getSocketChange(
     cardList
       .filter(({ _id }) => _id === card.listId)
       .forEach((list) => {
-        list.card.push(card);
+        // 不是封存才把 result 放進去
+        if (!card.closed) {
+          list.card.push(card);
+        }
       });
 
     return cloneDeep(cardList);
