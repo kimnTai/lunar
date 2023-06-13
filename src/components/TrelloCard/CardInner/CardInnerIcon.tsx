@@ -55,7 +55,16 @@ const CardInnerIcon: React.FC<{
           )}
 
           {totalCheckItem > 0 && (
-            <div style={{ display: "flex" }}>
+            <div
+              style={{
+                display: "flex",
+                padding: "0px 4px",
+                color:
+                  finishCheckItem === totalCheckItem ? "#ffffff" : undefined,
+                backgroundColor:
+                  finishCheckItem === totalCheckItem ? "#1f845a" : undefined,
+              }}
+            >
               <div>
                 <CheckSquareOutlined />
               </div>
