@@ -1,28 +1,14 @@
 import { LabelsProps } from "@/interfaces/labels";
 import React from "react";
+import { CardInnerLabelStyled, CardInnerLabelsStyled } from "./style";
 
 const CardInnerLabel: React.FC<{ label: LabelsProps[] }> = ({ label }) => {
   return (
-    <div
-      style={{
-        display: "flex",
-        marginLeft: "7px",
-        marginTop: "5px",
-      }}
-    >
+    <CardInnerLabelsStyled>
       {label.map(({ _id, color }) => (
-        <div
-          key={_id}
-          style={{
-            backgroundColor: `${color}`,
-            width: "24px",
-            height: "8px",
-            borderRadius: "3px",
-            marginLeft: "5px",
-          }}
-        ></div>
+        <CardInnerLabelStyled key={_id} color={color} />
       ))}
-    </div>
+    </CardInnerLabelsStyled>
   );
 };
 

@@ -6,6 +6,7 @@ import {
   PaperClipOutlined,
 } from "@ant-design/icons";
 import React from "react";
+import { CardInnerIconStyled, TotalCheckItemStyled } from "./style";
 
 const CardInnerIcon: React.FC<{
   commentLength: number;
@@ -20,60 +21,45 @@ const CardInnerIcon: React.FC<{
     .flatMap(({ checkItem }) => checkItem)
     .filter(({ completed }) => completed).length;
 
-  // FIXME:排版需要優化
   return (
     <>
       {isVisible && (
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "space-around",
-            width: "160px",
-            padding: "0 8px",
-            marginTop: "6px",
-          }}
-        >
+        <CardInnerIconStyled>
           <div>
             <AlignLeftOutlined />
           </div>
           {commentLength > 0 && (
-            <div style={{ display: "flex" }}>
+            <div className="d-flex">
               <div>
                 <MessageOutlined />
               </div>
-              <div style={{ marginLeft: "5px" }}>{commentLength}</div>
+              <div className="mgleft5">{commentLength}</div>
             </div>
           )}
 
           {attachmentLength > 0 && (
-            <div style={{ display: "flex" }}>
+            <div className="d-flex">
               <div>
                 <PaperClipOutlined />
               </div>
-              <div style={{ marginLeft: "5px" }}>{attachmentLength}</div>
+              <div className="mgleft5">{attachmentLength}</div>
             </div>
           )}
 
           {totalCheckItem > 0 && (
-            <div
-              style={{
-                display: "flex",
-                padding: "0px 4px",
-                color:
-                  finishCheckItem === totalCheckItem ? "#ffffff" : undefined,
-                backgroundColor:
-                  finishCheckItem === totalCheckItem ? "#1f845a" : undefined,
-              }}
+            <TotalCheckItemStyled
+              color={finishCheckItem === totalCheckItem ? "#ffffff" : ""}
+              backgroundColor={
+                finishCheckItem === totalCheckItem ? "#1f845a" : ""
+              }
             >
               <div>
                 <CheckSquareOutlined />
               </div>
-              <div
-                style={{ marginLeft: "5px" }}
-              >{`${finishCheckItem}/${totalCheckItem}`}</div>
-            </div>
+              <div className="mgleft5">{`${finishCheckItem}/${totalCheckItem}`}</div>
+            </TotalCheckItemStyled>
           )}
-        </div>
+        </CardInnerIconStyled>
       )}
     </>
   );

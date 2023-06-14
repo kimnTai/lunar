@@ -1,6 +1,7 @@
 import { ChecklistProps } from "@/interfaces/checklists";
 import { CheckSquareOutlined } from "@ant-design/icons";
 import React from "react";
+import { CardInnerChecklistStyled } from "./style";
 
 const CardInnerChecklist: React.FC<{ checklist: ChecklistProps[] }> = ({
   checklist,
@@ -8,37 +9,18 @@ const CardInnerChecklist: React.FC<{ checklist: ChecklistProps[] }> = ({
   return (
     <>
       {checklist.length > 0 && (
-        <div
-          style={{
-            display: "flex",
-            padding: "0 12px",
-            marginTop: "8px",
-          }}
-        >
+        <CardInnerChecklistStyled>
           <div>
             <CheckSquareOutlined />
           </div>
-          <div
-            style={{
-              display: "flex",
-              width: "235px",
-              overflow: "hidden",
-            }}
-          >
+          <div className="checkList">
             {checklist.map(({ name, _id }) => (
-              <p
-                key={_id}
-                style={{
-                  textOverflow: "ellipsis",
-                  whiteSpace: "nowrap",
-                  marginLeft: "5px",
-                }}
-              >
+              <p key={_id} className="items">
                 {`${name}、`}
               </p>
             ))}
           </div>
-        </div>
+        </CardInnerChecklistStyled>
       )}
     </>
   );

@@ -8,18 +8,19 @@ const InviteMemberSelect: React.FC<{
   selectedUsers: { userIdList: string[] };
   setSelectedUsers: Function;
 }> = ({ organizationId, selectedUsers, setSelectedUsers }) => {
-  const [result, loading, callApi] = useApi(searchLunarMemberApi);
+  const [searchMemberresult, loading, callSearchMemberApi] =
+    useApi(searchLunarMemberApi);
 
   const onSearch = debounce(async (value: string) => {
     if (value.length >= 1) {
-      await callApi({
+      await callSearchMemberApi({
         query: value,
         organizationId,
       });
     }
   }, 800);
 
-  const filteredUsers = result?.result.filter(
+  const filteredUsers = searchMemberresult?.result.filter(
     (user) => !selectedUsers.userIdList.includes(user._id)
   );
 
@@ -43,7 +44,7 @@ const InviteMemberSelect: React.FC<{
             <Spin />
           </Row>
         ) : (
-          result?.result.length === 0 && (
+          searchMemberresult?.result.length === 0 && (
             <p style={{ textAlign: "center", padding: "8px" }}>
               這個人似乎尚未註冊 Lunar。
             </p>
