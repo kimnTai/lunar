@@ -10,6 +10,7 @@ import {
 } from "@/interfaces/organization";
 import {
   addOrganizationMemberApi,
+  deleteInviteLinkApi,
   deleteOrganizationApi,
   deleteOrganizationMemberApi,
   generateInviteLinkApi,
@@ -82,6 +83,11 @@ export const deleteOrganizationMemberAction = createAsyncThunk(
 export const generateInviteLinkAction = createAsyncThunk(
   "organization/updateOrganization",
   async (organizationId: string) => await generateInviteLinkApi(organizationId)
+);
+
+export const deleteInviteLinkAction = createAsyncThunk(
+  "organization/updateOrganization",
+  async (organizationId: string) => await deleteInviteLinkApi(organizationId)
 );
 
 export const organizationSlice = createSlice({

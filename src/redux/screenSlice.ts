@@ -3,6 +3,7 @@ import { RootState } from "./store";
 
 const initialState = {
   showWorkSpace: true,
+  spinning: true,
 };
 
 export const screenSlice = createSlice({
@@ -14,12 +15,17 @@ export const screenSlice = createSlice({
         ? action.payload
         : !state.showWorkSpace;
     },
+    setSpinning: (state, action: PayloadAction<boolean>) => {
+      state.spinning = action.payload;
+    },
   },
 });
 
-export const { changeWorkSpace } = screenSlice.actions;
+export const { changeWorkSpace, setSpinning } = screenSlice.actions;
 
 export const selectShowWorkSpace = (state: RootState) =>
   state.screen.showWorkSpace;
+
+export const selectSpinning = (state: RootState) => state.screen.spinning;
 
 export default screenSlice.reducer;

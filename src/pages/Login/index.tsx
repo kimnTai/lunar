@@ -1,31 +1,36 @@
 import React, { useEffect, useState } from "react";
-import Logo from "@/assets/images/img_logo.png";
-import { Card, Button, Divider, Form, Input } from "antd";
-import GoogleIcon from "@/assets/images/google.png";
-import GitHubIcon from "@/assets/images/GitHub.png";
-import { LoginCss } from "./style";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
-import type { LoginProps } from "@/interfaces/user";
-import ThirdPartyButton from "./ThirdPartyButton";
-import { useAppSelector, useAppDispatch } from "@/hooks";
-import { loginAction, selectAuth, signInAction } from "@/redux/userSlice";
+import { Button, Card, Divider, Form, Input } from "antd";
+import GitHubIcon from "@/assets/images/GitHub.png";
+import GoogleIcon from "@/assets/images/google.png";
+import Logo from "@/assets/images/img_logo.png";
+import { useAppDispatch, useAppSelector } from "@/hooks";
+import { LoginProps } from "@/interfaces/user";
 import { getOrganizationsAction } from "@/redux/organizationSlice";
+import { setSpinning } from "@/redux/screenSlice";
+import { loginAction, selectAuth, signInAction } from "@/redux/userSlice";
+import ThirdPartyButton from "./ThirdPartyButton";
+import { LoginCss } from "./style";
 
 const Login: React.FC = () => {
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
   const isSignUpPage = useLocation().pathname === "/signup";
 
   const isUserLogin = useAppSelector(selectAuth);
   const [buttonLoading, setButtonLoading] = useState(false);
-  const dispatch = useAppDispatch();
-
-  const navigate = useNavigate();
 
   useEffect(() => {
     if (isUserLogin) {
-      (async () => {
-        await dispatch(getOrganizationsAction());
-        navigate(`/`);
-      })();
+      dispatch(setSpinning(true));
+
+      dispatch(getOrganizationsAction())
+        .then(() => {
+          navigate(`/`);
+        })
+        .finally(() => {
+          dispatch(setSpinning(false));
+        });
     }
   }, [isUserLogin]);
 
@@ -34,9 +39,13 @@ const Login: React.FC = () => {
 
     const action = isSignUpPage ? signInAction : loginAction;
 
-    dispatch(action(values)).finally(() => {
-      setButtonLoading(false);
-    });
+    dispatch(action(values))
+      .then(() => {
+        navigate(`/`);
+      })
+      .finally(() => {
+        setButtonLoading(false);
+      });
   };
 
   return (

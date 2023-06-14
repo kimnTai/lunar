@@ -7,6 +7,9 @@ export interface ListsProps {
   boardId: string;
   card: CardsProps[];
   id: string;
+  updatedAt: string;
+  createdAt: string;
+  closed: boolean;
 }
 
 export interface UpdateListProps {

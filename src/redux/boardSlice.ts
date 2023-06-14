@@ -39,6 +39,14 @@ import {
   updateCheckItemAction,
   updateChecklistAction,
 } from "./cardSlice";
+import { ListsProps } from "@/interfaces/lists";
+import { deleteLabelApi, newLabelApi, updateLabelApi } from "@/api/label";
+import {
+  DateLabelsProps,
+  NewLabelsProps,
+  UpdateLabelsProps,
+} from "@/interfaces/labels";
+import { ChecklistProps } from "@/interfaces/checklists";
 
 const initialState: {
   board: BoardsProps;
@@ -90,13 +98,44 @@ export const postCloneBoardAction = createAsyncThunk(
   async (data: CloneBoardProps) => await postCloneBoardApi(data)
 );
 
+export const newLabelAction = createAsyncThunk(
+  "board/newLabel",
+  async (data: NewLabelsProps) => await newLabelApi(data)
+);
+
+export const updateLabelAction = createAsyncThunk(
+  "board/updateLabel",
+  async (data: UpdateLabelsProps, thunkAPI) =>
+    await updateLabelApi(data).then(() =>
+      thunkAPI.dispatch(getBoardByIdAction(data.boardId))
+    )
+);
+
+export const deleteLabelAction = createAsyncThunk(
+  "board/deleteLabel",
+  async (data: DateLabelsProps, thunkAPI) =>
+    await deleteLabelApi(data).then(() =>
+      thunkAPI.dispatch(getBoardByIdAction(data.boardId))
+    )
+);
+
 export const boardSlice = createSlice({
   name: "board",
   initialState,
   reducers: {
-    updateColumn: (state, action: PayloadAction<boolean | undefined>) => {
-      state.board.list;
-      action.payload;
+    setBoardList: (state, action: PayloadAction<ListsProps[]>) => {
+      state.board.list = action.payload;
+    },
+    setCardChecklist: (
+      state,
+      action: PayloadAction<{ cardId: string; checklist: ChecklistProps[] }>
+    ) => {
+      const card = state.board.list
+        .flatMap(({ card }) => card)
+        .find(({ _id }) => _id === action.payload.cardId);
+      if (card) {
+        card.checklist = action.payload.checklist;
+      }
     },
   },
   extraReducers: (builder) => {
@@ -110,6 +149,11 @@ export const boardSlice = createSlice({
           state.board = action.payload.result;
         }
       });
+    // 標籤
+    builder.addCase(newLabelAction.fulfilled, (state, action) => {
+      const label = action.payload.result;
+      state.board.label = [...state.board.label, label];
+    });
     // 列表
     builder
       .addCase(newListApiAction.fulfilled, (state, action) => {
@@ -352,9 +396,12 @@ export const boardSlice = createSlice({
   },
 });
 
-export const {} = boardSlice.actions;
+export const { setBoardList, setCardChecklist } = boardSlice.actions;
 
 export const selectBoard = (state: RootState) => state.board.board;
+
+export const selectCardList = (state: RootState) =>
+  state.board.board.list.flatMap(({ card }) => card);
 
 export const selectBoardManagers = (state: RootState) =>
   state.board.board.member.filter(({ role }) => role === "manager");
@@ -363,5 +410,8 @@ export const selectListByCardId = (cardId?: string) => (state: RootState) =>
   state.board.board.list.find(({ card }) =>
     card.find(({ _id }) => _id === cardId)
   );
+
+export const selectLabelById = (labelId?: string) => (state: RootState) =>
+  state.board.board.label.find(({ _id }) => _id === labelId);
 
 export default boardSlice.reducer;

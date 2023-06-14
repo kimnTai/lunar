@@ -2,7 +2,7 @@ import { PopoverContentProps } from "@/interfaces/boards";
 import ArchiveContent from "./ArchiveContent";
 import LabelContent from "./Label/LabelContent";
 import MenuContent from "./MenuContent";
-import SettingContent from "./SettingContent";
+import SettingContent from "./Setting/SettingContent";
 import UserContent from "./UserContent";
 import { PopoverContentStyle } from "./style";
 

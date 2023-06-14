@@ -1,30 +1,31 @@
-import React, { useEffect, useState } from "react";
-import { Routes, Route, Navigate } from "react-router-dom";
-import Home from "@/pages/Home";
-import ErrorPage from "@/pages/ErrorPage";
-import Login from "@/pages/Login";
-import WorkSpace from "@/pages/WorkSpace";
-import Billboard from "@/pages/Billboard";
-import NewWorkSpace from "@/pages/WorkSpace/NewWorkSpace";
-import SpinPage from "@/pages/SpinPage";
+import React, { lazy, useEffect } from "react";
+import { Navigate, Route, Routes } from "react-router-dom";
+import { useAppDispatch, useAppSelector } from "@/hooks";
+import Invitation from "@/pages/InvitationPage";
 import Callback from "@/pages/Login/Callback";
+import SpinPage from "@/pages/SpinPage";
 import WorkSpaceMember from "@/pages/WorkSpace/WorkSpaceMember";
 import WorkSpaceSetting from "@/pages/WorkSpace/WorkSpaceSetting";
-import Invitation from "@/pages/InvitationPage";
-import LoginLayout from "./LoginLayout";
-import { useAppDispatch, useAppSelector } from "@/hooks";
-import { loginJwtAction, selectAuth } from "@/redux/userSlice";
 import {
   getOrganizationsAction,
   selectOrganization,
 } from "@/redux/organizationSlice";
+import { selectSpinning, setSpinning } from "@/redux/screenSlice";
+import { loginJwtAction, selectAuth } from "@/redux/userSlice";
 import Cookie from "@/utils/cookie";
+import LoginLayout from "./LoginLayout";
+
+const Billboard = lazy(() => import("@/pages/Billboard"));
+const ErrorPage = lazy(() => import("@/pages/ErrorPage"));
+const Home = lazy(() => import("@/pages/Home"));
+const Login = lazy(() => import("@/pages/Login"));
+const WorkSpace = lazy(() => import("@/pages/WorkSpace"));
+const NewWorkSpace = lazy(() => import("@/pages/WorkSpace/NewWorkSpace"));
 
 const AppRouter: React.FC = () => {
   const organization = useAppSelector(selectOrganization);
-
   const login = useAppSelector(selectAuth);
-  const [spinning, setSpinning] = useState(true);
+  const spinning = useAppSelector(selectSpinning);
 
   const dispatch = useAppDispatch();
 
@@ -34,10 +35,10 @@ const AppRouter: React.FC = () => {
         dispatch(loginJwtAction()),
         dispatch(getOrganizationsAction()),
       ]).finally(() => {
-        setSpinning(false);
+        dispatch(setSpinning(false));
       });
     } else {
-      setSpinning(false);
+      dispatch(setSpinning(false));
     }
   }, []);
 

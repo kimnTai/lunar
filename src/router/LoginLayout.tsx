@@ -6,7 +6,7 @@ import Navbar from "@/components/User/Navbar";
 import { useAppSelector } from "@/hooks";
 import { MainLayoutCss } from "@/pages/Billboard/style";
 
-const LoginLayout = React.memo(() => {
+const LoginLayout: React.FC = () => {
   const showWorkSpace = useAppSelector((state) => state.screen.showWorkSpace);
 
   return (
@@ -20,6 +20,6 @@ const LoginLayout = React.memo(() => {
       </Layout>
     </Layout>
   );
-});
+};
 
-export default LoginLayout;
+export default React.memo(LoginLayout);

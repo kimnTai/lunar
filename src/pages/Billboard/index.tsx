@@ -4,6 +4,7 @@ import { Spin } from "antd";
 import { LoadingOutlined } from "@ant-design/icons";
 import TrelloCardModal from "@/components/TrelloCard/Modal";
 import { CardModalProvider } from "@/context/CardModalContext";
+import { WebSocketProvider } from "@/context/WebsocketContext";
 import { useAppDispatch, useAppSelector } from "@/hooks";
 import { getBoardByIdAction } from "@/redux/boardSlice";
 import { changeWorkSpace, selectShowWorkSpace } from "@/redux/screenSlice";
@@ -17,6 +18,12 @@ const Billboard: React.FC = () => {
   const [isBoardLoading, setBoardLoading] = useState(false);
 
   useEffect(() => {
+    if (workSpace) {
+      dispatch(changeWorkSpace());
+    }
+  }, [workSpace]);
+
+  useEffect(() => {
     if (boardId) {
       setBoardLoading(true);
 
@@ -24,14 +31,10 @@ const Billboard: React.FC = () => {
         setBoardLoading(false);
       });
     }
-
-    if (workSpace) {
-      dispatch(changeWorkSpace());
-    }
-  }, [boardId, workSpace]);
+  }, [boardId]);
 
   return (
-    <>
+    <WebSocketProvider>
       {isBoardLoading ? (
         <Spin
           className="d-center"
@@ -46,7 +49,7 @@ const Billboard: React.FC = () => {
           </CardModalProvider>
         </>
       )}
-    </>
+    </WebSocketProvider>
   );
 };
 

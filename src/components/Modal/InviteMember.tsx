@@ -8,6 +8,7 @@ import { useParamOrganization } from "@/hooks/useParamOrganization";
 import { AddOrganizationMemberProps } from "@/interfaces/organization";
 import {
   addOrganizationMemberAction,
+  deleteInviteLinkAction,
   generateInviteLinkAction,
 } from "@/redux/organizationSlice";
 import { InviteMemberCss } from "./style";
@@ -45,11 +46,14 @@ const InviteMember: React.FC<{
     form.resetFields();
   };
 
-  const handleGenerateInviteLink = async () => {
+  const handleInviteLink = async () => {
     setSpinning(true);
 
     try {
-      await dispatch(generateInviteLinkAction(organizationId));
+      const action = userOrganization?.inviteLink
+        ? deleteInviteLinkAction
+        : generateInviteLinkAction;
+      await dispatch(action(organizationId));
     } catch (error) {}
 
     setSpinning(false);
@@ -113,7 +117,7 @@ const InviteMember: React.FC<{
                       padding: 0,
                       height: "auto",
                     }}
-                    onClick={handleGenerateInviteLink}
+                    onClick={handleInviteLink}
                   >
                     {userOrganization?.inviteLink ? "停用連結" : "建立連結"}
                   </Button>

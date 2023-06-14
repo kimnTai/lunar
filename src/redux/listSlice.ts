@@ -1,6 +1,7 @@
 import { newListApi, updateListApi } from "@/api/lists";
 import { NewListProps, UpdateListProps } from "@/interfaces/lists";
 import { createAsyncThunk } from "@reduxjs/toolkit";
+import { RootState } from "./store";
 
 export const newListApiAction = createAsyncThunk(
   "list/newList",
@@ -22,3 +23,6 @@ export const updateColumnAction = createAsyncThunk(
   "list/updateColumnAction",
   async (_data: UpdateListProps, _thunkAPI) => {}
 );
+
+export const selectListById = (listId?: string) => (state: RootState) =>
+  state.board.board.list.find(({ _id }) => _id === listId);

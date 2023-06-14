@@ -19,6 +19,7 @@ import CloseCard from "./CloseCard";
 import MoveCard from "./MoveCard";
 import SidebarBox from "./SidebarBox";
 import { ModalSidebarStyled, ModalStyle } from "./style";
+import LabelModal from "./LabelModal";
 
 const ModalSidebar: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -27,6 +28,7 @@ const ModalSidebar: React.FC = () => {
 
   const [isLoading, setIsLoading] = useState(false);
   const [isOpenAddMember, setIsOpenAddMember] = useState(false);
+  const [isOpenLabel, setIsOpenLabel] = useState(false);
 
   const userId = useAppSelector((state) => state.user.user._id);
   const cardData = useParamCard();
@@ -70,6 +72,9 @@ const ModalSidebar: React.FC = () => {
             style={{ top: " 32px", left: 0 }}
           />
         )}
+        {isOpenLabel && (
+          <LabelModal setIsOpenLabel={setIsOpenLabel} style={{ top: "64px" }} />
+        )}
         <SidebarBox
           className={"mid"}
           title={"新增至卡片"}
@@ -86,6 +91,9 @@ const ModalSidebar: React.FC = () => {
               label: "標籤",
               value: "label",
               icon: <TagOutlined />,
+              onClickEvent: () => {
+                setIsOpenLabel(true);
+              },
             },
             {
               label: "代辦清單",

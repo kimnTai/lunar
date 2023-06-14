@@ -89,3 +89,10 @@ export const generateInviteLinkApi = (organizationId: string) => {
     `/organizations/${organizationId}/invitationSecret`
   );
 };
+
+// 移除邀請連結
+export const deleteInviteLinkApi = (organizationId: string) => {
+  return Request.delete<any, PrometheusResponse<OrganizationProps>>(
+    `/organizations/${organizationId}/invitationSecret`
+  );
+};
