@@ -4,7 +4,7 @@ import { useListsContext } from "@/context/ListsContext";
 import { useAppDispatch } from "@/hooks";
 import { closeListAllCardsAction } from "@/redux/listSlice";
 
-const ClosedContent: React.FC<{
+const CloseCardContent: React.FC<{
   listId: string;
 }> = ({ listId }) => {
   const dispatch = useAppDispatch();
@@ -34,4 +34,4 @@ const ClosedContent: React.FC<{
   );
 };
 
-export default ClosedContent;
+export default CloseCardContent;

@@ -28,4 +28,10 @@ export interface NewListProps {
   position: string;
 }
 
-export type ListsHeaderState = "NONE" | "ACTION" | "CLOSED";
+export type ListsHeaderState =
+  | "NONE"
+  | "ACTION"
+  | "CLOSED_CARD"
+  | "MOVE"
+  | "CLONE"
+  | "MOVE_CARD";

@@ -10,7 +10,10 @@ const PopoverHeader: React.FC = () => {
   const titleText = {
     NONE: "",
     ACTION: "列表動作",
-    CLOSED: "封存此列表上的所有卡片？",
+    CLOSED_CARD: "封存此列表上的所有卡片？",
+    MOVE: "移動列表",
+    CLONE: "複製列表",
+    MOVE_CARD: "移動所有列表中的卡片",
   }[popoverState];
 
   return (

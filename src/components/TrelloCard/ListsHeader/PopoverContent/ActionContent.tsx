@@ -25,8 +25,8 @@ const ActionContent: React.FC<{
               setPopoverState("NONE");
             },
           },
-          { key: "copyCard", label: "複製列表" },
-          { key: "moveCard", label: "移動列表" },
+          { key: "cloneList", label: "複製列表" },
+          { key: "moveList", label: "移動列表" },
         ]}
       />
       <Divider style={{ margin: "8px 0" }} />
@@ -34,11 +34,15 @@ const ActionContent: React.FC<{
         className="popoverList"
         selectedKeys={[]}
         items={[
-          { key: "moveCards", label: "移動這個列表裡的所有卡片" },
+          {
+            key: "moveCards",
+            label: "移動這個列表裡的所有卡片",
+            onClick: () => setPopoverState("MOVE_CARD"),
+          },
           {
             key: "keepCards",
             label: "封存這個列表裡的所有卡片",
-            onClick: () => setPopoverState("CLOSED"),
+            onClick: () => setPopoverState("CLOSED_CARD"),
           },
         ]}
       />
@@ -48,7 +52,7 @@ const ActionContent: React.FC<{
         selectedKeys={[]}
         items={[
           {
-            key: "keepList",
+            key: "closeList",
             label: "封存這個列表",
             onClick: async () => {
               setSpinning(true);
