@@ -23,10 +23,9 @@ export const closeListAllCardsAction = createAsyncThunk(
   async (listId: string) => await closeListAllCardsApi(listId)
 );
 
-// TODO:卡片拖曳更新
-export const updateColumnAction = createAsyncThunk(
-  "list/updateColumnAction",
-  async (_data: UpdateListProps, _thunkAPI) => {}
+export const moveListAction = createAsyncThunk(
+  "list/moveListAction",
+  async (data: UpdateListProps) => await updateListApi(data)
 );
 
 export const selectListById = (listId?: string) => (state: RootState) =>

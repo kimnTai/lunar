@@ -25,8 +25,16 @@ const ActionContent: React.FC<{
               setPopoverState("NONE");
             },
           },
-          { key: "cloneList", label: "複製列表" },
-          { key: "moveList", label: "移動列表" },
+          {
+            key: "CLONE",
+            label: "複製列表",
+            onClick: () => setPopoverState("CLONE"),
+          },
+          {
+            key: "MOVE",
+            label: "移動列表",
+            onClick: () => setPopoverState("MOVE"),
+          },
         ]}
       />
       <Divider style={{ margin: "8px 0" }} />
@@ -35,12 +43,12 @@ const ActionContent: React.FC<{
         selectedKeys={[]}
         items={[
           {
-            key: "moveCards",
+            key: "MOVE_CARD",
             label: "移動這個列表裡的所有卡片",
             onClick: () => setPopoverState("MOVE_CARD"),
           },
           {
-            key: "keepCards",
+            key: "CLOSED_CARD",
             label: "封存這個列表裡的所有卡片",
             onClick: () => setPopoverState("CLOSED_CARD"),
           },

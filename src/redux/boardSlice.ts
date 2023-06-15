@@ -17,6 +17,7 @@ import {
 import { RootState } from "./store";
 import {
   closeListAction,
+  moveListAction,
   newListApiAction,
   updateListAction,
 } from "./listSlice";
@@ -177,6 +178,15 @@ export const boardSlice = createSlice({
           state.board.list = state.board.list.filter(
             ({ _id }) => _id !== closedList._id
           );
+        }
+      })
+      .addCase(moveListAction.fulfilled, (state, action) => {
+        const moveList = action.payload.result;
+        state.board.list = state.board.list.filter(
+          ({ _id }) => _id !== moveList._id
+        );
+        if (state.board._id === moveList.boardId) {
+          state.board.list.push(moveList);
         }
       });
     // 卡片
