@@ -9,6 +9,7 @@ import {
 import {
   addBoardMembersApi,
   deleteBoardApi,
+  generateBoardInviteLinkApi,
   getBoardApi,
   newBoardApi,
   postCloneBoardApi,
@@ -118,6 +119,11 @@ export const deleteLabelAction = createAsyncThunk(
     await deleteLabelApi(data).then(() =>
       thunkAPI.dispatch(getBoardByIdAction(data.boardId))
     )
+);
+
+export const generateBoardInviteLinkAction = createAsyncThunk(
+  "board/updateBoard",
+  async (boardId: string) => await generateBoardInviteLinkApi(boardId)
 );
 
 export const boardSlice = createSlice({

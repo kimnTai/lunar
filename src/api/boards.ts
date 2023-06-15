@@ -60,3 +60,10 @@ export const getBoardClosedItemsApi = (boardId: string) => {
     `/boards/${boardId}/closedCardsAndList`
   );
 };
+
+// 建立看板邀請連結
+export const generateBoardInviteLinkApi = (boardId: string) => {
+  return Request.post<any, PrometheusResponse<BoardsProps>>(
+    `/boards/${boardId}/invitationSecret`
+  );
+};
