@@ -26,12 +26,15 @@ const SearchCardInput: React.FC = () => {
     try {
       const { result } = await searchCardsApi({ query });
 
-      const _options = result.map(({ card, board }) => ({
-        value: `/board/${card.boardId}/cards/${card._id}`,
+      const _options = result.map((card) => ({
+        value: `/board/${card.boardId._id}/cards/${card._id}`,
         label: (
           <List itemLayout="horizontal">
             <List.Item>
-              <List.Item.Meta title={card.name} description={board.name} />
+              <List.Item.Meta
+                title={card.name}
+                description={card.boardId.name}
+              />
             </List.Item>
           </List>
         ),
