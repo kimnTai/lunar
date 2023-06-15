@@ -81,7 +81,7 @@ const AddMember: React.FC<{
         <CopyInviteLinkBtn
           setOpen={setOpen}
           style={{ backgroundColor: "var(--graye9)", marginLeft: "16px" }}
-          boardInviteLink={board.inviteLink}
+          type="BOARD"
         />
       </div>
     </AddMemberCss>

@@ -125,7 +125,7 @@ const InviteMember: React.FC<{
               </Row>
               {userOrganization?.inviteLink && (
                 <CopyInviteLinkBtn
-                  organizationInviteLink={userOrganization.inviteLink}
+                  type="ORGANIZATION"
                   setOpen={setOpen}
                   style={{
                     backgroundColor: "white",
