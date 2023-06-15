@@ -32,20 +32,24 @@ const CardCascader: React.FC<FormItemProps> = (props) => {
 
     const { result } = await getBoardApi(`${targetOption.value}`);
 
-    targetOption.children = result.list.map(({ id, name, card }) => ({
-      value: id,
-      label: name,
-      children: [
-        ...card.map((_, index, array) => ({
-          value: nextPosition(array, index),
-          label: index,
-        })),
-        {
-          value: nextPosition(card, card.length),
-          label: card.length,
-        },
-      ],
-    }));
+    targetOption.children = result.list
+      .sort((a, b) => +a.position - +b.position)
+      .map(({ id, name, card }) => ({
+        value: id,
+        label: name,
+        children: [
+          ...card
+            .sort((a, b) => +a.position - +b.position)
+            .map((_, index, array) => ({
+              value: nextPosition(array, index),
+              label: index,
+            })),
+          {
+            value: nextPosition(card, card.length),
+            label: card.length,
+          },
+        ],
+      }));
 
     setOptions([...options]);
   };

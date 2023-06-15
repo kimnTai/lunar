@@ -8,6 +8,7 @@ import type {
   UpdateCardDateProps,
   AddCardMemberProps,
   CloneCardProps,
+  MoveCardProps,
 } from "@/interfaces/cards";
 import {
   ChecklistProps,
@@ -162,3 +163,10 @@ export const deleteCardLabelApi = (data: CardLabelsProps) => {
     `/cards/${data.cardId}/labels/${data.labelId}`
   );
 };
+
+// 移動卡片
+export const moveCardApi = (data: MoveCardProps) =>
+  Request.put<any, PrometheusResponse<CardsProps>>(
+    `/cards/${data.cardId}/move`,
+    data
+  );
