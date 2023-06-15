@@ -27,3 +27,5 @@ export interface NewListProps {
   boardId: string;
   position: string;
 }
+
+export type ListsHeaderState = "NONE" | "ACTION" | "CLOSED";

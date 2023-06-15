@@ -15,3 +15,9 @@ export const updateListApi = (data: UpdateListProps) =>
     `/lists/${data.listId}`,
     data
   );
+
+// 封存列表所有卡片
+export const closeListAllCardsApi = (listId: string) =>
+  Request.put<any, PrometheusResponse<ListsProps>>(
+    `/lists/${listId}/archiveAllCards`
+  );
