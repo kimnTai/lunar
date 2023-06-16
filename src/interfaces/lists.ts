@@ -28,6 +28,14 @@ export interface NewListProps {
   position: string;
 }
 
+export interface MoveListProps {
+  listId: string;
+  position?: string;
+  closed?: boolean;
+  boardId: string;
+  sourceBoardId: string;
+}
+
 export type ListsHeaderState =
   | "NONE"
   | "ACTION"
