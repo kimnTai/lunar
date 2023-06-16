@@ -35,7 +35,7 @@ const LabelSpace: React.FC<{
             >
               <LabelBtnStyled
                 color={isDarkColor(label.color) ? "white" : "black"}
-                backgroundColor={label.color}
+                background-color={label.color}
                 onClick={() => openEdit(label._id)}
               >
                 {label.name}
