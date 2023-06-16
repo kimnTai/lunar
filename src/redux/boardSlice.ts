@@ -131,7 +131,13 @@ export const boardSlice = createSlice({
   initialState,
   reducers: {
     setBoardList: (state, action: PayloadAction<ListsProps[]>) => {
-      state.board.list = action.payload;
+      const check = action.payload.reduce(
+        (_, { boardId }) => boardId === state.board._id,
+        false
+      );
+      if (check) {
+        state.board.list = action.payload;
+      }
     },
     setCardChecklist: (
       state,
