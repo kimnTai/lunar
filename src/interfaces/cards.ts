@@ -76,3 +76,12 @@ export interface CloneCardProps {
   name: string;
   position: string;
 }
+
+export interface MoveCardProps {
+  listId?: string;
+  cardId: string;
+  position?: string;
+  closed?: boolean;
+  boardId?: string;
+  sourceBoardId?: string;
+}

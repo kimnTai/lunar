@@ -27,3 +27,11 @@ export interface NewListProps {
   boardId: string;
   position: string;
 }
+
+export type ListsHeaderState =
+  | "NONE"
+  | "ACTION"
+  | "CLOSED_CARD"
+  | "MOVE"
+  | "CLONE"
+  | "MOVE_CARD";

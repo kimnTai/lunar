@@ -1,4 +1,4 @@
-import { newListApi, updateListApi } from "@/api/lists";
+import { closeListAllCardsApi, newListApi, updateListApi } from "@/api/lists";
 import { NewListProps, UpdateListProps } from "@/interfaces/lists";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { RootState } from "./store";
@@ -18,10 +18,14 @@ export const closeListAction = createAsyncThunk(
   async (listId: string) => await updateListApi({ listId, closed: true })
 );
 
-// TODO:卡片拖曳更新
-export const updateColumnAction = createAsyncThunk(
-  "list/updateColumnAction",
-  async (_data: UpdateListProps, _thunkAPI) => {}
+export const closeListAllCardsAction = createAsyncThunk(
+  "list/updateList",
+  async (listId: string) => await closeListAllCardsApi(listId)
+);
+
+export const moveListAction = createAsyncThunk(
+  "list/moveListAction",
+  async (data: UpdateListProps) => await updateListApi(data)
 );
 
 export const selectListById = (listId?: string) => (state: RootState) =>

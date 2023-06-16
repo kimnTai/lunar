@@ -137,10 +137,7 @@ const WorkSpaceMember: React.FC = () => {
                     任何擁有邀請連結的人都可以加入此免費工作區。你也可以隨時停用並為此工作區建立新的邀請連結，並在工作區中建立新看板。
                   </p>
                 </Col>
-                <CopyInviteLinkBtn
-                  organizationInviteLink={userOrganization?.inviteLink}
-                  setOpen={onCancel}
-                />
+                <CopyInviteLinkBtn type="ORGANIZATION" setOpen={onCancel} />
               </Row>
             </div>
             <Divider />

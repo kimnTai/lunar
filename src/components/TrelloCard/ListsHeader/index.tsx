@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { Button, Popover } from "antd";
 import { EllipsisOutlined, PlusOutlined } from "@ant-design/icons";
 import { useListsContext } from "@/context/ListsContext";
@@ -9,8 +9,7 @@ import PopoverHeader from "./PopoverHeader";
 import { TrelloCardHeaderStyled } from "./style";
 
 const ListsHeader: React.FC<{ listId: string }> = ({ listId }) => {
-  const [openPopover, setOpenPopover] = useState(false);
-  const { setShowAddCard } = useListsContext();
+  const { setShowAddCard, popoverState, setPopoverState } = useListsContext();
   const list = useAppSelector(selectListById(listId));
 
   return (
@@ -35,14 +34,14 @@ const ListsHeader: React.FC<{ listId: string }> = ({ listId }) => {
         />
         <Popover
           placement="bottomLeft"
-          content={
-            <PopoverContent listId={listId} setOpenPopover={setOpenPopover} />
-          }
-          title={<PopoverHeader setOpenPopover={setOpenPopover} />}
+          content={<PopoverContent listId={listId} />}
+          title={<PopoverHeader />}
           trigger="click"
-          open={openPopover}
+          open={popoverState !== "NONE"}
           arrow={false}
-          onOpenChange={(visible) => setOpenPopover(visible)}
+          onOpenChange={(visible) => {
+            setPopoverState(visible ? "ACTION" : "NONE");
+          }}
           overlayStyle={{ width: "280px" }}
         >
           <Button

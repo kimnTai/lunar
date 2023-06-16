@@ -21,6 +21,7 @@ import {
   newCheckItemApi,
   updateCheckItemApi,
   deleteCheckItemApi,
+  moveCardApi,
 } from "@/api/cards";
 import { newImageFileUrl } from "@/api/upload";
 import {
@@ -30,6 +31,7 @@ import {
   UpdateCardProps,
   AddCardMemberProps,
   NewCardProps,
+  MoveCardProps,
 } from "@/interfaces/cards";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { RootState } from "./store";
@@ -132,7 +134,7 @@ export const cloneCardAction = createAsyncThunk(
 
 export const moveCardAction = createAsyncThunk(
   "card/moveCard",
-  async (data: UpdateCardProps) => await updateCardApi(data)
+  async (data: MoveCardProps) => await moveCardApi(data)
 );
 
 export const closeCardAction = createAsyncThunk(

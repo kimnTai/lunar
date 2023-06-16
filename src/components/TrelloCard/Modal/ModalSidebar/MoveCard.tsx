@@ -38,6 +38,7 @@ const MoveCard: React.FC = () => {
         moveCardAction({
           boardId,
           listId,
+          sourceBoardId: cardData.boardId,
           cardId: cardData.id,
           position: `${position}`,
         })

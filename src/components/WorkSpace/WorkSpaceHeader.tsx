@@ -16,7 +16,7 @@ const WorkSpaceHeader: React.FC = () => {
 
   const dispatch = useAppDispatch();
 
-  const UpdateOrganizationName = (
+  const updateOrganizationName = (
     values: Parameters<typeof updateOrganizationAction>[0]
   ) => {
     if (!paramOrganization?._id) {
@@ -70,7 +70,7 @@ const WorkSpaceHeader: React.FC = () => {
           {isEdit ? (
             <Spin spinning={spinning}>
               <Form
-                onFinish={UpdateOrganizationName}
+                onFinish={updateOrganizationName}
                 initialValues={{ name: paramOrganization?.name }}
                 style={{ display: "flex", gap: "4px" }}
                 ref={formRef}

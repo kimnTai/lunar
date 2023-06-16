@@ -6,7 +6,7 @@ import { useAppSelector } from "@/hooks";
 import { selectOrganization } from "@/redux/organizationSlice";
 import { nextPosition } from "@/utils/cardFunc";
 
-const CardCascader: React.FC<FormItemProps> = (props) => {
+const ListCascader: React.FC<FormItemProps> = (props) => {
   const organization = useAppSelector(selectOrganization);
 
   const [options, setOptions] = useState(
@@ -22,7 +22,6 @@ const CardCascader: React.FC<FormItemProps> = (props) => {
         })),
       }))
   );
-
   const loadData = async (selectedOptions: DefaultOptionType[]) => {
     const targetOption = selectedOptions[selectedOptions.length - 1];
 
@@ -32,24 +31,18 @@ const CardCascader: React.FC<FormItemProps> = (props) => {
 
     const { result } = await getBoardApi(`${targetOption.value}`);
 
-    targetOption.children = result.list
-      .sort((a, b) => +a.position - +b.position)
-      .map(({ id, name, card }) => ({
-        value: id,
-        label: name,
-        children: [
-          ...card
-            .sort((a, b) => +a.position - +b.position)
-            .map((_, index, array) => ({
-              value: nextPosition(array, index),
-              label: index,
-            })),
-          {
-            value: nextPosition(card, card.length),
-            label: card.length,
-          },
-        ],
-      }));
+    targetOption.children = [
+      ...result.list
+        .sort((a, b) => +a.position - +b.position)
+        .map((_, index, array) => ({
+          value: nextPosition(array, index),
+          label: index,
+        })),
+      {
+        value: nextPosition(result.list, result.list.length),
+        label: result.list.length,
+      },
+    ];
 
     setOptions([...options]);
   };
@@ -64,4 +57,4 @@ const CardCascader: React.FC<FormItemProps> = (props) => {
   );
 };
 
-export default CardCascader;
+export default ListCascader;
