@@ -36,6 +36,12 @@ export interface MoveListProps {
   sourceBoardId: string;
 }
 
+export interface CloneListProps {
+  position: string;
+  name: string;
+  sourceListId: string;
+}
+
 export type ListsHeaderState =
   | "NONE"
   | "ACTION"

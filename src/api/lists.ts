@@ -4,6 +4,7 @@ import type {
   NewListProps,
   ListsProps,
   MoveListProps,
+  CloneListProps,
 } from "@/interfaces/lists";
 
 // 新增list
@@ -29,3 +30,7 @@ export const moveListApi = (data: MoveListProps) =>
     `/lists/${data.listId}/move`,
     data
   );
+
+// 複製列表
+export const cloneListApi = (data: CloneListProps) =>
+  Request.post<any, PrometheusResponse<ListsProps>>(`/lists/cloneById`, data);

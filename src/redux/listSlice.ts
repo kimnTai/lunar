@@ -1,10 +1,12 @@
 import {
+  cloneListApi,
   closeListAllCardsApi,
   moveListApi,
   newListApi,
   updateListApi,
 } from "@/api/lists";
 import {
+  CloneListProps,
   MoveListProps,
   NewListProps,
   UpdateListProps,
@@ -35,6 +37,11 @@ export const closeListAllCardsAction = createAsyncThunk(
 export const moveListAction = createAsyncThunk(
   "list/moveListAction",
   async (data: MoveListProps) => await moveListApi(data)
+);
+
+export const cloneListAction = createAsyncThunk(
+  "list/moveListAction",
+  async (data: CloneListProps) => await cloneListApi(data)
 );
 
 export const selectListById = (listId?: string) => (state: RootState) =>
