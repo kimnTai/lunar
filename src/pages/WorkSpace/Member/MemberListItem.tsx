@@ -28,28 +28,51 @@ const MemberListItem: React.FC<{ member: OrganizationMemberProps }> = ({
           <Button
             icon={<ExclamationCircleOutlined />}
             style={{
-              backgroundColor: "white",
-              color: "var(--black23)",
               padding: "4px 16px",
             }}
-            onClick={() => {
-              if (orgUser?.role === "manager") {
-                setModalState("ROLE");
+            disabled={(() => {
+              // 如果管理員剩下自己，不能修改自己權限
+              if (
+                userOrganization?.member.filter(
+                  ({ role }) => role === "manager"
+                )?.length === 1 &&
+                member.userId._id === currentUser._id
+              ) {
+                return true;
               }
-            }}
+              // 管理員可以修改權限
+              if (orgUser?.role === "manager") {
+                return false;
+              }
+              return true;
+            })()}
+            onClick={() => setModalState("ROLE")}
           >
             {member.role === "manager" ? "管理員" : "成員"}
           </Button>,
           <Button
             style={{
-              backgroundColor: "white",
-              color: "var(--black23)",
               padding: "4px 16px",
               textAlign: "center",
             }}
+            disabled={(() => {
+              // 組織剩一人不能退出
+              if (userOrganization?.member.length === 1) {
+                return true;
+              }
+              // 自己可以退出
+              if (member.userId._id === currentUser._id) {
+                return false;
+              }
+              // 管理員可以移除別人
+              if (orgUser?.role === "manager") {
+                return false;
+              }
+              return true;
+            })()}
             onClick={() => setModalState("REMOVE")}
           >
-            {member.role === "manager" ? "退出" : "移除"}
+            {member.userId._id === currentUser._id ? "退出" : "移除"}
           </Button>,
         ]}
       >
