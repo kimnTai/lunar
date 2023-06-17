@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { invitationApi } from "@/api/invitation";
 import {
   addOrganizationMemberApi,
@@ -100,7 +100,16 @@ export const invitationOrganizationAction = createAsyncThunk(
 export const organizationSlice = createSlice({
   name: "organization",
   initialState,
-  reducers: {},
+  reducers: {
+    removeUserMember: (
+      state,
+      action: PayloadAction<{ organizationId: string }>
+    ) => {
+      state.organization = state.organization.filter(
+        ({ _id }) => _id !== action.payload.organizationId
+      );
+    },
+  },
   extraReducers: (builder) => {
     // 組織
     builder
@@ -161,7 +170,7 @@ export const organizationSlice = createSlice({
   },
 });
 
-export const {} = organizationSlice.actions;
+export const { removeUserMember } = organizationSlice.actions;
 
 export const selectOrganization = (state: RootState) =>
   state.organization.organization;

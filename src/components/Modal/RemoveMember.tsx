@@ -1,9 +1,13 @@
 import React, { useState } from "react";
-import { useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import { Button, Form } from "antd";
-import { useAppDispatch } from "@/hooks";
+import { useAppDispatch, useAppSelector } from "@/hooks";
 import { OrganizationMemberProps } from "@/interfaces/organization";
-import { deleteOrganizationMemberAction } from "@/redux/organizationSlice";
+import {
+  deleteOrganizationMemberAction,
+  removeUserMember,
+} from "@/redux/organizationSlice";
+import { selectUser } from "@/redux/userSlice";
 import { MemberModalCss } from "./style";
 
 const RemoveMember: React.FC<{
@@ -11,26 +15,34 @@ const RemoveMember: React.FC<{
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
   selectedMember: OrganizationMemberProps | null;
 }> = ({ open, setOpen, selectedMember }) => {
+  const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+  const user = useAppSelector(selectUser);
   const { workSpaceId } = useParams();
 
-  const dispatch = useAppDispatch();
   const [loading, setLoading] = useState(false);
 
-  const onFinish = () => {
-    if (!workSpaceId) {
+  const onFinish = async () => {
+    if (!workSpaceId || !selectedMember) {
       return;
     }
     setLoading(true);
 
-    dispatch(
-      deleteOrganizationMemberAction({
-        organizationId: workSpaceId,
-        memberId: selectedMember?.userId._id || "",
-      })
-    ).finally(() => {
-      setLoading(false);
-      setOpen(false);
-    });
+    try {
+      await dispatch(
+        deleteOrganizationMemberAction({
+          organizationId: workSpaceId,
+          memberId: selectedMember.userId._id,
+        })
+      );
+      if (selectedMember.userId._id === user._id) {
+        dispatch(removeUserMember({ organizationId: workSpaceId }));
+        navigate("/");
+      }
+    } catch (error) {}
+
+    setLoading(false);
+    setOpen(false);
   };
   return (
     <MemberModalCss
