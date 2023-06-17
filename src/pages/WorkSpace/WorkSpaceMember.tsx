@@ -1,72 +1,17 @@
 import React, { useState } from "react";
-import { WorkSpaceCss, WorkSpaceMemberCss } from "./style";
-import {
-  Row,
-  Col,
-  Button,
-  Divider,
-  Menu,
-  Input,
-  Avatar,
-  List,
-  Skeleton,
-} from "antd";
-import type { MenuProps } from "antd";
-import { UserAddOutlined, ExclamationCircleOutlined } from "@ant-design/icons";
-import { getMenuItem as getItem } from "@/utils/func";
-import RemoveMember from "@/components/Modal/RemoveMember";
-import { OrganizationMemberProps } from "@/interfaces/organization";
-import ManageRole from "@/components/Modal/ManageRole";
+import { Button, Col, Divider, Input, List, Menu, Row } from "antd";
+import { UserAddOutlined } from "@ant-design/icons";
 import InviteMember from "@/components/Modal/InviteMember";
-import WorkSpaceHeader from "@/components/WorkSpace/WorkSpaceHeader";
-import { useAppSelector } from "@/hooks";
 import CopyInviteLinkBtn from "@/components/WorkSpace/CopyInviteLinkBtn";
+import WorkSpaceHeader from "@/components/WorkSpace/WorkSpaceHeader";
 import { useParamOrganization } from "@/hooks/useParamOrganization";
-
-const items: MenuProps["items"] = [
-  getItem(
-    "工作區看板成員",
-    "g1",
-    null,
-    [getItem("工作區成員", "workSpaceMember")],
-    "group"
-  ),
-];
+import MemberListItem from "./Member/MemberListItem";
+import { WorkSpaceCss, WorkSpaceMemberCss } from "./style";
 
 const WorkSpaceMember: React.FC = () => {
-  const [openRemoveModal, setOpenRemoveModal] = useState(false);
-  const [openManageRoleModal, setOpenManageRoleModal] = useState(false);
   const [openInviteModal, setOpenInviteModal] = useState(false);
-  const [selectedMember, setSelectedMember] =
-    useState<OrganizationMemberProps | null>(null);
-
-  const currentUser = useAppSelector((state) => state.user.user);
 
   const userOrganization = useParamOrganization();
-
-  const orgUser = userOrganization?.member.find(
-    (user) => user.userId._id === currentUser._id
-  );
-
-  const handleClick: MenuProps["onClick"] = (element) => {
-    console.log(element);
-  };
-
-  const handleClickRemoveBtn = (member: OrganizationMemberProps) => {
-    setSelectedMember(member);
-    setOpenRemoveModal(true);
-  };
-
-  const handleClickManageBtn = (member: OrganizationMemberProps) => {
-    if (orgUser?.role === "manager") {
-      setSelectedMember(member);
-      setOpenManageRoleModal(true);
-    }
-  };
-
-  const onCancel = () => {
-    setOpenInviteModal(false);
-  };
 
   const [userList, setUserList] = useState(userOrganization?.member);
   const handleSearchMember = (e: { target: { value: string } }) => {
@@ -110,11 +55,22 @@ const WorkSpaceMember: React.FC = () => {
         >
           <Col span={5}>
             <Menu
-              onClick={handleClick}
               defaultSelectedKeys={["workSpaceMember"]}
               defaultOpenKeys={["sub1"]}
               mode="inline"
-              items={items}
+              items={[
+                {
+                  label: "工作區看板成員",
+                  key: "g1",
+                  type: "group",
+                  children: [
+                    {
+                      label: "工作區成員",
+                      key: "workSpaceMember",
+                    },
+                  ],
+                },
+              ]}
             />
           </Col>
           <Col span={18}>
@@ -137,7 +93,10 @@ const WorkSpaceMember: React.FC = () => {
                     任何擁有邀請連結的人都可以加入此免費工作區。你也可以隨時停用並為此工作區建立新的邀請連結，並在工作區中建立新看板。
                   </p>
                 </Col>
-                <CopyInviteLinkBtn type="ORGANIZATION" setOpen={onCancel} />
+                <CopyInviteLinkBtn
+                  type="ORGANIZATION"
+                  setOpen={setOpenInviteModal}
+                />
               </Row>
             </div>
             <Divider />
@@ -150,55 +109,9 @@ const WorkSpaceMember: React.FC = () => {
                 style={{ height: "24vh", overflowY: "auto" }}
                 itemLayout="horizontal"
                 dataSource={userOrganization?.member}
-                renderItem={(member) => (
-                  <List.Item
-                    actions={[
-                      <Button
-                        icon={<ExclamationCircleOutlined />}
-                        style={{
-                          backgroundColor: "white",
-                          color: "var(--black23)",
-                          padding: "4px 16px",
-                        }}
-                        onClick={() => handleClickManageBtn(member)}
-                      >
-                        {member.role === "manager" ? "管理員" : "成員"}
-                      </Button>,
-
-                      <Button
-                        style={{
-                          backgroundColor: "white",
-                          color: "var(--black23)",
-                          padding: "4px 16px",
-                          textAlign: "center",
-                        }}
-                        onClick={() => handleClickRemoveBtn(member)}
-                      >
-                        {member.role === "manager" ? "退出" : "移除"}
-                      </Button>,
-                    ]}
-                  >
-                    <Skeleton avatar title={false} loading={false} active>
-                      <List.Item.Meta
-                        avatar={<Avatar src={member.userId.avatar} />}
-                        title={member.userId.name}
-                        description={member.userId.email}
-                      />
-                    </Skeleton>
-                  </List.Item>
-                )}
+                renderItem={(member) => <MemberListItem member={member} />}
               />
             )}
-            <ManageRole
-              open={openManageRoleModal}
-              setOpen={setOpenManageRoleModal}
-              selectedMember={selectedMember}
-            />
-            <RemoveMember
-              open={openRemoveModal}
-              setOpen={setOpenRemoveModal}
-              selectedMember={selectedMember}
-            />
           </Col>
         </Row>
       </WorkSpaceMemberCss>

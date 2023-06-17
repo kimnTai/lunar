@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useParams } from "react-router";
-import { CheckOutlined } from "@ant-design/icons";
 import { Form, Radio, Spin } from "antd";
+import { CheckOutlined } from "@ant-design/icons";
 import { useAppDispatch } from "@/hooks";
 import {
   OrganizationMemberProps,
