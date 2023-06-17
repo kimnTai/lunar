@@ -23,6 +23,7 @@ export interface NewBoardsProps {
   organizationId: string;
   name: string;
   permission: string;
+  templateId?: string;
 }
 
 export interface BillboardHeaderProps {
