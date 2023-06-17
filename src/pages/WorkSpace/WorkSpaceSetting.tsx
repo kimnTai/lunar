@@ -1,17 +1,17 @@
 import React, { useState } from "react";
-import { WorkSpaceCss, WorkSpaceMemberCss } from "./style";
-import { Row, Col, Button, Divider } from "antd";
+import { Button, Col, Divider, Row } from "antd";
 import {
-  UserAddOutlined,
-  LockOutlined,
   GlobalOutlined,
+  LockOutlined,
+  UserAddOutlined,
 } from "@ant-design/icons";
-import InviteMember from "@/components/Modal/InviteMember";
 import DeleteOrganization from "@/components/Modal/DeleteOrganization";
+import InviteMember from "@/components/Modal/InviteMember";
 import ManagePermission from "@/components/Modal/ManagePermission";
 import WorkSpaceHeader from "@/components/WorkSpace/WorkSpaceHeader";
 import { useAppSelector } from "@/hooks";
 import { useParamOrganization } from "@/hooks/useParamOrganization";
+import { WorkSpaceCss, WorkSpaceMemberCss } from "./style";
 
 const WorkSpaceSetting: React.FC = () => {
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
@@ -95,17 +95,19 @@ const WorkSpaceSetting: React.FC = () => {
                 </Col>
               )}
             </Row>
-            <Button
-              type="link"
-              danger
-              style={{
-                padding: "0",
-                marginTop: "48px",
-              }}
-              onClick={() => setOpenDeleteModal(true)}
-            >
-              要刪除此工作區嗎？
-            </Button>
+            {orgUser?.role === "manager" && (
+              <Button
+                type="link"
+                danger
+                style={{
+                  padding: "0",
+                  marginTop: "48px",
+                }}
+                onClick={() => setOpenDeleteModal(true)}
+              >
+                要刪除此工作區嗎？
+              </Button>
+            )}
           </div>
         </Col>
         <DeleteOrganization
