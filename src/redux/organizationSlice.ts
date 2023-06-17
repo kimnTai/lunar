@@ -1,13 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import {
-  DeleteOrganizationMemberProps,
-  DeleteOrganizationProps,
-  NewOrganizationFormProps,
-  OrganizationProps,
-  UpdateOrganizationMemberProps,
-  UpdateOrganizationProps,
-  AddOrganizationMemberProps,
-} from "@/interfaces/organization";
+import { invitationApi } from "@/api/invitation";
 import {
   addOrganizationMemberApi,
   deleteInviteLinkApi,
@@ -20,12 +12,21 @@ import {
   updateOrganizationApi,
   updateOrganizationMemberApi,
 } from "@/api/organization";
-import { RootState } from "./store";
+import {
+  AddOrganizationMemberProps,
+  DeleteOrganizationMemberProps,
+  DeleteOrganizationProps,
+  NewOrganizationFormProps,
+  OrganizationProps,
+  UpdateOrganizationMemberProps,
+  UpdateOrganizationProps,
+} from "@/interfaces/organization";
 import {
   deleteBoardAction,
   newBoardAction,
   updateBoardAction,
 } from "./boardSlice";
+import { RootState } from "./store";
 
 const initialState: {
   organization: OrganizationProps[];
@@ -90,6 +91,12 @@ export const deleteInviteLinkAction = createAsyncThunk(
   async (organizationId: string) => await deleteInviteLinkApi(organizationId)
 );
 
+export const invitationOrganizationAction = createAsyncThunk(
+  "organization/invitationOrganization",
+  async (invitationToken: string) =>
+    await invitationApi({ type: "organizations", invitationToken })
+);
+
 export const organizationSlice = createSlice({
   name: "organization",
   initialState,
@@ -111,6 +118,15 @@ export const organizationSlice = createSlice({
           return value;
         });
         state.organization = newOrganization;
+      })
+      .addCase(invitationOrganizationAction.fulfilled, (state, { payload }) => {
+        const addOrganization = payload.result;
+        state.organization = state.organization.filter(
+          ({ _id }) => _id !== addOrganization._id
+        );
+        if ("board" in addOrganization) {
+          state.organization.push(addOrganization);
+        }
       });
     // 看板
     builder
