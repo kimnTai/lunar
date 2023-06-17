@@ -170,11 +170,9 @@ const CheckList: React.FC<{
               <Input.TextArea
                 value={listNameField}
                 onChange={(e) => setListNameField(e.target.value)}
-                onKeyDown={(event) => {
-                  if (event.key === "Enter") {
-                    event.preventDefault();
-                    submitListName();
-                  }
+                onPressEnter={(event) => {
+                  event.preventDefault();
+                  submitListName();
                 }}
                 placeholder="填寫待辦清單名稱..."
               />
@@ -211,11 +209,9 @@ const CheckList: React.FC<{
             <Input.TextArea
               value={newCheckItemTitle}
               onChange={(e) => setNewCheckItemTitle(e.target.value)}
-              onKeyDown={(event) => {
-                if (event.key === "Enter") {
-                  event.preventDefault();
-                  handleAddCheckItem();
-                }
+              onPressEnter={(event) => {
+                event.preventDefault();
+                handleAddCheckItem();
               }}
               placeholder="填寫待辦項目..."
               className="addCheckItemTextArea"
