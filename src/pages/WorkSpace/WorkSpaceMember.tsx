@@ -12,18 +12,10 @@ const WorkSpaceMember: React.FC = () => {
   const [openInviteModal, setOpenInviteModal] = useState(false);
 
   const userOrganization = useParamOrganization();
-
-  const [userList, setUserList] = useState(userOrganization?.member);
-  const handleSearchMember = (e: { target: { value: string } }) => {
-    if (e.target.value !== "") {
-      const filteredUser = userList?.filter((user) => {
-        return user.userId.name.includes(e.target.value);
-      });
-      setUserList(filteredUser);
-    } else {
-      setUserList(userOrganization?.member);
-    }
-  };
+  const [keyword, setKeyWord] = useState("");
+  const memberList = userOrganization?.member.filter((value) =>
+    value.userId.name.includes(keyword)
+  );
 
   return (
     <WorkSpaceCss>
@@ -101,17 +93,20 @@ const WorkSpaceMember: React.FC = () => {
             </div>
             <Divider />
             <Col span={8}>
-              <Input placeholder="依名字篩選" onChange={handleSearchMember} />
+              <Input
+                placeholder="依名字篩選"
+                onChange={(e) => {
+                  setKeyWord(e.target.value);
+                }}
+              />
             </Col>
             <Divider />
-            {userOrganization?.member && (
-              <List
-                style={{ height: "24vh", overflowY: "auto" }}
-                itemLayout="horizontal"
-                dataSource={userOrganization?.member}
-                renderItem={(member) => <MemberListItem member={member} />}
-              />
-            )}
+            <List
+              style={{ height: "24vh", overflowY: "auto" }}
+              itemLayout="horizontal"
+              dataSource={memberList}
+              renderItem={(member) => <MemberListItem member={member} />}
+            />
           </Col>
         </Row>
       </WorkSpaceMemberCss>
