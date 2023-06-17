@@ -172,6 +172,10 @@ export const boardSlice = createSlice({
       .addCase(newListApiAction.fulfilled, (state, action) => {
         const newList = action.payload.result;
         if (state.board._id === newList.boardId) {
+          // ws 回傳比 http 快時會出錯，故需判斷是否已存在
+          state.board.list = state.board.list.filter(
+            ({ _id }) => _id !== newList._id
+          );
           state.board.list.push(newList);
         }
       })
