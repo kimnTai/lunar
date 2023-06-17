@@ -56,6 +56,17 @@ const MemberListItem: React.FC<{ member: OrganizationMemberProps }> = ({
               textAlign: "center",
             }}
             disabled={(() => {
+              const managerList = userOrganization?.member.filter(
+                ({ role }) => role === "manager"
+              );
+              // 如果管理員剩下自己，不能退出
+              if (
+                member.userId._id === currentUser._id &&
+                managerList?.length === 1 &&
+                managerList.find(({ userId }) => userId._id === currentUser._id)
+              ) {
+                return true;
+              }
               // 組織剩一人不能退出
               if (userOrganization?.member.length === 1) {
                 return true;
