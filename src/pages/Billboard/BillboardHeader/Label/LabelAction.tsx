@@ -15,10 +15,10 @@ import {
   LabelActionSubmitBtnStyled,
   LabelColorClearBtnStyled,
   LabelInputStyled,
-  LableActionFormStyled,
+  LabelActionFormStyled,
 } from "./style";
 
-const LableAction: React.FC<{
+const LabelAction: React.FC<{
   labelId?: string;
   setState: React.Dispatch<React.SetStateAction<"NONE" | "CREATE" | "EDIT">>;
 }> = ({ labelId, setState }) => {
@@ -106,9 +106,9 @@ const LableAction: React.FC<{
         }
         onFinish={handleOnFinish}
       >
-        <LableActionFormStyled labelColor={labelColor}>
+        <LabelActionFormStyled labelColor={labelColor}>
           <div>{labelName}</div>
-        </LableActionFormStyled>
+        </LabelActionFormStyled>
         <div style={{ padding: "0 12px" }}>
           <p className="label">標題</p>
           <Form.Item
@@ -177,4 +177,4 @@ const LableAction: React.FC<{
   );
 };
 
-export default LableAction;
+export default LabelAction;

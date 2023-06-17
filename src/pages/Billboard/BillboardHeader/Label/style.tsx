@@ -30,7 +30,7 @@ export const LabelContentStyle = styled.div`
   }
 `;
 
-export const LableActionFormStyled = styled.div<{ labelColor: string }>`
+export const LabelActionFormStyled = styled.div<{ labelColor: string }>`
   position: relative;
   width: 100%;
   height: 101px;
