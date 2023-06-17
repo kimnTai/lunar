@@ -193,14 +193,14 @@ const LabelModal: React.FC<{
               />
             </Form.Item>
             <Form.Item label="選一個顏色" className="colored-label-list">
-              {colorList?.map((color, idx) => (
+              {colorList?.map((color) => (
                 <Button
                   className="colored-label"
                   type="text"
                   style={{
                     backgroundColor: color.color,
                   }}
-                  key={idx}
+                  key={color.color}
                   onClick={() => setSelectedColor(color.color)}
                 />
               ))}
@@ -255,14 +255,14 @@ const LabelModal: React.FC<{
               />
             </Form.Item>
             <Form.Item label="選一個顏色" className="colored-label-list">
-              {colorList?.map((color, idx) => (
+              {colorList?.map((color) => (
                 <Button
                   className="colored-label"
                   type="text"
                   style={{
                     backgroundColor: color.color,
                   }}
-                  key={idx}
+                  key={color.color}
                   onClick={() => handleLabelColorChange(color.color)}
                 />
               ))}

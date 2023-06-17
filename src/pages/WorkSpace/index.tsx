@@ -104,13 +104,13 @@ const WorkSpace: React.FC = () => {
         </Col>
       </Row>
       <Row style={{ marginTop: "16px", columnGap: "8px", rowGap: "24px" }}>
-        {filteredBoards?.map((ele, idx) => (
+        {filteredBoards?.map((ele) => (
           <WorkSpaceCard
             title={ele.name}
             permission={ele.permission}
             backgroundImage={ele.image}
             boardId={ele._id}
-            key={idx}
+            key={ele._id}
           />
         ))}
       </Row>

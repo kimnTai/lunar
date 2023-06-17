@@ -16,10 +16,10 @@ const SidebarBox: React.FC<{
     <div className={className}>
       <h3>{title}</h3>
       <div className="action-list">
-        {data.map((ele, idx) => (
+        {data.map((ele) => (
           <Button
             block
-            key={idx}
+            key={ele.label}
             className="button-link"
             onClick={ele.onClickEvent}
           >

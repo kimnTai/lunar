@@ -122,11 +122,11 @@ const LableAction: React.FC<{
           </p>
           <Form.Item name="labelColor">
             <div>
-              {colorList?.map(({ color }, index) => (
+              {colorList?.map(({ color }) => (
                 <ColorBlockButtonStyled
                   type="text"
                   color={color}
-                  key={index}
+                  key={color}
                   onClick={() => {
                     form.setFieldValue("labelColor", color);
                   }}

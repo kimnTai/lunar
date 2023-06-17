@@ -25,13 +25,13 @@ const LabelSpace: React.FC<{
       />
       <Space style={{ display: "flex" }}>
         <Space.Compact direction="vertical" style={{ width: 200 }}>
-          {labelList.map((label, index) => (
+          {labelList.map((label) => (
             <div
               style={{
                 display: "flex",
                 justifyContent: "center",
               }}
-              key={index}
+              key={label._id}
             >
               <LabelBtnStyled
                 color={isDarkColor(label.color) ? "white" : "black"}

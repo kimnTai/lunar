@@ -69,8 +69,8 @@ const AddMember: React.FC<{
           </Button>
         </Form.Item>
       </Form>
-      {board.member?.map((ele, idx) => (
-        <UserList {...ele} key={idx} />
+      {board.member?.map((ele) => (
+        <UserList {...ele} key={ele.userId._id} />
       ))}
       <Divider style={{ margin: "12px 0" }} />
       <div
