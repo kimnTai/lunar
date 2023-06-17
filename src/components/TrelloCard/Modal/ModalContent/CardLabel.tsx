@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Avatar, Button, Col } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import { useParamCard } from "@/hooks/useParamCard";
+import { isDarkColor } from "@/utils/func";
 import LabelModal from "../ModalSidebar/LabelModal";
 import { SectionHeaderStyled } from "./style";
 
@@ -11,7 +12,14 @@ const CardLabel: React.FC = () => {
   const [isOpenLabel, setIsOpenLabel] = useState(false);
 
   const labelAvatarGroup = cardData?.label.map(({ name, color, _id }) => (
-    <Avatar key={_id} shape="square" style={{ backgroundColor: color }}>
+    <Avatar
+      key={_id}
+      shape="square"
+      style={{
+        backgroundColor: color,
+        color: isDarkColor(color) ? "white" : "black",
+      }}
+    >
       {name}
     </Avatar>
   ));

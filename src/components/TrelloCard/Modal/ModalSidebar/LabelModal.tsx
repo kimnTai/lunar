@@ -1,20 +1,21 @@
-import { LabelsProps } from "@/interfaces/labels";
-import { colorList } from "@/utils/constant";
-import { CloseOutlined, EditOutlined, LeftOutlined } from "@ant-design/icons";
-import { Button, Card, Checkbox, Col, Form, Input, Row } from "antd";
-import { CheckboxChangeEvent } from "antd/es/checkbox";
 import { CSSProperties, useEffect, useState } from "react";
 import { useParams } from "react-router";
-import { LabelModalStyled } from "./style";
-import { useParamCard } from "@/hooks/useParamCard";
+import { Button, Card, Checkbox, Col, Form, Input, Row } from "antd";
+import { CloseOutlined, EditOutlined, LeftOutlined } from "@ant-design/icons";
+import { CheckboxChangeEvent } from "antd/es/checkbox";
 import { useAppDispatch, useAppSelector } from "@/hooks";
-import { addCardLabelAction, deleteCardLabelAction } from "@/redux/cardSlice";
+import { useParamCard } from "@/hooks/useParamCard";
+import { LabelsProps } from "@/interfaces/labels";
 import {
   deleteLabelAction,
   newLabelAction,
   selectBoard,
   updateLabelAction,
 } from "@/redux/boardSlice";
+import { addCardLabelAction, deleteCardLabelAction } from "@/redux/cardSlice";
+import { colorList } from "@/utils/constant";
+import { isDarkColor } from "@/utils/func";
+import { LabelModalStyled } from "./style";
 
 const LabelModal: React.FC<{
   setIsOpenLabel: React.Dispatch<React.SetStateAction<boolean>>;
@@ -323,7 +324,10 @@ const LabelModal: React.FC<{
               <Button
                 className="labelBtn"
                 type="primary"
-                style={{ backgroundColor: label.color }}
+                style={{
+                  backgroundColor: label.color,
+                  color: isDarkColor(label.color) ? "white" : "black",
+                }}
               >
                 {label.name}
               </Button>
@@ -344,7 +348,6 @@ const LabelModal: React.FC<{
           block
           type="primary"
           style={{
-            backgroundColor: "var(--grayd4)",
             boxShadow: "none",
             marginTop: "16px",
           }}
