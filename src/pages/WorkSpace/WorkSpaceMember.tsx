@@ -1,11 +1,9 @@
 import React, { useState } from "react";
-import { Button, Col, Divider, Input, List, Menu, Row } from "antd";
-import { UserAddOutlined } from "@ant-design/icons";
-import InviteMember from "@/components/Modal/InviteMember";
+import { Col, Divider, Input, List, Menu, Row } from "antd";
 import CopyInviteLinkBtn from "@/components/WorkSpace/CopyInviteLinkBtn";
-import WorkSpaceHeader from "@/components/WorkSpace/WorkSpaceHeader";
 import { useParamOrganization } from "@/hooks/useParamOrganization";
 import MemberListItem from "./Member/MemberListItem";
+import OrganizationHeader from "./OrganizationHeader.ts";
 import { WorkSpaceCss, WorkSpaceMemberCss } from "./style";
 
 const WorkSpaceMember: React.FC = () => {
@@ -19,24 +17,10 @@ const WorkSpaceMember: React.FC = () => {
 
   return (
     <WorkSpaceCss>
-      <Row align={"middle"} justify={"space-between"}>
-        <WorkSpaceHeader />
-        <Col>
-          <Button
-            icon={<UserAddOutlined />}
-            style={{
-              backgroundColor: "#232323",
-              color: "white",
-              width: "154px",
-              height: "45px",
-            }}
-            onClick={() => setOpenInviteModal(true)}
-          >
-            邀請工作區成員
-          </Button>
-          <InviteMember open={openInviteModal} setOpen={setOpenInviteModal} />
-        </Col>
-      </Row>
+      <OrganizationHeader
+        openInviteModal={openInviteModal}
+        setOpenInviteModal={setOpenInviteModal}
+      />
       <Divider />
       <WorkSpaceMemberCss>
         <h3>成員</h3>

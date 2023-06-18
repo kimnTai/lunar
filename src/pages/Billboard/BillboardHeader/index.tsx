@@ -74,8 +74,11 @@ const BillboardHeader: React.FC = () => {
           }
           trigger="click"
           open={openPopover}
-          onOpenChange={(e) => {
-            setOpenPopover(e);
+          onOpenChange={(visible) => {
+            if (!visible) {
+              setHeaderState("MENU");
+            }
+            setOpenPopover(visible);
           }}
         >
           <Button

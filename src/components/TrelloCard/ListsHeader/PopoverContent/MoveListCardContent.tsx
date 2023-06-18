@@ -51,16 +51,18 @@ const MoveListCardContent: React.FC<{
       <Menu
         className="popoverList"
         selectedKeys={[]}
-        items={board.list.map(({ _id, name }) => ({
-          key: _id,
-          label: (
-            <>
-              {name}
-              {_id === listId && " (目前版本)"}
-            </>
-          ),
-          disabled: _id === listId,
-        }))}
+        items={[...board.list]
+          .sort((a, b) => +a.position - +b.position)
+          .map(({ _id, name }) => ({
+            key: _id,
+            label: (
+              <>
+                {name}
+                {_id === listId && " (目前版本)"}
+              </>
+            ),
+            disabled: _id === listId,
+          }))}
         onClick={({ key }) => onClick(key)}
       />
     </Spin>

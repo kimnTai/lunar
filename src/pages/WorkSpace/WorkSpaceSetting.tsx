@@ -1,16 +1,11 @@
 import React, { useState } from "react";
 import { Button, Col, Divider, Row } from "antd";
-import {
-  GlobalOutlined,
-  LockOutlined,
-  UserAddOutlined,
-} from "@ant-design/icons";
 import DeleteOrganization from "@/components/Modal/DeleteOrganization";
-import InviteMember from "@/components/Modal/InviteMember";
 import ManagePermission from "@/components/Modal/ManagePermission";
-import WorkSpaceHeader from "@/components/WorkSpace/WorkSpaceHeader";
 import { useAppSelector } from "@/hooks";
 import { useParamOrganization } from "@/hooks/useParamOrganization";
+import { GlobalOutlined, LockOutlined } from "@ant-design/icons";
+import OrganizationHeader from "./OrganizationHeader.ts";
 import { WorkSpaceCss, WorkSpaceMemberCss } from "./style";
 
 const WorkSpaceSetting: React.FC = () => {
@@ -29,25 +24,10 @@ const WorkSpaceSetting: React.FC = () => {
 
   return (
     <WorkSpaceCss>
-      <Row align={"middle"} justify={"space-between"}>
-        <WorkSpaceHeader />
-
-        <Col>
-          <Button
-            icon={<UserAddOutlined />}
-            style={{
-              backgroundColor: "#232323",
-              color: "white",
-              width: "154px",
-              height: "45px",
-            }}
-            onClick={() => setOpenInviteModal(true)}
-          >
-            邀請工作區成員
-          </Button>
-          <InviteMember open={openInviteModal} setOpen={setOpenInviteModal} />
-        </Col>
-      </Row>
+      <OrganizationHeader
+        openInviteModal={openInviteModal}
+        setOpenInviteModal={setOpenInviteModal}
+      />
       <Divider />
       <WorkSpaceMemberCss>
         <Col>
