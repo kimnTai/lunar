@@ -20,7 +20,7 @@ const AttachmentBox: React.FC = () => {
       onOpenChange={setPopoverOpen}
       content={
         <Upload
-          accept={`.png, .jpg`}
+          accept={`.png, .jpg, .gif`}
           onChange={({ file }) => {
             if (file.status === "done") {
               openNotification({

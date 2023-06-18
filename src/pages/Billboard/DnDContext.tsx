@@ -19,7 +19,14 @@ const DnDContext: React.FC = () => {
   useEffect(() => {
     if (socketEvent) {
       const resultList = getSocketChange(dndCardList, socketEvent);
-      dispatch(setBoardList(resultList));
+      const check = resultList.reduce(
+        (_, { boardId }) => boardId === board._id,
+        false
+      );
+
+      if (check) {
+        dispatch(setBoardList(resultList));
+      }
     }
   }, [socketEvent]);
 

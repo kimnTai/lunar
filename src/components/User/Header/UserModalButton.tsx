@@ -51,7 +51,11 @@ const UserModalButton: React.FC = () => {
           style={{ width: "100%" }}
           onClick={() => {
             dispatch(logout());
-            navigate("https://lunar-sigma.vercel.app/");
+            if (import.meta.env.PROD) {
+              window.location.href = `https://lunar-sigma.vercel.app/`;
+            } else {
+              navigate("/");
+            }
           }}
         >
           登出

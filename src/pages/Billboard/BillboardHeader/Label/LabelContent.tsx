@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Button } from "antd";
-import LableAction from "./LableAction";
+import LabelAction from "./LabelAction";
 import LabelSpace from "./LabelSpace";
 import { LabelContentStyle } from "./style";
 
@@ -30,7 +30,7 @@ const LabelContent: React.FC = () => {
         建立新標籤
       </Button>
       {state !== "NONE" && (
-        <LableAction labelId={labelId} setState={setState} />
+        <LabelAction labelId={labelId} setState={setState} />
       )}
     </LabelContentStyle>
   );

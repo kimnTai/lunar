@@ -194,11 +194,9 @@ const CheckItem: React.FC<{ itemData: CheckItemProps }> = ({
                 <Input.TextArea
                   value={itemNameField}
                   onChange={(e) => setItemNameField(e.target.value)}
-                  onKeyDown={(event) => {
-                    if (event.key === "Enter") {
-                      event.preventDefault();
-                      handleSaveItemName();
-                    }
+                  onPressEnter={(event) => {
+                    event.preventDefault();
+                    handleSaveItemName();
                   }}
                   placeholder="填寫待辦項目"
                 />

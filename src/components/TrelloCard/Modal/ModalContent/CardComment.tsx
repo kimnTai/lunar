@@ -173,11 +173,9 @@ const Comment: React.FC<{ itemData: CommentProps }> = ({ itemData }) => {
                       <TextArea
                         value={commentField}
                         onChange={(e) => setCommentField(e.target.value)}
-                        onKeyDown={(event) => {
-                          if (event.key === "Enter") {
-                            event.preventDefault();
-                            handleUpdateComment();
-                          }
+                        onPressEnter={(event) => {
+                          event.preventDefault();
+                          handleUpdateComment();
                         }}
                         placeholder="填寫待辦項目"
                       />

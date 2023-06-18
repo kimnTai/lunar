@@ -1,5 +1,16 @@
-import { closeListAllCardsApi, newListApi, updateListApi } from "@/api/lists";
-import { NewListProps, UpdateListProps } from "@/interfaces/lists";
+import {
+  cloneListApi,
+  closeListAllCardsApi,
+  moveListApi,
+  newListApi,
+  updateListApi,
+} from "@/api/lists";
+import {
+  CloneListProps,
+  MoveListProps,
+  NewListProps,
+  UpdateListProps,
+} from "@/interfaces/lists";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { RootState } from "./store";
 
@@ -25,7 +36,12 @@ export const closeListAllCardsAction = createAsyncThunk(
 
 export const moveListAction = createAsyncThunk(
   "list/moveListAction",
-  async (data: UpdateListProps) => await updateListApi(data)
+  async (data: MoveListProps) => await moveListApi(data)
+);
+
+export const cloneListAction = createAsyncThunk(
+  "list/moveListAction",
+  async (data: CloneListProps) => await cloneListApi(data)
 );
 
 export const selectListById = (listId?: string) => (state: RootState) =>

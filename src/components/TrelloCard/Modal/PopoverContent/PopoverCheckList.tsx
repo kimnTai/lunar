@@ -48,10 +48,8 @@ const PopoverCheckList: React.FC = () => {
             placeholder="待辦清單"
             value={checkListTitle}
             onChange={(e) => setCheckListTitle(e.target.value)}
-            onKeyDown={({ key }) => {
-              if (key === "Enter") {
-                handleAddCheckList();
-              }
+            onPressEnter={() => {
+              handleAddCheckList();
             }}
             style={{ width: "100%" }}
           />

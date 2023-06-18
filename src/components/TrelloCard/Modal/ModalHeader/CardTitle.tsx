@@ -58,10 +58,8 @@ const CardTitle: React.FC = () => {
               onChange={(e) => setTitleFiled(e.target.value)}
               onFocus={() => setIsEdit(true)}
               onBlur={submitTitleField}
-              onKeyDown={({ key }) => {
-                if (key === "Enter") {
-                  submitTitleField();
-                }
+              onPressEnter={() => {
+                submitTitleField();
               }}
               className="titleInput"
             />

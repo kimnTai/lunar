@@ -30,7 +30,7 @@ export const LabelContentStyle = styled.div`
   }
 `;
 
-export const LableActionFormStyled = styled.div<{ labelColor: string }>`
+export const LabelActionFormStyled = styled.div<{ labelColor: string }>`
   position: relative;
   width: 100%;
   height: 101px;
@@ -70,10 +70,10 @@ export const LabelInputStyled = styled(Input)`
 
 export const LabelBtnStyled = styled(Button)<{
   color: string;
-  backgroundColor: string;
+  "background-color": string;
 }>`
   color: ${({ color }) => color};
-  background-color: ${({ backgroundColor }) => backgroundColor};
+  background-color: ${(props) => props["background-color"]};
   border: 1px solid white;
   border-radius: 4px;
   width: 100%;

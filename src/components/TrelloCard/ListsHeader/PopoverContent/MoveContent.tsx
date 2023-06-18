@@ -1,14 +1,15 @@
 import React, { useState } from "react";
 import { Button, Form, Spin } from "antd";
 import { useListsContext } from "@/context/ListsContext";
+import { useAppDispatch, useAppSelector } from "@/hooks";
+import { moveListAction, selectListById } from "@/redux/listSlice";
 import ListCascader from "./ListCascader";
-import { moveListAction } from "@/redux/listSlice";
-import { useAppDispatch } from "@/hooks";
 
 const MoveContent: React.FC<{
   listId: string;
 }> = ({ listId }) => {
   const dispatch = useAppDispatch();
+  const list = useAppSelector(selectListById(listId));
   const { setPopoverState } = useListsContext();
   const [spinning, setSpinning] = useState(false);
 
@@ -17,13 +18,17 @@ const MoveContent: React.FC<{
   }: {
     cascader: [string, string, number];
   }) => {
+    if (!list) {
+      return;
+    }
     setSpinning(true);
 
     try {
       await dispatch(
         moveListAction({
-          listId,
-          boardId,
+          listId: list._id,
+          sourceBoardId: list.boardId,
+          boardId: boardId,
           position: `${position}`,
         })
       );
