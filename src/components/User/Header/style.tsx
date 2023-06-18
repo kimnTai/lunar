@@ -1,4 +1,4 @@
-import { Dropdown, Layout, Modal } from "antd";
+import { Layout, Modal } from "antd";
 import styled from "styled-components";
 
 export const HeaderCss = styled(Layout.Header)`
@@ -48,14 +48,4 @@ export const UserModalCss = styled(Modal)`
   .ant-modal-body {
     text-align: center;
   }
-`;
-
-export const DropdownBtnCss = styled(Dropdown)`
-  color: white;
-  margin-right: 24px;
-  font-size: 16px;
-  &:hover {
-    color: white;
-  }
-  width: 73px;
 `;

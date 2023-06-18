@@ -1,9 +1,10 @@
 import React from "react";
 import { useAppSelector } from "@/hooks";
-import DropdownBtnGroup from "./DropdownBtnGroup";
+import RecentBoardsBtn from "./Dropdown/RecentBoardsBtn";
+import WorkSpaceBtn from "./Dropdown/WorkSpaceBtn";
+import NotificationButton from "./NotificationButton";
 import SearchCardInput from "./SearchCardInput";
 import UserModalButton from "./UserModalButton";
-import NotificationButton from "./NotificationButton";
 import { HeaderCss } from "./style";
 
 const Header: React.FC = () => {
@@ -17,7 +18,14 @@ const Header: React.FC = () => {
       }}
     >
       <div className="d-center">
-        <DropdownBtnGroup />
+        <div
+          style={{
+            display: showWorkSpace ? "none" : "flex",
+          }}
+        >
+          <WorkSpaceBtn />
+          <RecentBoardsBtn />
+        </div>
         <SearchCardInput />
       </div>
       <div className="d-center">

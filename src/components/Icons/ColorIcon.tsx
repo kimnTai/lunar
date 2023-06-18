@@ -21,6 +21,7 @@ const ColorIconCss = styled.div<ColorIconProps>`
   border: 1px solid #a0d7ff;
   background-image: ${(props) => props["background-image"]};
   background-size: 24px 24px;
+  display: flex;
 `;
 
 const ColorIcon: React.FC<ColorIconProps> = (props) => (
