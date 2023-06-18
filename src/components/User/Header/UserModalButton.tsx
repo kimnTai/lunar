@@ -1,6 +1,16 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Avatar, Button, Divider, Spin, Upload } from "antd";
+import {
+  Avatar,
+  Button,
+  Col,
+  Form,
+  Input,
+  Modal,
+  Row,
+  Spin,
+  Upload,
+} from "antd";
 import { LoadingOutlined, PlusOutlined, UserOutlined } from "@ant-design/icons";
 import ImgCrop from "antd-img-crop";
 import type { UploadChangeParam, UploadFile } from "antd/es/upload/interface";
@@ -18,7 +28,11 @@ const UserModalButton: React.FC = () => {
 
   const [open, setOpen] = useState(false);
   const [imgUploading, setImgUploading] = useState<boolean>(false);
+  const [openProfileEdit, setOpenProfileEdit] = useState(false);
+  const [nameField, setNameField] = useState<string>(name);
+  const [isProfileSubmitting, setIsProfileSubmitting] = useState(false);
 
+  //#region 大頭照
   const handleUploadChange = (info: UploadChangeParam<UploadFile<any>>) => {
     const { file } = info;
     if (!file) return;
@@ -48,6 +62,25 @@ const UserModalButton: React.FC = () => {
       console.error(error);
     } finally {
       setImgUploading(false);
+    }
+  };
+  //#endregion
+
+  const submitUpdateProfile = async () => {
+    setIsProfileSubmitting(true);
+
+    try {
+      await dispatch(
+        updateProfileAction({
+          name: nameField,
+          userId: _id,
+        })
+      );
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setIsProfileSubmitting(false);
+      setOpenProfileEdit(false);
     }
   };
 
@@ -104,30 +137,72 @@ const UserModalButton: React.FC = () => {
               </Button>
             </Upload>
           </ImgCrop>
-
           {imgUploading && (
             <Spin indicator={<LoadingOutlined spin className="loading" />} />
           )}
         </div>
 
-        <p style={{ marginTop: "8px", color: "var(--black23)" }}>{name}</p>
-        <p style={{ color: "var(--gray9f)" }}>{email}</p>
-        <Divider style={{ marginTop: "12px", marginBottom: "12px" }} />
-        <Button
-          type="text"
-          danger
-          style={{ width: "100%" }}
-          onClick={() => {
-            dispatch(logout());
-            if (import.meta.env.PROD) {
-              window.location.href = `https://lunar-sigma.vercel.app/`;
-            } else {
-              navigate("/");
-            }
-          }}
+        <Row justify="center" align="middle" gutter={[0, 0]} wrap={true}>
+          <Col span={24}>
+            <p style={{ color: "var(--black23)" }}>{name}</p>
+          </Col>
+          <Col span={24}>
+            <p style={{ color: "var(--gray9f)" }}>{email}</p>
+          </Col>
+          <Col span={24} className="updateProfileBtn">
+            <Button
+              type="primary"
+              ghost
+              onClick={() => setOpenProfileEdit(true)}
+            >
+              修改個人資料
+            </Button>
+          </Col>
+          <Col span={24}>
+            <Button
+              type="link"
+              danger
+              onClick={() => {
+                dispatch(logout());
+                if (import.meta.env.PROD) {
+                  window.location.href = `https://lunar-sigma.vercel.app/`;
+                } else {
+                  navigate("/");
+                }
+              }}
+            >
+              登出
+            </Button>
+          </Col>
+        </Row>
+        <Modal
+          title={<div className="profileModalTitle">修改個人資料</div>}
+          open={openProfileEdit}
+          width={300}
+          footer={null}
         >
-          登出
-        </Button>
+          <Form name="basic" layout="vertical">
+            <Form.Item label="使用者名稱">
+              <Input
+                size="middle"
+                value={nameField}
+                onChange={(e) => setNameField(e.target.value)}
+                prefix={<UserOutlined />}
+              />
+            </Form.Item>
+            <Form.Item>
+              <Button
+                type="primary"
+                htmlType="submit"
+                onClick={submitUpdateProfile}
+                loading={isProfileSubmitting}
+                block
+              >
+                儲存
+              </Button>
+            </Form.Item>
+          </Form>
+        </Modal>
       </UserModalCss>
     </>
   );

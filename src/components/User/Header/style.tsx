@@ -59,6 +59,12 @@ export const UserModalCss = styled(Modal)`
     left: 35%;
     z-index: 1;
   }
+
+  .updateProfileBtn {
+    margin-top: 16px;
+    margin-bottom: 12px;
+  }
+
 `;
 
 export const SearchCardInputStyled = styled.div`
