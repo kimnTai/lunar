@@ -9,8 +9,8 @@ import {
 import BlockIcon from "@/components/Icons/BlockIcon";
 import ColorIcon from "@/components/Icons/ColorIcon";
 import { useAppSelector } from "@/hooks";
-import { selectOrganization } from "@/redux/organizationSlice";
 import { useParamOrganization } from "@/hooks/useParamOrganization";
+import { selectOrganization } from "@/redux/organizationSlice";
 
 const WorkSpaceMenu: React.FC<{
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -84,7 +84,7 @@ const WorkSpaceMenu: React.FC<{
     setTimeout(() => {
       setItems([...useItem, ...defaultItems]);
     });
-  }, [organization?.length]);
+  }, [organization]);
 
   return (
     <Menu
