@@ -14,3 +14,9 @@ export interface UserProps {
   updatedAt: string;
   _id: string;
 }
+
+export interface UpdateProfileProps {
+  userId: string;
+  name?: string;
+  avatar?: string;
+}
