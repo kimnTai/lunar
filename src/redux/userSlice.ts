@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { loginApi, loginJwtApi, signInApi } from "@/api/user";
+import { loginApi, loginJwtApi, signInApi, updateProfileApi } from "@/api/user";
+import { newImageFileUrl } from "@/api/upload";
 import { LoginProps, UserProps } from "@/interfaces/user";
 import { RootState } from "./store";
 import Cookie from "@/utils/cookie";
@@ -36,6 +37,17 @@ export const loginAction = createAsyncThunk(
 export const loginJwtAction = createAsyncThunk(
   "user/loginJwt",
   async () => await loginJwtApi()
+);
+
+export const updateProfileAction = createAsyncThunk(
+  "user/updateProfile",
+  async (data: { file: Blob; userId: string }) => {
+    const { result: imageResult } = await newImageFileUrl(data.file);
+    return await updateProfileApi({
+      userId: data.userId,
+      avatar: imageResult.link,
+    });
+  }
 );
 
 export const userSlice = createSlice({
@@ -82,6 +94,9 @@ export const userSlice = createSlice({
       .addCase(loginJwtAction.rejected, (state) => {
         state.token = "";
       });
+    builder.addCase(updateProfileAction.fulfilled, (state, action) => {
+      state.user.avatar = action.payload.result.avatar || "";
+    });
   },
 });
 
