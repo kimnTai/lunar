@@ -11,7 +11,15 @@ export const LabelContentStyle = styled.div`
     top: 19px;
     border-radius: 8px;
   }
-
+  .peopleTitle {
+    display: flex;
+    height: 40px;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 8px;
+    text-align: center;
+    border-bottom: 1px solid var(--ds-border, #091e4221);
+  }
   .label {
     font-size: 14px;
     line-height: 16px;

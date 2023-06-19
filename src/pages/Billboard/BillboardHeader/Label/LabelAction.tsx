@@ -80,7 +80,7 @@ const LabelAction: React.FC<{
     setState("NONE");
   };
   return (
-    <div className="createLabelView">
+    <div className="createLabelView" style={{ zIndex: 2060 }}>
       <div className="peopleTitle">
         <p>標籤</p>
         <Button
