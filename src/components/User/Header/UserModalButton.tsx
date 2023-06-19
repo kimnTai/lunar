@@ -1,23 +1,23 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { Avatar, Button, Col, Form, Input, Row, Spin, Upload } from "antd";
 import {
-  Avatar,
-  Button,
-  Col,
-  Form,
-  Input,
-  Modal,
-  Row,
-  Spin,
-  Upload,
-} from "antd";
-import { LoadingOutlined, PlusOutlined, UserOutlined } from "@ant-design/icons";
+  KeyOutlined,
+  LoadingOutlined,
+  PlusOutlined,
+  UserOutlined,
+} from "@ant-design/icons";
 import ImgCrop from "antd-img-crop";
 import type { UploadChangeParam, UploadFile } from "antd/es/upload/interface";
-import { logout, selectUser, updateProfileAction } from "@/redux/userSlice";
+import {
+  logout,
+  resetPasswordAction,
+  selectUser,
+  updateProfileAction,
+} from "@/redux/userSlice";
 import { useAppDispatch, useAppSelector } from "@/hooks";
 import openNotification from "@/utils/openNotification";
-import { UserModalCss } from "./style";
+import { ProfileEditModal, UserModalCss } from "./style";
 
 const UserModalButton: React.FC = () => {
   const navigate = useNavigate();
@@ -30,6 +30,7 @@ const UserModalButton: React.FC = () => {
   const [imgUploading, setImgUploading] = useState<boolean>(false);
   const [openProfileEdit, setOpenProfileEdit] = useState(false);
   const [nameField, setNameField] = useState<string>(name);
+  const [passwordField, setPasswordField] = useState<string>("");
   const [isProfileSubmitting, setIsProfileSubmitting] = useState(false);
 
   //#region 大頭照
@@ -66,21 +67,38 @@ const UserModalButton: React.FC = () => {
   };
   //#endregion
 
+  const handleOpenProfileEditModal = () => {
+    setNameField(name);
+    setPasswordField("");
+    setOpenProfileEdit(true);
+  };
+
   const submitUpdateProfile = async () => {
     setIsProfileSubmitting(true);
 
     try {
-      await dispatch(
-        updateProfileAction({
-          name: nameField,
-          userId: _id,
-        })
-      );
+      if (nameField && nameField !== name) {
+        await dispatch(
+          updateProfileAction({
+            name: nameField,
+            userId: _id,
+          })
+        );
+      }
+      if (passwordField) {
+        await dispatch(
+          resetPasswordAction({
+            password: passwordField,
+            userId: _id,
+          })
+        );
+      }
+      setOpenProfileEdit(false);
     } catch (error) {
+      // 更新失敗不會進 catch!?
       console.error(error);
     } finally {
       setIsProfileSubmitting(false);
-      setOpenProfileEdit(false);
     }
   };
 
@@ -150,11 +168,7 @@ const UserModalButton: React.FC = () => {
             <p style={{ color: "var(--gray9f)" }}>{email}</p>
           </Col>
           <Col span={24} className="updateProfileBtn">
-            <Button
-              type="primary"
-              ghost
-              onClick={() => setOpenProfileEdit(true)}
-            >
+            <Button type="primary" ghost onClick={handleOpenProfileEditModal}>
               修改個人資料
             </Button>
           </Col>
@@ -175,26 +189,36 @@ const UserModalButton: React.FC = () => {
             </Button>
           </Col>
         </Row>
-        <Modal
+        <ProfileEditModal
           title={<div className="profileModalTitle">修改個人資料</div>}
           open={openProfileEdit}
+          onCancel={() => setOpenProfileEdit(false)}
           width={300}
           footer={null}
         >
-          <Form name="basic" layout="vertical">
+          <Form name="basic" layout="vertical" onFinish={submitUpdateProfile}>
             <Form.Item label="使用者名稱">
               <Input
+                type="text"
                 size="middle"
                 value={nameField}
                 onChange={(e) => setNameField(e.target.value)}
                 prefix={<UserOutlined />}
               />
             </Form.Item>
+            <Form.Item label="新密碼">
+              <Input
+                type="password"
+                size="middle"
+                value={passwordField}
+                onChange={(e) => setPasswordField(e.target.value)}
+                prefix={<KeyOutlined />}
+              />
+            </Form.Item>
             <Form.Item>
               <Button
                 type="primary"
                 htmlType="submit"
-                onClick={submitUpdateProfile}
                 loading={isProfileSubmitting}
                 block
               >
@@ -202,7 +226,7 @@ const UserModalButton: React.FC = () => {
               </Button>
             </Form.Item>
           </Form>
-        </Modal>
+        </ProfileEditModal>
       </UserModalCss>
     </>
   );

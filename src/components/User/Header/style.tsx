@@ -64,7 +64,13 @@ export const UserModalCss = styled(Modal)`
     margin-top: 16px;
     margin-bottom: 12px;
   }
+`;
 
+export const ProfileEditModal = styled(Modal)`
+  .profileModalTitle {
+    text-align: center;
+    margin-bottom: 32px;
+  }
 `;
 
 export const SearchCardInputStyled = styled.div`
