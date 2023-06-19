@@ -1,4 +1,4 @@
-import { Layout, Modal } from "antd";
+import { Layout, Modal, Select } from "antd";
 import styled from "styled-components";
 
 export const HeaderCss = styled(Layout.Header)`
@@ -8,44 +8,55 @@ export const HeaderCss = styled(Layout.Header)`
   .headerFunc {
     padding-right: 10px;
   }
-  .search {
-    padding: 12px 16px;
-    width: 500px;
-    height: 44px;
-    background-color: var(--graye9);
-    border-radius: 8px;
-    .ant-input-prefix {
-      // margin-left: 14px;
-    }
-    input {
-      background-color: var(--graye9);
-      padding-left: 14px;
-    }
-  }
-  .darkSearch {
-    padding: 12px 16px;
-    width: 500px;
-    height: 44px;
-    background-color: var(--black);
-    border-radius: 8px;
-    border: 0;
-    .ant-input-prefix {
-      // margin-left: 14px;
-    }
-    input {
-      background-color: var(--black);
-      ::placeholder {
-        color: #9f9f9f;
-        padding-left: 14px;
-        font-size: 16px;
-      }
-    }
-  }
 `;
 
 export const UserModalCss = styled(Modal)`
   padding: 16px;
   .ant-modal-body {
     text-align: center;
+  }
+`;
+
+export const SearchCardInputStyled = styled.div`
+  width: 500px;
+  .ant-select-selector {
+    height: 100% !important;
+    border: 0 !important;
+  }
+  .ant-select-selection-placeholder {
+    line-height: 44px !important;
+    display: flex;
+  }
+  .ant-select-selection-search {
+    display: flex;
+    align-items: center;
+  }
+  .search {
+    width: 100%;
+    .ant-select-selector {
+      background-color: var(--graye9);
+    }
+    .ant-select-selection-placeholder {
+      background-color: var(--graye9);
+      padding-left: 14px;
+    }
+    .ant-select-selection-search-input {
+      font-size: 16px !important;
+    }
+  }
+  .darkSearch {
+    width: 100%;
+    .ant-select-selector {
+      background-color: var(--black);
+    }
+    .ant-select-selection-placeholder {
+      color: var(--gray9f);
+      padding-left: 14px;
+      font-size: 16px;
+    }
+    .ant-select-selection-search-input {
+      color: white !important;
+      font-size: 16px !important;
+    }
   }
 `;
