@@ -20,3 +20,8 @@ export interface UpdateProfileProps {
   name?: string;
   avatar?: string;
 }
+
+export interface ResetPasswordProps {
+  password: string;
+  userId: string;
+}
