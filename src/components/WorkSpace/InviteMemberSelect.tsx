@@ -1,7 +1,8 @@
 import { searchLunarMemberApi } from "@/api/search";
 import { useApi } from "@/hooks/useApiHook";
-import { Avatar, List, Row, Select, Spin } from "antd";
+import { List, Row, Select, Spin } from "antd";
 import { debounce } from "lodash";
+import AvatarCustom from "../AvatarCustom";
 
 const InviteMemberSelect: React.FC<{
   organizationId?: string;
@@ -59,7 +60,9 @@ const InviteMemberSelect: React.FC<{
           <List itemLayout="horizontal">
             <List.Item>
               <List.Item.Meta
-                avatar={<Avatar src={user.avatar} />}
+                avatar={
+                  <AvatarCustom username={user.name} imgUrl={user.avatar} />
+                }
                 title={user.name}
                 description={user.email}
               />

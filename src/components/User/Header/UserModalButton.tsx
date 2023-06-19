@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Avatar, Button, Col, Form, Input, Row, Spin, Upload } from "antd";
+import { Button, Col, Form, Input, Row, Spin, Upload } from "antd";
 import {
   KeyOutlined,
   LoadingOutlined,
@@ -18,6 +18,7 @@ import {
 import { useAppDispatch, useAppSelector } from "@/hooks";
 import openNotification from "@/utils/openNotification";
 import { ProfileEditModal, UserModalCss } from "./style";
+import AvatarCustom from "@/components/AvatarCustom";
 
 const UserModalButton: React.FC = () => {
   const navigate = useNavigate();
@@ -114,7 +115,7 @@ const UserModalButton: React.FC = () => {
           alignItems: "center",
         }}
       >
-        <Avatar src={avatar} />
+        <AvatarCustom username={name} imgUrl={avatar} />
         <p
           style={{
             marginLeft: "8px",
@@ -143,11 +144,14 @@ const UserModalButton: React.FC = () => {
               className="avatar-uploader"
             >
               <div className="avatarBlock">
-                <Avatar
-                  size={64}
-                  src={avatar ? avatar : null}
-                  icon={avatar ? null : <UserOutlined />}
-                  style={imgUploading ? { opacity: 0.3 } : {}}
+                <AvatarCustom
+                  username={name}
+                  imgUrl={avatar ? avatar : null}
+                  style={{
+                    width: "64px",
+                    height: "64px",
+                    ...(imgUploading && { opacity: 0.3 }),
+                  }}
                 />
               </div>
               <Button type="primary" shape="circle" className="avatarUploadBtn">

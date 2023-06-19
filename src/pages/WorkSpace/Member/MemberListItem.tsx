@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Avatar, Button, List, Skeleton } from "antd";
+import { Button, List, Skeleton } from "antd";
 import { ExclamationCircleOutlined } from "@ant-design/icons";
 import ManageRole from "@/components/Modal/ManageRole";
 import RemoveMember from "@/components/Modal/RemoveMember";
@@ -7,6 +7,7 @@ import { useAppSelector } from "@/hooks";
 import { useParamOrganization } from "@/hooks/useParamOrganization";
 import { OrganizationMemberProps } from "@/interfaces/organization";
 import { selectUser } from "@/redux/userSlice";
+import AvatarCustom from "@/components/AvatarCustom";
 
 const MemberListItem: React.FC<{ member: OrganizationMemberProps }> = ({
   member,
@@ -89,7 +90,12 @@ const MemberListItem: React.FC<{ member: OrganizationMemberProps }> = ({
       >
         <Skeleton avatar title={false} loading={false} active>
           <List.Item.Meta
-            avatar={<Avatar src={member.userId.avatar} />}
+            avatar={
+              <AvatarCustom
+                username={member.userId.name}
+                imgUrl={member.userId.avatar}
+              />
+            }
             title={member.userId.name}
             description={member.userId.email}
           />

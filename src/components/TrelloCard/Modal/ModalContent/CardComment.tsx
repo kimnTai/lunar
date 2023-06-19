@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Avatar, Button, Col, List, Popover, Row, Space } from "antd";
+import { Button, Col, List, Popover, Row, Space } from "antd";
 import { ExclamationCircleOutlined } from "@ant-design/icons";
 import {
   deleteCardCommentAction,
@@ -12,6 +12,7 @@ import openNotification from "@/utils/openNotification";
 import CardCommentForm from "./CardCommentForm";
 import { CardCommentListStyled, SectionHeaderStyled } from "./style";
 import TextArea from "antd/es/input/TextArea";
+import AvatarCustom from "@/components/AvatarCustom";
 
 const getTimeText = (time: string) => {
   const seconds = (Date.now() - new Date(time).getTime()) / 1000;
@@ -153,7 +154,12 @@ const Comment: React.FC<{ itemData: CommentProps }> = ({ itemData }) => {
         }
       >
         <List.Item.Meta
-          avatar={<Avatar src={itemData.userId.avatar} />}
+          avatar={
+            <AvatarCustom
+              username={itemData.userId.name}
+              imgUrl={itemData.userId.avatar}
+            />
+          }
           title={
             <Space size={12}>
               <span className="userName">{itemData.userId.name}</span>
@@ -177,7 +183,7 @@ const Comment: React.FC<{ itemData: CommentProps }> = ({ itemData }) => {
                           event.preventDefault();
                           handleUpdateComment();
                         }}
-                        placeholder="填寫待辦項目"
+                        placeholder="填寫評論"
                       />
                     </Col>
                     <Col span={24}>

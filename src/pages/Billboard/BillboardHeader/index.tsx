@@ -13,6 +13,7 @@ import PopoverContent from "./PopoverContent";
 import AddMember from "@/components/Modal/AddMember";
 import { useAppSelector } from "@/hooks";
 import { selectBoard } from "@/redux/boardSlice";
+import AvatarCustom from "@/components/AvatarCustom";
 
 const BillboardHeader: React.FC = () => {
   const board = useAppSelector(selectBoard);
@@ -41,7 +42,7 @@ const BillboardHeader: React.FC = () => {
         <Avatar.Group>
           {board?.member?.map(({ userId: { avatar, name, _id } }) => (
             <Tooltip placement="top" title={name} key={_id}>
-              <Avatar src={avatar} />
+              <AvatarCustom username={name} imgUrl={avatar} />
             </Tooltip>
           ))}
         </Avatar.Group>
