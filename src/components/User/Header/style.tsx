@@ -1,4 +1,4 @@
-import { Layout, Modal, Select } from "antd";
+import { Layout, Modal } from "antd";
 import styled from "styled-components";
 
 export const HeaderCss = styled(Layout.Header)`
