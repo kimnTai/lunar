@@ -1,5 +1,6 @@
 import React from "react";
 import { Avatar, AvatarProps } from "antd";
+import { stringToHSL } from "@/utils/func";
 
 interface AvatarCustomProps extends AvatarProps {
   username: string;
@@ -7,27 +8,20 @@ interface AvatarCustomProps extends AvatarProps {
   style?: React.CSSProperties;
 }
 
-const nameToColor = (name: string) => {
-  let hash = 0;
-  for (let i = 0; i < Math.min(3, name.length); i++) {
-    hash = 31 * hash + name.charCodeAt(i);
-  }
-  let color = "#";
-  for (let i = 0; i < 3; i++) {
-    const value = (hash >> (i * 8)) & 0xff;
-    color += ("00" + value.toString(16)).substr(-2);
-  }
-
-  return color;
-};
-
 const AvatarCustom: React.FC<AvatarCustomProps> = ({
   username,
   imgUrl = null,
   ...props
 }) => {
   const firstLetter = username.charAt(0).toUpperCase();
-  const bgColor = nameToColor(username);
+  const bgColor = stringToHSL({
+    target: username,
+    options: {
+      hue: [180, 360],
+      sat: [85, 100],
+      lit: [60, 75],
+    },
+  });
 
   const getAvatarSrc = (imgUrl: string | null) => {
     if (!imgUrl || imgUrl === "https://i.imgur.com/tPmUQVM.png") {

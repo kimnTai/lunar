@@ -51,3 +51,42 @@ export const isDarkColor = (color: string) => {
   // 根據亮度判斷是否為深色
   return brightness < 128;
 };
+
+// https://gist.github.com/0x263b/2bdd90886c2036a1ad5bcf06d6e6fb37
+export const stringToHSL = (param: {
+  target: string;
+  options?: {
+    hue?: [number, number];
+    sat?: [number, number];
+    lit?: [number, number];
+  };
+}) => {
+  const { target } = param;
+  if (target.length === 0) {
+    return "";
+  }
+
+  let hash = 0;
+
+  for (let i = 0; i < target.length; i++) {
+    hash = target.charCodeAt(i) + ((hash << 5) - hash);
+    hash = hash & hash;
+  }
+
+  const range = (hash: number, min: number, max: number) => {
+    let diff = max - min;
+    let x = ((hash % diff) + diff) % diff;
+    return x + min;
+  };
+
+  let opts = param.options || {};
+  opts.hue = opts.hue || [0, 360];
+  opts.sat = opts.sat || [75, 100];
+  opts.lit = opts.lit || [40, 60];
+
+  const h = range(hash, opts.hue[0], opts.hue[1]);
+  const s = range(hash, opts.sat[0], opts.sat[1]);
+  const l = range(hash, opts.lit[0], opts.lit[1]);
+
+  return `hsl(${h}, ${s}%, ${l}%)`;
+};
