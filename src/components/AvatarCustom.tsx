@@ -1,7 +1,7 @@
 import React from "react";
-import { Avatar } from "antd";
+import { Avatar, AvatarProps } from "antd";
 
-interface AvatarCustomProps {
+interface AvatarCustomProps extends AvatarProps {
   username: string;
   imgUrl?: string | null;
   style?: React.CSSProperties;
@@ -24,7 +24,7 @@ const nameToColor = (name: string) => {
 const AvatarCustom: React.FC<AvatarCustomProps> = ({
   username,
   imgUrl = null,
-  style = {},
+  ...props
 }) => {
   const firstLetter = username.charAt(0).toUpperCase();
   const bgColor = nameToColor(username);
@@ -39,14 +39,15 @@ const AvatarCustom: React.FC<AvatarCustomProps> = ({
 
   return (
     <Avatar
+      {...props}
       src={getAvatarSrc(imgUrl)}
       style={{
-        ...style,
         backgroundColor: bgColor,
         color: "#ffffff",
         display: "flex",
         alignItems: "center",
         border: 0,
+        ...props.style,
       }}
     >
       {firstLetter}
