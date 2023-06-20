@@ -51,6 +51,17 @@ export interface AddBoardsMembers {
   userIdList: string[];
 }
 
+export interface UpdateBoardsMembers {
+  boardId: string;
+  memberId: string;
+  role?: string;
+}
+
+export interface DeleteBoardsMembers {
+  boardId: string;
+  memberId: string;
+}
+
 export interface UpdateBoardProps {
   boardId: string;
   name?: string;
