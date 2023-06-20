@@ -2,16 +2,22 @@ import React from "react";
 import styled from "styled-components";
 
 interface ColorIconProps {
-  color: string;
-  text: string;
   size: string;
-  fontSize: string;
-  background: string;
+  color?: string;
+  text?: string;
+  fontSize?: string;
+  background?: string;
   "background-image"?: string;
 }
 
+const DEFAULT_BACKGROUND = `linear-gradient(
+  112.89deg,
+  #0083ff 1.48%,
+  rgba(128, 0, 255, 0.86) 100%
+)`;
+
 const ColorIconCss = styled.div<ColorIconProps>`
-  background: ${(props) => props.background};
+  background: ${(props) => props.background ?? DEFAULT_BACKGROUND};
   width: ${(props) => props.size};
   height: ${(props) => props.size};
   color: ${(props) => props.color}!important;
@@ -29,4 +35,5 @@ const ColorIcon: React.FC<ColorIconProps> = (props) => (
     {props.text}
   </ColorIconCss>
 );
+
 export default ColorIcon;

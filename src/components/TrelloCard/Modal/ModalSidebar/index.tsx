@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Button, Col, Divider } from "antd";
 import {
+  ArrowRightOutlined,
   CheckSquareOutlined,
   ClockCircleOutlined,
   ShareAltOutlined,
@@ -16,10 +17,10 @@ import AddMemberModal from "./AddMemberModal";
 import AttachmentBox from "./AttachmentBox";
 import CloneCard from "./CloneCard";
 import CloseCard from "./CloseCard";
+import LabelModal from "./LabelModal";
 import MoveCard from "./MoveCard";
 import SidebarBox from "./SidebarBox";
 import { ModalSidebarStyled, ModalStyle } from "./style";
-import LabelModal from "./LabelModal";
 
 const ModalSidebar: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -124,7 +125,14 @@ const ModalSidebar: React.FC = () => {
 
         <AttachmentBox />
         <SidebarBox className={"mid"} title={"動作"} data={[]} />
-        <MoveCard />
+        <MoveCard>
+          <a className="button-link">
+            <span style={{ marginRight: "6px" }}>
+              <ArrowRightOutlined />
+            </span>
+            <span>移動</span>
+          </a>
+        </MoveCard>
         <CloneCard />
         <Divider style={{ margin: "8px 0" }} />
         <CloseCard />

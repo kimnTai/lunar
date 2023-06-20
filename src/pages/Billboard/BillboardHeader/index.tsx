@@ -1,19 +1,19 @@
-import { HeaderState } from "@/interfaces/boards";
 import { useState } from "react";
-import { BillboardHeaderBtn, BillboardHeaderCss } from "./style";
-import { ColorIcon } from "@/components/Icons";
 import { Avatar, Button, Popover, Tooltip } from "antd";
 import {
   DashOutlined,
   FilterOutlined,
   TeamOutlined,
 } from "@ant-design/icons/lib/icons";
-import PopoverTitle from "./PopoverTitle";
-import PopoverContent from "./PopoverContent";
+import AvatarCustom from "@/components/AvatarCustom";
 import AddMember from "@/components/Modal/AddMember";
 import { useAppSelector } from "@/hooks";
+import { HeaderState } from "@/interfaces/boards";
 import { selectBoard } from "@/redux/boardSlice";
-import AvatarCustom from "@/components/AvatarCustom";
+import BoardTitle from "./BoardTitle";
+import PopoverContent from "./PopoverContent";
+import PopoverTitle from "./PopoverTitle";
+import { BillboardHeaderBtn, BillboardHeaderCss } from "./style";
 
 const BillboardHeader: React.FC = () => {
   const board = useAppSelector(selectBoard);
@@ -23,21 +23,7 @@ const BillboardHeader: React.FC = () => {
 
   return (
     <BillboardHeaderCss className="d-space">
-      <div className="left-head">
-        <ColorIcon
-          color={"#A0D7FF"}
-          text={""}
-          size={"24px"}
-          fontSize={"14px"}
-          background={`linear-gradient(
-                  112.89deg,
-                  #0083ff 1.48%,
-                  rgba(128, 0, 255, 0.86) 100%
-                )`}
-          background-image={board?.image && `url(${board.image})`}
-        />
-        <p style={{ marginLeft: "16px" }}>{board?.name}</p>
-      </div>
+      <BoardTitle />
       <div className="right-head">
         <Avatar.Group>
           {board?.member?.map(({ userId: { avatar, name, _id } }) => (

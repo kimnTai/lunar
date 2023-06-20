@@ -34,18 +34,17 @@ const Login: React.FC = () => {
     }
   }, [isUserLogin]);
 
-  const onFinish = (values: LoginProps) => {
+  const onFinish = async (values: LoginProps) => {
     setButtonLoading(true);
 
     const action = isSignUpPage ? signInAction : loginAction;
 
-    dispatch(action(values))
-      .then(() => {
-        navigate(`/`);
-      })
-      .finally(() => {
-        setButtonLoading(false);
-      });
+    try {
+      await dispatch(action(values)).unwrap();
+      navigate(`/`);
+    } catch (error) {}
+
+    setButtonLoading(false);
   };
 
   return (

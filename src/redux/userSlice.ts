@@ -127,7 +127,7 @@ export const userSlice = createSlice({
       }
     });
     // 重設密碼
-    builder.addCase(resetPasswordAction.fulfilled, (state, action) => {
+    builder.addCase(resetPasswordAction.fulfilled, (_state, _action) => {
       openNotification({
         message: "密碼更新成功",
         success: true,

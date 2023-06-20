@@ -3,12 +3,6 @@ import { Button } from "antd";
 
 export const BillboardHeaderCss = styled.div`
   margin-bottom: 16px;
-  .left-head {
-    color: white;
-    font-size: 24px;
-    font-weight: 700;
-    display: flex;
-  }
   .right-head {
     display: flex;
     column-gap: 16px;
@@ -45,5 +39,28 @@ export const PopoverContentStyle = styled.div`
   .hoverBtn:hover {
     background-color: black;
     opacity: 0.3;
+  }
+`;
+
+export const BoardTitleStyle = styled.div`
+  color: white;
+  font-size: 24px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+
+  input {
+    padding: 10px;
+  }
+
+  p {
+    transition: background-color 0.3s;
+    cursor: pointer;
+    border-radius: 8px;
+    padding: 10px;
+
+    &:hover {
+      background-color: var(--gray66);
+    }
   }
 `;

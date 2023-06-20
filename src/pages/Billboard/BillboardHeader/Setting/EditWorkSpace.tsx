@@ -32,10 +32,8 @@ const EditWorkSpace: React.FC<{
 
     await dispatch(
       updateBoardAction({
-        name: board.name,
         organizationId: values.orgID,
         permission: board.permission,
-        closed: closed,
         boardId: board._id,
       })
     );
