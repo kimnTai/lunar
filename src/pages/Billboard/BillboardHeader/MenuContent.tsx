@@ -1,5 +1,3 @@
-import { PopoverContentProps } from "@/interfaces/boards";
-import ListButton from "@/components/ListButton";
 import {
   InboxOutlined,
   LogoutOutlined,
@@ -8,6 +6,9 @@ import {
   UploadOutlined,
   UserOutlined,
 } from "@ant-design/icons";
+import ListButton from "@/components/ListButton";
+import { PopoverContentProps } from "@/interfaces/boards";
+import openNotification from "@/utils/openNotification";
 import CloneBoardButton from "./CloneBoardButton";
 
 const MenuContent: React.FC<Pick<PopoverContentProps, "setHeaderState">> = ({
@@ -54,7 +55,12 @@ const MenuContent: React.FC<Pick<PopoverContentProps, "setHeaderState">> = ({
             <UploadOutlined style={{ fontSize: "20px", marginRight: "12px" }} />
           }
           text="分享"
-          onClick={() => {}}
+          onClick={() => {
+            navigator.clipboard.writeText(window.location.href);
+            openNotification({
+              message: "已複製到剪貼簿",
+            });
+          }}
         />
       </div>
       <div className="top-border" style={{ paddingBottom: 0 }}>
