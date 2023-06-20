@@ -71,7 +71,13 @@ const TrelloCardInner: React.FC<TrelloCardInnerProps> = ({ lists }) => {
                       attachmentLength={attachment.length}
                       checklist={checklist}
                     />
-                    <div className="d-space" style={{ padding: "0 8px" }}>
+                    <div
+                      className="d-space"
+                      style={{
+                        padding: "0 8px",
+                        justifyContent: date ? "space-between" : "end",
+                      }}
+                    >
                       <CardInnerDate date={date} />
                       <CardInnerMember member={member} />
                     </div>

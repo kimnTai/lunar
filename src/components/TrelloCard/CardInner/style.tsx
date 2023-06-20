@@ -85,7 +85,4 @@ export const CardInnerMemberStyled = styled.div`
   margin-top: 6px;
   display: flex;
   align-items: center;
-  .ant-avatar-group {
-    height: 24px;
-  }
 `;
