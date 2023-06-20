@@ -124,7 +124,7 @@ const LabelAction: React.FC<{
             <div>
               {colorList?.map(({ color }) => (
                 <ColorBlockButtonStyled
-                  type="text"
+                  type="link"
                   color={color}
                   key={color}
                   onClick={() => {
