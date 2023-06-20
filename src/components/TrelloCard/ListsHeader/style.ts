@@ -7,6 +7,14 @@ export const TrelloCardHeaderStyled = styled.div`
   .button-hover:hover {
     background-color: var(--black);
   }
+
+  p {
+    transition: background-color 0.3s;
+    border-radius: 8px;
+    &:hover {
+      background-color: var(--gray66);
+    }
+  }
 `;
 
 export const PopoverHeaderStyled = styled.div`
