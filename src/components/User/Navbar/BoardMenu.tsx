@@ -25,14 +25,7 @@ const BoardMenu: React.FC<{
         icon: (
           <ColorIcon
             color={"white"}
-            text={""}
             size={"24px"}
-            fontSize={"14px"}
-            background={`linear-gradient(
-                    112.89deg,
-                    #0083ff 1.48%,
-                    rgba(128, 0, 255, 0.86) 100%
-                  )`}
             background-image={image && `url(${image})`}
           />
         ),

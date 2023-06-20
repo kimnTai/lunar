@@ -25,15 +25,7 @@ const BillboardHeader: React.FC = () => {
     <BillboardHeaderCss className="d-space">
       <div className="left-head">
         <ColorIcon
-          color={"#A0D7FF"}
-          text={""}
-          size={"24px"}
-          fontSize={"14px"}
-          background={`linear-gradient(
-                  112.89deg,
-                  #0083ff 1.48%,
-                  rgba(128, 0, 255, 0.86) 100%
-                )`}
+          size={"32px"}
           background-image={board?.image && `url(${board.image})`}
         />
         <p style={{ marginLeft: "16px" }}>{board?.name}</p>

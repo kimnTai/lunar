@@ -8,6 +8,7 @@ export const BillboardHeaderCss = styled.div`
     font-size: 24px;
     font-weight: 700;
     display: flex;
+    align-items: center;
   }
   .right-head {
     display: flex;
