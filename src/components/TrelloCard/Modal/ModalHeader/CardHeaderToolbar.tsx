@@ -11,6 +11,7 @@ import { selectListByCardId } from "@/redux/boardSlice";
 import { addCardMemberAction } from "@/redux/cardSlice";
 import { selectUser } from "@/redux/userSlice";
 import openNotification from "@/utils/openNotification";
+import MoveCard from "../ModalSidebar/MoveCard";
 import { CardHeaderToolbarStyled } from "./style";
 
 const CardHeaderToolbar: React.FC = () => {
@@ -28,7 +29,11 @@ const CardHeaderToolbar: React.FC = () => {
       <Row align="middle" gutter={24}>
         <Col flex="none" className="col">
           <InboxOutlined className="icon" />
-          <p>在「{currentList?.name}」列表中</p>
+          <MoveCard>
+            <p>
+              在「<u>{currentList?.name}</u>」列表中
+            </p>
+          </MoveCard>
         </Col>
         {!isInMember && (
           <Col flex="none" className="col">

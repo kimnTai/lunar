@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router";
 import { Button, Form, Popover, Spin } from "antd";
-import { ArrowRightOutlined } from "@ant-design/icons";
 import { useAppDispatch } from "@/hooks";
 import { useParamCard } from "@/hooks/useParamCard";
 import { moveCardAction } from "@/redux/cardSlice";
@@ -12,7 +11,7 @@ type FormValue = {
   cascader: [string, string, string, number];
 };
 
-const MoveCard: React.FC = () => {
+const MoveCard: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const cardData = useParamCard();
@@ -97,12 +96,7 @@ const MoveCard: React.FC = () => {
         </Spin>
       }
     >
-      <a className="button-link">
-        <span style={{ marginRight: "6px" }}>
-          <ArrowRightOutlined />
-        </span>
-        <span>移動</span>
-      </a>
+      {children}
     </Popover>
   );
 };

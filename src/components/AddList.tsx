@@ -60,7 +60,7 @@ const AddList: React.FC<AddListProps> = () => {
 
   useEffect(() => {
     if (add) {
-      inputRef.current!.focus({ cursor: "start" });
+      inputRef.current?.focus({ cursor: "start" });
     }
   }, [add]);
 
