@@ -1,14 +1,18 @@
 import { CSSProperties, ChangeEvent, useState } from "react";
 import { Button, Card, Col, Input, List } from "antd";
-import { CloseOutlined, SearchOutlined } from "@ant-design/icons";
+import {
+  CloseOutlined,
+  MinusOutlined,
+  SearchOutlined,
+} from "@ant-design/icons";
 import { debounce } from "lodash";
 import { searchLunarMemberApi } from "@/api/search";
+import AvatarCustom from "@/components/AvatarCustom";
 import { useAppDispatch } from "@/hooks";
 import { useParamCard } from "@/hooks/useParamCard";
 import type { UserProps } from "@/interfaces/user";
-import { addCardMemberAction } from "@/redux/cardSlice";
+import { addCardMemberAction, deleteCardMemberAction } from "@/redux/cardSlice";
 import openNotification from "@/utils/openNotification";
-import AvatarCustom from "@/components/AvatarCustom";
 import { AddMemberModalStyled } from "./style";
 
 const AddMemberModal: React.FC<{
@@ -39,6 +43,17 @@ const AddMemberModal: React.FC<{
       });
     }
     setIsOpenAddMember(false);
+  };
+
+  // 拿 Id 做 loading 判斷，因為 boolean 會所有按鈕一起轉
+  const [removeId, setRemoveId] = useState("");
+  const handleRemoveCardMember = async (memberId: string) => {
+    const cardId = cardData?._id;
+    setRemoveId(memberId);
+    if (cardId) {
+      await dispatch(deleteCardMemberAction({ cardId, memberId }));
+    }
+    setRemoveId("");
   };
 
   return (
@@ -95,7 +110,28 @@ const AddMemberModal: React.FC<{
             dataSource={cardData?.member}
             locale={{ emptyText: "尚無成員" }}
             renderItem={(member) => (
-              <List.Item key={member.userId._id}>
+              <List.Item
+                key={member.userId._id}
+                actions={[
+                  <Button
+                    danger
+                    shape="circle"
+                    key={member.userId._id}
+                    style={{
+                      width: "24px",
+                      height: "24px",
+                      padding: 0,
+                      minWidth: "auto",
+                      marginLeft: "8px",
+                    }}
+                    icon={<MinusOutlined />}
+                    loading={removeId === member.userId._id}
+                    onClick={() => {
+                      handleRemoveCardMember(member.userId._id);
+                    }}
+                  />,
+                ]}
+              >
                 <List.Item.Meta
                   style={{ alignItems: "center" }}
                   avatar={

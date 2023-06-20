@@ -69,6 +69,11 @@ export interface AddCardMemberProps {
   userIdList: string[];
 }
 
+export interface DeleteCardMemberProps {
+  cardId: string;
+  memberId: string;
+}
+
 export interface CloneCardProps {
   sourceCardId: string;
   boardId: string;
