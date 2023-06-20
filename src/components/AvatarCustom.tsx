@@ -6,6 +6,7 @@ interface AvatarCustomProps extends AvatarProps {
   username: string;
   imgUrl?: string | null;
   style?: React.CSSProperties;
+  size?: number;
 }
 
 const AvatarCustom: React.FC<AvatarCustomProps> = ({

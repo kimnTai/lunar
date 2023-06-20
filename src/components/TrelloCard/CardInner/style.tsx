@@ -21,8 +21,13 @@ export const CardInnerDateStyled = styled.div<{
   isDue: string;
 }>`
   display: flex;
-  padding: 0 12px;
+  align-items: center;
+  justify-content: center;
+  padding: 0 4px;
   margin-top: 6px;
+  max-width: 160px;
+  font-size: 12px;
+  height: 24px;
   background-color: ${({ dueComplete, isDue }) =>
     dueComplete === "true"
       ? "#1f845a"
@@ -43,7 +48,7 @@ export const CardInnerDateStyled = styled.div<{
 
 export const CardInnerIconStyled = styled.div`
   display: flex;
-  justify-content: space-around;
+  column-gap: 6px;
   width: 160px;
   padding: 0 8px;
   margin-top: 6px;
@@ -73,4 +78,14 @@ export const CardInnerLabelStyled = styled.div<{ color: string }>`
   height: 8px;
   border-radius: 3px;
   margin-left: 5px;
+`;
+
+export const CardInnerMemberStyled = styled.div`
+  max-width: 106px;
+  margin-top: 6px;
+  display: flex;
+  align-items: center;
+  .ant-avatar-group {
+    height: 24px;
+  }
 `;

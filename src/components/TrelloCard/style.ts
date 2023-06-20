@@ -28,6 +28,19 @@ export const ScrollContainer = styled.div<{ internalScroll: boolean }>`
   overflow-x: hidden;
   overflow-y: ${(props) => (props.internalScroll ? "auto" : "hidden")};
   max-height: calc(100vh - 106px);
+  &::-webkit-scrollbar {
+    width: 9px;
+    background: transparent;
+  }
+  &::-webkit-scrollbar-track {
+    background-color: var(--black23);
+    border-radius: 8px;
+  }
+  &::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    background-color: var(--gray9f);
+    border: 2px solid var(--black23);
+  }
 `;
 
 export const TrelloCardBottomFuncStyled = styled.div<{ show: string }>`
