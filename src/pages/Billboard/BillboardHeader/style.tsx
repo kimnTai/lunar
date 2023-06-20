@@ -50,7 +50,8 @@ export const BoardTitleStyle = styled.div`
   align-items: center;
 
   input {
-    padding: 10px;
+    font-size: 24px;
+    font-weight: 700;
   }
 
   p {

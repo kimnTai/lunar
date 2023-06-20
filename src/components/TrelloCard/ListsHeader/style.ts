@@ -8,7 +8,16 @@ export const TrelloCardHeaderStyled = styled.div`
     background-color: var(--black);
   }
 
+  input {
+    font-size: "16px";
+    font-weight: 700;
+    line-height: 150%;
+  }
+
   p {
+    font-size: "16px";
+    font-weight: 700;
+    line-height: 150%;
     transition: background-color 0.3s;
     border-radius: 8px;
     &:hover {
