@@ -1,6 +1,5 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useState } from "react";
 import { Col, Input, Row } from "antd";
-import { TextAreaRef } from "antd/es/input/TextArea";
 import { useAppDispatch } from "@/hooks";
 import { useParamCard } from "@/hooks/useParamCard";
 import { updateCardAction } from "@/redux/cardSlice";
@@ -10,7 +9,6 @@ const CardTitle: React.FC = () => {
   const cardData = useParamCard();
   const [isEdit, setIsEdit] = useState(false);
   const [titleFiled, setTitleFiled] = useState(cardData?.name || "");
-  const textareaRef = useRef<TextAreaRef>(null);
 
   const dispatch = useAppDispatch();
 
@@ -29,29 +27,18 @@ const CardTitle: React.FC = () => {
     setIsEdit(false);
   };
 
-  useEffect(() => {
-    const handleClickOutside = ({ target }: PointerEvent) => {
-      if (
-        !textareaRef?.current?.resizableTextArea?.textArea.contains(
-          target as Node
-        )
-      ) {
-        setIsEdit(false);
-      }
-    };
-    document.addEventListener("pointerdown", handleClickOutside);
-    return () => {
-      document.removeEventListener("pointerdown", handleClickOutside);
-    };
-  }, []);
-
   return (
     <CardTitleStyled>
       <Row align="middle" gutter={4}>
         <Col flex="auto">
           {isEdit ? (
             <Input.TextArea
-              ref={textareaRef}
+              ref={(input) => {
+                if (input) {
+                  input.focus({ cursor: "end" });
+                  setIsEdit(true);
+                }
+              }}
               autoSize
               placeholder="請輸入標題"
               value={titleFiled}

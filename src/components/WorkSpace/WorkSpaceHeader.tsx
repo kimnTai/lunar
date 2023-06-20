@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import { Button, Col, Form, Input, Row, Spin } from "antd";
 import { EditOutlined } from "@ant-design/icons";
 import { useAppDispatch, useAppSelector } from "@/hooks";
@@ -16,8 +16,6 @@ const WorkSpaceHeader: React.FC = () => {
   );
   const [isEdit, setIsEdit] = useState(false);
   const [spinning, setSpinning] = useState(false);
-  const formRef = useRef(null);
-  const containerRef = useRef<HTMLDivElement>(null);
 
   const dispatch = useAppDispatch();
 
@@ -41,21 +39,6 @@ const WorkSpaceHeader: React.FC = () => {
     });
   };
 
-  useEffect(() => {
-    const handleClickOutside = ({ target }: PointerEvent) => {
-      if (
-        containerRef.current &&
-        !containerRef.current.contains(target as Node)
-      ) {
-        setIsEdit(false);
-      }
-    };
-    document.addEventListener("pointerdown", handleClickOutside);
-    return () => {
-      document.removeEventListener("pointerdown", handleClickOutside);
-    };
-  }, []);
-
   return (
     <Row>
       <ColorIcon
@@ -70,7 +53,7 @@ const WorkSpaceHeader: React.FC = () => {
           align={"middle"}
           justify={"center"}
           style={{ marginBottom: "8px" }}
-          ref={containerRef}
+          onBlur={() => setIsEdit(false)}
         >
           {isEdit ? (
             <Spin spinning={spinning}>
@@ -78,10 +61,16 @@ const WorkSpaceHeader: React.FC = () => {
                 onFinish={updateOrganizationName}
                 initialValues={{ name: organization?.name }}
                 style={{ display: "flex", gap: "4px" }}
-                ref={formRef}
               >
                 <Form.Item name="name" style={{ marginBottom: "8px" }}>
-                  <Input />
+                  <Input
+                    ref={(input) => {
+                      if (input) {
+                        input.focus();
+                        setIsEdit(true);
+                      }
+                    }}
+                  />
                 </Form.Item>
                 <Button htmlType="submit" type="primary">
                   儲存
