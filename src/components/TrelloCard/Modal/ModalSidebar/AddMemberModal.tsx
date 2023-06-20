@@ -1,5 +1,5 @@
 import { CSSProperties, ChangeEvent, useState } from "react";
-import { Avatar, Button, Card, Col, Input, List } from "antd";
+import { Button, Card, Col, Input, List } from "antd";
 import { CloseOutlined, SearchOutlined } from "@ant-design/icons";
 import { debounce } from "lodash";
 import { searchLunarMemberApi } from "@/api/search";
@@ -8,6 +8,7 @@ import { useParamCard } from "@/hooks/useParamCard";
 import type { UserProps } from "@/interfaces/user";
 import { addCardMemberAction } from "@/redux/cardSlice";
 import openNotification from "@/utils/openNotification";
+import AvatarCustom from "@/components/AvatarCustom";
 import { AddMemberModalStyled } from "./style";
 
 const AddMemberModal: React.FC<{
@@ -73,7 +74,12 @@ const AddMemberModal: React.FC<{
                 onClick={() => handleAddCardMember(member)}
               >
                 <List.Item.Meta
-                  avatar={<Avatar src={member.avatar} />}
+                  avatar={
+                    <AvatarCustom
+                      username={member.name}
+                      imgUrl={member.avatar}
+                    />
+                  }
                   title={member.name}
                   description={member.email}
                 />
@@ -92,7 +98,12 @@ const AddMemberModal: React.FC<{
               <List.Item key={member.userId._id}>
                 <List.Item.Meta
                   style={{ alignItems: "center" }}
-                  avatar={<Avatar src={member.userId.avatar} />}
+                  avatar={
+                    <AvatarCustom
+                      username={member.userId.name}
+                      imgUrl={member.userId.avatar}
+                    />
+                  }
                   title={member.userId.name}
                 />
               </List.Item>

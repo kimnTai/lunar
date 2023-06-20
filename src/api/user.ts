@@ -1,7 +1,11 @@
 import Request from "@/api/base/request";
 import { BoardsProps } from "@/interfaces/boards";
 import type { NotificationProps } from "@/interfaces/notification";
-import type { UserProps } from "@/interfaces/user";
+import type {
+  UpdateProfileProps,
+  UserProps,
+  ResetPasswordProps,
+} from "@/interfaces/user";
 
 // 註冊
 export const signInApi = (data: {
@@ -64,5 +68,21 @@ export const deleteNotificationApi = (data: { notificationId: string }) => {
 export const getRecentBoardsApi = () => {
   return Request.get<any, PrometheusResponse<Omit<BoardsProps, "list">[]>>(
     `/user/recentBoards`
+  );
+};
+
+// 更新個人資料
+export const updateProfileApi = (data: UpdateProfileProps) => {
+  return Request.put<any, PrometheusResponse<UpdateProfileProps>>(
+    `/user/updateProfile`,
+    data
+  );
+};
+
+// 修改密碼
+export const resetPasswordApi = (data: ResetPasswordProps) => {
+  return Request.post<any, PrometheusResponse<UpdateProfileProps>>(
+    `/user/resetPassword`,
+    data
   );
 };

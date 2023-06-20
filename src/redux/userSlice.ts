@@ -1,8 +1,16 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { loginApi, loginJwtApi, signInApi } from "@/api/user";
-import { LoginProps, UserProps } from "@/interfaces/user";
+import {
+  loginApi,
+  loginJwtApi,
+  resetPasswordApi,
+  signInApi,
+  updateProfileApi,
+} from "@/api/user";
+import { newImageFileUrl } from "@/api/upload";
+import { LoginProps, ResetPasswordProps, UserProps } from "@/interfaces/user";
 import { RootState } from "./store";
 import Cookie from "@/utils/cookie";
+import openNotification from "@/utils/openNotification";
 
 const initialState: {
   token: string;
@@ -36,6 +44,29 @@ export const loginAction = createAsyncThunk(
 export const loginJwtAction = createAsyncThunk(
   "user/loginJwt",
   async () => await loginJwtApi()
+);
+
+export const updateProfileAction = createAsyncThunk(
+  "user/updateProfile",
+  async (data: { userId: string; file?: Blob; name?: string }) => {
+    if (data.file) {
+      const { result: imageResult } = await newImageFileUrl(data.file);
+      return await updateProfileApi({
+        userId: data.userId,
+        avatar: imageResult.link,
+      });
+    } else {
+      return await updateProfileApi({
+        userId: data.userId,
+        name: data.name,
+      });
+    }
+  }
+);
+
+export const resetPasswordAction = createAsyncThunk(
+  "user/resetPassword",
+  async (data: ResetPasswordProps) => await resetPasswordApi(data)
 );
 
 export const userSlice = createSlice({
@@ -82,6 +113,26 @@ export const userSlice = createSlice({
       .addCase(loginJwtAction.rejected, (state) => {
         state.token = "";
       });
+    // 更新個人資料
+    builder.addCase(updateProfileAction.fulfilled, (state, action) => {
+      if (action.payload.result.avatar) {
+        state.user.avatar = action.payload.result.avatar;
+      }
+      if (action.payload.result.name) {
+        state.user.name = action.payload.result.name;
+        openNotification({
+          message: "使用者名稱更新成功",
+          success: true,
+        });
+      }
+    });
+    // 重設密碼
+    builder.addCase(resetPasswordAction.fulfilled, (state, action) => {
+      openNotification({
+        message: "密碼更新成功",
+        success: true,
+      });
+    });
   },
 });
 

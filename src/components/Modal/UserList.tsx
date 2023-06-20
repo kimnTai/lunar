@@ -1,7 +1,8 @@
 import React from "react";
-import { Avatar, Button, Select } from "antd";
+import { Button, Select } from "antd";
 import { MinusOutlined } from "@ant-design/icons";
 import { OrganizationMemberProps } from "@/interfaces/organization";
+import AvatarCustom from "../AvatarCustom";
 
 const UserList: React.FC<OrganizationMemberProps> = ({
   role,
@@ -10,7 +11,11 @@ const UserList: React.FC<OrganizationMemberProps> = ({
   return (
     <div className="d-space" style={{ marginBottom: "12px" }}>
       <div className="d-flex">
-        <Avatar src={avatar} style={{ width: "40px", height: "40px" }} />
+        <AvatarCustom
+          username={name}
+          imgUrl={avatar}
+          style={{ width: "40px", height: "40px" }}
+        />
         <div style={{ marginLeft: "8px" }}>
           <div style={{ color: "var(--black23)" }}>{name}</div>
           <div

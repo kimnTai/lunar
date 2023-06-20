@@ -3,6 +3,7 @@ import { Avatar, Button, Col, Tooltip } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import { useParamCard } from "@/hooks/useParamCard";
 import AddMemberModal from "../ModalSidebar/AddMemberModal";
+import AvatarCustom from "@/components/AvatarCustom";
 import { SectionHeaderStyled } from "./style";
 
 const CardMember: React.FC = () => {
@@ -12,7 +13,7 @@ const CardMember: React.FC = () => {
   const memberAvatarGroup = cardData?.member.map(
     ({ userId: { _id, name, avatar } }) => (
       <Tooltip key={_id} title={name} placement="top">
-        <Avatar src={avatar} />
+        <AvatarCustom username={name} imgUrl={avatar} />
       </Tooltip>
     )
   );
