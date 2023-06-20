@@ -1,19 +1,19 @@
-import { HeaderState } from "@/interfaces/boards";
 import { useState } from "react";
-import { BillboardHeaderBtn, BillboardHeaderCss } from "./style";
-import { ColorIcon } from "@/components/Icons";
 import { Avatar, Button, Popover, Tooltip } from "antd";
 import {
   DashOutlined,
   FilterOutlined,
   TeamOutlined,
 } from "@ant-design/icons/lib/icons";
-import PopoverTitle from "./PopoverTitle";
-import PopoverContent from "./PopoverContent";
+import AvatarCustom from "@/components/AvatarCustom";
 import AddMember from "@/components/Modal/AddMember";
 import { useAppSelector } from "@/hooks";
+import { HeaderState } from "@/interfaces/boards";
 import { selectBoard } from "@/redux/boardSlice";
-import AvatarCustom from "@/components/AvatarCustom";
+import BoardTitle from "./BoardTitle";
+import PopoverContent from "./PopoverContent";
+import PopoverTitle from "./PopoverTitle";
+import { BillboardHeaderBtn, BillboardHeaderCss } from "./style";
 
 const BillboardHeader: React.FC = () => {
   const board = useAppSelector(selectBoard);
@@ -23,13 +23,7 @@ const BillboardHeader: React.FC = () => {
 
   return (
     <BillboardHeaderCss className="d-space">
-      <div className="left-head">
-        <ColorIcon
-          size={"32px"}
-          background-image={board?.image && `url(${board.image})`}
-        />
-        <p style={{ marginLeft: "16px" }}>{board?.name}</p>
-      </div>
+      <BoardTitle />
       <div className="right-head">
         <Avatar.Group>
           {board?.member?.map(({ userId: { avatar, name, _id } }) => (

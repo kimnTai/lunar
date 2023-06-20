@@ -47,7 +47,7 @@ const BoardMenu: React.FC<{
     setTimeout(() => {
       setItems([...useItem, ...defaultItems]);
     });
-  }, [organization?.board?.length]);
+  }, [organization?.board]);
 
   return (
     <Menu
