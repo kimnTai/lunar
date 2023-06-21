@@ -102,7 +102,13 @@ const CloneCard: React.FC = () => {
               ]}
             />
             <Form.Item>
-              <Button type="primary" htmlType="submit">
+              <Button
+                type="primary"
+                htmlType="submit"
+                style={{
+                  width: "100%",
+                }}
+              >
                 建立卡片
               </Button>
             </Form.Item>

@@ -3,8 +3,10 @@ import type {
   AddBoardsMembers,
   BoardsProps,
   ClosedItemsProps,
+  DeleteBoardsMembers,
   NewBoardsProps,
   UpdateBoardProps,
+  UpdateBoardsMembers,
 } from "@/interfaces/boards";
 
 // 新增boards
@@ -22,12 +24,6 @@ export const deleteBoardApi = (id: string) =>
 export const getBoardApi = (id: string) =>
   Request.get<any, PrometheusResponse<BoardsProps>>(`/boards/${id}`);
 
-// 刪除Boards Member
-export const deleteBoardMemberApi = (boardId: string, memberId: string) =>
-  Request.delete<any, PrometheusResponse<BoardsProps>>(
-    `/${boardId}/members/${memberId}`
-  );
-
 // 複製單一看板
 export const postCloneBoardApi = (data: {
   sourceBoardId: string;
@@ -43,6 +39,21 @@ export const addBoardMembersApi = (data: AddBoardsMembers) => {
   return Request.post<any, PrometheusResponse<BoardsProps>>(
     `/boards/${data.boardId}/members`,
     data
+  );
+};
+
+// 更新看板成員權限
+export const updateBoardMemberApi = (data: UpdateBoardsMembers) => {
+  return Request.put<any, PrometheusResponse<BoardsProps>>(
+    `/boards/${data.boardId}/members/${data.memberId}`,
+    data
+  );
+};
+
+// 移除看板成員
+export const deleteBoardMemberApi = (data: DeleteBoardsMembers) => {
+  return Request.delete<any, PrometheusResponse<BoardsProps>>(
+    `/boards/${data.boardId}/members/${data.memberId}`
   );
 };
 

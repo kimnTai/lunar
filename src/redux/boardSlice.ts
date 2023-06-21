@@ -3,17 +3,21 @@ import {
   AddBoardsMembers,
   BoardsProps,
   CloneBoardProps,
+  DeleteBoardsMembers,
   NewBoardsProps,
   UpdateBoardProps,
+  UpdateBoardsMembers,
 } from "@/interfaces/boards";
 import {
   addBoardMembersApi,
   deleteBoardApi,
+  deleteBoardMemberApi,
   generateBoardInviteLinkApi,
   getBoardApi,
   newBoardApi,
   postCloneBoardApi,
   updateBoardApi,
+  updateBoardMemberApi,
 } from "@/api/boards";
 import { RootState } from "./store";
 import {
@@ -93,6 +97,16 @@ export const deleteBoardAction = createAsyncThunk(
 export const addBoardMembersAction = createAsyncThunk(
   "board/getBoardById",
   async (data: AddBoardsMembers) => await addBoardMembersApi(data)
+);
+
+export const updateBoardMembersAction = createAsyncThunk(
+  "board/getBoardById",
+  async (data: UpdateBoardsMembers) => await updateBoardMemberApi(data)
+);
+
+export const deleteBoardMembersAction = createAsyncThunk(
+  "board/getBoardById",
+  async (data: DeleteBoardsMembers) => await deleteBoardMemberApi(data)
 );
 
 export const postCloneBoardAction = createAsyncThunk(

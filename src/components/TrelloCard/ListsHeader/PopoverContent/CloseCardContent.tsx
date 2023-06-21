@@ -27,7 +27,15 @@ const CloseCardContent: React.FC<{
           "將移除所有本看板中此列表上的卡片。如欲閱覽已封存的卡片並將卡片移回看板，請點選「選單」>「已封存的項目」。"
         }
       </p>
-      <Button danger type="primary" onClick={onClick}>
+      <br></br>
+      <Button
+        danger
+        type="primary"
+        style={{
+          width: "100%",
+        }}
+        onClick={onClick}
+      >
         全部封存
       </Button>
     </Spin>

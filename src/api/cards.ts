@@ -9,6 +9,7 @@ import type {
   AddCardMemberProps,
   CloneCardProps,
   MoveCardProps,
+  DeleteCardMemberProps,
 } from "@/interfaces/cards";
 import {
   ChecklistProps,
@@ -146,6 +147,13 @@ export const addCardMemberApi = (data: AddCardMemberProps) => {
   return Request.post<any, PrometheusResponse<CardsProps>>(
     `/cards/${data.cardId}/members`,
     data
+  );
+};
+
+// 移除卡片成員
+export const deleteCardMemberApi = (data: DeleteCardMemberProps) => {
+  return Request.delete<any, PrometheusResponse<CardsProps>>(
+    `/cards/${data.cardId}/members/${data.memberId}`
   );
 };
 

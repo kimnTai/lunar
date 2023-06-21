@@ -1,5 +1,5 @@
 import { PopoverContentProps } from "@/interfaces/boards";
-import ArchiveContent from "./ArchiveContent";
+import ArchiveContent from "./Archive";
 import LabelContent from "./Label/LabelContent";
 import MenuContent from "./MenuContent";
 import SettingContent from "./Setting/SettingContent";

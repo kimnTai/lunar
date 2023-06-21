@@ -49,16 +49,7 @@ const ListsHeader: React.FC<{ listId: string }> = ({ listId }) => {
           />
         </Spin>
       ) : (
-        <p
-          style={{
-            fontSize: "16px",
-            lineHeight: "150%",
-            fontWeight: 700,
-          }}
-          onClick={() => setEdit(true)}
-        >
-          {list?.name}
-        </p>
+        <p onClick={() => setEdit(true)}>{list?.name}</p>
       )}
       <div className="d-flex">
         <Button

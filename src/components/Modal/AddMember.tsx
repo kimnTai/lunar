@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import { Button, Divider, Form, Select } from "antd";
+import { useAppDispatch, useAppSelector } from "@/hooks";
+import { addBoardMembersAction, selectBoard } from "@/redux/boardSlice";
 import CopyInviteLinkBtn from "../WorkSpace/CopyInviteLinkBtn";
 import InviteMemberSelect from "../WorkSpace/InviteMemberSelect";
 import UserList from "./UserList";
 import { AddMemberCss } from "./style";
-import { useAppDispatch, useAppSelector } from "@/hooks";
-import { addBoardMembersAction, selectBoard } from "@/redux/boardSlice";
 
 const AddMember: React.FC<{
   open: boolean;

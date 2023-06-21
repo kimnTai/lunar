@@ -88,7 +88,13 @@ const MoveCard: React.FC<{ children: React.ReactNode }> = ({ children }) => {
               ]}
             />
             <Form.Item>
-              <Button type="primary" htmlType="submit">
+              <Button
+                type="primary"
+                htmlType="submit"
+                style={{
+                  width: "100%",
+                }}
+              >
                 移動
               </Button>
             </Form.Item>
