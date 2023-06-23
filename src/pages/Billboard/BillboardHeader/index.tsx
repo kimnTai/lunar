@@ -34,6 +34,8 @@ const BillboardHeader: React.FC = () => {
         </Avatar.Group>
         <BillboardHeaderBtn
           icon={<FilterOutlined style={{ fontSize: "16px" }} />}
+          // TODO:篩選功能
+          style={{ display: "none" }}
         >
           篩選
         </BillboardHeaderBtn>

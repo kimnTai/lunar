@@ -63,7 +63,14 @@ const MenuContent: React.FC<Pick<PopoverContentProps, "setHeaderState">> = ({
           }}
         />
       </div>
-      <div className="top-border" style={{ paddingBottom: 0 }}>
+      <div
+        className="top-border"
+        style={{
+          paddingBottom: 0,
+          // TODO:退出? 關閉? 看板功能
+          display: "none",
+        }}
+      >
         <ListButton
           icon={
             <LogoutOutlined style={{ fontSize: "20px", marginRight: "12px" }} />
