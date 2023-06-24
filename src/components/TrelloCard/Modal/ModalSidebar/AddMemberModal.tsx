@@ -21,12 +21,12 @@ const AddMemberModal: React.FC<{
 }> = ({ setIsOpenAddMember, style }) => {
   const dispatch = useAppDispatch();
   const cardData = useParamCard();
-  const [resultMember, setResultMember] = useState<UserProps[] | null>(null);
+  const [resultMember, setResultMember] = useState<UserProps[]>([]);
   const [isLoading, setIsLoading] = useState(false);
 
   const handleSearch = debounce(async (e: ChangeEvent<HTMLInputElement>) => {
     setIsLoading(true);
-    if (e.target.value.length > 1) {
+    if (e.target.value.length >= 1) {
       await searchLunarMemberApi({ query: e.target.value }).then((res) => {
         setResultMember(res.result);
       });
@@ -35,13 +35,22 @@ const AddMemberModal: React.FC<{
   }, 800);
 
   const handleAddCardMember = async (member: UserProps) => {
-    const cardId = cardData?._id;
-    if (cardId) {
-      await dispatch(addCardMemberAction({ cardId, userIdList: [member._id] }));
-      openNotification({
-        message: `加入成功`,
-      });
+    if (!cardData) {
+      return;
     }
+    setIsLoading(true);
+
+    await dispatch(
+      addCardMemberAction({
+        cardId: cardData._id,
+        userIdList: [member._id],
+      })
+    );
+
+    openNotification({
+      message: `加入成功`,
+    });
+    setIsLoading(false);
     setIsOpenAddMember(false);
   };
 
@@ -75,33 +84,30 @@ const AddMemberModal: React.FC<{
           onChange={(e) => handleSearch(e)}
           prefix={<SearchOutlined />}
         />
-        {resultMember && (
-          <List
-            className="search-list-items"
-            itemLayout="horizontal"
-            dataSource={resultMember}
-            loading={isLoading}
-            locale={{ emptyText: "這個人似乎尚未註冊 Lunar。" }}
-            renderItem={(member) => (
-              <List.Item
-                className="search-list-item"
-                key={member._id}
-                onClick={() => handleAddCardMember(member)}
-              >
-                <List.Item.Meta
-                  avatar={
-                    <AvatarCustom
-                      username={member.name}
-                      imgUrl={member.avatar}
-                    />
-                  }
-                  title={member.name}
-                  description={member.email}
-                />
-              </List.Item>
-            )}
-          />
-        )}
+        <List
+          className="search-list-items"
+          itemLayout="horizontal"
+          dataSource={resultMember}
+          loading={isLoading}
+          locale={{
+            emptyText: resultMember.length ? "這個人似乎尚未註冊 Lunar。" : " ",
+          }}
+          renderItem={(member) => (
+            <List.Item
+              className="search-list-item"
+              key={member._id}
+              onClick={() => handleAddCardMember(member)}
+            >
+              <List.Item.Meta
+                avatar={
+                  <AvatarCustom username={member.name} imgUrl={member.avatar} />
+                }
+                title={member.name}
+                description={member.email}
+              />
+            </List.Item>
+          )}
+        />
 
         <Col className="board-member-list">
           <p>卡片成員</p>
