@@ -1,8 +1,10 @@
 import React from "react";
+import { Badge, Button } from "antd";
+import { BellOutlined } from "@ant-design/icons";
 import { useAppSelector } from "@/hooks";
 import RecentBoardsBtn from "./Dropdown/RecentBoardsBtn";
 import WorkSpaceBtn from "./Dropdown/WorkSpaceBtn";
-import NotificationButton from "./NotificationButton";
+import NotificationPopover from "./NotificationPopover";
 import SearchCardInput from "./SearchCardInput";
 import UserModalButton from "./UserModalButton";
 import { HeaderCss } from "./style";
@@ -29,7 +31,25 @@ const Header: React.FC = () => {
         <SearchCardInput />
       </div>
       <div className="d-center">
-        <NotificationButton />
+        <NotificationPopover>
+          <Badge>
+            <Button
+              icon={
+                <BellOutlined
+                  style={{ color: showWorkSpace ? "#232323" : "#FFFFFF" }}
+                />
+              }
+              style={{
+                width: "36px",
+                height: "36px",
+                borderRadius: 50,
+                border: 0,
+                background: showWorkSpace ? "#F7F7F7" : "#666666",
+              }}
+              shape="circle"
+            />
+          </Badge>
+        </NotificationPopover>
         <UserModalButton />
       </div>
     </HeaderCss>

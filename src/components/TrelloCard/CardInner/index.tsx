@@ -1,6 +1,7 @@
 import React from "react";
-import { Card } from "antd";
+import { useNavigate } from "react-router";
 import { Draggable } from "react-beautiful-dnd";
+import { Card } from "antd";
 import { TrelloCardInnerProps } from "@/interfaces/trelloCard";
 import CardInnerChecklist from "./CardInnerChecklist";
 import CardInnerDate from "./CardInnerDate";
@@ -8,7 +9,6 @@ import CardInnerIcon from "./CardInnerIcon";
 import CardInnerLabel from "./CardInnerLabel";
 import CardInnerMember from "./CardInnerMember";
 import CardInnerTitle from "./CardInnerTitle";
-import { useNavigate } from "react-router";
 
 const TrelloCardInner: React.FC<TrelloCardInnerProps> = ({ lists }) => {
   const navigate = useNavigate();
@@ -66,21 +66,44 @@ const TrelloCardInner: React.FC<TrelloCardInnerProps> = ({ lists }) => {
                     <CardInnerTitle name={name} />
                     <CardInnerLabel label={label} />
                     <CardInnerChecklist checklist={checklist} />
-                    <CardInnerIcon
-                      commentLength={comment.length}
-                      attachmentLength={attachment.length}
-                      checklist={checklist}
-                    />
-                    <div
-                      className="d-space"
-                      style={{
-                        padding: "0 8px",
-                        justifyContent: date ? "space-between" : "end",
-                      }}
-                    >
-                      <CardInnerDate date={date} />
-                      <CardInnerMember member={member} />
-                    </div>
+                    {(() => {
+                      if (date) {
+                        return (
+                          <>
+                            <CardInnerIcon
+                              commentLength={comment.length}
+                              attachmentLength={attachment.length}
+                              checklist={checklist}
+                            />
+                            <div
+                              className="d-space"
+                              style={{
+                                padding: "0 8px",
+                                justifyContent: "space-between",
+                              }}
+                            >
+                              <CardInnerDate date={date} />
+                              <CardInnerMember member={member} />
+                            </div>
+                          </>
+                        );
+                      }
+                      return (
+                        <div
+                          style={{
+                            display: "flex",
+                            justifyContent: "space-between",
+                          }}
+                        >
+                          <CardInnerIcon
+                            commentLength={comment.length}
+                            attachmentLength={attachment.length}
+                            checklist={checklist}
+                          />
+                          <CardInnerMember member={member} />
+                        </div>
+                      );
+                    })()}
                   </Card>
                 </div>
               )}

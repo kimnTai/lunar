@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Avatar, Button, Col } from "antd";
+import { Avatar, Button, Col, Tooltip } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import { useParamCard } from "@/hooks/useParamCard";
 import { isDarkColor } from "@/utils/func";
@@ -12,16 +12,18 @@ const CardLabel: React.FC = () => {
   const [isOpenLabel, setIsOpenLabel] = useState(false);
 
   const labelAvatarGroup = cardData?.label.map(({ name, color, _id }) => (
-    <Avatar
-      key={_id}
-      shape="square"
-      style={{
-        backgroundColor: color,
-        color: isDarkColor(color) ? "white" : "black",
-      }}
-    >
-      {name}
-    </Avatar>
+    <Tooltip key={_id} title={name} placement="top">
+      <Avatar
+        key={_id}
+        shape="square"
+        style={{
+          backgroundColor: color,
+          color: isDarkColor(color) ? "white" : "black",
+        }}
+      >
+        {name}
+      </Avatar>
+    </Tooltip>
   ));
 
   return (
