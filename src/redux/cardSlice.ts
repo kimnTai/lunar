@@ -52,7 +52,7 @@ import {
 } from "@/interfaces/checklists";
 
 export const newCardAction = createAsyncThunk(
-  "card/newCard",
+  "card/moveCard",
   async (data: NewCardProps) => await newCardApi(data)
 );
 
@@ -135,7 +135,7 @@ export const deleteCardDateAction = createAsyncThunk(
 );
 
 export const cloneCardAction = createAsyncThunk(
-  "card/newCard",
+  "card/cloneCard",
   async (data: CloneCardProps) => await postCloneCardApi(data)
 );
 
