@@ -67,6 +67,7 @@ const CardDescription: React.FC = () => {
                 value={descriptionField}
                 placeholder="請輸入內容"
                 onChange={setDescriptionField}
+                onBlur={() => onSubmit(descriptionField)}
               />
             </Form.Item>
             <Form.Item>
