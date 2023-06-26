@@ -52,7 +52,7 @@ const SettingContent: React.FC = () => {
           </p>
         </Button>
       </div>
-      <div className="top-border">
+      <div className="top-border" style={{ display: "none" }}>
         <Button
           type="text"
           onClick={CommentPurviewClick}

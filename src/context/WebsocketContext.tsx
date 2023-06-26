@@ -60,6 +60,10 @@ export const WebSocketProvider: React.FC<{ children: ReactNode }> = ({
     if (ws.current && connect) {
       ws.current.send(JSON.stringify(message));
     }
+    // 看板切換時，要清空舊資料
+    if (message.type === "unsubscribe") {
+      setData(undefined);
+    }
   };
 
   return (

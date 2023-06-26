@@ -58,7 +58,7 @@ const SearchCardInput: React.FC = () => {
           <p className="d-center">
             <SearchOutlined
               style={{
-                fontSize:"15px",
+                fontSize: "15px",
                 marginRight: "12px",
                 color: workSpaceId ? "black" : "white",
               }}
@@ -84,7 +84,10 @@ const SearchCardInput: React.FC = () => {
         onSearch={onSearch}
         onChange={({ key }) => {
           navigate(key);
+          setOptions([]);
         }}
+        // TODO:型別
+        value={[] as any}
       />
     </SearchCardInputStyled>
   );

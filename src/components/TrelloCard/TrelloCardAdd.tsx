@@ -23,6 +23,26 @@ const TrelloCardAdd: React.FC<{
     }
   }, [showAddCard]);
 
+  const handleAddCard = async () => {
+    if (text.length < 2) {
+      return;
+    }
+    setSpinning(true);
+
+    await dispatch(
+      newCardAction({
+        name: text,
+        position: `${nextPosition(list.card)}`,
+        listId: list.id,
+        boardId: list.boardId,
+      })
+    );
+
+    setSpinning(false);
+    setShowAddCard(false);
+    setText("");
+  };
+
   return (
     <Spin spinning={spinning}>
       <TrelloCardAddCss
@@ -45,6 +65,7 @@ const TrelloCardAdd: React.FC<{
               ref={inputRef}
               placeholder="輸入標題"
               style={{ width: "calc(100% - 24px - 24px - 24px)" }}
+              onPressEnter={handleAddCard}
             />
             <Button
               className="d-center"
@@ -65,27 +86,7 @@ const TrelloCardAdd: React.FC<{
           <div className="bottom-func">
             <Button
               type="primary"
-              onClick={async () => {
-                if (text.length < 2) {
-                  return;
-                }
-                setSpinning(true);
-
-                try {
-                  await dispatch(
-                    newCardAction({
-                      name: text,
-                      position: `${nextPosition(list.card)}`,
-                      listId: list.id,
-                      boardId: list.boardId,
-                    })
-                  );
-                } catch (error) {}
-
-                setSpinning(false);
-                setShowAddCard(false);
-                setText("");
-              }}
+              onClick={handleAddCard}
               style={{ backgroundColor: "var(--black23)", width: "100%" }}
             >
               新增卡片

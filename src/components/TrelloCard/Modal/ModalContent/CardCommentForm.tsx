@@ -1,15 +1,17 @@
 import { useState } from "react";
 import { Button, Form, Input } from "antd";
 import { SendOutlined } from "@ant-design/icons";
+import AvatarCustom from "@/components/AvatarCustom";
 import { useAppDispatch, useAppSelector } from "@/hooks";
 import { useParamCard } from "@/hooks/useParamCard";
 import { newCardCommentAction } from "@/redux/cardSlice";
+import { selectUser } from "@/redux/userSlice";
 import { CardCommentFormStyled } from "./style";
 
 const CardCommentForm: React.FC = () => {
   const dispatch = useAppDispatch();
   const cardId = useParamCard()?._id;
-  const user = useAppSelector((state) => state.user.user);
+  const user = useAppSelector(selectUser);
 
   const [form] = Form.useForm<{ comment: string }>();
   const [loading, setLoading] = useState(false);
@@ -44,11 +46,11 @@ const CardCommentForm: React.FC = () => {
         <Form.Item
           name={"comment"}
           label={
-            <img
-              src={user.avatar}
+            <AvatarCustom
+              username={user.name}
+              imgUrl={user.avatar}
+              size={32}
               style={{
-                height: 32,
-                width: 32,
                 marginRight: "16px",
               }}
             />
