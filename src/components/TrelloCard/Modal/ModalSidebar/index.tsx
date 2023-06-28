@@ -97,7 +97,7 @@ const ModalSidebar: React.FC = () => {
               },
             },
             {
-              label: "代辦清單",
+              label: "待辦清單",
               value: "checklist",
               icon: <CheckSquareOutlined />,
               onClickEvent: () => {
