@@ -14,4 +14,17 @@ export const MainLayoutCss = styled(Layout.Content)<{ workspace: string }>`
     props.workspace === "true" ? "white" : "var(--black23)"};
   padding: 24px 48px;
   overflow-x: auto;
+  overflow-y: hidden;
+  &::-webkit-scrollbar {
+    background: transparent;
+  }
+  &::-webkit-scrollbar-track {
+    background-color: var(--black23);
+    border-radius: 8px;
+  }
+  &::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    background-color: var(--gray9f);
+    border: 2px solid var(--black23);
+  }
 `;
