@@ -74,7 +74,12 @@ export const ProfileEditModal = styled(Modal)`
 `;
 
 export const SearchCardInputStyled = styled.div`
+  // TODO: 寬度自適應
   width: 500px;
+  @media (max-width: 1175px) {
+    display: none;
+  }
+
   .ant-select-selector {
     height: 100% !important;
     border: 0 !important;
