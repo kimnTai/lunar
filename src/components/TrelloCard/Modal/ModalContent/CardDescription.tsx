@@ -97,7 +97,7 @@ const CardDescription: React.FC = () => {
           </div>
         ) : (
           <div
-            dangerouslySetInnerHTML={{ __html: descriptionField }}
+            dangerouslySetInnerHTML={{ __html: cardData?.description || "" }}
             onClick={() => setOpenTextEditor(true)}
             className="descriptionDisplay"
           ></div>
