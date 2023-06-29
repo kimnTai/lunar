@@ -19,11 +19,14 @@ export const LoginCss = styled.div`
   .ant-card {
     position: absolute;
     width: 448px;
-    // height: 614px;
     font-size: 14px;
     top: calc(50% - 614px / 2);
     left: calc(67.18% - 448px / 2);
-    z-index: 5;
+    z-index: 6;
+    @media (max-width: 768px) {
+      left: 50%;
+      transform: translateX(-50%);
+    }
   }
   .ant-card-body {
     padding: "40px 64px 32px 64px";
