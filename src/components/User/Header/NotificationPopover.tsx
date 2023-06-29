@@ -99,7 +99,7 @@ const NotificationPopover: React.FC<{ children: ReactNode }> = ({
             dataSource={notificationList}
             pagination={{
               onChange: (_page) => {},
-              pageSize: 8,
+              pageSize: 7,
             }}
             renderItem={(item) => (
               <List.Item
