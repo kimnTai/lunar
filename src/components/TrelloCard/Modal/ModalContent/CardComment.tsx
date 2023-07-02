@@ -1,18 +1,18 @@
 import React, { useState } from "react";
-import { Button, Col, List, Popover, Row, Space } from "antd";
+import AvatarCustom from "@/components/AvatarCustom";
+import { Button, Col, Input, List, Popover, Row, Space } from "antd";
 import { ExclamationCircleOutlined } from "@ant-design/icons";
+import { useAppDispatch, useAppSelector } from "@/hooks";
+import { useParamCard } from "@/hooks/useParamCard";
+import { CommentProps } from "@/interfaces/comments";
 import {
   deleteCardCommentAction,
   updateCardCommentAction,
 } from "@/redux/cardSlice";
-import { CommentProps } from "@/interfaces/comments";
-import { useParamCard } from "@/hooks/useParamCard";
-import { useAppDispatch } from "@/hooks";
+import { selectUser } from "@/redux/userSlice";
 import openNotification from "@/utils/openNotification";
 import CardCommentForm from "./CardCommentForm";
 import { CardCommentListStyled, SectionHeaderStyled } from "./style";
-import TextArea from "antd/es/input/TextArea";
-import AvatarCustom from "@/components/AvatarCustom";
 
 const getTimeText = (time: string) => {
   const seconds = (Date.now() - new Date(time).getTime()) / 1000;
@@ -107,6 +107,7 @@ const PopoverDelete: React.FC<{ commentData: CommentProps }> = ({
 
 const Comment: React.FC<{ itemData: CommentProps }> = ({ itemData }) => {
   const dispatch = useAppDispatch();
+  const user = useAppSelector(selectUser);
 
   const [isCommentEdit, setIsCommentEdit] = useState(false);
   const [commentField, setCommentField] = useState(itemData.comment);
@@ -137,21 +138,21 @@ const Comment: React.FC<{ itemData: CommentProps }> = ({ itemData }) => {
   return (
     <>
       <List.Item
-        actions={
-          !isCommentEdit
-            ? [
-                <a
-                  key="list-loadmore-edit"
-                  onClick={() => {
-                    setIsCommentEdit(true);
-                  }}
-                >
-                  編輯
-                </a>,
-                <PopoverDelete commentData={itemData} />,
-              ]
-            : []
-        }
+        actions={(() => {
+          if (!isCommentEdit && itemData.userId._id === user._id) {
+            return [
+              <a
+                key="list-loadmore-edit"
+                onClick={() => {
+                  setIsCommentEdit(true);
+                }}
+              >
+                編輯
+              </a>,
+              <PopoverDelete commentData={itemData} />,
+            ];
+          }
+        })()}
       >
         <List.Item.Meta
           avatar={
@@ -176,7 +177,7 @@ const Comment: React.FC<{ itemData: CommentProps }> = ({ itemData }) => {
                 <Col span={24}>
                   <Row gutter={[16, 4]}>
                     <Col span={24}>
-                      <TextArea
+                      <Input.TextArea
                         value={commentField}
                         onChange={(e) => setCommentField(e.target.value)}
                         onPressEnter={(event) => {

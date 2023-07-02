@@ -27,7 +27,7 @@ export const TrelloCardStyled = styled(Card)<{ isdragging: string }>`
 export const ScrollContainer = styled.div<{ internalScroll: boolean }>`
   overflow-x: hidden;
   overflow-y: ${(props) => (props.internalScroll ? "auto" : "hidden")};
-  max-height: calc(100vh - 106px);
+  max-height: calc(100vh - 266px);
   &::-webkit-scrollbar {
     width: 9px;
     background: transparent;

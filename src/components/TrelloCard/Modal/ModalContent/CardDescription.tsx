@@ -15,8 +15,6 @@ const CardDescription: React.FC = () => {
   const [descriptionField, setDescriptionField] = useState(
     cardData?.description ?? ""
   );
-  // 最新的儲存內容
-  const [descriptionSaved, setDescriptionSaved] = useState(descriptionField);
 
   const [form] = Form.useForm();
 
@@ -33,7 +31,6 @@ const CardDescription: React.FC = () => {
           description: values,
         })
       );
-      setDescriptionSaved(values);
     } catch (error) {
       console.error(error);
     }
@@ -41,9 +38,12 @@ const CardDescription: React.FC = () => {
   };
 
   const isDescriptionEmpty = () => {
+    if (!cardData) {
+      return false;
+    }
     // 刪除所有 HTML 標籤，僅留下文本內容
     const regex = /(<([^>]+)>)/gi;
-    const textString = descriptionSaved.replace(regex, "");
+    const textString = cardData.description.replace(regex, "");
     return textString === "" ? true : false;
   };
 
@@ -78,7 +78,9 @@ const CardDescription: React.FC = () => {
                 <Button
                   onClick={() => {
                     setOpenTextEditor(false);
-                    setDescriptionField(descriptionSaved);
+                    if (cardData?.description) {
+                      setDescriptionField(cardData?.description);
+                    }
                   }}
                 >
                   取消
@@ -95,7 +97,7 @@ const CardDescription: React.FC = () => {
           </div>
         ) : (
           <div
-            dangerouslySetInnerHTML={{ __html: descriptionField }}
+            dangerouslySetInnerHTML={{ __html: cardData?.description || "" }}
             onClick={() => setOpenTextEditor(true)}
             className="descriptionDisplay"
           ></div>
