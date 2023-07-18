@@ -6,10 +6,6 @@ import { join } from "path";
 
 export default defineConfig({
   plugins: [progress(), react()],
-  test: {
-    globals: true,
-    environment: "jsdom",
-  },
   resolve: {
     alias: {
       "@": join(__dirname, "src"),

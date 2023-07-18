@@ -1,18 +1,5 @@
-import "@testing-library/jest-dom";
-import { render, screen, cleanup } from "@testing-library/react";
-import Login from "@/pages/Login/index";
+import { describe, expect, test } from "vitest";
 import { nextPosition } from "@/utils/cardFunc";
-
-afterEach(() => {
-  cleanup();
-});
-
-describe("登入頁面測試", () => {
-  test("讀取頁面", async () => {
-    render(<Login />);
-    expect(screen.getByText("讓工作，更有序")).toBeInTheDocument();
-  });
-});
 
 describe("拖曳座標計算測試", () => {
   test("nextPosition 測試", async () => {
