@@ -1,7 +1,5 @@
 import React from "react";
 import ReactQuill, { ReactQuillProps } from "react-quill";
-import "react-quill/dist/quill.snow.css";
-import "@/css/react-quill-custom.css";
 
 const TextEditor: React.FC<ReactQuillProps> = (props) => {
   const modules = {

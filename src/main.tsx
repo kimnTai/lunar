@@ -1,11 +1,10 @@
-import ReactDOM from "react-dom/client";
-import App from "./App";
-import { Provider } from "react-redux";
-import { store } from "./redux/store";
-import "./index.css";
-import "@/assets/root.scss";
+import "@/assets/scss/index.scss";
 import dayjs from "dayjs";
 import isBetween from "dayjs/plugin/isBetween";
+import ReactDOM from "react-dom/client";
+import { Provider } from "react-redux";
+import App from "./App";
+import { store } from "./redux/store";
 
 dayjs.extend(isBetween);
 

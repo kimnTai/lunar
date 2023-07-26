@@ -1,6 +1,5 @@
 import { Layout } from "antd";
 import styled from "styled-components";
-import { media } from "@/assets/constants";
 
 export const Sider = styled(Layout.Sider)`
   position: fixed;
@@ -65,10 +64,4 @@ export const Sider = styled(Layout.Sider)`
       background-color: #bfbfbf !important;
     }
   }
-  /* @media only screen and ${media.md} {
-    right: unset;
-    left: 0;
-  }
-  @media only screen and ${media.xl} {
-  } */
 `;
