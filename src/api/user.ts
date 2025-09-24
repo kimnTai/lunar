@@ -86,3 +86,9 @@ export const resetPasswordApi = (data: ResetPasswordProps) => {
     data
   );
 };
+
+export const googleLoginUrl = () =>
+  `${import.meta.env.VITE_REACT_API}api/user/google`;
+
+export const githubLoginUrl = () =>
+  `${import.meta.env.VITE_REACT_API}api/user/github`;

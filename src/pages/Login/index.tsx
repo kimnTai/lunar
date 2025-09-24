@@ -11,6 +11,7 @@ import { setSpinning } from "@/redux/screenSlice";
 import { loginAction, selectAuth, signInAction } from "@/redux/userSlice";
 import ThirdPartyButton from "./ThirdPartyButton";
 import { LoginCss } from "./style";
+import { githubLoginUrl, googleLoginUrl } from "@/api/user";
 
 const Login: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -130,18 +131,14 @@ const Login: React.FC = () => {
           iconSrc={GoogleIcon}
           text={isSignUpPage ? "使用 Google 註冊" : "使用 Google 登入"}
           onClick={() => {
-            window.location.href = `${
-              import.meta.env.VITE_REACT_API
-            }/user/google`;
+            window.location.href = googleLoginUrl();
           }}
         />
         <ThirdPartyButton
           iconSrc={GitHubIcon}
           text={isSignUpPage ? "使用 GitHub 註冊" : "使用 GitHub 登入"}
           onClick={() => {
-            window.location.href = `${
-              import.meta.env.VITE_REACT_API
-            }/user/github`;
+            window.location.href = githubLoginUrl();
           }}
         />
         <div className="have-account">
