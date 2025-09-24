@@ -18,7 +18,7 @@ interface Error<_T> {
 
 const instance = axios.create({
   // 基本設定
-  baseURL: import.meta.env.VITE_REACT_API,
+  baseURL: import.meta.env.VITE_REACT_API + "api",
   timeout: 10000,
   headers: {
     "Content-type": "application/json",
